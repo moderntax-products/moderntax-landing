@@ -1,0 +1,1227 @@
+            .partnership-grid {
+                grid-template-columns: 1fr;
+            }<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernTax - Real-Time Tax Verification API for Small Business Lenders</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            white-space: nowrap;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .cta-secondary:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e2e8f0" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #1e293b, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .api-demo {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 2rem;
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #eab308; }
+        .dot-green { background: #22c55e; }
+
+        .typing-effect {
+            opacity: 0;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Competitive Advantages */
+        .competitive {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+        }
+
+        .competitive .section-header h2,
+        .competitive .section-header p {
+            color: white;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            margin-top: 2rem;
+        }
+
+        .table-header {
+            background: #2563eb;
+            color: white;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+            align-items: center;
+        }
+
+        .table-row:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .check-mark {
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .x-mark {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* Partnership Models */
+        .partnership-models {
+            padding: 100px 0;
+            background: #f8fafc;
+        }
+
+        .partnership-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .partnership-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid #2563eb;
+        }
+
+        .partnership-card.los-partner {
+            border-left-color: #22c55e;
+        }
+
+        .partnership-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .partnership-card .audience {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .partnership-card.los-partner .audience {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .benefits-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .pricing-highlight {
+            background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .pricing-highlight strong {
+            color: #0369a1;
+        }
+        .pps-agent {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pps-agent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20,50 Q50,20 80,50 T140,50" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none"/></svg>');
+            animation: wave 10s infinite ease-in-out;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateX(-100px); }
+            50% { transform: translateX(100px); }
+        }
+
+        .pps-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pps-text h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .pps-text .subtitle {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .pps-text p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .pps-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .pps-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .pps-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ff6b6b;
+            display: block;
+        }
+
+        .pps-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        .free-call-form {
+            background: white;
+            color: #1e293b;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .free-call-form h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2563eb;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: #6b7280;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* How PPS Works */
+        .pps-workflow {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .workflow-step {
+            background: linear-gradient(135deg, #2ed573 0%, #26d0ce 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(46, 213, 115, 0.3);
+        }
+
+        .workflow-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff6b6b;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .workflow-step h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .workflow-step p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #2563eb;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #2563eb;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            background: #1e293b;
+            color: white;
+            text-align: center;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .pps-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .pps-text h2 {
+                font-size: 2.5rem;
+            }
+
+            .pps-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">ModernTax</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#competitive">Advantages</a></li>
+                <li><a href="https://sandbox-llama.moderntax.io/" target="_blank">API Docs</a></li>
+                <li><a href="#pps-agent">PPS Agent</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="#pps-agent" class="cta-secondary">For Tax Pros</a>
+                <a href="https://buy.stripe.com/28o28B3JB4MedUI6pu" class="cta-button" target="_blank">Get API Access</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>AI-Powered Tax Infrastructure for Modern Lenders</h1>
+                    <p>Voice AI agents handle IRS verification while you focus on closing loans. One platform for transcripts, refunds, and balance monitoring with enterprise reliability.</p>
+                    <a href="https://buy.stripe.com/28o28B3JB4MedUI6pu" class="cta-button" target="_blank">Start Integration →</a>
+                    
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">30min</span>
+                            <span class="stat-label">AI-Powered Turnaround</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">9%</span>
+                            <span class="stat-label">Error Rate (Industry Leading)</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">110+</span>
+                            <span class="stat-label">Active Lender Customers</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">25%</span>
+                            <span class="stat-label">Revenue Share for Partners</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="api-demo">
+                        <div class="code-header">
+                            <div class="code-dot dot-red"></div>
+                            <div class="code-dot dot-yellow"></div>
+                            <div class="code-dot dot-green"></div>
+                        </div>
+                        <div class="typing-effect">
+POST https://sandbox-llama.moderntax.io/api/v1/verify<br>
+{<br>
+&nbsp;&nbsp;"ein": "12-3456789",<br>
+&nbsp;&nbsp;"businessName": "Acme Corp",<br>
+&nbsp;&nbsp;"consent": "base64_8821_form"<br>
+}<br><br>
+<span style="color: #22c55e;">// Response in 30 minutes</span><br>
+{<br>
+&nbsp;&nbsp;"status": "completed",<br>
+&nbsp;&nbsp;"taxData": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"revenue": "$2,450,000",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"taxLiability": "current",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"filingStatus": "up-to-date"<br>
+&nbsp;&nbsp;}<br>
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Modern Tax Infrastructure for Financial Services</h2>
+                <p>Like Stripe revolutionized payments, ModernTax transforms tax data access. One API for verification, refunds, and monitoring with Silicon Valley innovation.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Voice Agents</h3>
+                    <p>Voice AI handles IRS calls automatically. Scale to hundreds of concurrent requests without human bottlenecks. Silicon Valley innovation meets government bureaucracy.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Smart Pre-Validation</h3>
+                    <p>Cross-reference public data sources to prevent "fat finger" errors before submitting 8821 forms. 9% error rate vs 30% industry standard.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-Time Processing</h3>
+                    <p>30-minute average turnaround with same-day delivery. Modern infrastructure built for speed, not legacy workflows from the 2000s.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3>Complete Tax Infrastructure</h3>
+                    <p>Verification, refund processing, balance monitoring, and resolution services. One platform for all tax-related financial operations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Seamless Partner Revenue</h3>
+                    <p>25% revenue share with 2-week integration. White-label ready. We handle the complexity, you focus on growing your platform.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Developer-First Experience</h3>
+                    <p>REST API, sandbox environment, webhook notifications. Built by engineers who understand modern fintech infrastructure requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="partnership-models">
+        <div class="container">
+            <div class="section-header">
+                <h2>Partnership Models That Work</h2>
+                <p>Whether you're a direct lender or LOS platform, we have a model that grows your business</p>
+            </div>
+            
+            <div class="partnership-grid">
+                <div class="partnership-card">
+                    <div class="audience">For Banks & Direct Lenders</div>
+                    <h3>🏦 Direct API Integration</h3>
+                    <p>Modern tax infrastructure for forward-thinking lenders. Get enterprise-grade reliability with startup agility and innovation speed.</p>
+                    
+                    <div class="pricing-highlight">
+                        <strong>Platform Benefits:</strong> Complete tax operations through one API. From verification to refund processing to balance monitoring.
+                    </div>
+                    
+                    <ul class="benefits-list">
+                        <li>Comprehensive verification (unlimited years of data)</li>
+                        <li>AI-powered 30-minute processing</li>
+                        <li>Smart pre-validation reduces errors by 70%</li>
+                        <li>Complete transcript + refund + monitoring suite</li>
+                        <li>Developer-friendly REST API + webhooks</li>
+                        <li>Enterprise support with Silicon Valley velocity</li>
+                    </ul>
+                </div>
+                
+                <div class="partnership-card los-partner">
+                    <div class="audience">For LOS Platforms</div>
+                    <h3>💼 Seamless Revenue Partnership</h3>
+                    <p>White-label tax infrastructure that your banks will love. Earn 25% recurring revenue while delivering modern developer experience.</p>
+                    
+                    <div class="pricing-highlight">
+                        <strong>Integration Experience:</strong> 2-week implementation. Full white-label. Zero ongoing technical overhead. Pure revenue upside.
+                    </div>
+                    
+                    <ul class="benefits-list">
+                        <li>25% revenue share on all transactions</li>
+                        <li>2-3 week integration (vs 6-12 months with legacy)</li>
+                        <li>Your brand, our infrastructure</li>
+                        <li>No exclusive contracts or minimums</li>
+                        <li>Modern API built for fintech platforms</li>
+                        <li>Dedicated partner success team</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 3rem; border-radius: 16px; text-align: center; margin-top: 3rem;">
+                <h3 style="margin-bottom: 1rem; font-size: 1.8rem;">Ready to Build on Modern Tax Infrastructure?</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">Join innovative lenders and platforms choosing AI-powered solutions over legacy providers</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://buy.stripe.com/28o28B3JB4MedUI6pu" class="btn-primary" target="_blank">Start Direct Integration</a>
+                    <a href="mailto:matt@moderntax.io?subject=LOS Partnership Inquiry" class="btn-secondary">Discuss Partnership</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pps-agent" class="pps-agent">
+        <div class="container">
+            <div class="pps-content">
+                <div class="pps-text">
+                    <h2>📞 PPS AI Agent</h2>
+                    <div class="subtitle">Skip 60-Minute IRS Hold Times</div>
+                    <p>Our AI calls the IRS for you, waits in queue for 30-60 minutes, then calls you back when a human agent is ready. Perfect for tax professionals in our network.</p>
+                    <p><strong>Stop losing $750+ daily to IRS hold times.</strong> Get connected instantly while serving more clients.</p>
+                    
+                    <div class="pps-stats">
+                        <div class="pps-stat">
+                            <span class="pps-stat-number">60min</span>
+                            <span class="pps-stat-label">Average IRS Hold Time</span>
+                        </div>
+                        <div class="pps-stat">
+                            <span class="pps-stat-number">$750</span>
+                            <span class="pps-stat-label">Daily Revenue Lost</span>
+                        </div>
+                        <div class="pps-stat">
+                            <span class="pps-stat-number">30sec</span>
+                            <span class="pps-stat-label">Setup Time</span>
+                        </div>
+                        <div class="pps-stat">
+                            <span class="pps-stat-number">$15</span>
+                            <span class="pps-stat-label">Per Connection</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="free-call-form">
+                    <h3>🎉 Try Your First Call FREE</h3>
+                    <form id="ppsSignupForm">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company/Practice Name</label>
+                            <input type="text" id="company" name="company" placeholder="Your Tax Practice">
+                        </div>
+                        <button type="submit" class="submit-button">Get My Free IRS Call</button>
+                        <p class="form-note">No credit card required • Available in 2 weeks • $15/call after free trial</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pps-workflow">
+        <div class="container">
+            <div class="section-header">
+                <h2>How PPS AI Agent Works</h2>
+                <p>Your AI assistant handles the waiting while you serve clients and generate revenue</p>
+            </div>
+            
+            <div class="workflow-grid">
+                <div class="workflow-step" data-step="1">
+                    <h4>You Request</h4>
+                    <p>Tell PPS Agent you need IRS access. Takes 30 seconds through our simple interface.</p>
+                </div>
+                
+                <div class="workflow-step" data-step="2">
+                    <h4>AI Calls IRS</h4>
+                    <p>PPS Agent navigates phone trees and enters the queue for you automatically.</p>
+                </div>
+                
+                <div class="workflow-step" data-step="3">
+                    <h4>AI Waits</h4>
+                    <p>Your AI agent holds your place in line for 30-60 minutes while you work.</p>
+                </div>
+                
+                <div class="workflow-step" data-step="4">
+                    <h4>You Get Called</h4>
+                    <p>When a human IRS agent is ready, PPS Agent calls YOU back immediately.</p>
+                </div>
+                
+                <div class="workflow-step" data-step="5">
+                    <h4>Seamless Transfer</h4>
+                    <p>Connected instantly to the IRS agent. No waiting, no hold music, no frustration.</p>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #e8f5e8, #f0fdf4); padding: 3rem; border-radius: 16px; text-align: center; margin-top: 3rem; border-left: 6px solid #22c55e;">
+                <h3 style="color: #15803d; font-size: 1.8rem; margin-bottom: 1rem;">Result: Your 60-Minute Wait Becomes a 30-Second Setup</h3>
+                <p style="font-size: 1.2rem; color: #166534;">Serve more clients. Make more money. Eliminate IRS frustration forever.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="competitive" class="competitive">
+        <div class="container">
+            <div class="section-header">
+                <h2>Product Innovation vs Legacy Solutions</h2>
+                <p>See how modern AI-powered infrastructure compares to traditional service-based approaches</p>
+            </div>
+            
+            <div class="comparison-table">
+                <div class="table-header">
+                    <div>Capability</div>
+                    <div>ModernTax Platform</div>
+                    <div>Legacy Providers</div>
+                </div>
+                
+                <div class="table-row">
+                    <div><strong>AI Voice Agents</strong></div>
+                    <div class="check-mark">Hundreds of concurrent agents</div>
+                    <div class="x-mark">Human-dependent calling</div>
+                </div>
+                
+                <div class="table-row">
+                    <div><strong>Smart Pre-Validation</strong></div>
+                    <div class="check-mark">Cross-reference public data</div>
+                    <div class="x-mark">Submit raw form data</div>
+                </div>
+                
+                <div class="table-row">
+                    <div><strong>Platform Integration</strong></div>
+                    <div class="check-mark">2-3 weeks with revenue share</div>
+                    <div class="x-mark">6-12 months, complex process</div>
+                </div>
+                
+                <div class="table-row">
+                    <div><strong>API Architecture</strong></div>
+                    <div class="check-mark">Modern REST API + webhooks</div>
+                    <div class="x-mark">Limited or no API access</div>
+                </div>
+
+                <div class="table-row">
+                    <div><strong>Scalability Model</strong></div>
+                    <div class="check-mark">Cloud-native, auto-scaling</div>
+                    <div class="x-mark">Manual processes, capacity limits</div>
+                </div>
+
+                <div class="table-row">
+                    <div><strong>Innovation Pace</strong></div>
+                    <div class="check-mark">Silicon Valley development</div>
+                    <div class="x-mark">Legacy private equity ownership</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta" class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>The Modern Alternative to Legacy Tax Infrastructure</h2>
+                <p>Join 110+ lenders building on AI-powered tax infrastructure with enterprise reliability and Silicon Valley velocity</p>
+                <div class="cta-buttons">
+                    <a href="https://buy.stripe.com/28o28B3JB4MedUI6pu" class="btn-primary" target="_blank">Get API Access</a>
+                    <a href="https://sandbox-llama.moderntax.io/" class="btn-secondary" target="_blank">Explore API Sandbox</a>
+                </div>
+                <p style="margin-top: 1.5rem; opacity: 0.8; font-size: 0.95rem;">
+                    2-week integration • 25% partner revenue share • Developer-first platform
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ModernTax, Inc. Built for the future of small business lending.</p>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin();
+
+        // Hero animations
+        gsap.timeline()
+            .from(".hero-text h1", { duration: 1, y: 50, opacity: 0, ease: "power3.out" })
+            .from(".hero-text p", { duration: 1, y: 30, opacity: 0, ease: "power3.out" }, "-=0.5")
+            .from(".cta-button", { duration: 0.8, y: 20, opacity: 0, ease: "power3.out" }, "-=0.3")
+            .from(".stat", { duration: 0.8, y: 30, opacity: 0, stagger: 0.1, ease: "power3.out" }, "-=0.5");
+
+        // Typing effect for code
+        const codeText = document.querySelector('.typing-effect');
+        const text = codeText.innerHTML;
+        codeText.innerHTML = '';
+        codeText.style.opacity = 1;
+
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                codeText.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 30);
+            }
+        }
+
+        // Start typing animation after hero loads
+        setTimeout(typeWriter, 1500);
+
+        // Feature cards animation on scroll
+        gsap.registerPlugin();
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    gsap.from(entry.target.querySelectorAll('.feature-card'), {
+                        duration: 0.8,
+                        y: 50,
+                        opacity: 0,
+                        stagger: 0.1,
+                        ease: "power3.out"
+                    });
+
+        // PPS Agent form submission
+        document.getElementById('ppsSignupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            const company = formData.get('company');
+            
+            // Simple validation
+            if (!email || !phone) {
+                alert('Please fill in your email and phone number');
+                return;
+            }
+            
+            // Simulate form submission (replace with actual endpoint)
+            const submitButton = document.querySelector('.submit-button');
+            const originalText = submitButton.textContent;
+            
+            submitButton.textContent = 'Processing...';
+            submitButton.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                submitButton.textContent = '✅ Success! We\'ll Contact You Soon';
+                submitButton.style.background = '#22c55e';
+                
+                // Reset form
+                setTimeout(() => {
+                    this.reset();
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                    submitButton.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a24)';
+                }, 3000);
+                
+                // You can replace this with actual form submission to your backend
+                console.log('PPS Agent signup:', { email, phone, company });
+                
+            }, 1500);
+        });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        observer.observe(document.querySelector('.features-grid'));
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
