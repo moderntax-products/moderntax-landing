@@ -1,4 +1,4 @@
-            .partnership-grid {
+.partnership-grid {
                 grid-template-columns: 1fr;
             }<!DOCTYPE html>
 <html lang="en">
@@ -301,8 +301,9 @@
         }
 
         .feature-card p {
-            color: #64748b;
+            color: #1e293b;
             line-height: 1.6;
+            font-weight: 400;
         }
 
         /* Competitive Advantages */
@@ -765,7 +766,7 @@
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#competitive">Advantages</a></li>
-                <li><a href="https://sandbox-llama.moderntax.io/" target="_blank">API Docs</a></li>
+                <li><a href="https://sandbox.moderntax.io/" target="_blank">API Docs</a></li>
                 <li><a href="#pps-agent">PPS Agent</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -984,7 +985,7 @@ POST https://sandbox-llama.moderntax.io/api/v1/verify<br>
                             <input type="text" id="company" name="company" placeholder="Your Tax Practice">
                         </div>
                         <button type="submit" class="submit-button">Get My Free IRS Call</button>
-                        <p class="form-note">No credit card required • Available in 2 weeks • $15/call after free trial</p>
+                        <p class="form-note">No credit card required • Available in 2 weeks • Direct email to Matt</p>
                     </form>
                 </div>
             </div>
@@ -1092,7 +1093,7 @@ POST https://sandbox-llama.moderntax.io/api/v1/verify<br>
                 <p>Join 110+ lenders building on AI-powered tax infrastructure with enterprise reliability and Silicon Valley velocity</p>
                 <div class="cta-buttons">
                     <a href="https://buy.stripe.com/28o28B3JB4MedUI6pu" class="btn-primary" target="_blank">Get API Access</a>
-                    <a href="https://sandbox-llama.moderntax.io/" class="btn-secondary" target="_blank">Explore API Sandbox</a>
+                    <a href="https://sandbox.moderntax.io/" class="btn-secondary" target="_blank">Explore API Sandbox</a>
                 </div>
                 <p style="margin-top: 1.5rem; opacity: 0.8; font-size: 0.95rem;">
                     2-week integration • 25% partner revenue share • Developer-first platform
@@ -1155,46 +1156,54 @@ POST https://sandbox-llama.moderntax.io/api/v1/verify<br>
                         ease: "power3.out"
                     });
 
-        // PPS Agent form submission
-        document.getElementById('ppsSignupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const email = formData.get('email');
-            const phone = formData.get('phone');
-            const company = formData.get('company');
-            
-            // Simple validation
-            if (!email || !phone) {
-                alert('Please fill in your email and phone number');
-                return;
-            }
-            
-            // Simulate form submission (replace with actual endpoint)
-            const submitButton = document.querySelector('.submit-button');
-            const originalText = submitButton.textContent;
-            
-            submitButton.textContent = 'Processing...';
-            submitButton.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                submitButton.textContent = '✅ Success! We\'ll Contact You Soon';
+        // PPS Agent form submission - simple mailto approach
+        const ppsForm = document.getElementById('ppsSignupForm');
+        if (ppsForm) {
+            ppsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const email = formData.get('email');
+                const phone = formData.get('phone');
+                const company = formData.get('company') || 'Not provided';
+                
+                // Simple validation
+                if (!email || !phone) {
+                    alert('Please fill in your email and phone number');
+                    return;
+                }
+                
+                // Create mailto link
+                const subject = encodeURIComponent('New PPS Agent Lead - Free Trial Request');
+                const body = encodeURIComponent(`New PPS Agent Lead:
+
+Email: ${email}
+Phone: ${phone}
+Company: ${company}
+
+Source: ModernTax PPS Agent Free Trial Form
+Date: ${new Date().toLocaleString()}`);
+                
+                const mailtoLink = `mailto:matt@moderntax.io?subject=${subject}&body=${body}`;
+                
+                // Open email client
+                window.location.href = mailtoLink;
+                
+                // Show success message
+                const submitButton = this.querySelector('.submit-button');
+                const originalText = submitButton.textContent;
+                
+                submitButton.textContent = '✅ Email Draft Opened!';
                 submitButton.style.background = '#22c55e';
                 
-                // Reset form
+                // Reset after delay
                 setTimeout(() => {
                     this.reset();
                     submitButton.textContent = originalText;
-                    submitButton.disabled = false;
                     submitButton.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a24)';
                 }, 3000);
-                
-                // You can replace this with actual form submission to your backend
-                console.log('PPS Agent signup:', { email, phone, company });
-                
-            }, 1500);
-        });
+            });
+        }
                     observer.unobserve(entry.target);
                 }
             });
