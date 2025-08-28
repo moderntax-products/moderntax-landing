@@ -1,5 +1,5 @@
 {
-  "name": "moderntax-landing",
+  "name": "moderntax-sandbox",
   "version": "1.0.0",
   "dependencies": {
     "@netlify/functions": "^2.6.0"
