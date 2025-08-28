@@ -1,0 +1,7 @@
+{
+  "name": "moderntax-landing",
+  "version": "1.0.0",
+  "dependencies": {
+    "@netlify/functions": "^2.6.0"
+  }
+}
