@@ -7,17 +7,17 @@
 
 [[redirects]]
   from = "/"
-  to = "/public/sandbox/index.html"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
   from = "/sandbox"  
-  to = "/public/sandbox/index.html"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
   from = "/client_account"
-  to = "/public/sandbox/index.html"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
@@ -25,13 +25,8 @@
   to = "/.netlify/functions/verify"
   status = 200
 
-# Add employment verification function routes
-[[redirects]]
-  from = "/employment-verify"
-  to = "/.netlify/functions/employment-verify"
-  status = 200
-
+# Employment verification API routes
 [[redirects]]
   from = "/employment-verify/*"
-  to = "/.netlify/functions/employment-verify"
+  to = "/.netlify/functions/employment-verify/:splat"
   status = 200
