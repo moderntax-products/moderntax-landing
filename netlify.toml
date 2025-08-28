@@ -6,7 +6,6 @@ cat > netlify.toml << 'EOF'
 [functions]
   node_bundler = "esbuild"
 
-# Main site redirects
 [[redirects]]
   from = "/"
   to = "/index.html"
@@ -22,22 +21,13 @@ cat > netlify.toml << 'EOF'
   to = "/index.html"
   status = 200
 
-# API redirects
 [[redirects]]
   from = "/api/v1/verify"
   to = "/.netlify/functions/verify"
   status = 200
 
-# Employment verification API routes
 [[redirects]]
   from = "/employment-verify/*"
   to = "/.netlify/functions/employment-verify/:splat"
   status = 200
-
-# Sandbox subdomain serving
-[[redirects]]
-  from = "/*"
-  to = "/sandbox-interface.html"
-  status = 200
-  conditions = {Host = ["sandbox.moderntax.io"]}
 EOF
