@@ -5,21 +5,13 @@
 [functions]
   node_bundler = "esbuild"
 
+# Route for employment verification page
 [[redirects]]
-  from = "/"
-  to = "/index.html"
+  from = "/employment-verification"
+  to = "/employment-verification.html"
   status = 200
 
-[[redirects]]
-  from = "/sandbox"
-  to = "/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/client_account"
-  to = "/index.html"
-  status = 200
-
+# API routes remain unchanged
 [[redirects]]
   from = "/api/v1/verify"
   to = "/.netlify/functions/verify"
