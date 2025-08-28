@@ -53,22 +53,6 @@
             border-color: #477eeb;
             box-shadow: 0 4px 12px rgba(71,126,235,0.15);
         }
-        .success { color: #10b981; font-weight: bold; }
-        .warning { color: #f59e0b; font-weight: bold; }
-        .danger { color: #ef4444; font-weight: bold; }
-        .btn {
-            background: linear-gradient(135deg, #477eeb, #12264e);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px 5px;
-        }
-        .btn:hover { transform: translateY(-2px); }
         .tabs {
             display: flex;
             gap: 10px;
@@ -87,367 +71,77 @@
         .tab.active {
             color: #477eeb;
         }
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #477eeb;
-        }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .response-viewer {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
+        .btn {
+            background: linear-gradient(135deg, #477eeb, #12264e);
+            color: white;
+            padding: 12px 24px;
+            border: none;
             border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .metric { 
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
             display: inline-block;
-            margin: 10px 20px 10px 0;
-            font-size: 14px;
-        }
-        .metric-value {
-            font-weight: bold;
-            color: #477eeb;
+            margin: 10px 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 ModernTax Employment Verification API</h1>
-            <p style="font-size: 1.2rem; margin-top: 10px;">Sandbox Environment - Full Testing Suite</p>
+            <h1>ModernTax Employment Verification API</h1>
+            <p>Sandbox Environment - Full Testing Suite</p>
         </div>
 
         <div class="main-content">
-            <!-- Quick Start Guide -->
             <div class="quick-start">
-                <h2 style="color: #1e293b; margin-bottom: 15px;">⚡ Quick Start for Joe & Team</h2>
-                <p><strong>Base URL:</strong> <code>https://sandbox.moderntax.io/.netlify/functions/employment-verify</code></p>
-                <p><strong>API Key:</strong> <code>mt_sandbox_employer_2025_demo</code></p>
-                <p><strong>Header:</strong> <code>Authorization: Bearer mt_sandbox_employer_2025_demo</code></p>
-                <p><strong>Webhook Secret:</strong> <code>whsec_test_employer_789</code></p>
+                <h2>Quick Start</h2>
+                <p><strong>Base URL:</strong> https://sandbox.moderntax.io/.netlify/functions/employment-verify</p>
+                <p><strong>API Key:</strong> mt_sandbox_employer_2025_demo</p>
+                <p><strong>Header:</strong> Authorization: Bearer mt_sandbox_employer_2025_demo</p>
             </div>
 
-            <!-- Navigation Tabs -->
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('postman')">Postman Setup</button>
-                <button class="tab" onclick="switchTab('samples')">Test Samples</button>
-                <button class="tab" onclick="switchTab('webhooks')">Webhooks</button>
-                <button class="tab" onclick="switchTab('production')">Production Ready</button>
+                <button class="tab active" onclick="switchTab('postman', this)">Postman Setup</button>
+                <button class="tab" onclick="switchTab('samples', this)">Test Samples</button>
+                <button class="tab" onclick="switchTab('production', this)">Production</button>
             </div>
 
-            <!-- Postman Tab -->
             <div id="postman" class="tab-content active">
                 <h2>Postman Configuration</h2>
-                <p>Import these settings directly into Postman:</p>
-                
-                <h3>1. Environment Variables</h3>
-                <div class="code-block">{
-  "baseUrl": "https://sandbox.moderntax.io/.netlify/functions/employment-verify",
-  "apiKey": "mt_sandbox_employer_2025_demo",
-  "webhookSecret": "whsec_test_employer_789"
-}</div>
-
-                <h3>2. Headers Configuration</h3>
-                <div class="code-block">Authorization: Bearer {{apiKey}}
+                <div class="code-block">
+Authorization: Bearer mt_sandbox_employer_2025_demo
 Content-Type: application/json
-X-Webhook-Secret: {{webhookSecret}}</div>
-
-                <h3>3. Sample Request</h3>
-                <div class="code-block">POST {{baseUrl}}/api/v1/employment/verify
-
-{
-  "candidate_info": {
-    "ssn": "123-45-6789",
-    "first_name": "John",
-    "last_name": "Smith",
-    "date_of_birth": "1985-03-15",
-    "current_address": {
-      "street": "123 Main St",
-      "city": "San Francisco",
-      "state": "CA",
-      "zip": "94105"
-    }
-  },
-  "employer_info": {
-    "company_name": "Employer.com",
-    "contact_email": "joe@mainstreet.com"
-  },
-  "consent_token": "consent_test_12345",
-  "webhook_url": "https://your-webhook-endpoint.com/moderntax"
-}</div>
-
-                <button class="btn" onclick="downloadPostmanCollection()">Download Postman Collection</button>
+                </div>
             </div>
 
-            <!-- Test Samples Tab -->
             <div id="samples" class="tab-content">
-                <h2>Test Employment Scenarios</h2>
-                <p>Click any scenario to test it live:</p>
-
-                <div class="test-case" onclick="runTest('normal')">
-                    <h3>✅ Normal Employment</h3>
-                    <p><strong>SSN:</strong> 123-45-6789 | <strong>Name:</strong> John Smith</p>
-                    <p>Single employer, clean history, <span class="success">LOW RISK</span></p>
-                    <div class="metric">
-                        <span>Expected Income:</span> <span class="metric-value">$87,500</span>
-                    </div>
-                    <div class="metric">
-                        <span>Processing Time:</span> <span class="metric-value">~45 seconds</span>
-                    </div>
+                <h2>Test Scenarios</h2>
+                <div class="test-case">
+                    <h3>Normal Employment</h3>
+                    <p>SSN: 123-45-6789 | Single employer</p>
                 </div>
-
-                <div class="test-case" onclick="runTest('overemployed')">
-                    <h3>⚠️ Over-Employment Detected</h3>
-                    <p><strong>SSN:</strong> 555-44-3333 | <strong>Name:</strong> Michael Thompson</p>
-                    <p>4 concurrent W-2s detected, <span class="danger">HIGH RISK</span></p>
-                    <div class="metric">
-                        <span>Stated Income:</span> <span class="metric-value">$55,000</span>
-                    </div>
-                    <div class="metric">
-                        <span>Actual Income:</span> <span class="metric-value">$163,000</span>
-                    </div>
-                </div>
-
-                <div class="test-case" onclick="runTest('contractor')">
-                    <h3>📊 Mixed Employment</h3>
-                    <p><strong>SSN:</strong> 111-22-3333 | <strong>Name:</strong> Alex Rivera</p>
-                    <p>W-2 + 1099 income, <span class="warning">MEDIUM RISK</span></p>
-                    <div class="metric">
-                        <span>W-2 Income:</span> <span class="metric-value">$45,000</span>
-                    </div>
-                    <div class="metric">
-                        <span>1099 Income:</span> <span class="metric-value">$43,000</span>
-                    </div>
-                </div>
-
-                <div id="test-result" class="response-viewer" style="display: none;">
-                    <h3>API Response:</h3>
-                    <div class="code-block" id="response-output"></div>
-                    <button class="btn" onclick="copyResponse()">Copy Response</button>
-                    <button class="btn" onclick="openInPostman()">Open in Postman</button>
+                <div class="test-case">
+                    <h3>Over-Employment</h3>
+                    <p>SSN: 555-44-3333 | Multiple W-2s detected</p>
                 </div>
             </div>
 
-            <!-- Webhooks Tab -->
-            <div id="webhooks" class="tab-content">
-                <h2>Webhook Integration</h2>
-                
-                <h3>Webhook Events</h3>
-                <div class="code-block">// Verification Started
-{
-  "event": "verification.started",
-  "request_id": "req_abc123",
-  "timestamp": "2025-08-28T10:00:00Z"
-}
-
-// Verification Completed
-{
-  "event": "verification.completed",
-  "request_id": "req_abc123",
-  "timestamp": "2025-08-28T10:00:45Z",
-  "data": {
-    "employment_history": [...],
-    "risk_assessment": {
-      "level": "LOW",
-      "flags": []
-    }
-  }
-}
-
-// Verification Failed
-{
-  "event": "verification.failed",
-  "request_id": "req_abc123",
-  "error": "Unable to verify SSN"
-}</div>
-
-                <h3>Webhook Security</h3>
-                <p>Verify webhook signatures using HMAC-SHA256:</p>
-                <div class="code-block">const crypto = require('crypto');
-
-function verifyWebhook(payload, signature, secret) {
-  const hmac = crypto.createHmac('sha256', secret);
-  const digest = hmac.update(payload).digest('hex');
-  return signature === `sha256=${digest}`;
-}
-
-// In your webhook handler
-const signature = req.headers['x-webhook-signature'];
-const isValid = verifyWebhook(req.body, signature, 'whsec_test_employer_789');</div>
-
-                <button class="btn" onclick="testWebhook()">Send Test Webhook</button>
-            </div>
-
-            <!-- Production Tab -->
             <div id="production" class="tab-content">
-                <h2>🎯 Ready for Production?</h2>
-                
-                <h3>What You've Tested</h3>
-                <ul style="line-height: 2;">
-                    <li>✅ Over-employment detection across multiple W-2s</li>
-                    <li>✅ 3-year employment history verification</li>
-                    <li>✅ Risk scoring (LOW/MEDIUM/HIGH)</li>
-                    <li>✅ Income verification with 15% discrepancy flagging</li>
-                    <li>✅ Clean employer data (names, EINs, addresses)</li>
-                    <li>✅ Webhook integration</li>
-                </ul>
-
-                <h3>Production Benefits</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
-                    <div style="padding: 20px; background: #f0f9ff; border-radius: 8px;">
-                        <h4 style="color: #477eeb;">Volume Pricing</h4>
-                        <p>$35 per verification</p>
-                        <p style="font-size: 14px; color: #64748b;">$45 for express (under 30 min)</p>
-                    </div>
-                    <div style="padding: 20px; background: #f0fdf4; border-radius: 8px;">
-                        <h4 style="color: #10b981;">99.9% Uptime SLA</h4>
-                        <p>Production infrastructure</p>
-                        <p style="font-size: 14px; color: #64748b;">Dedicated support channel</p>
-                    </div>
-                    <div style="padding: 20px; background: #fef3c7; border-radius: 8px;">
-                        <h4 style="color: #f59e0b;">Real-time Processing</h4>
-                        <p>30-60 minute turnaround</p>
-                        <p style="font-size: 14px; color: #64748b;">vs 3-5 days traditional</p>
-                    </div>
-                </div>
-
-                <h3>Get Production Access</h3>
-                <p style="margin: 20px 0;">Ready to move forward? Let's get you set up with production credentials.</p>
-                
-                <a href="mailto:matt@moderntax.io?subject=Production Access Request - Employer.com&body=Hi Matt,%0A%0AWe've completed sandbox testing and are ready for production access.%0A%0ACompany: Employer.com%0AExpected Volume: [X] verifications/month%0AUse Case: Employment verification for HR%0A%0AThanks,%0AJoe" class="btn">
-                    Request Production Access
-                </a>
-                
-                <a href="https://calendly.com/matt-moderntax/integration" class="btn" style="background: #10b981;">
-                    Schedule Integration Call
-                </a>
+                <h2>Ready for Production?</h2>
+                <p>Contact: matt@moderntax.io</p>
+                <a href="mailto:matt@moderntax.io" class="btn">Get Production Access</a>
             </div>
         </div>
     </div>
 
     <script>
-        function switchTab(tabName) {
+        function switchTab(tabName, element) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            event.target.classList.add('active');
+            element.classList.add('active');
             document.getElementById(tabName).classList.add('active');
-        }
-
-        async function runTest(scenario) {
-            const scenarios = {
-                'normal': {
-                    ssn: '123-45-6789',
-                    first_name: 'John',
-                    last_name: 'Smith'
-                },
-                'overemployed': {
-                    ssn: '555-44-3333',
-                    first_name: 'Michael',
-                    last_name: 'Thompson'
-                },
-                'contractor': {
-                    ssn: '111-22-3333',
-                    first_name: 'Alex',
-                    last_name: 'Rivera'
-                }
-            };
-
-            const testData = scenarios[scenario];
-            
-            // Simulate API call
-            const response = await fetch('https://sandbox.moderntax.io/.netlify/functions/employment-verify/api/v1/employment/verify', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer mt_sandbox_employer_2025_demo',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    candidate_info: {
-                        ssn: testData.ssn,
-                        first_name: testData.first_name,
-                        last_name: testData.last_name,
-                        current_address: {
-                            street: '123 Main St',
-                            city: 'San Francisco',
-                            state: 'CA',
-                            zip: '94105'
-                        }
-                    },
-                    employer_info: {
-                        company_name: 'Employer.com',
-                        contact_email: 'joe@mainstreet.com'
-                    },
-                    consent_token: 'consent_test_12345'
-                })
-            });
-
-            const data = await response.json();
-            
-            document.getElementById('test-result').style.display = 'block';
-            document.getElementById('response-output').textContent = JSON.stringify(data, null, 2);
-            
-            // Scroll to result
-            document.getElementById('test-result').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function copyResponse() {
-            const response = document.getElementById('response-output').textContent;
-            navigator.clipboard.writeText(response);
-            alert('Response copied to clipboard!');
-        }
-
-        function downloadPostmanCollection() {
-            const collection = {
-                info: {
-                    name: "ModernTax Employment Verification",
-                    schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-                },
-                item: [{
-                    name: "Verify Employment",
-                    request: {
-                        method: "POST",
-                        header: [
-                            {key: "Authorization", value: "Bearer mt_sandbox_employer_2025_demo"},
-                            {key: "Content-Type", value: "application/json"}
-                        ],
-                        body: {
-                            mode: "raw",
-                            raw: JSON.stringify({
-                                candidate_info: {
-                                    ssn: "123-45-6789",
-                                    first_name: "John",
-                                    last_name: "Smith"
-                                }
-                            }, null, 2)
-                        },
-                        url: "https://sandbox.moderntax.io/.netlify/functions/employment-verify/api/v1/employment/verify"
-                    }
-                }]
-            };
-            
-            const blob = new Blob([JSON.stringify(collection, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'ModernTax_Employment_API.postman_collection.json';
-            a.click();
-        }
-
-        function testWebhook() {
-            alert('Test webhook sent! Check your webhook endpoint.');
-        }
-
-        function openInPostman() {
-            const response = document.getElementById('response-output').textContent;
-            // This would open in Postman app if installed
-            alert('Copy the response and paste into Postman for further testing');
         }
     </script>
 </body>
