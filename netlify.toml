@@ -1,4 +1,3 @@
-cat > netlify.toml << 'EOF'
 [build]
   publish = "."
   functions = "netlify/functions"
@@ -30,4 +29,3 @@ cat > netlify.toml << 'EOF'
   from = "/employment-verify/*"
   to = "/.netlify/functions/employment-verify/:splat"
   status = 200
-EOF
