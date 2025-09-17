@@ -1,1 +1,370 @@
-<!DOCTYPE html><html><head><title>API Docs</title><style>body{font-family:sans-serif;max-width:1000px;margin:0 auto;padding:20px}code{background:#f4f4f4;padding:2px 6px}pre{background:#f4f4f4;padding:20px;border-radius:8px}</style></head><body><h1>ModernTax API Documentation</h1><h2>Endpoints</h2><pre>POST /verify - Employment verification<br>GET /health - API status</pre><h2>Test SSNs</h2><ul><li>777-77-7777 - Single employer (low risk)</li><li>888-88-8888 - Multiple W2s (high risk)</li><li>999-99-9999 - W2 + 1099 (medium risk)</li></ul><p>Contact support@moderntax.io for access.</p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernTax API Documentation v3.0</title>
+    <style>
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;color:#333;margin:0;padding:0;background:#f8f9fa}
+        .header{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:40px 0;text-align:center}
+        .header h1{margin:0;font-size:2.5em}
+        .header p{margin:10px 0;opacity:0.9}
+        .container{max-width:1200px;margin:0 auto;padding:20px}
+        .section{background:white;border-radius:10px;padding:30px;margin:20px 0;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+        h2{color:#667eea;border-bottom:2px solid #e9ecef;padding-bottom:10px}
+        h3{color:#495057;margin-top:25px}
+        .endpoint{background:#f8f9fa;border-left:4px solid #667eea;padding:20px;margin:20px 0;border-radius:5px}
+        .method{display:inline-block;padding:5px 10px;border-radius:4px;font-weight:bold;margin-right:10px;color:white}
+        .post{background:#28a745}
+        .get{background:#007bff}
+        code{background:#e9ecef;padding:2px 6px;border-radius:3px;font-family:'Courier New',monospace}
+        pre{background:#1e1e1e;color:#d4d4d4;padding:20px;border-radius:8px;overflow-x:auto;font-size:14px}
+        table{width:100%;border-collapse:collapse;margin:20px 0}
+        th,td{border:1px solid #dee2e6;padding:12px;text-align:left}
+        th{background:#f8f9fa;color:#667eea;font-weight:600}
+        .nav{position:sticky;top:0;background:white;padding:15px 0;border-bottom:1px solid #dee2e6;margin-bottom:20px;z-index:100}
+        .nav-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+        .nav-links a{color:#667eea;text-decoration:none;padding:5px 10px;border-radius:5px;transition:background 0.3s}
+        .nav-links a:hover{background:#f8f9fa}
+        .badge{display:inline-block;padding:3px 8px;border-radius:12px;font-size:12px;font-weight:bold;margin-left:5px}
+        .badge-new{background:#28a745;color:white}
+        .badge-sandbox{background:#ffc107;color:black}
+        .alert{background:#fff3cd;border:1px solid #ffc107;border-radius:5px;padding:15px;margin:20px 0}
+        .back-btn{display:inline-block;padding:10px 20px;background:#667eea;color:white;text-decoration:none;border-radius:5px;margin-bottom:20px}
+        .back-btn:hover{background:#5a67d8}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ModernTax API Documentation</h1>
+        <p>Version 3.0 | IRS-Sourced Income Verification Platform</p>
+    </div>
+
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Home</a>
+        
+        <nav class="nav">
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#authentication">Authentication</a>
+                <a href="#benefits">Benefits API</a>
+                <a href="#lending">Lending API</a>
+                <a href="#employment">Employment API</a>
+                <a href="#testing">Testing</a>
+                <a href="#errors">Error Codes</a>
+            </div>
+        </nav>
+
+        <div id="overview" class="section">
+            <h2>Overview</h2>
+            <p>ModernTax provides direct IRS income and employment verification through three specialized APIs:</p>
+            <ul>
+                <li><strong>Benefits Eligibility API</strong> - Medicaid and SNAP qualification with MAGI calculations</li>
+                <li><strong>Lending Verification API</strong> - Income verification for mortgages, HELOC, and SMB lending</li>
+                <li><strong>Employment Verification API</strong> - Overemployment detection and W-2/1099 analysis</li>
+            </ul>
+            
+            <h3>Base URLs</h3>
+            <div class="endpoint">
+                <p><strong>Sandbox:</strong> <code>https://sandbox.moderntax.io/.netlify/functions/employment-verify</code></p>
+                <p><strong>Production:</strong> <code>https://api.moderntax.io/v1</code></p>
+            </div>
+        </div>
+
+        <div id="authentication" class="section">
+            <h2>Authentication</h2>
+            <p>All API requests require authentication via API key in the header:</p>
+            <pre>X-API-Key: your_api_key_here
+
+# Sandbox testing key:
+X-API-Key: mt_sandbox_employer_2025_demo</pre>
+            <div class="alert">
+                <strong>Note:</strong> Contact support@moderntax.io for production API keys and pricing information.
+            </div>
+        </div>
+
+        <div id="benefits" class="section">
+            <h2>Benefits Eligibility API</h2>
+            <div class="endpoint">
+                <h3><span class="method post">POST</span>/verify</h3>
+                <p>Determine eligibility for Medicaid and SNAP benefits with MAGI calculations.</p>
+                
+                <h4>Request Body:</h4>
+                <pre>{
+  "use_case": "benefits",
+  "applicant": {
+    "ssn": "111-11-1111",
+    "first_name": "John",
+    "last_name": "Doe",
+    "date_of_birth": "1990-01-01"
+  },
+  "state": "CO",
+  "household_size": 1,
+  "consent_timestamp": "2024-09-17T15:00:00Z"
+}</pre>
+
+                <h4>Response:</h4>
+                <pre>{
+  "request_id": "req_1694965200000",
+  "status": "completed",
+  "use_case": "benefits",
+  "data_preview": {
+    "annual_income": 15000,
+    "magi": 16500,
+    "eligibility": {
+      "medicaid": true,
+      "snap": true,
+      "medicaid_threshold": 20782.8,
+      "snap_threshold": 19578
+    }
+  }
+}</pre>
+            </div>
+
+            <h3>Test SSNs - Benefits</h3>
+            <table>
+                <tr>
+                    <th>SSN</th>
+                    <th>Annual Income</th>
+                    <th>MAGI</th>
+                    <th>Medicaid</th>
+                    <th>SNAP</th>
+                </tr>
+                <tr>
+                    <td><code>111-11-1111</code></td>
+                    <td>$15,000</td>
+                    <td>$16,500</td>
+                    <td>✅ Eligible</td>
+                    <td>✅ Eligible</td>
+                </tr>
+                <tr>
+                    <td><code>222-22-2222</code></td>
+                    <td>$22,000</td>
+                    <td>$23,500</td>
+                    <td>❌ Not Eligible</td>
+                    <td>✅ Eligible</td>
+                </tr>
+                <tr>
+                    <td><code>333-33-3333</code></td>
+                    <td>$45,000</td>
+                    <td>$47,000</td>
+                    <td>❌ Not Eligible</td>
+                    <td>❌ Not Eligible</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="lending" class="section">
+            <h2>Lending Verification API</h2>
+            <div class="endpoint">
+                <h3><span class="method post">POST</span>/verify</h3>
+                <p>Verify income for lending decisions with AGI and document availability.</p>
+                
+                <h4>Request Body:</h4>
+                <pre>{
+  "use_case": "lending",
+  "borrower": {
+    "ssn": "444-44-4444",
+    "first_name": "Jane",
+    "last_name": "Smith"
+  },
+  "loan_type": "mortgage",
+  "years_requested": 2,
+  "consent_timestamp": "2024-09-17T15:00:00Z"
+}</pre>
+
+                <h4>Response:</h4>
+                <pre>{
+  "request_id": "req_1694965200001",
+  "status": "completed",
+  "use_case": "lending",
+  "verification_data": {
+    "adjusted_gross_income": 85000,
+    "wage_income": 75000,
+    "self_employment_income": 10000,
+    "filing_status": "married_filing_jointly",
+    "documents_available": {
+      "form_1040": true,
+      "form_w2": true,
+      "schedule_c": true
+    }
+  }
+}</pre>
+            </div>
+
+            <h3>Test SSNs - Lending</h3>
+            <table>
+                <tr>
+                    <th>SSN</th>
+                    <th>AGI</th>
+                    <th>W-2 Income</th>
+                    <th>Self-Employment</th>
+                    <th>Documents</th>
+                </tr>
+                <tr>
+                    <td><code>444-44-4444</code></td>
+                    <td>$85,000</td>
+                    <td>$75,000</td>
+                    <td>$10,000</td>
+                    <td>1040, W-2, Schedule C</td>
+                </tr>
+                <tr>
+                    <td><code>555-55-5555</code></td>
+                    <td>$120,000</td>
+                    <td>$0</td>
+                    <td>$120,000</td>
+                    <td>1040, Schedule C</td>
+                </tr>
+                <tr>
+                    <td><code>666-66-6666</code></td>
+                    <td>$150,000</td>
+                    <td>$100,000</td>
+                    <td>$35,000</td>
+                    <td>1040, W-2, Schedule C</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="employment" class="section">
+            <h2>Employment Verification API</h2>
+            <div class="endpoint">
+                <h3><span class="method post">POST</span>/verify</h3>
+                <p>Detect overemployment and analyze W-2/1099 income sources.</p>
+                
+                <h4>Request Body:</h4>
+                <pre>{
+  "use_case": "employment",
+  "candidate_info": {
+    "ssn": "777-77-7777",
+    "first_name": "Bob",
+    "last_name": "Johnson"
+  },
+  "consent_token": "consent_abc123",
+  "service_level": "express"
+}</pre>
+
+                <h4>Response:</h4>
+                <pre>{
+  "request_id": "req_1694965200002",
+  "status": "completed",
+  "use_case": "employment",
+  "overemployment_risk": "low",
+  "employer_count": 1,
+  "total_wages": 95000,
+  "w2_count": 1,
+  "primary_employer": "TechCorp Solutions Inc"
+}</pre>
+            </div>
+
+            <h3>Test SSNs - Employment</h3>
+            <table>
+                <tr>
+                    <th>SSN</th>
+                    <th>Risk Level</th>
+                    <th>W-2 Count</th>
+                    <th>Total Wages</th>
+                    <th>Scenario</th>
+                </tr>
+                <tr>
+                    <td><code>777-77-7777</code></td>
+                    <td><span style="color:green">Low</span></td>
+                    <td>1</td>
+                    <td>$95,000</td>
+                    <td>Single Employer</td>
+                </tr>
+                <tr>
+                    <td><code>888-88-8888</code></td>
+                    <td><span style="color:red">High</span></td>
+                    <td>3</td>
+                    <td>$255,000</td>
+                    <td>Multiple Concurrent W-2s</td>
+                </tr>
+                <tr>
+                    <td><code>999-99-9999</code></td>
+                    <td><span style="color:orange">Medium</span></td>
+                    <td>1</td>
+                    <td>$135,000</td>
+                    <td>W-2 + 1099 Income</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="testing" class="section">
+            <h2>Testing</h2>
+            <h3>Health Check Endpoint</h3>
+            <div class="endpoint">
+                <h3><span class="method get">GET</span>/health</h3>
+                <p>Check API status and available endpoints.</p>
+                <pre>{
+  "status": "healthy",
+  "version": "3.0.0",
+  "endpoints": {
+    "health": "GET /health",
+    "verify": "POST /verify"
+  },
+  "use_cases": ["benefits", "lending", "employment"]
+}</pre>
+            </div>
+
+            <h3>Quick Test URLs</h3>
+            <ul>
+                <li><a href="/sandbox" target="_blank">Interactive Sandbox →</a></li>
+                <li><a href="/.netlify/functions/employment-verify/health" target="_blank">Health Check →</a></li>
+                <li><a href="/status" target="_blank">System Status →</a></li>
+            </ul>
+        </div>
+
+        <div id="errors" class="section">
+            <h2>Error Codes</h2>
+            <table>
+                <tr>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Resolution</th>
+                </tr>
+                <tr>
+                    <td>200</td>
+                    <td>Success</td>
+                    <td>Request completed successfully</td>
+                </tr>
+                <tr>
+                    <td>400</td>
+                    <td>Bad Request</td>
+                    <td>Check required fields and format</td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>Unauthorized</td>
+                    <td>Invalid or missing API key</td>
+                </tr>
+                <tr>
+                    <td>403</td>
+                    <td>Forbidden</td>
+                    <td>Expired consent (72hr window)</td>
+                </tr>
+                <tr>
+                    <td>404</td>
+                    <td>Not Found</td>
+                    <td>Invalid endpoint</td>
+                </tr>
+                <tr>
+                    <td>429</td>
+                    <td>Rate Limited</td>
+                    <td>Implement exponential backoff</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>Server Error</td>
+                    <td>Contact support@moderntax.io</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section" style="background:#f8f9fa;text-align:center">
+            <h3>Need Help?</h3>
+            <p>Contact our support team for API keys and integration assistance:</p>
+            <p><strong>📧 support@moderntax.io</strong></p>
+        </div>
+    </div>
+</body>
+</html>
