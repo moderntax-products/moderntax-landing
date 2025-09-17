@@ -1,0 +1,5 @@
+/sandbox              /sandbox-interface.html    200
+/documentation        /api-documentation.html    200
+/docs                 /api-documentation.html    200
+/status               /status.html              200
+/api/*                /.netlify/functions/employment-verify/:splat    200

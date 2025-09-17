@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernTax API Sandbox</title>
+    <style>
+        body{font-family:system-ui;padding:20px;background:#f5f5f5}
+        .container{max-width:800px;margin:0 auto;background:white;padding:30px;border-radius:10px}
+        button{background:#667eea;color:white;padding:12px 24px;border:none;border-radius:5px;cursor:pointer;margin:5px}
+        button:hover{background:#5a67d8}
+        pre{background:#1e1e1e;color:#d4d4d4;padding:20px;border-radius:8px;overflow-x:auto}
+        .test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin:20px 0}
+        .test-card{border:2px solid #e9ecef;padding:15px;border-radius:8px;text-align:center}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 ModernTax API Sandbox</h1>
+        <p>Test employment verification with different scenarios:</p>
+        
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>Low Risk</h3>
+                <p>Single Employer</p>
+                <button onclick="test('777-77-7777')">Test SSN: 777-77-7777</button>
+            </div>
+            <div class="test-card">
+                <h3>High Risk</h3>
+                <p>Multiple W-2s</p>
+                <button onclick="test('888-88-8888')">Test SSN: 888-88-8888</button>
+            </div>
+            <div class="test-card">
+                <h3>Medium Risk</h3>
+                <p>W-2 + 1099</p>
+                <button onclick="test('999-99-9999')">Test SSN: 999-99-9999</button>
+            </div>
+        </div>
+        
+        <h3>Response:</h3>
+        <pre id="result">Click a test button to see the API response...</pre>
+    </div>
+    
+    <script>
+        async function test(ssn) {
+            document.getElementById('result').textContent = 'Loading...';
+            try {
+                const response = await fetch('/.netlify/functions/employment-verify/verify', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        candidate_info: {ssn: ssn, first_name: 'Test', last_name: 'User'},
+                        consent_token: 'test_' + Date.now()
+                    })
+                });
+                const data = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            } catch(err) {
+                document.getElementById('result').textContent = 'Error: ' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
