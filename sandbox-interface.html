@@ -3,61 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ModernTax API Sandbox</title>
+    <title>ModernTax API Sandbox - All Use Cases</title>
     <style>
-        body{font-family:system-ui;padding:20px;background:#f5f5f5}
-        .container{max-width:800px;margin:0 auto;background:white;padding:30px;border-radius:10px}
-        button{background:#667eea;color:white;padding:12px 24px;border:none;border-radius:5px;cursor:pointer;margin:5px}
+        body{font-family:system-ui;padding:20px;background:#f5f5f5;margin:0}
+        .container{max-width:1200px;margin:0 auto}
+        h1{color:#667eea;text-align:center}
+        .use-case-section{background:white;padding:25px;border-radius:10px;margin:20px 0}
+        .use-case-section h2{color:#667eea;border-bottom:2px solid #e9ecef;padding-bottom:10px}
+        .test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:20px 0}
+        button{background:#667eea;color:white;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;width:100%;font-size:14px}
         button:hover{background:#5a67d8}
-        pre{background:#1e1e1e;color:#d4d4d4;padding:20px;border-radius:8px;overflow-x:auto}
-        .test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin:20px 0}
-        .test-card{border:2px solid #e9ecef;padding:15px;border-radius:8px;text-align:center}
+        pre{background:#1e1e1e;color:#d4d4d4;padding:20px;border-radius:8px;overflow-x:auto;font-size:12px}
+        .tab-buttons{display:flex;gap:10px;margin-bottom:20px}
+        .tab-btn{padding:10px 20px;background:#e9ecef;border:none;border-radius:5px;cursor:pointer}
+        .tab-btn.active{background:#667eea;color:white}
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🧪 ModernTax API Sandbox</h1>
-        <p>Test employment verification with different scenarios:</p>
         
-        <div class="test-grid">
-            <div class="test-card">
-                <h3>Low Risk</h3>
-                <p>Single Employer</p>
-                <button onclick="test('777-77-7777')">Test SSN: 777-77-7777</button>
-            </div>
-            <div class="test-card">
-                <h3>High Risk</h3>
-                <p>Multiple W-2s</p>
-                <button onclick="test('888-88-8888')">Test SSN: 888-88-8888</button>
-            </div>
-            <div class="test-card">
-                <h3>Medium Risk</h3>
-                <p>W-2 + 1099</p>
-                <button onclick="test('999-99-9999')">Test SSN: 999-99-9999</button>
-            </div>
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showSection('benefits')">Benefits Eligibility</button>
+            <button class="tab-btn" onclick="showSection('lending')">Lending Verification</button>
+            <button class="tab-btn" onclick="showSection('employment')">Employment Verification</button>
         </div>
-        
-        <h3>Response:</h3>
-        <pre id="result">Click a test button to see the API response...</pre>
+
+        <div id="benefits" class="use-case-section">
+            <h2>🏥 Benefits Eligibility</h2>
+            <div class="test-grid">
+                <button onclick="testBenefits('111-11-1111')">111-11-1111<br>Both Eligible</button>
+                <button onclick="testBenefits('222-22-2222')">222-22-2222<br>SNAP Only</button>
+                <button onclick="testBenefits('333-33-3333')">333-33-3333<br>Neither Eligible</button>
+            </div>
+            <pre id="benefits-result">Click a button to test benefits eligibility...</pre>
+        </div>
+
+        <div id="lending" class="use-case-section" style="display:none">
+            <h2>🏦 Lending Verification</h2>
+            <div class="test-grid">
+                <button onclick="testLending('444-44-4444')">444-44-4444<br>Steady W-2</button>
+                <button onclick="testLending('555-55-5555')">555-55-5555<br>Self-Employed</button>
+                <button onclick="testLending('666-66-6666')">666-66-6666<br>Multiple Income</button>
+            </div>
+            <pre id="lending-result">Click a button to test lending verification...</pre>
+        </div>
+
+        <div id="employment" class="use-case-section" style="display:none">
+            <h2>💼 Employment Verification</h2>
+            <div class="test-grid">
+                <button onclick="testEmployment('777-77-7777')">777-77-7777<br>Low Risk</button>
+                <button onclick="testEmployment('888-88-8888')">888-88-8888<br>High Risk (3 W2s)</button>
+                <button onclick="testEmployment('999-99-9999')">999-99-9999<br>Medium Risk (W2+1099)</button>
+            </div>
+            <pre id="employment-result">Click a button to test employment verification...</pre>
+        </div>
     </div>
-    
+
     <script>
-        async function test(ssn) {
-            document.getElementById('result').textContent = 'Loading...';
-            try {
-                const response = await fetch('/.netlify/functions/employment-verify/verify', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        candidate_info: {ssn: ssn, first_name: 'Test', last_name: 'User'},
-                        consent_token: 'test_' + Date.now()
-                    })
-                });
-                const data = await response.json();
-                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-            } catch(err) {
-                document.getElementById('result').textContent = 'Error: ' + err.message;
-            }
+        function showSection(section) {
+            document.querySelectorAll('.use-case-section').forEach(s => s.style.display = 'none');
+            document.getElementById(section).style.display = 'block';
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        async function testBenefits(ssn) {
+            document.getElementById('benefits-result').textContent = 'Loading...';
+            const response = await fetch('/.netlify/functions/employment-verify/verify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    use_case: 'benefits',
+                    applicant: {ssn: ssn, first_name: 'Test', last_name: 'User'}
+                })
+            });
+            const data = await response.json();
+            document.getElementById('benefits-result').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testLending(ssn) {
+            document.getElementById('lending-result').textContent = 'Loading...';
+            const response = await fetch('/.netlify/functions/employment-verify/verify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    use_case: 'lending',
+                    borrower: {ssn: ssn, first_name: 'Test', last_name: 'User'}
+                })
+            });
+            const data = await response.json();
+            document.getElementById('lending-result').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testEmployment(ssn) {
+            document.getElementById('employment-result').textContent = 'Loading...';
+            const response = await fetch('/.netlify/functions/employment-verify/verify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    use_case: 'employment',
+                    candidate_info: {ssn: ssn, first_name: 'Test', last_name: 'User'}
+                })
+            });
+            const data = await response.json();
+            document.getElementById('employment-result').textContent = JSON.stringify(data, null, 2);
         }
     </script>
 </body>
