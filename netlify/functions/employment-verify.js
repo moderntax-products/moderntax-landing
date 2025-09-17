@@ -1,6 +1,55 @@
-const SANDBOX_API_KEY = 'mt_sandbox_employer_2025_demo';
+// API Keys for different customers
+const API_KEYS = {
+  'mt_sandbox_employer_2025_demo': 'general',
+  'mt_sandbox_impactica_2024': 'impactica',
+  'mt_sandbox_conductiv_2024': 'conductiv',
+  'mt_sandbox_employer_2024': 'employer'
+};
 
-// Benefits Eligibility Data
+// Impactica-specific benefits profiles (Colorado residents)
+const impacticaProfiles = {
+  '100-10-0001': {
+    first_name: 'Maria',
+    last_name: 'Gonzalez',
+    annual_income: 14500,
+    magi: 15200,
+    household_size: 3,
+    state: 'CO',
+    medicaid_eligible: true,
+    snap_eligible: true,
+    medicaid_threshold: 31346,  // 138% FPL for household of 3 in CO
+    snap_threshold: 29940,       // 130% FPL for household of 3
+    percentage_of_fpl: 48
+  },
+  '100-10-0002': {
+    first_name: 'James',
+    last_name: 'Wilson',
+    annual_income: 28000,
+    magi: 29500,
+    household_size: 2,
+    state: 'CO',
+    medicaid_eligible: true,
+    snap_eligible: false,
+    medicaid_threshold: 25644,  // 138% FPL for household of 2 in CO
+    snap_threshold: 24720,       // 130% FPL for household of 2
+    percentage_of_fpl: 115
+  },
+  '100-10-0003': {
+    first_name: 'Sarah',
+    last_name: 'Johnson',
+    annual_income: 52000,
+    magi: 54000,
+    household_size: 4,
+    state: 'CO',
+    medicaid_eligible: false,
+    snap_eligible: false,
+    medicaid_threshold: 41868,  // 138% FPL for household of 4 in CO
+    snap_threshold: 39000,       // 130% FPL for household of 4
+    percentage_of_fpl: 172
+  }
+};
+
+// General benefits profiles
 const benefitsProfiles = {
   '111-11-1111': {
     annual_income: 15000,
@@ -28,7 +77,7 @@ const benefitsProfiles = {
   }
 };
 
-// Lending Verification Data
+// Lending profiles remain the same
 const lendingProfiles = {
   '444-44-4444': {
     adjusted_gross_income: 85000,
@@ -60,7 +109,7 @@ const lendingProfiles = {
   }
 };
 
-// Employment Verification Data
+// Employment profiles remain the same
 const employmentProfiles = {
   '777-77-7777': {
     risk: 'low',
@@ -101,6 +150,11 @@ exports.handler = async (event) => {
     };
   }
   
+  // Extract API key from headers
+  const auth = event.headers.authorization || event.headers.Authorization || event.headers['x-api-key'] || event.headers['X-API-Key'];
+  const apiKey = auth ? auth.replace('Bearer ', '').trim() : null;
+  const customer = API_KEYS[apiKey] || 'general';
+  
   // Health check endpoint
   if (path === '/health' || (event.httpMethod === 'GET' && path === '')) {
     return {
@@ -112,13 +166,14 @@ exports.handler = async (event) => {
       body: JSON.stringify({ 
         status: 'healthy', 
         version: '3.0.0',
+        customer: customer,
         endpoints: {
           health: 'GET /health',
-          verify: 'POST /verify',
-          employment_verify: 'POST /employment/verify'
+          verify: 'POST /verify'
         },
-        use_cases: ['benefits', 'lending', 'employment'],
-        test_ssns: {
+        test_ssns: customer === 'impactica' ? {
+          benefits: ['100-10-0001', '100-10-0002', '100-10-0003']
+        } : {
           benefits: ['111-11-1111', '222-22-2222', '333-33-3333'],
           lending: ['444-44-4444', '555-55-5555', '666-66-6666'],
           employment: ['777-77-7777', '888-88-8888', '999-99-9999']
@@ -131,6 +186,55 @@ exports.handler = async (event) => {
   if (event.httpMethod === 'POST' && (path === '/verify' || path.includes('/verify'))) {
     try {
       const body = JSON.parse(event.body || '{}');
+      
+      // Check for valid API key
+      if (!apiKey || !API_KEYS[apiKey]) {
+        return {
+          statusCode: 401,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+          body: JSON.stringify({ 
+            error: 'Unauthorized',
+            message: 'Invalid or missing API key'
+          })
+        };
+      }
+      
+      const requestId = 'req_' + Date.now();
+      
+      // Handle Impactica-specific requests
+      if (customer === 'impactica') {
+        const ssn = body.ssn || body.applicant?.ssn || '100-10-0001';
+        const data = impacticaProfiles[ssn] || impacticaProfiles['100-10-0001'];
+        
+        return {
+          statusCode: 200,
+          headers: { 
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            request_id: requestId,
+            status: 'completed',
+            customer: 'impactica',
+            use_case: 'benefits',
+            data_preview: {
+              applicant_name: `${data.first_name} ${data.last_name}`,
+              annual_income: data.annual_income,
+              magi: data.magi,
+              household_size: data.household_size,
+              state: data.state,
+              eligibility: {
+                medicaid: data.medicaid_eligible,
+                snap: data.snap_eligible,
+                medicaid_threshold: data.medicaid_threshold,
+                snap_threshold: data.snap_threshold,
+                percentage_of_fpl: data.percentage_of_fpl
+              },
+              determination_date: new Date().toISOString()
+            }
+          })
+        };
+      }
       
       // Determine use case from request
       const useCase = body.use_case || 
@@ -145,8 +249,6 @@ exports.handler = async (event) => {
                   body.applicant?.ssn || 
                   body.borrower?.ssn ||
                   '777-77-7777';
-      
-      const requestId = 'req_' + Date.now();
       
       // Handle Benefits Eligibility
       if (useCase === 'benefits' || benefitsProfiles[ssn]) {
