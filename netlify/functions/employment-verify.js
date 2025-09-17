@@ -1,6 +1,7 @@
 // API Keys for different customers
 const API_KEYS = {
-  'mt_sandbox_employer_2025_demo': 'general',
+  'mt_sandbox_employer_2025_demo';
+const IMPACTICA_KEY = 'mt_sandbox_impactica_2024': 'general',
   'mt_sandbox_impactica_2024': 'impactica',
   'mt_sandbox_conductiv_2024': 'conductiv',
   'mt_sandbox_employer_2024': 'employer'
