@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation — ModernTax</title>
+  <meta name="description" content="API reference for ModernTax Employment & Income Verification. Submit requests, poll for results, and receive structured W-2/1099 data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'mt-green': '#00C48C',
+            'mt-green-dark': '#00A876',
+            'mt-dark': '#0A1929',
+            'mt-navy': '#102A43',
+            'mt-mid': '#243B53',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .code-block { background: #0d1117; border-radius: 10px; overflow: hidden; }
+    .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.8; }
+    .sidebar-link.active { color: #00C48C; border-left-color: #00C48C; font-weight: 600; }
+    .method-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body class="font-sans text-gray-900 antialiased bg-white">
+
+<!-- ═══════════════════════════════════════════════════════ HEADER -->
+<header class="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center gap-6">
+        <a href="../" class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
+            <span class="text-white font-bold text-sm">M</span>
+          </div>
+          <span class="text-xl font-bold text-mt-dark">ModernTax</span>
+        </a>
+        <span class="text-gray-300">|</span>
+        <span class="text-gray-600 font-semibold">API Docs</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://portal.moderntax.io/login" class="text-gray-600 hover:text-mt-dark font-medium text-sm">Sign In</a>
+        <a href="mailto:matt@moderntax.io?subject=API%20Access%20Request" class="bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-4 py-2 rounded-lg transition-all text-sm">
+          Get API Key
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN LAYOUT -->
+<div class="pt-16 flex">
+
+  <!-- Sidebar -->
+  <aside class="hidden lg:block w-64 flex-shrink-0 border-r border-gray-100 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto py-8 px-6">
+    <nav class="space-y-6">
+      <div>
+        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Getting Started</h4>
+        <ul class="space-y-1">
+          <li><a href="#overview" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Overview</a></li>
+          <li><a href="#authentication" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Authentication</a></li>
+          <li><a href="#base-url" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Base URL</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Endpoints</h4>
+        <ul class="space-y-1">
+          <li><a href="#submit-request" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Submit Request</a></li>
+          <li><a href="#get-result" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Get Result</a></li>
+          <li><a href="#push-data" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Push Result Data</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Reference</h4>
+        <ul class="space-y-1">
+          <li><a href="#errors" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Error Codes</a></li>
+          <li><a href="#rate-limits" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Rate Limits</a></li>
+          <li><a href="#data-schemas" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Data Schemas</a></li>
+        </ul>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Content -->
+  <main class="flex-1 max-w-4xl mx-auto px-6 lg:px-12 py-12">
+
+    <!-- Overview -->
+    <section id="overview" class="mb-16">
+      <h1 class="text-4xl font-extrabold text-mt-dark mb-4">Employment &amp; Income Verification API</h1>
+      <p class="text-lg text-gray-600 leading-relaxed mb-6">
+        Submit employment verification requests, poll for completion status, and receive structured W-2 and 1099 income data &mdash; all sourced from IRS Wage &amp; Income transcripts.
+      </p>
+      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5">
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+          <div>
+            <p class="text-indigo-900 font-semibold mb-1">Getting an API Key</p>
+            <p class="text-indigo-700 text-sm">Contact <a href="mailto:matt@moderntax.io" class="underline">matt@moderntax.io</a> to request API access. You'll receive an API key and your first 3 requests are free.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Authentication -->
+    <section id="authentication" class="mb-16">
+      <h2 class="text-2xl font-bold text-mt-dark mb-4 flex items-center gap-3">
+        <span class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+        </span>
+        Authentication
+      </h2>
+      <p class="text-gray-600 mb-4">All API requests require an <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-mt-dark">x-api-key</code> header with your API key.</p>
+
+      <div class="code-block">
+        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
+          <span class="text-gray-500 text-xs font-mono">Header</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>x-api-key: mt_live_emp_YOUR_API_KEY</code></pre>
+      </div>
+      <p class="text-sm text-gray-500 mt-3">Keep your API key secret. Do not expose it in client-side code or public repositories.</p>
+    </section>
+
+    <!-- Base URL -->
+    <section id="base-url" class="mb-16">
+      <h2 class="text-2xl font-bold text-mt-dark mb-4">Base URL</h2>
+      <div class="code-block">
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>https://portal.moderntax.io</code></pre>
+      </div>
+    </section>
+
+    <hr class="border-gray-200 my-12">
+
+    <!-- ═══════════════════════════ SUBMIT REQUEST -->
+    <section id="submit-request" class="mb-16">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="method-badge bg-green-100 text-green-700 px-2.5 py-1 rounded">POST</span>
+        <h2 class="text-2xl font-bold text-mt-dark">Submit Verification Request</h2>
+      </div>
+      <p class="text-gray-600 mb-2">Create a new employment/income verification request for a given employee.</p>
+      <div class="code-block mb-6">
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>POST /api/webhook/employment-intake</code></pre>
+      </div>
+
+      <!-- Request Body -->
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Request Body</h3>
+      <div class="overflow-x-auto mb-6">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 text-left">
+              <th class="py-3 pr-4 font-semibold text-gray-500">Field</th>
+              <th class="py-3 pr-4 font-semibold text-gray-500">Type</th>
+              <th class="py-3 pr-4 font-semibold text-gray-500">Required</th>
+              <th class="py-3 font-semibold text-gray-500">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4 font-mono text-mt-dark">request_token</td>
+              <td class="py-3 pr-4 text-gray-600">string</td>
+              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
+              <td class="py-3 text-gray-600">Your unique identifier for this request. Used for deduplication and result retrieval.</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4 font-mono text-mt-dark">employee_name</td>
+              <td class="py-3 pr-4 text-gray-600">string</td>
+              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
+              <td class="py-3 text-gray-600">Full legal name of the employee.</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4 font-mono text-mt-dark">employee_ssn</td>
+              <td class="py-3 pr-4 text-gray-600">string</td>
+              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
+              <td class="py-3 text-gray-600">Social Security Number. Masked to last 4 digits in storage (<code class="bg-gray-100 px-1 rounded">XXX-XX-1234</code>).</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4 font-mono text-mt-dark">years</td>
+              <td class="py-3 pr-4 text-gray-600">string[]</td>
+              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
+              <td class="py-3 text-gray-600">Tax years to verify (e.g., <code class="bg-gray-100 px-1 rounded">["2025", "2024", "2023"]</code>).</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono text-mt-dark">employee_address</td>
+              <td class="py-3 pr-4 text-gray-600">object</td>
+              <td class="py-3 pr-4 text-gray-500">No</td>
+              <td class="py-3 text-gray-600">Object with <code class="bg-gray-100 px-1 rounded">street</code>, <code class="bg-gray-100 px-1 rounded">city</code>, <code class="bg-gray-100 px-1 rounded">state</code>, <code class="bg-gray-100 px-1 rounded">zip</code> fields.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Example -->
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Request</h3>
+      <div class="code-block mb-6">
+        <div class="flex items-center justify-between px-4 py-2.5 border-b border-white/10">
+          <span class="text-gray-500 text-xs font-mono">curl</span>
+          <button onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)" class="text-gray-500 hover:text-white text-xs">Copy</button>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-yellow-400">curl</span> -X POST https://portal.moderntax.io/api/webhook/employment-intake \
+  -H <span class="text-green-400">"Content-Type: application/json"</span> \
+  -H <span class="text-green-400">"x-api-key: mt_live_emp_YOUR_API_KEY"</span> \
+  -d '{
+    <span class="text-blue-400">"request_token"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
+    <span class="text-blue-400">"employee_name"</span>: <span class="text-green-400">"Jane Doe"</span>,
+    <span class="text-blue-400">"employee_ssn"</span>: <span class="text-green-400">"123-45-6789"</span>,
+    <span class="text-blue-400">"years"</span>: [<span class="text-green-400">"2025"</span>, <span class="text-green-400">"2024"</span>, <span class="text-green-400">"2023"</span>],
+    <span class="text-blue-400">"employee_address"</span>: {
+      <span class="text-blue-400">"street"</span>: <span class="text-green-400">"123 Main St"</span>,
+      <span class="text-blue-400">"city"</span>: <span class="text-green-400">"Austin"</span>,
+      <span class="text-blue-400">"state"</span>: <span class="text-green-400">"TX"</span>,
+      <span class="text-blue-400">"zip"</span>: <span class="text-green-400">"78701"</span>
+    }
+  }'</code></pre>
+      </div>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Response</h3>
+      <div class="code-block mb-4">
+        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
+          <span class="method-badge bg-green-900/50 text-green-400 px-2 py-0.5 rounded mr-2">200</span>
+          <span class="text-gray-500 text-xs font-mono">application/json</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
+  <span class="text-blue-400">"success"</span>: <span class="text-yellow-400">true</span>,
+  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"a1b2c3d4-e5f6-7890-abcd-ef1234567890"</span>,
+  <span class="text-blue-400">"entity_id"</span>: <span class="text-green-400">"f9e8d7c6-b5a4-3210-fedc-ba9876543210"</span>,
+  <span class="text-blue-400">"request_token"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
+  <span class="text-blue-400">"usage"</span>: {
+    <span class="text-blue-400">"used"</span>: <span class="text-yellow-400">1</span>,
+    <span class="text-blue-400">"remaining"</span>: <span class="text-yellow-400">2</span>,
+    <span class="text-blue-400">"limit"</span>: <span class="text-yellow-400">3</span>
+  }
+}</code></pre>
+      </div>
+    </section>
+
+    <hr class="border-gray-200 my-12">
+
+    <!-- ═══════════════════════════ GET RESULT -->
+    <section id="get-result" class="mb-16">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="method-badge bg-blue-100 text-blue-700 px-2.5 py-1 rounded">GET</span>
+        <h2 class="text-2xl font-bold text-mt-dark">Get Verification Result</h2>
+      </div>
+      <p class="text-gray-600 mb-2">Poll for the status and results of a verification request. Returns structured data when the request is completed.</p>
+      <div class="code-block mb-6">
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>GET /api/webhook/employment-result?token={request_token}</code></pre>
+      </div>
+
+      <!-- Query Parameters -->
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Query Parameters</h3>
+      <div class="overflow-x-auto mb-6">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 text-left">
+              <th class="py-3 pr-4 font-semibold text-gray-500">Parameter</th>
+              <th class="py-3 pr-4 font-semibold text-gray-500">Type</th>
+              <th class="py-3 pr-4 font-semibold text-gray-500">Required</th>
+              <th class="py-3 font-semibold text-gray-500">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="py-3 pr-4 font-mono text-mt-dark">token</td>
+              <td class="py-3 pr-4 text-gray-600">string</td>
+              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
+              <td class="py-3 text-gray-600">The <code class="bg-gray-100 px-1 rounded">request_token</code> you provided when submitting the request.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Request</h3>
+      <div class="code-block mb-6">
+        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
+          <span class="text-gray-500 text-xs font-mono">curl</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-yellow-400">curl</span> https://portal.moderntax.io/api/webhook/employment-result?token=emp_req_20260316_001 \
+  -H <span class="text-green-400">"x-api-key: mt_live_emp_YOUR_API_KEY"</span></code></pre>
+      </div>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Response — Pending</h3>
+      <div class="code-block mb-6">
+        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
+          <span class="method-badge bg-yellow-900/50 text-yellow-400 px-2 py-0.5 rounded mr-2">200</span>
+          <span class="text-gray-500 text-xs font-mono">Request still processing</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
+  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
+  <span class="text-blue-400">"status"</span>: <span class="text-green-400">"pending_irs_call"</span>,
+  <span class="text-blue-400">"request_status"</span>: <span class="text-green-400">"submitted"</span>,
+  <span class="text-blue-400">"entity_status"</span>: <span class="text-green-400">"pending"</span>,
+  <span class="text-blue-400">"message"</span>: <span class="text-green-400">"Request is still being processed. Check back later."</span>
+}</code></pre>
+      </div>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Response — Completed</h3>
+      <div class="code-block mb-4">
+        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
+          <span class="method-badge bg-green-900/50 text-green-400 px-2 py-0.5 rounded mr-2">200</span>
+          <span class="text-gray-500 text-xs font-mono">Results available</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
+  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
+  <span class="text-blue-400">"status"</span>: <span class="text-green-400">"completed"</span>,
+  <span class="text-blue-400">"result"</span>: {
+    <span class="text-blue-400">"taxpayer_name"</span>: <span class="text-green-400">"Jane Doe"</span>,
+    <span class="text-blue-400">"ssn_last_4"</span>: <span class="text-green-400">"6789"</span>,
+    <span class="text-blue-400">"employers"</span>: [
+      {
+        <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Acme Corp"</span>,
+        <span class="text-blue-400">"ein"</span>: <span class="text-green-400">"12-3456789"</span>,
+        <span class="text-blue-400">"is_peo"</span>: <span class="text-yellow-400">false</span>,
+        <span class="text-blue-400">"years"</span>: {
+          <span class="text-blue-400">"2025"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">95000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">14250.00</span> },
+          <span class="text-blue-400">"2024"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">88000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">13200.00</span> }
+        }
+      }
+    ]
+  },
+  <span class="text-blue-400">"transcript_urls"</span>: [
+    <span class="text-green-400">"https://portal.moderntax.io/storage/v1/..."</span>
+  ],
+  <span class="text-blue-400">"completed_at"</span>: <span class="text-green-400">"2026-03-18T14:30:00.000Z"</span>
+}</code></pre>
+      </div>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-6">
+        <div class="flex items-start gap-3">
+          <span class="text-amber-600 text-lg">⏱️</span>
+          <div>
+            <p class="text-amber-900 font-semibold text-sm">Polling Recommendation</p>
+            <p class="text-amber-700 text-sm">Poll every 30–60 minutes. Most requests complete same day or next business day. <code class="bg-amber-100 px-1 rounded">transcript_urls</code> contain time-limited signed URLs (valid for 1 hour).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="border-gray-200 my-12">
+
+    <!-- ═══════════════════════════ PUSH DATA -->
+    <section id="push-data" class="mb-16">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="method-badge bg-purple-100 text-purple-700 px-2.5 py-1 rounded">PATCH</span>
+        <h2 class="text-2xl font-bold text-mt-dark">Push Result Data</h2>
+      </div>
+      <p class="text-gray-600 mb-2">Push structured employment data back to ModernTax after processing transcripts on your end. This marks the request as completed.</p>
+      <div class="code-block mb-6">
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>PATCH /api/webhook/employment-result?token={request_token}</code></pre>
+      </div>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Request Body</h3>
+      <div class="overflow-x-auto mb-6">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 text-left">
+              <th class="py-3 pr-4 font-semibold text-gray-500">Field</th>
+              <th class="py-3 pr-4 font-semibold text-gray-500">Type</th>
+              <th class="py-3 pr-4 font-semibold text-gray-500">Required</th>
+              <th class="py-3 font-semibold text-gray-500">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="py-3 pr-4 font-mono text-mt-dark">employment_data</td>
+              <td class="py-3 pr-4 text-gray-600">object</td>
+              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
+              <td class="py-3 text-gray-600">Structured employment verification data. See <a href="#data-schemas" class="text-mt-green hover:underline">data schemas</a> below.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Request</h3>
+      <div class="code-block mb-6">
+        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
+          <span class="text-gray-500 text-xs font-mono">curl</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-yellow-400">curl</span> -X PATCH "https://portal.moderntax.io/api/webhook/employment-result?token=emp_req_20260316_001" \
+  -H <span class="text-green-400">"Content-Type: application/json"</span> \
+  -H <span class="text-green-400">"x-api-key: mt_live_emp_YOUR_API_KEY"</span> \
+  -d '{
+    <span class="text-blue-400">"employment_data"</span>: {
+      <span class="text-blue-400">"taxpayer_name"</span>: <span class="text-green-400">"Jane Doe"</span>,
+      <span class="text-blue-400">"ssn_last_4"</span>: <span class="text-green-400">"6789"</span>,
+      <span class="text-blue-400">"employers"</span>: [
+        {
+          <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Acme Corp"</span>,
+          <span class="text-blue-400">"ein"</span>: <span class="text-green-400">"12-3456789"</span>,
+          <span class="text-blue-400">"is_peo"</span>: <span class="text-yellow-400">false</span>,
+          <span class="text-blue-400">"years"</span>: {
+            <span class="text-blue-400">"2025"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">95000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">14250.00</span> },
+            <span class="text-blue-400">"2024"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">88000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">13200.00</span> }
+          }
+        }
+      ]
+    }
+  }'</code></pre>
+      </div>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Response</h3>
+      <div class="code-block">
+        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
+          <span class="method-badge bg-green-900/50 text-green-400 px-2 py-0.5 rounded mr-2">200</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
+  <span class="text-blue-400">"success"</span>: <span class="text-yellow-400">true</span>,
+  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"a1b2c3d4-e5f6-7890-abcd-ef1234567890"</span>,
+  <span class="text-blue-400">"entity_id"</span>: <span class="text-green-400">"f9e8d7c6-b5a4-3210-fedc-ba9876543210"</span>,
+  <span class="text-blue-400">"status"</span>: <span class="text-green-400">"completed"</span>
+}</code></pre>
+      </div>
+    </section>
+
+    <hr class="border-gray-200 my-12">
+
+    <!-- ═══════════════════════════ ERRORS -->
+    <section id="errors" class="mb-16">
+      <h2 class="text-2xl font-bold text-mt-dark mb-4">Error Codes</h2>
+      <p class="text-gray-600 mb-6">All errors return a JSON object with an <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono">error</code> field describing the issue.</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 text-left">
+              <th class="py-3 pr-4 font-semibold text-gray-500">Status</th>
+              <th class="py-3 pr-4 font-semibold text-gray-500">Error</th>
+              <th class="py-3 font-semibold text-gray-500">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4"><span class="font-mono text-red-600 font-semibold">401</span></td>
+              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Missing x-api-key header</td>
+              <td class="py-3 text-gray-600">No API key was provided in the request headers.</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4"><span class="font-mono text-red-600 font-semibold">401</span></td>
+              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Invalid API key</td>
+              <td class="py-3 text-gray-600">The provided API key does not match any active client.</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4"><span class="font-mono text-yellow-600 font-semibold">400</span></td>
+              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">request_token is required</td>
+              <td class="py-3 text-gray-600">Missing required field in request body.</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4"><span class="font-mono text-yellow-600 font-semibold">404</span></td>
+              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Request not found</td>
+              <td class="py-3 text-gray-600">No request found with the given token for your API key.</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="py-3 pr-4"><span class="font-mono text-orange-600 font-semibold">409</span></td>
+              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Duplicate request_token</td>
+              <td class="py-3 text-gray-600">A request with this token already exists. Response includes <code class="bg-gray-100 px-1 rounded">existing_request_id</code>.</td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4"><span class="font-mono text-red-600 font-semibold">429</span></td>
+              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">API request limit exceeded</td>
+              <td class="py-3 text-gray-600">You've reached your API quota. Response includes <code class="bg-gray-100 px-1 rounded">usage</code> object with <code class="bg-gray-100 px-1 rounded">used</code> and <code class="bg-gray-100 px-1 rounded">limit</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ RATE LIMITS -->
+    <section id="rate-limits" class="mb-16">
+      <h2 class="text-2xl font-bold text-mt-dark mb-4">Rate Limits &amp; Quotas</h2>
+      <p class="text-gray-600 mb-4">Each API key has a request quota. The current usage is returned in every successful <code class="bg-gray-100 px-1 rounded font-mono text-sm">POST</code> response.</p>
+
+      <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-semibold text-mt-dark mb-1">Free Tier</h4>
+            <p class="text-sm text-gray-600">First 3 requests free. No credit card required.</p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-mt-dark mb-1">Higher Limits</h4>
+            <p class="text-sm text-gray-600">Contact <a href="mailto:matt@moderntax.io" class="text-mt-green hover:underline">matt@moderntax.io</a> for volume pricing and increased quotas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ DATA SCHEMAS -->
+    <section id="data-schemas" class="mb-16">
+      <h2 class="text-2xl font-bold text-mt-dark mb-4">Data Schemas</h2>
+
+      <h3 class="text-lg font-bold text-mt-dark mb-3 mt-8">EmploymentData</h3>
+      <p class="text-gray-600 mb-4">The structured employment verification result object.</p>
+      <div class="code-block mb-8">
+        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
+          <span class="text-gray-500 text-xs font-mono">TypeScript</span>
+        </div>
+        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-purple-400">interface</span> <span class="text-yellow-400">EmploymentData</span> {
+  <span class="text-blue-400">taxpayer_name</span>: <span class="text-green-400">string</span>;
+  <span class="text-blue-400">ssn_last_4</span>: <span class="text-green-400">string</span>;
+  <span class="text-blue-400">employers</span>: <span class="text-yellow-400">EmploymentEmployer</span>[];
+}
+
+<span class="text-purple-400">interface</span> <span class="text-yellow-400">EmploymentEmployer</span> {
+  <span class="text-blue-400">name</span>: <span class="text-green-400">string</span>;
+  <span class="text-blue-400">ein</span>: <span class="text-green-400">string</span>;
+  <span class="text-blue-400">is_peo</span>: <span class="text-green-400">boolean</span>;       <span class="text-gray-500">// Professional Employer Organization flag</span>
+  <span class="text-blue-400">years</span>: <span class="text-yellow-400">Record</span>&lt;<span class="text-green-400">string</span>, <span class="text-yellow-400">EmploymentYearData</span>&gt;;
+}
+
+<span class="text-purple-400">interface</span> <span class="text-yellow-400">EmploymentYearData</span> {
+  <span class="text-blue-400">w2_wages</span>?: <span class="text-green-400">number</span>;       <span class="text-gray-500">// W-2 Box 1: Wages, tips, other compensation</span>
+  <span class="text-blue-400">federal_tax</span>?: <span class="text-green-400">number</span>;    <span class="text-gray-500">// W-2 Box 2: Federal income tax withheld</span>
+  <span class="text-blue-400">social_security</span>?: <span class="text-green-400">number</span>; <span class="text-gray-500">// W-2 Box 3: Social security wages</span>
+  <span class="text-blue-400">medicare_wages</span>?: <span class="text-green-400">number</span>; <span class="text-gray-500">// W-2 Box 5: Medicare wages</span>
+  <span class="text-blue-400">form_1099_income</span>?: <span class="text-green-400">number</span>; <span class="text-gray-500">// 1099-NEC/MISC non-employee compensation</span>
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="border-t border-gray-200 pt-8 mt-16">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <p class="text-gray-500 text-sm">&copy; 2026 ModernTax, Inc.</p>
+        <div class="flex items-center gap-4 text-sm">
+          <a href="../" class="text-gray-500 hover:text-mt-dark">Home</a>
+          <a href="mailto:matt@moderntax.io" class="text-gray-500 hover:text-mt-dark">Contact</a>
+          <a href="https://portal.moderntax.io/login" class="text-gray-500 hover:text-mt-dark">Portal</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Sidebar active state highlighting -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar-link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.offsetTop - 100;
+      if (window.scrollY >= top) current = section.id;
+    });
+    links.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

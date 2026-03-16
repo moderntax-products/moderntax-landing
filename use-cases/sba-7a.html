@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SBA 7(a) Lending — ModernTax</title>
+  <meta name="description" content="IRS tax transcript retrieval for SBA 7(a) lenders. Personal and business transcripts for all guarantors, delivered in days.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'mt-green': '#00C48C',
+            'mt-green-dark': '#00A876',
+            'mt-dark': '#0A1929',
+            'mt-navy': '#102A43',
+            'mt-mid': '#243B53',
+            'mt-light': '#627D98',
+            'mt-pale': '#BCCCDC',
+            'mt-bg': '#F0F4F8',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .gradient-hero {
+      background: linear-gradient(135deg, #0A1929 0%, #102A43 50%, #0A1929 100%);
+    }
+    .nav-dropdown { display: none; }
+    .nav-group:hover .nav-dropdown { display: block; }
+  </style>
+</head>
+<body class="font-sans text-gray-900 antialiased">
+
+<!-- NAVIGATION -->
+<header class="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="../" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
+          <span class="text-white font-bold text-sm">M</span>
+        </div>
+        <span class="text-xl font-bold text-mt-dark">ModernTax</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <div class="relative nav-group">
+          <button class="text-gray-600 hover:text-mt-dark font-medium flex items-center gap-1 py-2">
+            Products
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-gray-100 py-2 mt-1">
+            <a href="../#transcripts" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 rounded-lg mx-2">
+              <span class="text-2xl mt-0.5">&#x1F4CB;</span>
+              <div>
+                <div class="font-semibold text-mt-dark">Tax Transcript Retrieval</div>
+                <div class="text-sm text-gray-500">IRS 8821-based transcript pulls for lending</div>
+              </div>
+            </a>
+            <a href="../#employment" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 rounded-lg mx-2">
+              <span class="text-2xl mt-0.5">&#x1F3E2;</span>
+              <div>
+                <div class="font-semibold text-mt-dark">Employment Verification</div>
+                <div class="text-sm text-gray-500">W-2 & 1099 income verification via API</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="relative nav-group">
+          <button class="text-gray-600 hover:text-mt-dark font-medium flex items-center gap-1 py-2">
+            Use Cases
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="nav-dropdown absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 mt-1">
+            <a href="sba-504.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">SBA 504 Lending</a>
+            <a href="sba-7a.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">SBA 7(a) Lending</a>
+            <a href="commercial-lending.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Commercial Lending</a>
+            <a href="employment-hr.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Employment & HR</a>
+          </div>
+        </div>
+
+        <a href="../docs/" class="text-gray-600 hover:text-mt-dark font-medium">API Docs</a>
+        <a href="../#pricing" class="text-gray-600 hover:text-mt-dark font-medium">Pricing</a>
+      </div>
+
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://portal.moderntax.io/login" class="text-gray-600 hover:text-mt-dark font-medium">Sign In</a>
+        <a href="https://portal.moderntax.io/login" class="bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-5 py-2.5 rounded-lg transition-all shadow-sm hover:shadow-md">
+          Start Free Trial
+        </a>
+      </div>
+
+      <button class="md:hidden p-2" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden pb-4 border-t border-gray-100 mt-2 pt-4">
+      <a href="../#transcripts" class="block py-2 text-gray-700 font-medium">Tax Transcript Retrieval</a>
+      <a href="../#employment" class="block py-2 text-gray-700 font-medium">Employment Verification</a>
+      <a href="sba-504.html" class="block py-2 text-gray-500">SBA 504 Lending</a>
+      <a href="sba-7a.html" class="block py-2 text-gray-500">SBA 7(a) Lending</a>
+      <a href="commercial-lending.html" class="block py-2 text-gray-500">Commercial Lending</a>
+      <a href="employment-hr.html" class="block py-2 text-gray-500">Employment & HR</a>
+      <a href="../docs/" class="block py-2 text-gray-700 font-medium">API Docs</a>
+      <a href="../#pricing" class="block py-2 text-gray-700 font-medium">Pricing</a>
+      <div class="flex flex-col gap-2 mt-4">
+        <a href="https://portal.moderntax.io/login" class="text-center py-2 text-gray-700 font-medium">Sign In</a>
+        <a href="https://portal.moderntax.io/login" class="text-center bg-mt-green text-white font-semibold px-5 py-2.5 rounded-lg">Start Free Trial</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+<!-- HERO -->
+<section class="gradient-hero pt-32 pb-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <span class="inline-block bg-mt-green/10 text-mt-green font-semibold text-sm px-4 py-1.5 rounded-full mb-6">SBA 7(a) Lending</span>
+    <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+      Fast IRS Transcript Verification<br class="hidden md:block"> for SBA 7(a) Loans
+    </h1>
+    <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
+      SBA 7(a) loans require IRS transcript verification for every guarantor with 20%+ ownership across every entity type. ModernTax handles sole props, partnerships, corporations, and S-corps in a single streamlined workflow.
+    </p>
+    <a href="https://portal.moderntax.io/new" class="inline-flex items-center justify-center bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl">
+      Start Free Trial
+    </a>
+  </div>
+</section>
+
+
+<!-- WHAT YOU NEED -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-mt-dark mb-4 text-center">What SBA 7(a) Lending Requires</h2>
+    <p class="text-lg text-mt-light text-center max-w-3xl mx-auto mb-12">
+      The SBA Standard Operating Procedure (SOP 50 10) mandates IRS transcript verification to confirm that borrower-provided tax returns match what was actually filed with the IRS.
+    </p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="bg-mt-bg rounded-2xl p-8">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">Sole Proprietors</h3>
+        <p class="text-mt-light">Schedule C filers verified through 1040 transcripts including all business income schedules.</p>
+      </div>
+      <div class="bg-mt-bg rounded-2xl p-8">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">Partnerships (1065)</h3>
+        <p class="text-mt-light">Partnership return transcripts plus K-1 verification for each guarantor partner.</p>
+      </div>
+      <div class="bg-mt-bg rounded-2xl p-8">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">C-Corps (1120)</h3>
+        <p class="text-mt-light">Corporate return transcripts for the operating company and any affiliated entities.</p>
+      </div>
+      <div class="bg-mt-bg rounded-2xl p-8">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">S-Corps (1120S)</h3>
+        <p class="text-mt-light">S-corp return transcripts with shareholder distribution and compensation data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOW MODERNTAX HELPS -->
+<section class="py-20 bg-mt-bg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-mt-dark mb-12 text-center">How ModernTax Helps</h2>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">Multi-Entity Requests</h3>
+        <p class="text-mt-light">Submit personal and business transcript requests for all guarantors in a single batch. No more juggling separate vendors per entity type.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">SOP-Compliant Workflow</h3>
+        <p class="text-mt-light">Built specifically for SBA lenders. Every transcript request follows IRS 8821 authorization with full audit trail for SBA review.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">Same or Next-Day Delivery</h3>
+        <p class="text-mt-light">Receive transcripts back same or next business day instead of the 2-4 weeks typical of legacy transcript providers.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <h3 class="text-lg font-bold text-mt-dark mb-3">Dashboard Tracking</h3>
+        <p class="text-mt-light">Track every request across your pipeline. See which guarantors have returned transcripts and which are still pending.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- IRS FORMS -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-3xl font-bold text-mt-dark mb-8">Relevant IRS Forms</h2>
+    <div class="flex flex-wrap justify-center gap-4">
+      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">Form 1040</span>
+      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">Schedule C</span>
+      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">Form 1065</span>
+      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">Form 1120</span>
+      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">Form 1120S</span>
+      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">Form 8821</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="gradient-hero py-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Close SBA 7(a) Loans Faster</h2>
+    <p class="text-lg text-gray-300 mb-10">Get IRS transcripts for every guarantor and entity type in one place.</p>
+    <a href="https://portal.moderntax.io/new" class="inline-flex items-center justify-center bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl">
+      Start Free Trial
+    </a>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="bg-mt-dark border-t border-white/10 py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-8 mb-12">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
+            <span class="text-white font-bold text-sm">M</span>
+          </div>
+          <span class="text-xl font-bold text-white">ModernTax</span>
+        </div>
+        <p class="text-gray-400 text-sm leading-relaxed">IRS tax transcript retrieval and employment verification for modern lenders and platforms.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Products</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="../#transcripts" class="text-gray-400 hover:text-white transition-colors">Tax Transcript Retrieval</a></li>
+          <li><a href="../#employment" class="text-gray-400 hover:text-white transition-colors">Employment Verification</a></li>
+          <li><a href="../docs/" class="text-gray-400 hover:text-white transition-colors">API Documentation</a></li>
+          <li><a href="../#pricing" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Use Cases</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="sba-504.html" class="text-gray-400 hover:text-white transition-colors">SBA 504 Lending</a></li>
+          <li><a href="sba-7a.html" class="text-gray-400 hover:text-white transition-colors">SBA 7(a) Lending</a></li>
+          <li><a href="commercial-lending.html" class="text-gray-400 hover:text-white transition-colors">Commercial Lending</a></li>
+          <li><a href="employment-hr.html" class="text-gray-400 hover:text-white transition-colors">Employment &amp; HR</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Company</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://portal.moderntax.io/login" class="text-gray-400 hover:text-white transition-colors">Sign In to Portal</a></li>
+          <li><a href="mailto:matt@moderntax.io" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+          <li><a href="mailto:support@moderntax.io" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-gray-500 text-sm">&copy; 2026 ModernTax, Inc. All rights reserved.</p>
+      <div class="flex items-center gap-6 text-sm text-gray-500">
+        <span>SOC 2 Compliant</span>
+        <span>&bull;</span>
+        <span>256-bit Encryption</span>
+        <span>&bull;</span>
+        <span>IRS Authorized</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
