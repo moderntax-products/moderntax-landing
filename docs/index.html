@@ -1,562 +1,2108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Documentation — ModernTax</title>
-  <meta name="description" content="API reference for ModernTax Employment & Income Verification. Submit requests, poll for results, and receive structured W-2/1099 data.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'mt-green': '#00C48C',
-            'mt-green-dark': '#00A876',
-            'mt-dark': '#0A1929',
-            'mt-navy': '#102A43',
-            'mt-mid': '#243B53',
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-          },
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernTax API Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      }
-    }
-  </script>
-  <style>
-    html { scroll-behavior: smooth; }
-    .code-block { background: #0d1117; border-radius: 10px; overflow: hidden; }
-    .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.8; }
-    .sidebar-link.active { color: #00C48C; border-left-color: #00C48C; font-weight: 600; }
-    .method-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; }
-  </style>
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background-color: #0f172a;
+            color: #e5e7eb;
+            overflow-y: auto;
+            padding: 0;
+            border-right: 1px solid #1e293b;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #1e293b;
+            position: sticky;
+            top: 0;
+            background-color: #0f172a;
+        }
+
+        .sidebar-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-tagline {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .sidebar-nav {
+            padding: 24px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            padding: 0 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .nav-section-title .badge {
+            display: inline-block;
+            background-color: #10b981;
+            color: #ffffff;
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 6px;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 20px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            margin: 0 10px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .nav-link:hover {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+
+        .nav-link.active {
+            background-color: #1e293b;
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        .nav-link-sub {
+            padding-left: 40px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .nav-link-sub:hover {
+            color: #cbd5e1;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            padding: 48px 40px;
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-text h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header-text p {
+            color: #cbd5e1;
+            font-size: 16px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: #10b981;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .header-badge::before {
+            content: "✓";
+            font-weight: 700;
+        }
+
+        .content-area {
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title .badge {
+            display: inline-block;
+            background-color: #10b981;
+            color: #ffffff;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .subsection {
+            margin-bottom: 48px;
+        }
+
+        .subsection-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        /* Callouts */
+        .callout {
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            border-left: 4px solid;
+            background-color: #f8fafc;
+        }
+
+        .callout.info {
+            border-left-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .callout.info strong::before {
+            content: "ℹ ";
+            color: #3b82f6;
+        }
+
+        .callout.warning {
+            border-left-color: #f59e0b;
+            background-color: #fffbeb;
+        }
+
+        .callout.warning strong::before {
+            content: "⚠ ";
+            color: #f59e0b;
+        }
+
+        .callout.success {
+            border-left-color: #10b981;
+            background-color: #f0fdf4;
+        }
+
+        .callout.success strong::before {
+            content: "✓ ";
+            color: #10b981;
+        }
+
+        .callout.purple {
+            border-left-color: #a855f7;
+            background-color: #faf5ff;
+        }
+
+        .callout.purple strong::before {
+            content: "→ ";
+            color: #a855f7;
+        }
+
+        .callout strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .callout p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: #0f172a;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            position: relative;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .code-block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #334155;
+            color: #cbd5e1;
+        }
+
+        .code-block code {
+            color: #e5e7eb;
+        }
+
+        /* Syntax highlighting */
+        .string { color: #86efac; }
+        .number { color: #fbbf24; }
+        .key { color: #60a5fa; }
+        .method { color: #f472b6; }
+        .comment { color: #6b7280; }
+
+        /* Endpoint Cards */
+        .endpoint-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+            border-left: 4px solid;
+        }
+
+        .endpoint-card.post {
+            border-left-color: #3b82f6;
+        }
+
+        .endpoint-card.get {
+            border-left-color: #10b981;
+        }
+
+        .endpoint-card.patch {
+            border-left-color: #f59e0b;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .method-badge.post {
+            background-color: #3b82f6;
+        }
+
+        .method-badge.get {
+            background-color: #10b981;
+        }
+
+        .method-badge.patch {
+            background-color: #f59e0b;
+        }
+
+        .endpoint-path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .endpoint-description {
+            font-size: 15px;
+            color: #475569;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        table thead {
+            background-color: #f1f5f9;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        table thead th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        table tbody td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .param-name {
+            font-family: 'JetBrains Mono', monospace;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .param-type {
+            font-family: 'JetBrains Mono', monospace;
+            color: #f59e0b;
+            font-size: 12px;
+        }
+
+        .param-required {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 32px 0;
+            overflow-x: auto;
+            padding: 24px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flow-box {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 16px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            white-space: nowrap;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            font-size: 24px;
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+
+        /* Benefits List */
+        .benefits-list {
+            list-style: none;
+            margin: 24px 0;
+        }
+
+        .benefits-list li {
+            padding: 12px 0;
+            padding-left: 32px;
+            position: relative;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .benefits-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* Status Badges in Tables */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-processing {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-authorized {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-confirmed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-pending {
+            background-color: #dbeafe;
+            color: #0c4a6e;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0f172a;
+            color: #cbd5e1;
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            font-size: 14px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #60a5fa;
+            text-decoration: none;
+            margin: 0 12px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #93c5fd;
+        }
+
+        .footer-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #1e293b;
+            flex-wrap: wrap;
+        }
+
+        .soc-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #10b981;
+        }
+
+        .soc-badge::before {
+            content: "✓";
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        /* Mobile menu toggle */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            color: #e5e7eb;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .sidebar {
+                width: 280px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .content-area {
+                padding: 24px;
+            }
+
+            .header {
+                padding: 32px 24px 32px 72px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-area {
+                padding: 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .header {
+                padding: 24px 16px;
+                padding-left: 72px;
+            }
+
+            .header-text h1 {
+                font-size: 24px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            table thead th,
+            table tbody td {
+                padding: 8px;
+            }
+
+            .code-block {
+                font-size: 11px;
+                padding: 12px;
+            }
+
+            .nav-links-row {
+                flex-direction: column;
+            }
+        }
+
+        /* Code syntax colors */
+        .hljs-attr { color: #60a5fa; }
+        .hljs-string { color: #86efac; }
+        .hljs-number { color: #fbbf24; }
+        .hljs-literal { color: #f472b6; }
+        .hljs-attr-value { color: #86efac; }
+
+        /* Utility classes */
+        .mt-24 { margin-top: 24px; }
+        .mb-24 { margin-bottom: 24px; }
+        .mb-32 { margin-bottom: 32px; }
+    </style>
 </head>
-<body class="font-sans text-gray-900 antialiased bg-white">
+<body>
+    <!-- Mobile menu button -->
+    <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open'); document.querySelector('.sidebar-overlay').classList.toggle('active');" aria-label="Toggle menu">
+        &#9776;
+    </button>
+    <div class="sidebar-overlay" onclick="document.querySelector('.sidebar').classList.remove('open'); this.classList.remove('active');"></div>
 
-<!-- ═══════════════════════════════════════════════════════ HEADER -->
-<header class="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <div class="flex items-center gap-6">
-        <a href="../" class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
-            <span class="text-white font-bold text-sm">M</span>
-          </div>
-          <span class="text-xl font-bold text-mt-dark">ModernTax</span>
-        </a>
-        <span class="text-gray-300">|</span>
-        <span class="text-gray-600 font-semibold">API Docs</span>
-      </div>
-      <div class="flex items-center gap-4">
-        <a href="https://portal.moderntax.io/login" class="text-gray-600 hover:text-mt-dark font-medium text-sm">Sign In</a>
-        <a href="mailto:matt@moderntax.io?subject=API%20Access%20Request" class="bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-4 py-2 rounded-lg transition-all text-sm">
-          Get API Key
-        </a>
-      </div>
-    </div>
-  </nav>
-</header>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">ModernTax</div>
+                <div class="sidebar-tagline">API Documentation v2.1</div>
+            </div>
+            <nav class="sidebar-nav">
+                <!-- Getting Started -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Getting Started</div>
+                    <a href="#overview" class="nav-link active">Overview</a>
+                    <a href="#authentication" class="nav-link-sub">Authentication</a>
+                    <a href="#base-url" class="nav-link-sub">Base URL</a>
+                </div>
 
-<!-- ═══════════════════════════════════════════════════════ MAIN LAYOUT -->
-<div class="pt-16 flex">
+                <!-- Employment & Income -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Employment & Income</div>
+                    <a href="#emp-submit-request" class="nav-link-sub">Submit Request</a>
+                    <a href="#emp-get-result" class="nav-link-sub">Get Result</a>
+                    <a href="#emp-push-result" class="nav-link-sub">Push Result Data</a>
+                </div>
 
-  <!-- Sidebar -->
-  <aside class="hidden lg:block w-64 flex-shrink-0 border-r border-gray-100 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto py-8 px-6">
-    <nav class="space-y-6">
-      <div>
-        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Getting Started</h4>
-        <ul class="space-y-1">
-          <li><a href="#overview" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Overview</a></li>
-          <li><a href="#authentication" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Authentication</a></li>
-          <li><a href="#base-url" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Base URL</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Endpoints</h4>
-        <ul class="space-y-1">
-          <li><a href="#submit-request" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Submit Request</a></li>
-          <li><a href="#get-result" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Get Result</a></li>
-          <li><a href="#push-data" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Push Result Data</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Reference</h4>
-        <ul class="space-y-1">
-          <li><a href="#errors" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Error Codes</a></li>
-          <li><a href="#rate-limits" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Rate Limits</a></li>
-          <li><a href="#data-schemas" class="sidebar-link block py-1.5 pl-3 border-l-2 border-transparent text-gray-600 hover:text-mt-dark text-sm">Data Schemas</a></li>
-        </ul>
-      </div>
-    </nav>
-  </aside>
+                <!-- Tax Payment Verification -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Tax Payment <span class="badge">NEW</span></div>
+                    <a href="#tpv-8821-consent" class="nav-link-sub">8821 Consent Flow</a>
+                    <a href="#tpv-record-of-account" class="nav-link-sub">Record of Account</a>
+                    <a href="#tpv-payment-confirmation" class="nav-link-sub">Payment Confirmation</a>
+                    <a href="#tpv-submit-confirm" class="nav-link-sub">Submit & Confirm</a>
+                    <a href="#tpv-quarterly" class="nav-link-sub">Quarterly Monitoring</a>
+                </div>
 
-  <!-- Content -->
-  <main class="flex-1 max-w-4xl mx-auto px-6 lg:px-12 py-12">
+                <!-- S-Corp Services -->
+                <div class="nav-section">
+                    <div class="nav-section-title">S-Corp <span class="badge">NEW</span></div>
+                    <a href="#scorp-entity-election" class="nav-link-sub">Entity Election Detection</a>
+                    <a href="#scorp-transaction-codes" class="nav-link-sub">Transaction Codes</a>
+                </div>
 
-    <!-- Overview -->
-    <section id="overview" class="mb-16">
-      <h1 class="text-4xl font-extrabold text-mt-dark mb-4">Employment &amp; Income Verification API</h1>
-      <p class="text-lg text-gray-600 leading-relaxed mb-6">
-        Submit employment verification requests, poll for completion status, and receive structured W-2 and 1099 income data &mdash; all sourced from IRS Wage &amp; Income transcripts.
-      </p>
-      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5">
-        <div class="flex items-start gap-3">
-          <svg class="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
-          <div>
-            <p class="text-indigo-900 font-semibold mb-1">Getting an API Key</p>
-            <p class="text-indigo-700 text-sm">Contact <a href="mailto:matt@moderntax.io" class="underline">matt@moderntax.io</a> to request API access. You'll receive an API key and your first 3 requests are free.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+                <!-- Reference -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Reference</div>
+                    <a href="#error-codes" class="nav-link-sub">Error Codes</a>
+                    <a href="#rate-limits" class="nav-link-sub">Rate Limits</a>
+                    <a href="#webhooks" class="nav-link-sub">Webhooks</a>
+                    <a href="#data-schemas" class="nav-link-sub">Data Schemas</a>
+                </div>
+            </nav>
+        </aside>
 
-    <!-- Authentication -->
-    <section id="authentication" class="mb-16">
-      <h2 class="text-2xl font-bold text-mt-dark mb-4 flex items-center gap-3">
-        <span class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-        </span>
-        Authentication
-      </h2>
-      <p class="text-gray-600 mb-4">All API requests require an <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-mt-dark">x-api-key</code> header with your API key.</p>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-content">
+                    <div class="header-text">
+                        <h1>ModernTax API</h1>
+                        <p>Verify employment, income, and tax payments with government-sourced data</p>
+                    </div>
+                    <div class="header-badge">SOC 2 Type II</div>
+                </div>
+            </div>
 
-      <div class="code-block">
-        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-white/10">
-          <span class="text-gray-500 text-xs font-mono">Header</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>x-api-key: mt_live_emp_YOUR_API_KEY</code></pre>
-      </div>
-      <p class="text-sm text-gray-500 mt-3">Keep your API key secret. Do not expose it in client-side code or public repositories.</p>
-    </section>
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- SECTION: GETTING STARTED -->
+                <section class="section" id="overview">
+                    <h2 class="section-title">Getting Started</h2>
+                    <p class="section-subtitle">The ModernTax API provides two comprehensive verification solutions: Employment & Income Verification for W-2/1099 data, and Tax Payment Verification for IRS payment confirmation.</p>
 
-    <!-- Base URL -->
-    <section id="base-url" class="mb-16">
-      <h2 class="text-2xl font-bold text-mt-dark mb-4">Base URL</h2>
-      <div class="code-block">
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>https://portal.moderntax.io</code></pre>
-      </div>
-    </section>
+                    <div class="subsection">
+                        <h3 class="subsection-title">Getting an API Key</h3>
+                        <p style="margin-bottom: 16px;">Contact <strong>matt@moderntax.io</strong> to provision an API key. New accounts include 3 free requests to test the API.</p>
+                    </div>
 
-    <hr class="border-gray-200 my-12">
+                    <div class="subsection" id="authentication">
+                        <h3 class="subsection-title">Authentication</h3>
+                        <p style="margin-bottom: 16px;">All API requests require authentication via the <code style="background-color: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace;">x-api-key</code> header.</p>
+                        <p style="margin-bottom: 24px;">API keys follow the format: <code style="background-color: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace;">mt_live_emp_YOUR_API_KEY</code> for Employment API and <code style="background-color: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace;">mt_live_tpv_YOUR_API_KEY</code> for Tax Payment API.</p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>CURL EXAMPLE</span>
+                                <button class="copy-btn">Copy</button>
+                            </div>
+<pre>curl -X GET https://portal.moderntax.io/api/webhook/employment-result \
+  -H "x-api-key: mt_live_emp_your_api_key_here" \
+  -H "Content-Type: application/json"</pre>
+                        </div>
+                    </div>
 
-    <!-- ═══════════════════════════ SUBMIT REQUEST -->
-    <section id="submit-request" class="mb-16">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="method-badge bg-green-100 text-green-700 px-2.5 py-1 rounded">POST</span>
-        <h2 class="text-2xl font-bold text-mt-dark">Submit Verification Request</h2>
-      </div>
-      <p class="text-gray-600 mb-2">Create a new employment/income verification request for a given employee.</p>
-      <div class="code-block mb-6">
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>POST /api/webhook/employment-intake</code></pre>
-      </div>
+                    <div class="subsection" id="base-url">
+                        <h3 class="subsection-title">Base URL</h3>
+                        <p style="margin-bottom: 16px;">All API requests should be made to:</p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>BASE URL</span>
+                            </div>
+<pre>https://portal.moderntax.io</pre>
+                        </div>
+                    </div>
+                </section>
 
-      <!-- Request Body -->
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Request Body</h3>
-      <div class="overflow-x-auto mb-6">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-gray-200 text-left">
-              <th class="py-3 pr-4 font-semibold text-gray-500">Field</th>
-              <th class="py-3 pr-4 font-semibold text-gray-500">Type</th>
-              <th class="py-3 pr-4 font-semibold text-gray-500">Required</th>
-              <th class="py-3 font-semibold text-gray-500">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4 font-mono text-mt-dark">request_token</td>
-              <td class="py-3 pr-4 text-gray-600">string</td>
-              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
-              <td class="py-3 text-gray-600">Your unique identifier for this request. Used for deduplication and result retrieval.</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4 font-mono text-mt-dark">employee_name</td>
-              <td class="py-3 pr-4 text-gray-600">string</td>
-              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
-              <td class="py-3 text-gray-600">Full legal name of the employee.</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4 font-mono text-mt-dark">employee_ssn</td>
-              <td class="py-3 pr-4 text-gray-600">string</td>
-              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
-              <td class="py-3 text-gray-600">Social Security Number. Masked to last 4 digits in storage (<code class="bg-gray-100 px-1 rounded">XXX-XX-1234</code>).</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4 font-mono text-mt-dark">years</td>
-              <td class="py-3 pr-4 text-gray-600">string[]</td>
-              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
-              <td class="py-3 text-gray-600">Tax years to verify (e.g., <code class="bg-gray-100 px-1 rounded">["2025", "2024", "2023"]</code>).</td>
-            </tr>
-            <tr>
-              <td class="py-3 pr-4 font-mono text-mt-dark">employee_address</td>
-              <td class="py-3 pr-4 text-gray-600">object</td>
-              <td class="py-3 pr-4 text-gray-500">No</td>
-              <td class="py-3 text-gray-600">Object with <code class="bg-gray-100 px-1 rounded">street</code>, <code class="bg-gray-100 px-1 rounded">city</code>, <code class="bg-gray-100 px-1 rounded">state</code>, <code class="bg-gray-100 px-1 rounded">zip</code> fields.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <!-- SECTION: EMPLOYMENT & INCOME VERIFICATION API -->
+                <section class="section">
+                    <h2 class="section-title">Employment & Income Verification API</h2>
+                    <p class="section-subtitle">Submit employment verification requests, poll for completion status, and receive structured W-2 and 1099 income data — all sourced from IRS Wage & Income transcripts.</p>
 
-      <!-- Example -->
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Request</h3>
-      <div class="code-block mb-6">
-        <div class="flex items-center justify-between px-4 py-2.5 border-b border-white/10">
-          <span class="text-gray-500 text-xs font-mono">curl</span>
-          <button onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)" class="text-gray-500 hover:text-white text-xs">Copy</button>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-yellow-400">curl</span> -X POST https://portal.moderntax.io/api/webhook/employment-intake \
-  -H <span class="text-green-400">"Content-Type: application/json"</span> \
-  -H <span class="text-green-400">"x-api-key: mt_live_emp_YOUR_API_KEY"</span> \
+                    <!-- Endpoint 1: Submit Request -->
+                    <div class="subsection" id="emp-submit-request">
+                        <div class="endpoint-card post">
+                            <div class="endpoint-header">
+                                <span class="method-badge post">POST</span>
+                                <span class="endpoint-path">/api/webhook/employment-intake</span>
+                            </div>
+                            <p class="endpoint-description">Submit Verification Request - Create a new employment/income verification request for a given employee.</p>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Request Body Parameters</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Required</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="param-name">request_token</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Your unique identifier for this request. Used for polling results.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">employee_name</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Full legal name of the employee</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">employee_ssn</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Social Security Number. Masked to last 4 digits in storage.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">years</span></td>
+                                            <td><span class="param-type">string[]</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Array of tax years to verify (e.g., ["2022", "2023"])</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">employee_address</span></td>
+                                            <td><span class="param-type">object</span></td>
+                                            <td>Optional</td>
+                                            <td>Object with street, city, state, zip fields for address verification</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Request</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>curl -X POST https://portal.moderntax.io/api/webhook/employment-intake \
+  -H "x-api-key: mt_live_emp_your_api_key" \
+  -H "Content-Type: application/json" \
   -d '{
-    <span class="text-blue-400">"request_token"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
-    <span class="text-blue-400">"employee_name"</span>: <span class="text-green-400">"Jane Doe"</span>,
-    <span class="text-blue-400">"employee_ssn"</span>: <span class="text-green-400">"123-45-6789"</span>,
-    <span class="text-blue-400">"years"</span>: [<span class="text-green-400">"2025"</span>, <span class="text-green-400">"2024"</span>, <span class="text-green-400">"2023"</span>],
-    <span class="text-blue-400">"employee_address"</span>: {
-      <span class="text-blue-400">"street"</span>: <span class="text-green-400">"123 Main St"</span>,
-      <span class="text-blue-400">"city"</span>: <span class="text-green-400">"Austin"</span>,
-      <span class="text-blue-400">"state"</span>: <span class="text-green-400">"TX"</span>,
-      <span class="text-blue-400">"zip"</span>: <span class="text-green-400">"78701"</span>
+    "request_token": "req_emp_12345_john_2023",
+    "employee_name": "John Doe",
+    "employee_ssn": "123-45-6789",
+    "years": ["2022", "2023"],
+    "employee_address": {
+      "street": "123 Main St",
+      "city": "San Francisco",
+      "state": "CA",
+      "zip": "94102"
     }
-  }'</code></pre>
-      </div>
+  }'</pre>
+                            </div>
 
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Response</h3>
-      <div class="code-block mb-4">
-        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
-          <span class="method-badge bg-green-900/50 text-green-400 px-2 py-0.5 rounded mr-2">200</span>
-          <span class="text-gray-500 text-xs font-mono">application/json</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
-  <span class="text-blue-400">"success"</span>: <span class="text-yellow-400">true</span>,
-  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"a1b2c3d4-e5f6-7890-abcd-ef1234567890"</span>,
-  <span class="text-blue-400">"entity_id"</span>: <span class="text-green-400">"f9e8d7c6-b5a4-3210-fedc-ba9876543210"</span>,
-  <span class="text-blue-400">"request_token"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
-  <span class="text-blue-400">"usage"</span>: {
-    <span class="text-blue-400">"used"</span>: <span class="text-yellow-400">1</span>,
-    <span class="text-blue-400">"remaining"</span>: <span class="text-yellow-400">2</span>,
-    <span class="text-blue-400">"limit"</span>: <span class="text-yellow-400">3</span>
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 200 OK</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>{
+  "status": "pending",
+  "request_token": "req_emp_12345_john_2023",
+  "created_at": "2024-03-22T14:30:00Z",
+  "estimated_completion": "2024-03-23T14:30:00Z",
+  "usage": {
+    "used": 1,
+    "remaining": 2,
+    "limit": 3
   }
-}</code></pre>
-      </div>
-    </section>
+}</pre>
+                            </div>
+                        </div>
+                    </div>
 
-    <hr class="border-gray-200 my-12">
+                    <!-- Endpoint 2: Get Result -->
+                    <div class="subsection" id="emp-get-result">
+                        <div class="endpoint-card get">
+                            <div class="endpoint-header">
+                                <span class="method-badge get">GET</span>
+                                <span class="endpoint-path">/api/webhook/employment-result?token={request_token}</span>
+                            </div>
+                            <p class="endpoint-description">Get Verification Result - Poll for status and results once the verification is complete.</p>
 
-    <!-- ═══════════════════════════ GET RESULT -->
-    <section id="get-result" class="mb-16">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="method-badge bg-blue-100 text-blue-700 px-2.5 py-1 rounded">GET</span>
-        <h2 class="text-2xl font-bold text-mt-dark">Get Verification Result</h2>
-      </div>
-      <p class="text-gray-600 mb-2">Poll for the status and results of a verification request. Returns structured data when the request is completed.</p>
-      <div class="code-block mb-6">
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>GET /api/webhook/employment-result?token={request_token}</code></pre>
-      </div>
+                            <div class="callout info">
+                                <strong>Polling Recommendation:</strong> Employment verification typically completes within 30-60 minutes, though may take until the next business day. Poll every 2-5 minutes after initial submission.
+                            </div>
 
-      <!-- Query Parameters -->
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Query Parameters</h3>
-      <div class="overflow-x-auto mb-6">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-gray-200 text-left">
-              <th class="py-3 pr-4 font-semibold text-gray-500">Parameter</th>
-              <th class="py-3 pr-4 font-semibold text-gray-500">Type</th>
-              <th class="py-3 pr-4 font-semibold text-gray-500">Required</th>
-              <th class="py-3 font-semibold text-gray-500">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="py-3 pr-4 font-mono text-mt-dark">token</td>
-              <td class="py-3 pr-4 text-gray-600">string</td>
-              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
-              <td class="py-3 text-gray-600">The <code class="bg-gray-100 px-1 rounded">request_token</code> you provided when submitting the request.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Example Request (Pending)</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON RESPONSE</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>{
+  "status": "pending",
+  "request_token": "req_emp_12345_john_2023",
+  "message": "Verification in progress. Please check again later."
+}</pre>
+                            </div>
 
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Request</h3>
-      <div class="code-block mb-6">
-        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
-          <span class="text-gray-500 text-xs font-mono">curl</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-yellow-400">curl</span> https://portal.moderntax.io/api/webhook/employment-result?token=emp_req_20260316_001 \
-  -H <span class="text-green-400">"x-api-key: mt_live_emp_YOUR_API_KEY"</span></code></pre>
-      </div>
-
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Response — Pending</h3>
-      <div class="code-block mb-6">
-        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
-          <span class="method-badge bg-yellow-900/50 text-yellow-400 px-2 py-0.5 rounded mr-2">200</span>
-          <span class="text-gray-500 text-xs font-mono">Request still processing</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
-  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
-  <span class="text-blue-400">"status"</span>: <span class="text-green-400">"pending_irs_call"</span>,
-  <span class="text-blue-400">"request_status"</span>: <span class="text-green-400">"submitted"</span>,
-  <span class="text-blue-400">"entity_status"</span>: <span class="text-green-400">"pending"</span>,
-  <span class="text-blue-400">"message"</span>: <span class="text-green-400">"Request is still being processed. Check back later."</span>
-}</code></pre>
-      </div>
-
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Response — Completed</h3>
-      <div class="code-block mb-4">
-        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
-          <span class="method-badge bg-green-900/50 text-green-400 px-2 py-0.5 rounded mr-2">200</span>
-          <span class="text-gray-500 text-xs font-mono">Results available</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
-  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"emp_req_20260316_001"</span>,
-  <span class="text-blue-400">"status"</span>: <span class="text-green-400">"completed"</span>,
-  <span class="text-blue-400">"result"</span>: {
-    <span class="text-blue-400">"taxpayer_name"</span>: <span class="text-green-400">"Jane Doe"</span>,
-    <span class="text-blue-400">"ssn_last_4"</span>: <span class="text-green-400">"6789"</span>,
-    <span class="text-blue-400">"employers"</span>: [
-      {
-        <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Acme Corp"</span>,
-        <span class="text-blue-400">"ein"</span>: <span class="text-green-400">"12-3456789"</span>,
-        <span class="text-blue-400">"is_peo"</span>: <span class="text-yellow-400">false</span>,
-        <span class="text-blue-400">"years"</span>: {
-          <span class="text-blue-400">"2025"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">95000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">14250.00</span> },
-          <span class="text-blue-400">"2024"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">88000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">13200.00</span> }
-        }
-      }
-    ]
-  },
-  <span class="text-blue-400">"transcript_urls"</span>: [
-    <span class="text-green-400">"https://portal.moderntax.io/storage/v1/..."</span>
-  ],
-  <span class="text-blue-400">"completed_at"</span>: <span class="text-green-400">"2026-03-18T14:30:00.000Z"</span>
-}</code></pre>
-      </div>
-
-      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-6">
-        <div class="flex items-start gap-3">
-          <span class="text-amber-600 text-lg">⏱️</span>
-          <div>
-            <p class="text-amber-900 font-semibold text-sm">Polling Recommendation</p>
-            <p class="text-amber-700 text-sm">Poll every 30–60 minutes. Most requests complete same day or next business day. <code class="bg-amber-100 px-1 rounded">transcript_urls</code> contain time-limited signed URLs (valid for 1 hour).</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="border-gray-200 my-12">
-
-    <!-- ═══════════════════════════ PUSH DATA -->
-    <section id="push-data" class="mb-16">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="method-badge bg-purple-100 text-purple-700 px-2.5 py-1 rounded">PATCH</span>
-        <h2 class="text-2xl font-bold text-mt-dark">Push Result Data</h2>
-      </div>
-      <p class="text-gray-600 mb-2">Push structured employment data back to ModernTax after processing transcripts on your end. This marks the request as completed.</p>
-      <div class="code-block mb-6">
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>PATCH /api/webhook/employment-result?token={request_token}</code></pre>
-      </div>
-
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Request Body</h3>
-      <div class="overflow-x-auto mb-6">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-gray-200 text-left">
-              <th class="py-3 pr-4 font-semibold text-gray-500">Field</th>
-              <th class="py-3 pr-4 font-semibold text-gray-500">Type</th>
-              <th class="py-3 pr-4 font-semibold text-gray-500">Required</th>
-              <th class="py-3 font-semibold text-gray-500">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="py-3 pr-4 font-mono text-mt-dark">employment_data</td>
-              <td class="py-3 pr-4 text-gray-600">object</td>
-              <td class="py-3 pr-4"><span class="text-red-500 font-semibold">Yes</span></td>
-              <td class="py-3 text-gray-600">Structured employment verification data. See <a href="#data-schemas" class="text-mt-green hover:underline">data schemas</a> below.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Request</h3>
-      <div class="code-block mb-6">
-        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
-          <span class="text-gray-500 text-xs font-mono">curl</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-yellow-400">curl</span> -X PATCH "https://portal.moderntax.io/api/webhook/employment-result?token=emp_req_20260316_001" \
-  -H <span class="text-green-400">"Content-Type: application/json"</span> \
-  -H <span class="text-green-400">"x-api-key: mt_live_emp_YOUR_API_KEY"</span> \
-  -d '{
-    <span class="text-blue-400">"employment_data"</span>: {
-      <span class="text-blue-400">"taxpayer_name"</span>: <span class="text-green-400">"Jane Doe"</span>,
-      <span class="text-blue-400">"ssn_last_4"</span>: <span class="text-green-400">"6789"</span>,
-      <span class="text-blue-400">"employers"</span>: [
-        {
-          <span class="text-blue-400">"name"</span>: <span class="text-green-400">"Acme Corp"</span>,
-          <span class="text-blue-400">"ein"</span>: <span class="text-green-400">"12-3456789"</span>,
-          <span class="text-blue-400">"is_peo"</span>: <span class="text-yellow-400">false</span>,
-          <span class="text-blue-400">"years"</span>: {
-            <span class="text-blue-400">"2025"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">95000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">14250.00</span> },
-            <span class="text-blue-400">"2024"</span>: { <span class="text-blue-400">"w2_wages"</span>: <span class="text-yellow-400">88000.00</span>, <span class="text-blue-400">"federal_tax"</span>: <span class="text-yellow-400">13200.00</span> }
-          }
-        }
-      ]
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response (Completed)</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 200 OK</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>{
+  "status": "completed",
+  "request_token": "req_emp_12345_john_2023",
+  "employee_name": "John Doe",
+  "employee_ssn_last4": "6789",
+  "years_verified": ["2022", "2023"],
+  "employers": [
+    {
+      "year": "2023",
+      "employer_name": "TechCorp Inc",
+      "employer_ein": "12-3456789",
+      "w2_wages": 145000.00,
+      "federal_tax_withheld": 28900.00,
+      "state_tax_withheld": 10440.00
     }
-  }'</code></pre>
-      </div>
+  ],
+  "transcript_urls": [
+    "https://portal.moderntax.io/transcripts/emp_2023_jdoe.pdf",
+    "https://portal.moderntax.io/transcripts/emp_2022_jdoe.pdf"
+  ],
+  "completed_at": "2024-03-22T16:45:00Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
 
-      <h3 class="text-lg font-bold text-mt-dark mb-3">Example Response</h3>
-      <div class="code-block">
-        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
-          <span class="method-badge bg-green-900/50 text-green-400 px-2 py-0.5 rounded mr-2">200</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code>{
-  <span class="text-blue-400">"success"</span>: <span class="text-yellow-400">true</span>,
-  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"a1b2c3d4-e5f6-7890-abcd-ef1234567890"</span>,
-  <span class="text-blue-400">"entity_id"</span>: <span class="text-green-400">"f9e8d7c6-b5a4-3210-fedc-ba9876543210"</span>,
-  <span class="text-blue-400">"status"</span>: <span class="text-green-400">"completed"</span>
-}</code></pre>
-      </div>
-    </section>
+                    <!-- Endpoint 3: Push Result Data -->
+                    <div class="subsection" id="emp-push-result">
+                        <div class="endpoint-card patch">
+                            <div class="endpoint-header">
+                                <span class="method-badge patch">PATCH</span>
+                                <span class="endpoint-path">/api/webhook/employment-result?token={request_token}</span>
+                            </div>
+                            <p class="endpoint-description">Push Result Data - Send structured employment data back to ModernTax for record-keeping and audit trail.</p>
 
-    <hr class="border-gray-200 my-12">
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Request Body Parameters</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="param-name">external_reference_id</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td>Your internal ID for cross-reference</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">loan_amount</span></td>
+                                            <td><span class="param-type">number</span></td>
+                                            <td>Associated loan amount if applicable</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">verification_status</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td>Status from your system: "approved", "rejected", "review"</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-    <!-- ═══════════════════════════ ERRORS -->
-    <section id="errors" class="mb-16">
-      <h2 class="text-2xl font-bold text-mt-dark mb-4">Error Codes</h2>
-      <p class="text-gray-600 mb-6">All errors return a JSON object with an <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono">error</code> field describing the issue.</p>
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Request</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>curl -X PATCH https://portal.moderntax.io/api/webhook/employment-result \
+  -H "x-api-key: mt_live_emp_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request_token": "req_emp_12345_john_2023",
+    "external_reference_id": "LOAN-2024-001234",
+    "loan_amount": 250000,
+    "verification_status": "approved"
+  }'</pre>
+                            </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-gray-200 text-left">
-              <th class="py-3 pr-4 font-semibold text-gray-500">Status</th>
-              <th class="py-3 pr-4 font-semibold text-gray-500">Error</th>
-              <th class="py-3 font-semibold text-gray-500">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4"><span class="font-mono text-red-600 font-semibold">401</span></td>
-              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Missing x-api-key header</td>
-              <td class="py-3 text-gray-600">No API key was provided in the request headers.</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4"><span class="font-mono text-red-600 font-semibold">401</span></td>
-              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Invalid API key</td>
-              <td class="py-3 text-gray-600">The provided API key does not match any active client.</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4"><span class="font-mono text-yellow-600 font-semibold">400</span></td>
-              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">request_token is required</td>
-              <td class="py-3 text-gray-600">Missing required field in request body.</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4"><span class="font-mono text-yellow-600 font-semibold">404</span></td>
-              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Request not found</td>
-              <td class="py-3 text-gray-600">No request found with the given token for your API key.</td>
-            </tr>
-            <tr class="border-b border-gray-100">
-              <td class="py-3 pr-4"><span class="font-mono text-orange-600 font-semibold">409</span></td>
-              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">Duplicate request_token</td>
-              <td class="py-3 text-gray-600">A request with this token already exists. Response includes <code class="bg-gray-100 px-1 rounded">existing_request_id</code>.</td>
-            </tr>
-            <tr>
-              <td class="py-3 pr-4"><span class="font-mono text-red-600 font-semibold">429</span></td>
-              <td class="py-3 pr-4 font-mono text-sm text-mt-dark">API request limit exceeded</td>
-              <td class="py-3 text-gray-600">You've reached your API quota. Response includes <code class="bg-gray-100 px-1 rounded">usage</code> object with <code class="bg-gray-100 px-1 rounded">used</code> and <code class="bg-gray-100 px-1 rounded">limit</code>.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 200 OK</span>
+                                </div>
+<pre>{
+  "status": "acknowledged",
+  "request_token": "req_emp_12345_john_2023",
+  "stored_at": "2024-03-22T17:00:00Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-    <!-- ═══════════════════════════ RATE LIMITS -->
-    <section id="rate-limits" class="mb-16">
-      <h2 class="text-2xl font-bold text-mt-dark mb-4">Rate Limits &amp; Quotas</h2>
-      <p class="text-gray-600 mb-4">Each API key has a request quota. The current usage is returned in every successful <code class="bg-gray-100 px-1 rounded font-mono text-sm">POST</code> response.</p>
+                <!-- SECTION: TAX PAYMENT VERIFICATION API -->
+                <section class="section">
+                    <h2 class="section-title">Tax Payment Verification API <span class="badge">NEW</span></h2>
+                    <p class="section-subtitle">Confirm IRS tax payments in real-time using Record of Account transcripts. One-time consent authorization, same-day verification, full transaction history.</p>
 
-      <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div>
-            <h4 class="font-semibold text-mt-dark mb-1">Free Tier</h4>
-            <p class="text-sm text-gray-600">First 3 requests free. No credit card required.</p>
-          </div>
-          <div>
-            <h4 class="font-semibold text-mt-dark mb-1">Higher Limits</h4>
-            <p class="text-sm text-gray-600">Contact <a href="mailto:matt@moderntax.io" class="text-mt-green hover:underline">matt@moderntax.io</a> for volume pricing and increased quotas.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+                    <div class="callout info">
+                        <strong>Payment Verification extends ModernTax's existing tax verification infrastructure to confirm that federal tax payments have been received and applied by the IRS. Same transcript infrastructure used by 60+ SBA lenders.</strong>
+                    </div>
 
-    <!-- ═══════════════════════════ DATA SCHEMAS -->
-    <section id="data-schemas" class="mb-16">
-      <h2 class="text-2xl font-bold text-mt-dark mb-4">Data Schemas</h2>
+                    <div class="subsection">
+                        <h3 class="subsection-title">How It Works</h3>
+                        <div class="flow-diagram">
+                            <div class="flow-box">Business Signs 8821</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-box">ModernTax Processes</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-box">IRS Authorizes</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-box">Record Pulled</div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-box">Payment Verified</div>
+                        </div>
+                    </div>
 
-      <h3 class="text-lg font-bold text-mt-dark mb-3 mt-8">EmploymentData</h3>
-      <p class="text-gray-600 mb-4">The structured employment verification result object.</p>
-      <div class="code-block mb-8">
-        <div class="flex items-center px-4 py-2.5 border-b border-white/10">
-          <span class="text-gray-500 text-xs font-mono">TypeScript</span>
-        </div>
-        <pre class="p-5 text-gray-300 overflow-x-auto"><code><span class="text-purple-400">interface</span> <span class="text-yellow-400">EmploymentData</span> {
-  <span class="text-blue-400">taxpayer_name</span>: <span class="text-green-400">string</span>;
-  <span class="text-blue-400">ssn_last_4</span>: <span class="text-green-400">string</span>;
-  <span class="text-blue-400">employers</span>: <span class="text-yellow-400">EmploymentEmployer</span>[];
+                    <div class="subsection">
+                        <h3 class="subsection-title">Key Benefits</h3>
+                        <ul class="benefits-list">
+                            <li><strong>Same-day confirmation:</strong> Verify payments the same day vs 3-4 week IRS reconciliation</li>
+                            <li><strong>One-time authorization:</strong> Single 8821 consent covers ongoing transcript pulls</li>
+                            <li><strong>Full form coverage:</strong> Support for 1120S, 1120, 1065, and 1040 tax forms</li>
+                            <li><strong>Government-sourced data:</strong> Direct from IRS's own ledger via transcript service</li>
+                            <li><strong>Dual access:</strong> API or web portal access to verification results</li>
+                        </ul>
+                    </div>
+
+                    <!-- 8821 Consent Flow -->
+                    <div class="subsection" id="tpv-8821-consent">
+                        <h3 class="subsection-title">8821 Consent Authorization</h3>
+                        <p style="margin-bottom: 20px;">Initiate the IRS Form 8821 authorization process. The IRS typically authorizes within 24-48 hours.</p>
+
+                        <div class="endpoint-card post">
+                            <div class="endpoint-header">
+                                <span class="method-badge post">POST</span>
+                                <span class="endpoint-path">/v2/consent/authorize</span>
+                            </div>
+                            <p class="endpoint-description">Submit 8821 Consent Authorization - Begin the authorization process for IRS transcript access.</p>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Request Parameters</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Required</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="param-name">business_name</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Legal business entity name</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">ein</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Employer Identification Number (XX-XXXXXXX format)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">entity_type</span></td>
+                                            <td><span class="param-type">enum</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>One of: 1120S, 1120, 1065, 1040</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">tax_periods</span></td>
+                                            <td><span class="param-type">string[]</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Array of tax periods (e.g., ["2023-12-31", "2022-12-31"])</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">signer_name</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Name of authorized signer</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">signer_title</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Title of signer (e.g., "Owner", "CFO")</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">callback_url</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td>Optional</td>
+                                            <td>Webhook URL to receive authorization status updates</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Request</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>curl -X POST https://portal.moderntax.io/v2/consent/authorize \
+  -H "x-api-key: mt_live_tpv_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "business_name": "DAVI AUT IN",
+    "ein": "12-3456789",
+    "entity_type": "1120S",
+    "tax_periods": ["2023-12-31", "2022-12-31"],
+    "signer_name": "Sarah Johnson",
+    "signer_title": "Owner",
+    "callback_url": "https://yourapp.com/webhooks/irs-status"
+  }'</pre>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 201 CREATED</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>{
+  "consent_id": "cons_4v82j9k2p1m5",
+  "status": "processing",
+  "business_name": "DAVI AUT IN",
+  "ein_last4": "6789",
+  "entity_type": "1120S",
+  "estimated_completion": "2024-03-24T14:00:00Z",
+  "message": "8821 form submitted to IRS. Typically authorized within 24-48 hours.",
+  "created_at": "2024-03-22T14:30:00Z"
+}</pre>
+                            </div>
+
+                            <div class="callout warning">
+                                <strong>IRS Processing Time:</strong> The IRS processes Form 8821 authorization requests within 24-48 hours. Once authorized, all subsequent transcript pulls via this consent are instant (same-day).
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Consent Status Values</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Status</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="status-badge status-processing">processing</span></td>
+                                            <td>8821 submitted to IRS, awaiting authorization</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="status-badge status-authorized">authorized</span></td>
+                                            <td>IRS has authorized access. Transcripts can now be pulled.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="status-badge status-rejected">rejected</span></td>
+                                            <td>IRS rejected the authorization request. Contact support.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="status-badge status-rejected">revoked</span></td>
+                                            <td>Authorization was revoked. Submit new 8821 to restore.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Record of Account -->
+                    <div class="subsection" id="tpv-record-of-account">
+                        <h3 class="subsection-title">Record of Account</h3>
+                        <p style="margin-bottom: 20px;">Pull the IRS Record of Account transcript for a business once 8821 authorization is active. Returns complete account history, transactions, and balances.</p>
+
+                        <div class="endpoint-card post">
+                            <div class="endpoint-header">
+                                <span class="method-badge post">POST</span>
+                                <span class="endpoint-path">/v2/transcripts/record-of-account</span>
+                            </div>
+                            <p class="endpoint-description">Retrieve Record of Account - Fetch the IRS Record of Account transcript showing payment history and account status.</p>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Request Parameters</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Required</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="param-name">consent_id</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>The consent_id from 8821 authorization</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">tax_period</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Tax period end date (YYYY-MM-DD format)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">form_type</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td>Optional</td>
+                                            <td>Override form type (defaults to entity_type from consent)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Request</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>curl -X POST https://portal.moderntax.io/v2/transcripts/record-of-account \
+  -H "x-api-key: mt_live_tpv_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "consent_id": "cons_4v82j9k2p1m5",
+    "tax_period": "2022-12-31",
+    "form_type": "1120S"
+  }'</pre>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 200 OK</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>{
+  "tracking_number": "110049838477",
+  "form_type": "1120S",
+  "tax_period_ending": "2022-12-31",
+  "entity": {
+    "name": "DAVI AUT IN",
+    "tin": "XX-XXX8247",
+    "activity_code": "811110"
+  },
+  "account_summary": {
+    "balance": 0.00,
+    "accrued_interest": 0.00,
+    "accrued_penalty": 0.00,
+    "total_tax_per_return": 0.00,
+    "balance_status": "clear"
+  },
+  "return_information": {
+    "gross_receipts": 294570.00,
+    "total_income": 200489.00,
+    "total_deductions": 167396.00,
+    "taxable_income": 33093.00,
+    "compensation_of_officers": 35000.00,
+    "total_assets_eoy": 156738.00
+  },
+  "transactions": [
+    {
+      "code": 150,
+      "description": "Tax return filed",
+      "date": "2023-06-05",
+      "amount": 0.00,
+      "cycle": "202320"
+    },
+    {
+      "code": 670,
+      "description": "Estimated tax payment",
+      "date": "2023-04-15",
+      "amount": -8273.25,
+      "cycle": "202315"
+    },
+    {
+      "code": 460,
+      "description": "Extension of time to file",
+      "date": "2023-04-03",
+      "amount": 0.00,
+      "cycle": "202314"
+    }
+  ],
+  "shareholder_info": {
+    "number_of_shareholders": 1,
+    "total_property_distribution": 8500.00,
+    "income_loss": 33093.00,
+    "retained_earnings_eoy": 58737.00
+  },
+  "pulled_at": "2024-03-22T15:30:00Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Confirmation -->
+                    <div class="subsection" id="tpv-payment-confirmation">
+                        <h3 class="subsection-title">Payment Confirmation</h3>
+                        <p style="margin-bottom: 20px;">Confirm that a specific tax payment has been received and applied by the IRS. Returns matching transaction details and account status.</p>
+
+                        <div class="endpoint-card post">
+                            <div class="endpoint-header">
+                                <span class="method-badge post">POST</span>
+                                <span class="endpoint-path">/v2/payments/confirm</span>
+                            </div>
+                            <p class="endpoint-description">Confirm Payment - Verify that a payment has been applied to the IRS account.</p>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Request Parameters</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Required</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="param-name">consent_id</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>The consent_id from 8821 authorization</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">tax_period</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Tax period end date (YYYY-MM-DD format)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">expected_amount</span></td>
+                                            <td><span class="param-type">number</span></td>
+                                            <td>Optional</td>
+                                            <td>Expected payment amount to match against</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">payment_date</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td>Optional</td>
+                                            <td>Expected payment date (YYYY-MM-DD format)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Request</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>curl -X POST https://portal.moderntax.io/v2/payments/confirm \
+  -H "x-api-key: mt_live_tpv_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "consent_id": "cons_4v82j9k2p1m5",
+    "tax_period": "2022-12-31",
+    "expected_amount": 8273.25,
+    "payment_date": "2023-04-15"
+  }'</pre>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 200 OK</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>{
+  "confirmation_id": "pay_confirm_8k3j2m1l",
+  "status": "confirmed",
+  "tax_period": "2022-12-31",
+  "account_balance": 0.00,
+  "payment_matched": true,
+  "matched_transaction": {
+    "code": 670,
+    "description": "Estimated tax payment",
+    "date": "2023-04-15",
+    "amount": -8273.25
+  },
+  "filing_status": {
+    "entity_type_confirmed": "1120S",
+    "liens": false,
+    "collection_activity": false,
+    "balance_due": 0.00
+  },
+  "confirmed_at": "2024-03-22T15:35:00Z"
+}</pre>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Payment Confirmation Status Values</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Status</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="status-badge status-confirmed">confirmed</span></td>
+                                            <td>Payment has been found and applied to the account</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="status-badge status-pending">pending</span></td>
+                                            <td>Payment is in process but not yet applied</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="status-badge status-pending">misapplied</span></td>
+                                            <td>Payment was applied to wrong tax period or entity</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="status-badge status-rejected">not_found</span></td>
+                                            <td>No matching payment found on account</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="status-badge status-pending">partial</span></td>
+                                            <td>Partial payment applied, remaining amount pending</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit & Confirm End-to-End -->
+                    <div class="subsection" id="tpv-submit-confirm">
+                        <h3 class="subsection-title">End-to-End Payment Solution</h3>
+                        <p style="margin-bottom: 20px;">Complete payment submission and confirmation workflow. ModernTax handles the 8821 consent layer, routes payments through connected processors, and pulls records to close the loop.</p>
+
+                        <div class="callout purple">
+                            <strong>Integrated Workflow:</strong> ModernTax handles the 8821 consent layer, routes payments through connected processors (e.g., Remitian ACH), and pulls the Record of Account to confirm payments are applied. No manual follow-up needed.
+                        </div>
+
+                        <div class="endpoint-card post">
+                            <div class="endpoint-header">
+                                <span class="method-badge post">POST</span>
+                                <span class="endpoint-path">/v2/payments/submit-and-confirm</span>
+                            </div>
+                            <p class="endpoint-description">Submit & Confirm - Combined endpoint to submit a payment and confirm it in one request.</p>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Request Parameters</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Required</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="param-name">consent_id</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>The consent_id from 8821 authorization</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">payment_type</span></td>
+                                            <td><span class="param-type">enum</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>One of: estimated_quarterly, balance_due, extension</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">tax_period</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Tax period end date (YYYY-MM-DD format)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">amount</span></td>
+                                            <td><span class="param-type">number</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Payment amount in dollars</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">payment_method</span></td>
+                                            <td><span class="param-type">object</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>Payment details (type: ach/wire, account info)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">auto_confirm</span></td>
+                                            <td><span class="param-type">boolean</span></td>
+                                            <td>Optional</td>
+                                            <td>Auto-confirm payment after posting (default: true)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Request</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>curl -X POST https://portal.moderntax.io/v2/payments/submit-and-confirm \
+  -H "x-api-key: mt_live_tpv_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "consent_id": "cons_4v82j9k2p1m5",
+    "payment_type": "estimated_quarterly",
+    "tax_period": "2024-03-31",
+    "amount": 15000.00,
+    "payment_method": {
+      "type": "ach",
+      "account_number": "XXXXXX1234",
+      "routing_number": "XXXXXX789"
+    },
+    "auto_confirm": true
+  }'</pre>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 202 ACCEPTED</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>{
+  "payment_id": "pay_7k2m3j1l9p",
+  "status": "processing",
+  "amount": 15000.00,
+  "payment_type": "estimated_quarterly",
+  "tax_period": "2024-03-31",
+  "expected_posting_date": "2024-03-25",
+  "confirmation_expected": "2024-03-26",
+  "message": "Payment submitted. Confirmation will occur automatically once IRS posts the transaction."
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quarterly Monitoring -->
+                    <div class="subsection" id="tpv-quarterly">
+                        <h3 class="subsection-title">Quarterly Monitoring</h3>
+                        <p style="margin-bottom: 20px;">Set up automated monitoring of tax account status. Receive webhook notifications for payment posts, balance changes, liens, or entity election mismatches.</p>
+
+                        <div class="endpoint-card post">
+                            <div class="endpoint-header">
+                                <span class="method-badge post">POST</span>
+                                <span class="endpoint-path">/v2/monitoring/schedule</span>
+                            </div>
+                            <p class="endpoint-description">Schedule Monitoring - Set up automated quarterly or monthly account monitoring.</p>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Request Parameters</h4>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Required</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="param-name">consent_id</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>The consent_id from 8821 authorization</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">frequency</span></td>
+                                            <td><span class="param-type">enum</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>One of: quarterly, monthly, on_demand</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">webhook_url</span></td>
+                                            <td><span class="param-type">string</span></td>
+                                            <td><span class="param-required">✓</span></td>
+                                            <td>HTTPS endpoint to receive monitoring notifications</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="param-name">check_items</span></td>
+                                            <td><span class="param-type">string[]</span></td>
+                                            <td>Optional</td>
+                                            <td>Array of checks: payment_posted, balance_change, lien_filed, entity_election</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Request</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON</span>
+                                    <button class="copy-btn">Copy</button>
+                                </div>
+<pre>curl -X POST https://portal.moderntax.io/v2/monitoring/schedule \
+  -H "x-api-key: mt_live_tpv_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "consent_id": "cons_4v82j9k2p1m5",
+    "frequency": "quarterly",
+    "webhook_url": "https://yourapp.com/webhooks/irs-monitoring",
+    "check_items": ["payment_posted", "balance_change", "entity_election"]
+  }'</pre>
+                            </div>
+
+                            <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Response</h4>
+                            <div class="code-block">
+                                <div class="code-block-header">
+                                    <span>JSON 201 CREATED</span>
+                                </div>
+<pre>{
+  "monitor_id": "mon_5p2k9j1m3l",
+  "consent_id": "cons_4v82j9k2p1m5",
+  "frequency": "quarterly",
+  "status": "active",
+  "check_items": ["payment_posted", "balance_change", "entity_election"],
+  "next_check": "2024-06-22T12:00:00Z",
+  "created_at": "2024-03-22T14:30:00Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- S-Corp Services -->
+                    <div class="subsection" id="scorp-entity-election">
+                        <h3 class="subsection-title">S-Corp Services</h3>
+                        <p style="margin-bottom: 20px;">Only ~10% of 5.3M US S-Corps have an IRS Business Tax Account. ModernTax bridges the gap via 8821 access, enabling verification of entity status and transaction history.</p>
+
+                        <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 16px;">Entity Election Detection</h4>
+                        <p style="margin-bottom: 20px;">A common issue: businesses file Form 2553 (S-Corp election) but the IRS still classifies the entity as a C-Corp (1120) or Partnership (1065) on their tax account. This endpoint detects such mismatches.</p>
+
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>EXAMPLE RESPONSE - ENTITY MISMATCH</span>
+                                <button class="copy-btn">Copy</button>
+                            </div>
+<pre>{
+  "entity_election": {
+    "expected_type": "1120S",
+    "irs_type_on_record": "1120",
+    "match": false,
+    "alert": "Entity election mismatch detected. Form 2553 filed but IRS has not updated classification."
+  }
+}</pre>
+                        </div>
+
+                        <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 16px; margin-top: 24px;" id="scorp-transaction-codes">Transaction Codes Reference</h4>
+                        <p style="margin-bottom: 20px;">Understanding transaction codes on the Record of Account helps interpret account activity and identify issues.</p>
+
+                        <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Payment Codes</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>610</strong></td>
+                                        <td>Payment with return</td>
+                                        <td>Negative (credit)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>650</strong></td>
+                                        <td>Electronic payment</td>
+                                        <td>Negative (credit)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>660</strong></td>
+                                        <td>Estimated payment</td>
+                                        <td>Negative (credit)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>670</strong></td>
+                                        <td>Subsequent payment</td>
+                                        <td>Negative (credit)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>700</strong></td>
+                                        <td>Credit applied</td>
+                                        <td>Negative (credit)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>706</strong></td>
+                                        <td>Credit transferred out</td>
+                                        <td>Negative (credit)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Filing & Account Codes</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>150</strong></td>
+                                        <td>Tax return filed</td>
+                                        <td>Filing Event</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>460</strong></td>
+                                        <td>Extension of time to file</td>
+                                        <td>Filing Event</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>290</strong></td>
+                                        <td>Additional tax</td>
+                                        <td>Account Adjustment</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>300</strong></td>
+                                        <td>Audit adjustment</td>
+                                        <td>Account Adjustment</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>570</strong></td>
+                                        <td>Action pending</td>
+                                        <td>Account Status</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>582</strong></td>
+                                        <td>Lien filed</td>
+                                        <td>Account Status</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Webhooks -->
+                    <div class="subsection" id="webhooks">
+                        <h3 class="subsection-title">Webhooks</h3>
+                        <p style="margin-bottom: 20px;">ModernTax sends webhook notifications for key events in the payment verification and monitoring workflows.</p>
+
+                        <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">Event Types</h4>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th>Trigger</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>consent.authorized</strong></td>
+                                        <td>8821 form authorized by IRS</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>consent.rejected</strong></td>
+                                        <td>IRS rejected 8821 authorization</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>payment.confirmed</strong></td>
+                                        <td>Payment found and applied to account</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>payment.not_found</strong></td>
+                                        <td>Expected payment not found on account</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>payment.misapplied</strong></td>
+                                        <td>Payment applied to wrong tax period</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>account.balance_change</strong></td>
+                                        <td>Account balance changed since last check</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>account.lien_filed</strong></td>
+                                        <td>Tax lien has been filed</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>entity.election_mismatch</strong></td>
+                                        <td>Entity type mismatch detected (e.g., 2553 filed but IRS shows 1120)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>irs.letter_detected</strong></td>
+                                        <td>IRS correspondence detected on account</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">Example Webhook Payload</h4>
+                        <p style="margin-bottom: 12px;"><strong>Event: payment.confirmed</strong></p>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>JSON</span>
+                                <button class="copy-btn">Copy</button>
+                            </div>
+<pre>{
+  "event_id": "evt_9m2l7k3j1p",
+  "event_type": "payment.confirmed",
+  "timestamp": "2024-03-25T14:30:00Z",
+  "consent_id": "cons_4v82j9k2p1m5",
+  "data": {
+    "confirmation_id": "pay_confirm_8k3j2m1l",
+    "tax_period": "2022-12-31",
+    "amount": 8273.25,
+    "matched_transaction": {
+      "code": 670,
+      "description": "Estimated tax payment",
+      "date": "2023-04-15"
+    },
+    "account_balance": 0.00,
+    "status": "confirmed"
+  }
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: REFERENCE -->
+                <section class="section">
+                    <h2 class="section-title">Reference</h2>
+
+                    <!-- Error Codes -->
+                    <div class="subsection" id="error-codes">
+                        <h3 class="subsection-title">Error Codes</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Resolution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>401</strong></td>
+                                        <td>Unauthorized - Missing or invalid API key</td>
+                                        <td>Verify x-api-key header and key format</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>400</strong></td>
+                                        <td>Bad Request - Missing required parameters</td>
+                                        <td>Check request payload for required fields</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>404</strong></td>
+                                        <td>Not Found - Request token or consent_id does not exist</td>
+                                        <td>Verify the token/consent_id is correct and still valid</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>409</strong></td>
+                                        <td>Conflict - Duplicate request token</td>
+                                        <td>Use a unique request_token for each new request</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>429</strong></td>
+                                        <td>Too Many Requests - Rate limit exceeded</td>
+                                        <td>Contact sales@moderntax.io for rate limit increase</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Rate Limits -->
+                    <div class="subsection" id="rate-limits">
+                        <h3 class="subsection-title">Rate Limits</h3>
+                        <div class="callout info">
+                            <strong>Free Tier:</strong> 3 requests total to test the API.
+                        </div>
+                        <p style="margin-bottom: 16px;">For production use or higher volumes, contact <strong>sales@moderntax.io</strong>.</p>
+                        <p style="color: #475569;">Rate limits are enforced per API key per minute. In excess, requests return HTTP 429 with retry information.</p>
+                    </div>
+
+                    <!-- Data Schemas -->
+                    <div class="subsection" id="data-schemas">
+                        <h3 class="subsection-title">Data Schemas</h3>
+                        <p style="margin-bottom: 24px;">TypeScript interface definitions for common data structures:</p>
+
+                        <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">EmploymentData</h4>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>TYPESCRIPT</span>
+                                <button class="copy-btn">Copy</button>
+                            </div>
+<pre>interface EmploymentData {
+  request_token: string;
+  employee_name: string;
+  employee_ssn_last4: string;
+  years_verified: string[];
+  employers: EmploymentEmployer[];
+  transcript_urls: string[];
+  completed_at: string;
 }
 
-<span class="text-purple-400">interface</span> <span class="text-yellow-400">EmploymentEmployer</span> {
-  <span class="text-blue-400">name</span>: <span class="text-green-400">string</span>;
-  <span class="text-blue-400">ein</span>: <span class="text-green-400">string</span>;
-  <span class="text-blue-400">is_peo</span>: <span class="text-green-400">boolean</span>;       <span class="text-gray-500">// Professional Employer Organization flag</span>
-  <span class="text-blue-400">years</span>: <span class="text-yellow-400">Record</span>&lt;<span class="text-green-400">string</span>, <span class="text-yellow-400">EmploymentYearData</span>&gt;;
+interface EmploymentEmployer {
+  year: string;
+  employer_name: string;
+  employer_ein: string;
+  w2_wages: number;
+  federal_tax_withheld: number;
+  state_tax_withheld: number;
 }
 
-<span class="text-purple-400">interface</span> <span class="text-yellow-400">EmploymentYearData</span> {
-  <span class="text-blue-400">w2_wages</span>?: <span class="text-green-400">number</span>;       <span class="text-gray-500">// W-2 Box 1: Wages, tips, other compensation</span>
-  <span class="text-blue-400">federal_tax</span>?: <span class="text-green-400">number</span>;    <span class="text-gray-500">// W-2 Box 2: Federal income tax withheld</span>
-  <span class="text-blue-400">social_security</span>?: <span class="text-green-400">number</span>; <span class="text-gray-500">// W-2 Box 3: Social security wages</span>
-  <span class="text-blue-400">medicare_wages</span>?: <span class="text-green-400">number</span>; <span class="text-gray-500">// W-2 Box 5: Medicare wages</span>
-  <span class="text-blue-400">form_1099_income</span>?: <span class="text-green-400">number</span>; <span class="text-gray-500">// 1099-NEC/MISC non-employee compensation</span>
-}</code></pre>
-      </div>
-    </section>
+interface EmploymentYearData {
+  year: string;
+  gross_income: number;
+  federal_tax: number;
+  state_tax: number;
+  social_security_tax: number;
+  medicare_tax: number;
+}</pre>
+                        </div>
 
-    <!-- Footer -->
-    <div class="border-t border-gray-200 pt-8 mt-16">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <p class="text-gray-500 text-sm">&copy; 2026 ModernTax, Inc.</p>
-        <div class="flex items-center gap-4 text-sm">
-          <a href="../" class="text-gray-500 hover:text-mt-dark">Home</a>
-          <a href="mailto:matt@moderntax.io" class="text-gray-500 hover:text-mt-dark">Contact</a>
-          <a href="https://portal.moderntax.io/login" class="text-gray-500 hover:text-mt-dark">Portal</a>
-        </div>
-      </div>
+                        <h4 style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px; margin-top: 24px;">PaymentVerificationData</h4>
+                        <div class="code-block">
+                            <div class="code-block-header">
+                                <span>TYPESCRIPT</span>
+                                <button class="copy-btn">Copy</button>
+                            </div>
+<pre>interface PaymentConfirmation {
+  confirmation_id: string;
+  status: "confirmed" | "pending" | "misapplied" | "not_found" | "partial";
+  tax_period: string;
+  account_balance: number;
+  payment_matched: boolean;
+  matched_transaction?: Transaction;
+  filing_status: FilingStatus;
+}
+
+interface Transaction {
+  code: number;
+  description: string;
+  date: string;
+  amount: number;
+  cycle?: string;
+}
+
+interface FilingStatus {
+  entity_type_confirmed: string;
+  liens: boolean;
+  collection_activity: boolean;
+  balance_due: number;
+}</pre>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#top">Home</a>
+                        <a href="mailto:matt@moderntax.io">Contact</a>
+                        <a href="https://portal.moderntax.io">Portal</a>
+                    </div>
+                    <p style="margin-bottom: 0;">© 2026 ModernTax, Inc. All rights reserved.</p>
+                    <div class="footer-meta">
+                        <div class="soc-badge">SOC 2 Type II Compliant</div>
+                        <span style="color: #64748b;">API v2.1</span>
+                    </div>
+                </div>
+            </footer>
+        </main>
     </div>
-  </main>
-</div>
 
-<!-- Sidebar active state highlighting -->
-<script>
-  const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.sidebar-link');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-      const top = section.offsetTop - 100;
-      if (window.scrollY >= top) current = section.id;
-    });
-    links.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-    });
-  });
-</script>
+    <script>
+        // Smooth scrolling for nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    // Update active link
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    // Close mobile sidebar
+                    document.querySelector('.sidebar').classList.remove('open');
+                    document.querySelector('.sidebar-overlay').classList.remove('active');
+                }
+            });
+        });
 
+        // Copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const codeBlock = btn.closest('.code-block');
+                const code = codeBlock.querySelector('pre').textContent;
+                navigator.clipboard.writeText(code);
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                }, 2000);
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                    const sectionId = section.getAttribute('id');
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
