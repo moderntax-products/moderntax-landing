@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /netlify/
+Disallow: /sandbox-interface.html
+
+Sitemap: https://moderntax.io/sitemap.xml
