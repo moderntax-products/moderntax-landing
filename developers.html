@@ -158,6 +158,14 @@
   .swatch.sel{box-shadow:0 0 0 2px var(--ink)}
   .toggle-btn{border:1px solid var(--rule);padding:4px 10px;border-radius:999px;font-size:12px}
   .toggle-btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+  /* very narrow phones (<=380px): header brand tag + code-bar filename
+     forced ~40px of horizontal overflow; drop the decorative bits */
+  @media(max-width:380px){
+    .brand .tag{display:none}
+    .code-bar .fn{display:none}
+    .head .btn-sm{padding:0 10px}
+  }
 </style>
 </head>
 <body>

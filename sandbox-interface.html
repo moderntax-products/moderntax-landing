@@ -124,7 +124,8 @@
         
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* min(100%,300px) lets cards shrink on <330px viewports instead of overflowing */
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
             gap: 20px;
             margin: 30px 0;
         }
@@ -144,7 +145,7 @@
         
         .test-samples {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
             gap: 20px;
             margin: 20px 0;
         }
@@ -1081,7 +1082,7 @@
                 
                 <div style="margin-top: 40px; padding: 30px; background: #f1f5f9; border-radius: 12px;">
                     <h3 style="color: #12264e; margin-bottom: 15px;">Why Choose ModernTax vs Competitors?</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; text-align: left;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px; text-align: left;">
                         <div>
                             <strong>vs Work Number (Equifax):</strong><br>
                             <span style="color: #64748b;">Save $15-50 per check • 30-60 min vs instant but limited data • Single consent covers all employers</span>

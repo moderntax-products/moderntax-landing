@@ -210,6 +210,15 @@
   .swatch.sel { box-shadow: 0 0 0 2px var(--ink); }
   .toggle-btn { border: 1px solid var(--rule); padding: 4px 10px; border-radius: 999px; font-size: 12px; }
   .toggle-btn.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* narrow phones (<375px, e.g. 320/360): the three-item header
+     (back link + brand + demo button) overflowed by ~53px; collapse the
+     back link to its chevron icon and drop the brand tag */
+  @media (max-width: 374px) {
+    .back { font-size: 0; gap: 0; }
+    .back svg { width: 18px; height: 18px; }
+    .brand .tag { display: none; }
+  }
 </style>
 </head>
 <body>
