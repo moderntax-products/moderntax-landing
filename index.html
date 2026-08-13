@@ -778,6 +778,22 @@
     .uc-row { grid-template-columns: 40px 1fr; }
     .uc-tag { display: none; }
   }
+  /* ─── phone: stop the hero demo form + pill from overflowing 375px ─── */
+  @media (max-width: 640px) {
+    /* demo card's two-up input row would keep its intrinsic width and push
+       the card past the viewport; stack it and let inputs shrink */
+    .form-grid-2 { grid-template-columns: 1fr; }
+    .form-row input, .form-row select { min-width: 0; width: 100%; }
+    /* long single-line eyebrow pill wraps instead of overflowing */
+    .hero-meta { flex-wrap: wrap; }
+    .pill { max-width: 100%; }
+    /* footer newsletter input must shrink on very narrow phones (320px) */
+    .foot-newsletter { max-width: 100%; }
+    .foot-newsletter input { min-width: 0; }
+    /* let the 1fr footer grid track shrink below its content min-width so
+       the newsletter row doesn't blow the column past a 320px viewport */
+    .foot-col { min-width: 0; }
+  }
 </style>
 </head>
 <body>
@@ -980,23 +996,21 @@ Illustrative flow. Rejections are never billed, and nothing re-pulls without you
 <div class="ticker-wrap">
   <div class="ticker">
     <!-- duplicated for seamless loop -->
-    <span class="ticker-item">Cascade Capital</span><span class="star"></span>
-    <span class="ticker-item">Meridian SBA Group</span><span class="star"></span>
-    <span class="ticker-item">Northbrook Lending</span><span class="star"></span>
-    <span class="ticker-item">Pioneer CDC</span><span class="star"></span>
-    <span class="ticker-item">Lone Star Commercial</span><span class="star"></span>
-    <span class="ticker-item">Harbor Bancshares</span><span class="star"></span>
-    <span class="ticker-item">Vesta HR Platform</span><span class="star"></span>
-    <span class="ticker-item">Allegro Verifications</span><span class="star"></span>
+    <span class="ticker-item">Banc of California</span><span class="star"></span>
+    <span class="ticker-item">Centerstone SBA Lending</span><span class="star"></span>
+    <span class="ticker-item">California Statewide CDC</span><span class="star"></span>
+    <span class="ticker-item">TMC Financing</span><span class="star"></span>
+    <span class="ticker-item">TaxTaker</span><span class="star"></span>
+    <span class="ticker-item">Growth Corp</span><span class="star"></span>
+    <span class="ticker-item">Clearfirm</span><span class="star"></span>
     <!-- copy -->
-    <span class="ticker-item">Cascade Capital</span><span class="star"></span>
-    <span class="ticker-item">Meridian SBA Group</span><span class="star"></span>
-    <span class="ticker-item">Northbrook Lending</span><span class="star"></span>
-    <span class="ticker-item">Pioneer CDC</span><span class="star"></span>
-    <span class="ticker-item">Lone Star Commercial</span><span class="star"></span>
-    <span class="ticker-item">Harbor Bancshares</span><span class="star"></span>
-    <span class="ticker-item">Vesta HR Platform</span><span class="star"></span>
-    <span class="ticker-item">Allegro Verifications</span><span class="star"></span>
+    <span class="ticker-item">Banc of California</span><span class="star"></span>
+    <span class="ticker-item">Centerstone SBA Lending</span><span class="star"></span>
+    <span class="ticker-item">California Statewide CDC</span><span class="star"></span>
+    <span class="ticker-item">TMC Financing</span><span class="star"></span>
+    <span class="ticker-item">TaxTaker</span><span class="star"></span>
+    <span class="ticker-item">Growth Corp</span><span class="star"></span>
+    <span class="ticker-item">Clearfirm</span><span class="star"></span>
   </div>
 </div>
 
