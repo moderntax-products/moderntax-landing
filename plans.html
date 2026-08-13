@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ModernTax Portal — Plans & Add-ons</title>
+<template id="__bundler_thumbnail" data-bg-color="#fbfaf7">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#fbfaf7"/>
+    <g transform="translate(600 300)" fill="none" stroke="#2a2622" stroke-width="22">
+      <rect x="-160" y="-70" width="20" height="170" fill="#2a2622" stroke="none"/>
+      <rect x="140" y="-70" width="20" height="170" fill="#2a2622" stroke="none"/>
+      <path d="M-140 -70 L0 100 L140 -70" stroke-linecap="square"/>
+    </g>
+    <circle cx="600" cy="430" r="11" fill="#2f5fd0"/>
+    <text x="600" y="540" font-family="Georgia, serif" font-size="58" fill="#2a2622" text-anchor="middle">ModernTax</text>
+    <text x="600" y="600" font-family="Georgia, serif" font-style="italic" font-size="34" fill="#2f5fd0" text-anchor="middle">Plans &amp; add-ons</text>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: oklch(98.4% 0.006 80);
+    --paper-2: oklch(96.2% 0.008 80);
+    --paper-3: oklch(93.4% 0.012 80);
+    --rule: oklch(86% 0.014 80);
+    --rule-soft: oklch(91% 0.012 80);
+    --ink: oklch(18% 0.012 60);
+    --ink-2: oklch(34% 0.014 60);
+    --ink-3: oklch(52% 0.012 60);
+    --ink-4: oklch(68% 0.010 60);
+    --accent: oklch(48% 0.13 240);
+    --accent-ink: oklch(28% 0.10 240);
+    --accent-soft: oklch(94% 0.04 240);
+    --warn-ink: oklch(40% 0.13 60);
+    --warn-soft: oklch(95% 0.045 75);
+    --ok: oklch(50% 0.12 155);
+    --ok-ink: oklch(34% 0.12 155);
+    --ok-soft: oklch(95% 0.035 155);
+    --purple: oklch(50% 0.15 300);
+    --purple-soft: oklch(95% 0.035 300);
+    --bg: var(--paper);
+    --surface: #fff;
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  html[data-theme="dark"] {
+    --paper: oklch(16% 0.012 70); --paper-2: oklch(20% 0.013 70); --paper-3: oklch(24% 0.014 70);
+    --rule: oklch(32% 0.014 70); --rule-soft: oklch(26% 0.013 70);
+    --ink: oklch(96% 0.008 80); --ink-2: oklch(82% 0.010 80); --ink-3: oklch(64% 0.010 80); --ink-4: oklch(48% 0.010 80);
+    --accent-soft: oklch(28% 0.05 240); --accent-ink: oklch(82% 0.10 240);
+    --warn-soft: oklch(28% 0.05 75); --warn-ink: oklch(80% 0.11 75);
+    --ok-soft: oklch(28% 0.05 155); --ok-ink: oklch(80% 0.11 155);
+    --purple-soft: oklch(28% 0.05 300);
+    --surface: var(--paper-2);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+  ::selection { background: var(--accent); color: #fff; }
+  .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; }
+  .mono { font-family: var(--mono); }
+  .eyebrow { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); font-weight: 500; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-inline: clamp(16px, 3vw, 32px); }
+
+  /* header */
+  .head { border-bottom: 1px solid var(--rule); background: color-mix(in oklab, var(--surface) 88%, transparent); backdrop-filter: saturate(140%) blur(10px); position: sticky; top: 0; z-index: 40; }
+  .head-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .back { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 13.5px; font-weight: 500; }
+  .back:hover { color: var(--ink); }
+  .brand { display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 20px; letter-spacing: -0.01em; }
+  .brand .tag { font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-left: 8px; border-left: 1px solid var(--rule); }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 9px; font-size: 14px; font-weight: 500; transition: all .15s ease; white-space: nowrap; }
+  .btn-sm { height: 34px; padding: 0 13px; font-size: 13px; }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent-ink); color: #fff; }
+  .btn-accent { background: var(--accent); color: #fff; }
+  .btn-accent:hover { filter: brightness(1.06); }
+  .btn-ghost { background: var(--surface); border: 1px solid var(--rule); color: var(--ink-2); }
+  .btn-ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+  .btn-block { width: 100%; justify-content: center; }
+  .arrow { display: inline-block; transition: transform .18s ease; }
+  a:hover .arrow, .btn:hover .arrow { transform: translateX(3px); }
+
+  /* hero */
+  .hero { padding: clamp(48px, 7vw, 96px) 0 clamp(36px, 5vw, 64px); }
+  .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 6vw, 76px); line-height: 1.06; letter-spacing: -0.02em; margin: 16px 0 0; padding-bottom: 0.12em; max-width: 16ch; text-wrap: balance; }
+  .hero h1 em { font-style: italic; color: var(--accent-ink); }
+  .hero p { font-size: clamp(16px, 1.4vw, 19px); color: var(--ink-2); max-width: 60ch; margin: 24px 0 0; text-wrap: pretty; }
+  .trust { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 30px; }
+  .trust span { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+  .trust svg { color: var(--ok); }
+
+  /* tier grid */
+  .tiers { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 8px; }
+  @media (min-width: 900px) { .tiers { grid-template-columns: repeat(3, 1fr); align-items: start; } }
+  .tier { background: var(--surface); border: 1px solid var(--rule); border-radius: 18px; padding: 28px; display: flex; flex-direction: column; position: relative; }
+  .tier.featured { border-color: var(--accent); box-shadow: 0 1px 0 var(--accent), 0 24px 48px -30px color-mix(in oklab, var(--accent) 60%, transparent); }
+  @media (min-width: 900px) { .tier.featured { transform: translateY(-12px); } }
+  .tier .ribbon { position: absolute; top: -11px; left: 28px; background: var(--accent); color: #fff; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
+  .tier .tname { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .tier .tbest { font-size: 13px; color: var(--ink-3); margin-top: 6px; }
+  .tier .price { font-family: var(--serif); font-size: 46px; line-height: 1; color: var(--ink); margin: 20px 0 2px; }
+  .tier .price small { font-family: var(--sans); font-size: 14px; color: var(--ink-3); }
+  .tier .pricenote { font-size: 12.5px; color: var(--accent-ink); font-weight: 500; min-height: 18px; }
+  .tier .blurb { font-size: 13.5px; color: var(--ink-2); margin: 16px 0 22px; line-height: 1.5; }
+  .tier ul { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 11px; flex: 1; }
+  .tier li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; font-size: 13.5px; color: var(--ink-2); }
+  .tier li svg { margin-top: 3px; color: var(--accent); }
+  .tier li.head { font-weight: 600; color: var(--ink); }
+  .tier .cta-note { font-size: 11.5px; color: var(--ink-3); text-align: center; margin-top: 10px; }
+
+  .micro-note { text-align: center; font-size: 13px; color: var(--ink-3); margin: 28px auto 0; max-width: 64ch; }
+
+  /* section heads */
+  .section { padding: clamp(48px, 7vw, 88px) 0 0; }
+  .section-head { max-width: 60ch; margin-bottom: 36px; }
+  .section-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 3.6vw, 46px); line-height: 1.02; letter-spacing: -0.015em; margin: 14px 0 0; }
+  .section-head h2 em { font-style: italic; color: var(--accent-ink); }
+  .section-head p { font-size: 15px; color: var(--ink-2); margin: 16px 0 0; }
+
+  /* featured add-on (with steps) */
+  .addon-feat { background: var(--surface); border: 1px solid var(--rule); border-radius: 18px; overflow: hidden; margin-bottom: 18px; }
+  .addon-feat-top { display: grid; grid-template-columns: 1fr; gap: 18px; padding: 28px; border-bottom: 1px solid var(--rule-soft); }
+  @media (min-width: 800px) { .addon-feat-top { grid-template-columns: 1.3fr 1fr; align-items: start; } }
+  .addon-feat h3 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1; margin: 0 0 6px; }
+  .addon-feat .tease { font-size: 14px; color: var(--accent-ink); font-weight: 500; margin-bottom: 14px; }
+  .addon-feat .desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+  .addon-price-box { background: var(--paper-2); border: 1px solid var(--rule-soft); border-radius: 12px; padding: 18px; }
+  .addon-price-box .p { font-family: var(--serif); font-size: 30px; line-height: 1; color: var(--ink); }
+  .addon-price-box .sub { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
+  .steps { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--rule-soft); }
+  @media (min-width: 680px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .step { background: var(--surface); padding: 22px; }
+  .step .n { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; font-weight: 500; margin-bottom: 12px; }
+  .step h4 { font-size: 14px; font-weight: 600; margin: 0 0 6px; color: var(--ink); }
+  .step p { font-size: 12.5px; color: var(--ink-3); margin: 0; line-height: 1.5; }
+  .addon-feat-foot { padding: 16px 28px; display: flex; justify-content: flex-end; }
+  .feat-link { font-size: 13.5px; font-weight: 600; color: var(--accent-ink); display: inline-flex; gap: 6px; }
+
+  /* add-on grid (smaller) */
+  .addon-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 720px) { .addon-grid { grid-template-columns: 1fr 1fr; } }
+  .addon { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
+  .addon .a-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+  .addon h3 { font-size: 17px; font-weight: 600; margin: 0; color: var(--ink); }
+  .addon .a-price { font-family: var(--mono); font-size: 13px; color: var(--accent-ink); font-weight: 500; white-space: nowrap; }
+  .addon .a-tag { font-size: 11.5px; color: var(--ink-3); margin-bottom: 12px; }
+  .addon p { font-size: 13.5px; color: var(--ink-2); margin: 0 0 14px; line-height: 1.5; flex: 1; }
+  .addon ul { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 8px; }
+  .addon li { display: grid; grid-template-columns: 16px 1fr; gap: 9px; font-size: 13px; color: var(--ink-2); }
+  .addon li svg { margin-top: 3px; color: var(--ok); }
+  .addon .a-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+  .addon-link { font-size: 13px; font-weight: 600; color: var(--accent-ink); display: inline-flex; gap: 5px; }
+  .a-ico { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; margin-bottom: 14px; }
+
+  /* ROI band */
+  .roi { background: var(--ink); color: var(--paper); border-radius: 22px; padding: clamp(32px, 4vw, 56px); margin-top: 12px; position: relative; overflow: hidden; }
+  .roi::before { content: ''; position: absolute; inset: -40% -10% auto auto; width: 50%; aspect-ratio: 1; background: radial-gradient(circle, color-mix(in oklab, var(--accent) 30%, transparent), transparent 62%); pointer-events: none; }
+  .roi .eyebrow { color: color-mix(in oklab, var(--paper) 60%, transparent); }
+  .roi h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.02; margin: 12px 0 8px; color: var(--paper); }
+  .roi .roi-sub { color: color-mix(in oklab, var(--paper) 68%, transparent); font-size: 14px; max-width: 52ch; }
+  .roi-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: color-mix(in oklab, var(--paper) 14%, transparent); border-radius: 14px; overflow: hidden; margin: 32px 0 24px; }
+  @media (min-width: 760px) { .roi-grid { grid-template-columns: repeat(3, 1fr); } }
+  .roi-cell { background: var(--ink); padding: 26px; position: relative; }
+  .roi-cell.hl { background: color-mix(in oklab, var(--accent) 18%, var(--ink)); }
+  .roi-cell .rl { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: color-mix(in oklab, var(--paper) 60%, transparent); }
+  .roi-cell .rv { font-family: var(--serif); font-size: 52px; line-height: 1; margin: 12px 0 10px; color: var(--paper); }
+  .roi-cell .rd { font-size: 12.5px; color: color-mix(in oklab, var(--paper) 70%, transparent); line-height: 1.55; }
+  .roi-foot { font-size: 13.5px; color: color-mix(in oklab, var(--paper) 72%, transparent); line-height: 1.6; max-width: 70ch; }
+  .roi-foot strong { color: var(--paper); }
+
+  /* FAQ */
+  .faq { border-top: 1px solid var(--rule); margin-top: 8px; }
+  .faq details { border-bottom: 1px solid var(--rule); }
+  .faq summary { list-style: none; cursor: pointer; padding: 22px 4px; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-family: var(--serif); font-size: clamp(19px, 2vw, 24px); color: var(--ink); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .pm { width: 22px; height: 22px; flex-shrink: 0; position: relative; }
+  .faq summary .pm::before, .faq summary .pm::after { content: ''; position: absolute; background: var(--ink-3); transition: transform .2s ease; }
+  .faq summary .pm::before { left: 0; top: 10px; width: 22px; height: 2px; }
+  .faq summary .pm::after { left: 10px; top: 0; width: 2px; height: 22px; }
+  .faq details[open] summary .pm::after { transform: scaleY(0); }
+  .faq .ans { padding: 0 4px 24px; font-size: 14.5px; color: var(--ink-2); max-width: 72ch; line-height: 1.6; }
+
+  /* final CTA */
+  .final { text-align: center; padding: clamp(56px, 8vw, 110px) 0 clamp(48px, 6vw, 80px); }
+  .final h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 4.6vw, 60px); line-height: 1; letter-spacing: -0.015em; margin: 0; }
+  .final h2 em { font-style: italic; color: var(--accent-ink); }
+  .final p { font-size: 16px; color: var(--ink-2); margin: 20px auto 0; max-width: 50ch; }
+  .final-cta { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+
+  footer { border-top: 1px solid var(--rule); padding: 28px 0; }
+  .foot-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 13px; color: var(--ink-3); flex-wrap: wrap; }
+
+  /* tweaks */
+  .tw { position: fixed; right: 16px; bottom: 16px; z-index: 200; background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 14px; width: 240px; box-shadow: 0 10px 30px -10px rgba(0,0,0,.18); display: none; font-size: 13px; }
+  .tw.show { display: block; }
+  .tw h6 { font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 10px; font-weight: 500; }
+  .tw .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .swatches { display: flex; gap: 6px; }
+  .swatch { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--rule); cursor: pointer; }
+  .swatch.sel { box-shadow: 0 0 0 2px var(--ink); }
+  .toggle-btn { border: 1px solid var(--rule); padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+  .toggle-btn.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- header -->
+<header class="head">
+  <div class="wrap head-inner">
+    <a href="https://portal.moderntax.io/login" class="back">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3 L5 8 L10 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to dashboard
+    </a>
+    <a href="/" class="brand">
+      <svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+        <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
+        <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+        <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+        <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+      </svg>
+      ModernTax<span class="tag">Plans</span>
+    </a>
+    <a href="mailto:matt@moderntax.io" class="btn btn-ghost btn-sm">Talk to sales</a>
+  </div>
+</header>
+
+<!-- hero -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Plans &amp; add-ons</div>
+    <h1>Pick the plan that grows with your <em>loan portfolio.</em></h1>
+    <p>Pricing scales with how you do SBA underwriting — pay per pull, prepay a deposit, or run on the Platform tier with API access. Add-ons turn each funded loan into recurring revenue. Effective 2026-08-07.</p>
+    <div class="trust">
+      <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> No setup fee on PAYG</span>
+      <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Switch tiers any time</span>
+      <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> 3 free trial pulls</span>
+    </div>
+  </div>
+</section>
+
+<!-- tiers -->
+<section class="wrap">
+  <div class="tiers">
+    <!-- Tier A -->
+    <div class="tier">
+      <div class="tname">Tier A · Pay-As-You-Go</div>
+      <div class="tbest">Best for &lt;15 verifications / month</div>
+      <div class="price">$84.99 <small>/ verified entity</small></div>
+      <div class="pricenote">&nbsp;</div>
+      <div class="blurb">Billed monthly for what your team actually pulled. No commitment, no deposit.</div>
+      <ul>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Unlimited team seats</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> CSV / PDF / email intake</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Auto-sent 8821s via Dropbox Sign</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Return Transcripts + Records of Account</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Compliance flag screening</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> 3 free trial pulls</li>
+      </ul>
+      <button class="btn btn-ghost btn-block">Start PAYG</button>
+      <div class="cta-note">Active by default · no charge until pull #4</div>
+    </div>
+
+    <!-- Tier B -->
+    <div class="tier featured">
+      <span class="ribbon">Most popular</span>
+      <div class="tname">Tier B · Deposit</div>
+      <div class="tbest">Best for steady monthly volume</div>
+      <div class="price">$64.99 <small>/ verified entity</small></div>
+      <div class="pricenote">~24% under PAYG · $2,500 prepaid balance</div>
+      <div class="blurb">Prepay a $2,500 balance; each verification draws against it. This is where volume savings live — committed-volume packs go deeper still.</div>
+      <ul>
+        <li class="head"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Everything in PAYG</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> ~24% lower per-pull rate</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Priority support (4h response)</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Quarterly account reviews</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Bulk fire-all-8821s for processors</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Deeper rates via committed-volume packs</li>
+      </ul>
+      <button class="btn btn-accent btn-block">Upgrade to Tier B</button>
+      <div class="cta-note">Pay $2,500 deposit via Stripe — rate locks instantly</div>
+    </div>
+
+    <!-- Tier C -->
+    <div class="tier">
+      <div class="tname">Tier C · Platform</div>
+      <div class="tbest">For lenders &amp; LOS platforms building on our API</div>
+      <div class="price">$49.99 <small>/ verified entity</small></div>
+      <div class="pricenote">+ $2,500/mo subscription</div>
+      <div class="blurb">Priced for capability, not loan count — the subscription buys the platform and the per-pull rate is a floor beneath it. Not a volume tier: heavy pullers save on Deposit packs.</div>
+      <ul>
+        <li class="head"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Everything in Deposit</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Monthly platform credits</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> REST API + webhook delivery</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> White-label borrower doc hub</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Dedicated CSM + same-day SLA</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> SOC 2 documentation</li>
+      </ul>
+      <a href="developers.html" class="btn btn-ghost btn-block">See the API</a>
+      <div class="cta-note">$2,500/mo subscription · sandbox keys same day</div>
+    </div>
+  </div>
+  <p class="micro-note">All tiers include audit logging, MFA, and IRS Practitioner Priority Service routing. Tier upgrades require an MSA signature. Reselling under your own brand? The <a href="developers.html" style="color:var(--accent-ink);font-weight:600;">wholesale lane runs $39.98–$44.99/unit</a> against a committed monthly minimum.</p>
+</section>
+
+<!-- add-ons -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Add-ons</div>
+      <h2>Add-ons that extend <em>each funded loan.</em></h2>
+      <p>Every plan tier supports these add-ons. They turn one-time per-pull revenue into ongoing per-loan revenue across the full 25-year SBA loan life.</p>
+    </div>
+
+    <!-- Featured 1: Monitoring -->
+    <div class="addon-feat">
+      <div class="addon-feat-top">
+        <div>
+          <h3>Post-Close Monitoring</h3>
+          <div class="tease">You are billed only when a fresh transcript actually lands</div>
+          <div class="desc">When a borrower owes a tax return as a closing condition, enroll the entity at intake. We re-poll the IRS until the conditioned transcript arrives, then auto-cancel. Empty checks cost nothing — the fee applies only when a pull returns something new, which is the billing-surprise every processor has been burned by.</div>
+        </div>
+        <div class="addon-price-box">
+          <div class="p">$39.99 <span style="font-size:14px; color: var(--ink-3);">/ update</span></div>
+          <div class="sub">Billed per landed update, never per check. Auto-cancels once the conditioned transcript arrives — no unenroll cleanup.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h4>Opt in at intake</h4><p>Per-entity checkbox on every intake flow. Manager can also flip on team-wide auto-enroll from the dashboard.</p></div>
+        <div class="step"><div class="n">2</div><h4>Scheduled IRS sweep</h4><p>We re-pull Records of Account on a configurable cadence using the same expert pipeline. A sweep that finds nothing new is not billed.</p></div>
+        <div class="step"><div class="n">3</div><h4>Auto-cancel on landing</h4><p>The moment the conditioned transcript lands, the enrollment closes itself. Nothing ever re-pulls without you opting in first.</p></div>
+        <div class="step"><div class="n">4</div><h4>Compliance screening</h4><p>Every pull runs the flag screener — CLEAN / WARNING / CRITICAL tags so servicing can triage at a glance.</p></div>
+      </div>
+      <div class="addon-feat-foot"><a href="https://portal.moderntax.io/login" class="feat-link">Toggle on from your dashboard <span class="arrow">→</span></a></div>
+    </div>
+
+    <!-- Featured 2: Cash-Flow -->
+    <div class="addon-feat">
+      <div class="addon-feat-top">
+        <div>
+          <h3>Cash-Flow Analysis Pack</h3>
+          <div class="tease">Skip 30 minutes of underwriter Excel work</div>
+          <div class="desc">An SBA-format 3-year cash-flow worksheet, auto-rendered from each entity's transcripts the moment they're complete. Gross receipts, total income, deductions, net income, total tax — all five lines pre-filled. Add-back rows wait for the underwriter to fill in.</div>
+        </div>
+        <div class="addon-price-box">
+          <div class="p">$49.99 <span style="font-size:14px; color: var(--ink-3);">/ loan</span></div>
+          <div class="sub">Generate per-entity on demand, or auto-attach team-wide from the manager panel.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h4>Generate per-entity</h4><p>On any completed entity, the "+ Cash-Flow Pack" button renders the PDF in seconds. Two-step confirm prevents accidental spend.</p></div>
+        <div class="step"><div class="n">2</div><h4>Or auto-attach</h4><p>Manager toggles "Auto-attach" in the team panel. Every newly-completed entity gets the pack generated + billed automatically.</p></div>
+        <div class="step"><div class="n">3</div><h4>SBA-format worksheet</h4><p>Three-year side-by-side: gross receipts → total income → deductions → net income → total tax. Sources cited at the bottom.</p></div>
+        <div class="step"><div class="n">4</div><h4>Underwriter fill-in</h4><p>Pre-formatted rows for depreciation, interest, owner comp, non-recurring. Adjusted Cash Flow row in green at the bottom.</p></div>
+      </div>
+      <div class="addon-feat-foot"><a href="https://portal.moderntax.io/login" class="feat-link">Generate one from your dashboard <span class="arrow">→</span></a></div>
+    </div>
+
+    <!-- smaller add-ons -->
+    <div class="addon-grid">
+      <!-- ERC -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--warn-soft); color: var(--warn-ink);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h14v9H3z"/><path d="M3 7h14M6 10h5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="a-top"><h3>ERC / 941 Analysis</h3><span class="a-price">$79.98 – $159.96</span></div>
+        <div class="a-tag">For ERC-recovery firms working stuck claims</div>
+        <p>We pull the 941 Account Transcripts, parse the IRS transaction codes (TC 766 / 846 / 740 / 290 / 470 / 971), and deliver an auto-generated per-quarter status report: refund paid, claim pending, denied, or check returned undelivered.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Base $79.98 — up to 3 ERC quarters + report</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Full sweep $159.96 — all 6–7 eligible quarters</li>
+        </ul>
+        <div class="a-foot"><a href="https://portal.moderntax.io/login" class="addon-link">Run an analysis <span class="arrow">→</span></a></div>
+      </div>
+
+      <!-- Check Reissue -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--ok-soft); color: var(--ok-ink);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5h14v10H3z"/><path d="M6 9h3M6 12h6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="a-top"><h3>Check Reissue Recovery</h3><span class="a-price">$1,000 / check</span></div>
+        <div class="a-tag">When a refund came back undelivered</div>
+        <p>When the ERC report surfaces a refund-returned-undelivered status, we recover it on the client's behalf. Flat fee per check — typically 30–50× ROI relative to the refund being recovered.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> File Form 8822-B to update address of record</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Call IRS Business line to request reissue</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Track to delivery + confirm with client</li>
+        </ul>
+        <div class="a-foot"><a href="https://portal.moderntax.io/login" class="addon-link">Start a recovery <span class="arrow">→</span></a></div>
+      </div>
+
+      <!-- Entity Transcript -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--accent-soft); color: var(--accent-ink);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3h7l3 3v11H5z"/><path d="M8 10h4M8 13h4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="a-top"><h3>Entity Transcript</h3><span class="a-price" style="color:var(--ok-ink);">Included</span></div>
+        <div class="a-tag">On every business verification, at no charge</div>
+        <p>We confirm each entity’s actual election status <em>before</em> pulling, so a request never comes back no-record because someone guessed 1065 instead of 1120S. Also returns filing requirements, NAICS, and establishment date for size-standard and KYB checks.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Election status confirmed before we pull anything</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Filing requirements + NAICS + establishment date</li>
+        </ul>
+        <div class="a-foot"><a href="https://portal.moderntax.io/new" class="addon-link">Start an order <span class="arrow">→</span></a></div>
+      </div>
+
+      <!-- Reorder -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--purple-soft); color: var(--purple);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10a6 6 0 1 1 1.8 4.3M4 14v-3h3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="a-top"><h3>Reorder from History</h3><span class="a-price">$29.99 / entity</span></div>
+        <div class="a-tag">50% off a new verification</div>
+        <p>Re-pull a prior entity for new years (e.g. an amended 2024 return just landed). We reuse the existing 8821 inside the 120-day window — no CSV upload, no re-signature, no full rate.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> 8821 + OCR results cached — one-click reorder</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Expert PPS time ~30% of a new pull</li>
+        </ul>
+        <div class="a-foot"><a href="https://portal.moderntax.io/login" class="addon-link">Open reorder flow <span class="arrow">→</span></a></div>
+      </div>
+
+      <!-- Consolidation -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--accent-soft); color: var(--accent-ink);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h12v12H4z"/><path d="M4 8h12M8 8v8" stroke-linecap="round"/></svg>
+        </div>
+        <div class="a-top"><h3>Loan-Package Consolidation</h3><span class="a-price">$99 / loan</span></div>
+        <div class="a-tag">3+ entities · sold per-loan</div>
+        <p>One PDF that consolidates findings across every entity on a multi-entity loan: filing status, no-record-found years with reason codes, civil penalty flags, aggregate balance-due exposure, and a recommended underwriter next-step.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Built for 15-affiliate-loan portfolio cases</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> For the underwriter / credit officer, not the processor</li>
+        </ul>
+        <div class="a-foot"><a href="https://portal.moderntax.io/login" class="addon-link">Generate from a request <span class="arrow">→</span></a></div>
+      </div>
+
+      <!-- Payroll 941 -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--warn-soft); color: var(--warn-ink);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h14v12H3z"/><path d="M6 8h8M6 11h5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="a-top"><h3>Payroll (941) Liability Report</h3><span class="a-price">$30.00 / entity</span></div>
+        <div class="a-tag">The liability an income transcript won&rsquo;t show</div>
+        <p>Form 941 account transcripts plus outstanding payroll-tax and Trust-Fund exposure. Distinct from the ERC analysis — this is the one that catches a business current on its 1120S but behind on withholding.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Outstanding payroll-tax + Trust-Fund exposure</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Quarter-by-quarter, all four quarters per year</li>
+        </ul>
+        <div class="a-foot"><a href="https://portal.moderntax.io/new" class="addon-link">Add to an order <span class="arrow">&rarr;</span></a></div>
+      </div>
+
+      <!-- Back-year filing -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--purple-soft); color: var(--purple);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3h7l3 3v11H5z"/><path d="M8 11l2 2 3-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="a-top"><h3>Back-Year Filing / Cure</h3><span class="a-price">$600 &ndash; $900</span></div>
+        <div class="a-tag">Per return-year &middot; clears the condition instead of waiting on it</div>
+        <p>When a no-record year is blocking a close, we prepare and file the missing return so the transcript exists. Turns an open closing condition into a completed one rather than something monitoring waits on indefinitely.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Priced per return-year, quoted before we start</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Pairs with monitoring to confirm the filing landed</li>
+        </ul>
+        <div class="a-foot"><a href="mailto:matt@moderntax.io?subject=Back-year%20filing" class="addon-link">Request a quote <span class="arrow">&rarr;</span></a></div>
+      </div>
+
+      <!-- Premium SLA -->
+      <div class="addon">
+        <div class="a-ico" style="background: var(--warn-soft); color: var(--warn-ink);">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M11 2 L4 11h5l-1 7 7-9h-5z" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="a-top"><h3>Premium SLA</h3><span class="a-price">Account upgrade</span></div>
+        <div class="a-tag">Same-day target on every pull</div>
+        <p>Upgrade your whole account to a same-day turnaround target. Your loans get expert-routing priority, a Premium SLA badge across customer-facing surfaces, and dedicated SLA monitoring on every request.</p>
+        <ul>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Same-day target (vs 24–48h standard)</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Expert-routing priority + escalation</li>
+        </ul>
+        <div class="a-foot"><a href="https://portal.moderntax.io/login" class="addon-link">Request upgrade <span class="arrow">→</span></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI band -->
+<section class="section">
+  <div class="wrap">
+    <div class="roi">
+      <div class="eyebrow">The economics</div>
+      <h2>What one funded SBA loan is worth.</h2>
+      <div class="roi-sub">Average 7(a) loan with 3 entities (borrower + 2 affiliates) on Tier A pay-as-you-go, at rate-card pricing effective 2026-08-07.</div>
+      <div class="roi-grid">
+        <div class="roi-cell">
+          <div class="rl">Intake · Days 1–60</div>
+          <div class="rv">$404</div>
+          <div class="rd">3 verifications @ $84.99 = $254.97<br/>+ $49.99 cash-flow pack<br/>+ $99 consolidation report<br/><span style="opacity:.7;">entity transcripts included</span></div>
+        </div>
+        <div class="roi-cell">
+          <div class="rl">Post-close · average</div>
+          <div class="rv">$150</div>
+          <div class="rd">~3 monitoring updates @ $39.99, billed only as each lands<br/>+ ~1 reorder @ $29.99<br/><span style="opacity:.7;">empty checks not billed</span></div>
+        </div>
+        <div class="roi-cell hl">
+          <div class="rl">Year-1 total per loan</div>
+          <div class="rv">~$554</div>
+          <div class="rd">vs. ~$255 verifications-only<br/><strong style="color: var(--paper);">~2.2× ARPU lift per loan</strong></div>
+        </div>
+      </div>
+      <div class="roi-foot">For a lender funding <strong>~70 loans/year</strong>: <strong>~$39K/yr</strong> on top of base verification at PAYG. Deposit converts that into prepaid balance; Platform and the wholesale lane convert it into recurring MRR. A back-year filing ($600&ndash;$900) on even one blocked file moves this materially.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom: 20px;">
+      <div class="eyebrow">FAQ</div>
+      <h2>Questions, answered.</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Can I switch tiers mid-month? <span class="pm"></span></summary>
+        <div class="ans">Yes. Tier changes take effect immediately — your per-pull rate updates on the next verification. PAYG → Deposit locks the lower rate the moment the $2,500 balance is funded; Deposit → Platform starts the subscription instantly. Downgrades apply at the start of the next billing cycle so you keep the rate you prepaid for.</div>
+      </details>
+      <details>
+        <summary>What happens to my prepaid Tier B balance if I leave? <span class="pm"></span></summary>
+        <div class="ans">Your prepaid balance never expires while your account is active, and unused balance is refundable on request when you close the account. Each verification simply draws against it at the locked rate — there's no monthly "use it or lose it" minimum.</div>
+      </details>
+      <details>
+        <summary>Will you re-pull and bill me automatically? <span class="pm"></span></summary>
+        <div class="ans">No — and nothing re-pulls on its own either. Monitoring is opt-in per entity, and it bills $39.99 <em>only when a sweep actually returns a fresh transcript</em>. A check that finds nothing new costs nothing. Once the conditioned transcript lands the enrollment auto-cancels itself; you can also cancel early from the dashboard at any time.</div>
+      </details>
+      <details>
+        <summary>Can I generate a Cash-Flow Pack on a loan I already closed? <span class="pm"></span></summary>
+        <div class="ans">Yes — as long as the entity's transcripts are complete in your history, the "+ Cash-Flow Pack" button is available on the request detail page at any time. It renders from the stored transcript data, so there's no need to re-pull.</div>
+      </details>
+      <details>
+        <summary>Is the Cash-Flow Pack acceptable for SBA submission? <span class="pm"></span></summary>
+        <div class="ans">The worksheet follows the standard SBA 3-year cash-flow format and cites its source transcripts (e.g. "1120S Record of Account 2024") at the bottom of each column. The five income lines are pulled directly from IRS data; the underwriter completes the add-back rows and signs off, as they would on any internally-prepared analysis.</div>
+      </details>
+      <details>
+        <summary>Do I get charged for a rejection or a no-record? <span class="pm"></span></summary>
+        <div class="ans">Rejections are never billed — bad EIN, name mismatch, signer not on record, all free, and we tell you the specific field to fix. A definitive <em>"no record of return filed"</em> does bill at the full per-entity rate, because it&rsquo;s a real underwriting finding: it tells you that year is unfiled. Abandoned or incomplete pulls are not billed.</div>
+      </details>
+      <details>
+        <summary>Who generates the 8821 — and do you contact our borrower? <span class="pm"></span></summary>
+        <div class="ans">You enter the entity details once and download a <strong>fully pre-populated 8821</strong> — taxpayer name, TIN, address, form, years, and our CAF information already filled in, with only the signature and date left blank. It goes into your loan docs and through your own signature process. We never email, call, or text your borrower unless you explicitly ask us to route signatures for you.</div>
+      </details>
+      <details>
+        <summary>What's included in the trial? <span class="pm"></span></summary>
+        <div class="ans">Three free verified-entity pulls, shared across your entire team, with full portal access — all intake methods, entity-transcript detection, compliance screening, and transcript delivery. No credit card required to start; you're only prompted for a payment method when you place your fourth pull.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- final CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>Ready to extend <em>each loan?</em></h2>
+    <p>A 15-minute call walks you through the right tier + add-ons for your loan volume. We'll set up a free trial in real time.</p>
+    <div class="final-cta">
+      <a href="mailto:matt@moderntax.io?subject=Book%20a%2015-min%20call" class="btn btn-accent">Book a 15-min call <span class="arrow">→</span></a>
+      <a href="mailto:matt@moderntax.io" class="btn btn-ghost">Email matt@moderntax.io</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a href="https://portal.moderntax.io/login" class="back">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3 L5 8 L10 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to dashboard
+    </a>
+    <span>© 2026 ModernTax, Inc. · Audit logging · MFA · IRS PPS routing</span>
+  </div>
+</footer>
+
+<!-- tweaks -->
+<aside class="tw" id="tw">
+  <h6>Tweaks</h6>
+  <div class="row"><span>Theme</span><button id="tw-theme" class="toggle-btn">Light</button></div>
+  <div class="row" style="display:block;">
+    <div style="margin-bottom: 8px;">Accent</div>
+    <div class="swatches" id="tw-swatches">
+      <button class="swatch" data-h="155" style="background: oklch(48% 0.13 155);"></button>
+      <button class="swatch sel" data-h="240" style="background: oklch(48% 0.13 240);"></button>
+      <button class="swatch" data-h="20" style="background: oklch(48% 0.13 20);"></button>
+      <button class="swatch" data-h="80" style="background: oklch(58% 0.13 80);"></button>
+      <button class="swatch" data-h="320" style="background: oklch(48% 0.13 320);"></button>
+    </div>
+  </div>
+</aside>
+
+<script>
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentHue": 240,
+  "theme": "light"
+}/*EDITMODE-END*/;
+const tw = document.getElementById('tw');
+const themeBtn = document.getElementById('tw-theme');
+const swatches = document.getElementById('tw-swatches');
+function applyTweaks(t) {
+  const h = t.accentHue;
+  const accent = h === 80 ? `oklch(58% 0.13 ${h})` : `oklch(48% 0.13 ${h})`;
+  document.documentElement.style.setProperty('--accent', accent);
+  document.documentElement.style.setProperty('--accent-ink', `oklch(28% 0.10 ${h})`);
+  document.documentElement.style.setProperty('--accent-soft', `oklch(94% 0.04 ${h})`);
+  if (t.theme === 'dark') {
+    document.documentElement.style.setProperty('--accent-soft', `oklch(28% 0.05 ${h})`);
+    document.documentElement.style.setProperty('--accent-ink', `oklch(82% 0.10 ${h})`);
+  }
+  document.documentElement.dataset.theme = t.theme;
+  themeBtn.textContent = t.theme === 'dark' ? 'Dark' : 'Light';
+  themeBtn.classList.toggle('on', t.theme === 'dark');
+  swatches.querySelectorAll('.swatch').forEach(s => s.classList.toggle('sel', Number(s.dataset.h) === h));
+}
+let state = { ...TWEAKS_DEFAULTS };
+applyTweaks(state);
+themeBtn.addEventListener('click', () => { state.theme = state.theme === 'dark' ? 'light' : 'dark'; applyTweaks(state); persist(state); });
+swatches.addEventListener('click', (e) => { const b = e.target.closest('.swatch'); if (!b) return; state.accentHue = Number(b.dataset.h); applyTweaks(state); persist(state); });
+function persist(t) { try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: t }, '*'); } catch (e) {} }
+window.addEventListener('message', (e) => {
+  const d = e.data; if (!d || typeof d !== 'object') return;
+  if (d.type === '__activate_edit_mode') tw.classList.add('show');
+  if (d.type === '__deactivate_edit_mode') tw.classList.remove('show');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+</script>
+</body>
+</html>

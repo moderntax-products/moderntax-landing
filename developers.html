@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ModernTax — API for lending platforms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:oklch(98.4% .006 80);--paper-2:oklch(96.2% .008 80);--paper-3:oklch(93.4% .012 80);--rule:oklch(86% .014 80);--rule-soft:oklch(91% .012 80);--ink:oklch(18% .012 60);--ink-2:oklch(34% .014 60);--ink-3:oklch(52% .012 60);--ink-4:oklch(68% .01 60);--accent:oklch(48% .13 240);--accent-ink:oklch(28% .1 240);--accent-soft:oklch(94% .04 240);--ok:oklch(50% .12 155);--ok-ink:oklch(34% .12 155);--ok-soft:oklch(95% .035 155);--warn-ink:oklch(40% .13 60);--warn-soft:oklch(95% .045 75);--purple:oklch(50% .15 300);--purple-soft:oklch(95% .035 300);--bg:var(--paper);--surface:#fff;--code-bg:oklch(21% .014 260);--serif:'Instrument Serif',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+  html[data-theme="dark"]{--paper:oklch(16% .012 70);--paper-2:oklch(20% .013 70);--paper-3:oklch(24% .014 70);--rule:oklch(32% .014 70);--rule-soft:oklch(26% .013 70);--ink:oklch(96% .008 80);--ink-2:oklch(82% .01 80);--ink-3:oklch(64% .01 80);--ink-4:oklch(48% .01 80);--accent-soft:oklch(28% .05 240);--accent-ink:oklch(82% .1 240);--ok-soft:oklch(28% .05 155);--ok-ink:oklch(80% .11 155);--warn-soft:oklch(28% .05 75);--warn-ink:oklch(80% .11 75);--purple-soft:oklch(28% .05 300);--surface:var(--paper-2);--code-bg:oklch(13% .012 260)}
+  *,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0}html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  ::selection{background:var(--accent);color:#fff}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);font-weight:500}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,3vw,32px)}
+
+  .head{border-bottom:1px solid var(--rule);background:color-mix(in oklab,var(--surface) 88%,transparent);backdrop-filter:saturate(140%) blur(10px);position:sticky;top:0;z-index:40}
+  .head-inner{display:flex;align-items:center;justify-content:space-between;height:60px;gap:20px}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-size:20px;letter-spacing:-.01em}
+  .brand .tag{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--ink-3);padding-left:8px;border-left:1px solid var(--rule)}
+  .hnav{display:none;gap:4px;margin-left:auto;align-items:center}
+  @media(min-width:940px){.hnav{display:flex}}
+  .hnav a{padding:7px 11px;border-radius:8px;color:var(--ink-2);font-size:13.5px;font-weight:500}
+  .hnav a:hover{background:var(--paper-2);color:var(--ink)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:9px;font-size:14px;font-weight:500;transition:all .15s ease;white-space:nowrap}
+  .btn-sm{height:33px;padding:0 13px;font-size:13px}
+  .btn-primary{background:var(--ink);color:var(--bg)}.btn-primary:hover{background:var(--accent-ink);color:#fff}
+  .btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{filter:brightness(1.06)}
+  .btn-ghost{background:var(--surface);border:1px solid var(--rule);color:var(--ink-2)}.btn-ghost:hover{color:var(--ink);border-color:var(--ink-3)}
+  .arrow{display:inline-block;transition:transform .18s}a:hover .arrow,.btn:hover .arrow{transform:translateX(3px)}
+
+  /* hero */
+  .hero{padding:clamp(52px,7vw,96px) 0 clamp(40px,5vw,64px)}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:40px;align-items:center}
+  @media(min-width:1000px){.hero-grid{grid-template-columns:1fr 1fr;gap:64px}}
+  .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.6vw,70px);line-height:1.03;letter-spacing:-.02em;margin:16px 0 0;padding-bottom:.08em;text-wrap:balance}
+  .hero h1 em{font-style:italic;color:var(--accent-ink)}
+  .hero p{font-size:clamp(16px,1.3vw,18.5px);color:var(--ink-2);margin:22px 0 0;max-width:54ch;text-wrap:pretty}
+  .hero-cta{display:flex;gap:11px;margin-top:30px;flex-wrap:wrap}
+
+  /* code block */
+  .code{background:var(--code-bg);border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -34px rgba(0,0,0,.5)}
+  .code-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .code-bar .tabs{display:flex;gap:3px}
+  .code-tab{padding:5px 11px;border-radius:7px;font-size:12px;font-family:var(--mono);color:oklch(66% .02 260)}
+  .code-tab.on{background:rgba(255,255,255,.1);color:oklch(94% .01 260)}
+  .code-bar .fn{margin-left:auto;font-family:var(--mono);font-size:11px;color:oklch(56% .02 260)}
+  .code pre{margin:0;padding:20px;font-family:var(--mono);font-size:12.5px;line-height:1.75;color:oklch(84% .015 260);overflow-x:auto}
+  .cm{color:oklch(52% .02 260)}.ck{color:oklch(72% .13 320)}.cs{color:oklch(74% .13 145)}.cn{color:oklch(78% .12 60)}.cp{color:oklch(72% .12 240)}
+  .cpane{display:none}.cpane.on{display:block}
+
+  /* sections */
+  .section{padding:clamp(52px,7vw,96px) 0}
+  .sec-head{max-width:62ch;margin-bottom:40px}
+  .sec-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,48px);line-height:1.03;letter-spacing:-.015em;margin:14px 0 0}
+  .sec-head h2 em{font-style:italic;color:var(--accent-ink)}
+  .sec-head p{font-size:15.5px;color:var(--ink-2);margin:16px 0 0;text-wrap:pretty}
+
+  /* flow strip */
+  .flow{display:grid;grid-template-columns:1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+  @media(min-width:800px){.flow{grid-template-columns:repeat(4,1fr)}}
+  .fstep{background:var(--surface);padding:24px}
+  .fstep .n{font-family:var(--mono);font-size:11px;color:var(--accent-ink);letter-spacing:.1em;margin-bottom:12px}
+  .fstep h4{font-size:15px;font-weight:600;margin:0 0 7px;color:var(--ink)}
+  .fstep p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.5}
+  .fstep code{font-family:var(--mono);font-size:12px;background:var(--paper-2);padding:1px 5px;border-radius:4px;color:var(--accent-ink)}
+
+  /* feature grid */
+  .fg{display:grid;grid-template-columns:1fr;gap:16px}
+  @media(min-width:760px){.fg{grid-template-columns:1fr 1fr}}
+  @media(min-width:1060px){.fg.three{grid-template-columns:repeat(3,1fr)}}
+  .fcard{background:var(--surface);border:1px solid var(--rule);border-radius:15px;padding:24px}
+  .fcard .fi{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;margin-bottom:14px}
+  .fcard h3{font-size:16px;font-weight:600;margin:0 0 8px;color:var(--ink)}
+  .fcard p{font-size:13.5px;color:var(--ink-2);margin:0;line-height:1.55}
+  .fcard p b{color:var(--ink)}
+
+  /* schema toggle */
+  .schema-wrap{background:var(--surface);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+  .schema-head{padding:18px 22px;border-bottom:1px solid var(--rule-soft);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .schema-head h3{font-family:var(--serif);font-weight:400;font-size:23px;margin:0}
+  .schema-head p{font-size:13px;color:var(--ink-3);margin:5px 0 0}
+  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:9px;overflow:hidden;flex-shrink:0}
+  .seg button{padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--ink-2);border-right:1px solid var(--rule);font-family:var(--mono)}
+  .seg button:last-child{border-right:0}
+  .seg button.on{background:var(--ink);color:var(--bg)}
+  .schema-body{padding:0}
+  .schema-body .code{border-radius:0;box-shadow:none}
+
+  /* dual surface */
+  .dual{display:grid;grid-template-columns:1fr;gap:0;background:var(--surface);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+  @media(min-width:860px){.dual{grid-template-columns:1fr 1fr}}
+  .dual>div{padding:28px}
+  .dual>div:first-child{border-bottom:1px solid var(--rule-soft)}
+  @media(min-width:860px){.dual>div:first-child{border-bottom:0;border-right:1px solid var(--rule-soft)}}
+  .dual h3{font-family:var(--serif);font-weight:400;font-size:24px;margin:0 0 10px;line-height:1.1}
+  .dual p{font-size:13.5px;color:var(--ink-2);margin:0 0 18px;line-height:1.55}
+  .miniwin{background:var(--paper-2);border:1px solid var(--rule-soft);border-radius:10px;overflow:hidden;font-size:12px}
+  .miniwin .mwh{padding:9px 12px;background:var(--paper-3);border-bottom:1px solid var(--rule-soft);font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+  .miniwin .mwr{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--rule-soft)}
+  .miniwin .mwr:last-child{border-bottom:0}
+  .miniwin .mwr .l{color:var(--ink-2)}
+  .miniwin .mwr .r{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+  .miniwin .mwr .r.ok{color:var(--ok-ink)}
+  .srcpill{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:var(--purple-soft);color:var(--purple);margin-right:6px}
+  .srcpill.api{background:var(--accent-soft);color:var(--accent-ink)}
+
+  /* pricing */
+  .ptable{background:var(--surface);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+  .ptable table{width:100%;border-collapse:collapse}
+  .ptable th{text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:500;padding:13px 20px;background:var(--paper-2);border-bottom:1px solid var(--rule-soft)}
+  .ptable th.r,.ptable td.r{text-align:right}
+  .ptable td{padding:16px 20px;border-bottom:1px solid var(--rule-soft);font-size:14px;color:var(--ink-2);vertical-align:top}
+  .ptable tr:last-child td{border-bottom:0}
+  .ptable td .tn{color:var(--ink);font-weight:600;display:block;font-size:14.5px}
+  .ptable td .td2{font-size:12.5px;color:var(--ink-3);margin-top:4px;display:block;line-height:1.5}
+  .ptable td .pr{font-family:var(--mono);color:var(--ink);font-weight:600;font-size:15px;white-space:nowrap}
+  .ptable tr.hl td{background:var(--accent-soft)}
+  .ptable tr.hl td .tn{color:var(--accent-ink)}
+  .rpill{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--ok-soft);color:var(--ok-ink);margin-left:8px;vertical-align:middle}
+  /* narrow viewports: collapse tables to stacked rows so nothing is clipped by .ptable's overflow:hidden */
+  @media(max-width:700px){
+    .ptable thead{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    .ptable tr{display:block;border-bottom:1px solid var(--rule-soft)}
+    .ptable tr:last-child{border-bottom:0}
+    .ptable td{display:block;width:auto;border-bottom:0;padding:5px 18px}
+    .ptable td:first-child{padding-top:16px}
+    .ptable td:last-child{padding-bottom:18px}
+    .ptable td.r{text-align:left}
+    .ptable td .td2{margin-top:5px}
+  }
+
+  /* CTA */
+  .cta{background:var(--ink);color:var(--paper);border-radius:22px;padding:clamp(36px,5vw,64px);position:relative;overflow:hidden}
+  .cta::before{content:'';position:absolute;inset:-40% -10% auto auto;width:52%;aspect-ratio:1;background:radial-gradient(circle,color-mix(in oklab,var(--accent) 32%,transparent),transparent 62%);pointer-events:none}
+  .cta-in{position:relative;display:grid;gap:28px}
+  @media(min-width:860px){.cta-in{grid-template-columns:1.4fr 1fr;align-items:end;gap:56px}}
+  .cta h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,50px);line-height:1.02;margin:0;color:var(--paper)}
+  .cta h2 em{font-style:italic;color:color-mix(in oklab,var(--accent) 62%,white)}
+  .cta p{color:color-mix(in oklab,var(--paper) 70%,transparent);margin:18px 0 0;font-size:14.5px;max-width:44ch}
+  .cta .btn-ghost{color:var(--paper);border-color:color-mix(in oklab,var(--paper) 30%,transparent);background:transparent}
+  .cta .btn-ghost:hover{border-color:var(--paper)}
+
+  footer{border-top:1px solid var(--rule);padding:30px 0;margin-top:20px}
+  .foot-in{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:13px;color:var(--ink-3);flex-wrap:wrap}
+
+  .tw{position:fixed;right:16px;bottom:16px;z-index:200;background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px;width:240px;box-shadow:0 10px 30px -10px rgba(0,0,0,.18);display:none;font-size:13px}
+  .tw.show{display:block}
+  .tw h6{font-family:var(--mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.1em;margin:0 0 10px;font-weight:500}
+  .tw .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .swatches{display:flex;gap:6px}
+  .swatch{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);cursor:pointer}
+  .swatch.sel{box-shadow:0 0 0 2px var(--ink)}
+  .toggle-btn{border:1px solid var(--rule);padding:4px 10px;border-radius:999px;font-size:12px}
+  .toggle-btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap head-inner">
+    <a href="/" class="brand">
+      <svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+        <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/><rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+        <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/>
+        <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+      </svg>
+      ModernTax<span class="tag">Developers</span>
+    </a>
+    <nav class="hnav">
+      <a href="#quickstart">Quickstart</a>
+      <a href="#schema">Response schema</a>
+      <a href="#surfaces">Portal + API</a>
+      <a href="#endpoints">Endpoints</a>
+      <a href="#reseller">Pricing</a>
+    </nav>
+    <a href="#reseller" class="btn btn-accent btn-sm">Get sandbox keys</a>
+  </div>
+</header>
+
+<!-- hero -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">API</div>
+      <h1>Transcripts as an endpoint, <em>not a vendor portal.</em></h1>
+      <p>One POST creates a verification. A webhook returns it — parsed JSON, the raw IRS HTML, and a PDF, in whatever shape your LOS actually wants. Built for platforms that own their own origination stack.</p>
+      <div class="hero-cta">
+        <a href="#reseller" class="btn btn-accent">Get sandbox keys <span class="arrow">→</span></a>
+        <a href="#schema" class="btn btn-ghost">See the response schema</a>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-bar">
+        <div class="tabs">
+          <button class="code-tab on" data-c="req">request</button>
+          <button class="code-tab" data-c="hook">webhook</button>
+        </div>
+        <span class="fn">portal.moderntax.io/api</span>
+      </div>
+      <div class="cpane on" id="c-req">
+<pre><span class="cm"># Create a verification — see moderntax.io/docs for the current path</span>
+curl -X POST https://portal.moderntax.io/api/<span class="cm">{verification-endpoint}</span> \
+  -H <span class="cs">"x-api-key: $MT_API_KEY"</span> \
+  -H <span class="cs">"Idempotency-Key: loan-4482-atlas"</span> \
+  -d '{
+    <span class="ck">"entity"</span>: {
+      <span class="ck">"legal_name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
+      <span class="ck">"tin"</span>: <span class="cs">"88-1213417"</span>,
+      <span class="ck">"tin_type"</span>: <span class="cs">"ein"</span>
+    },
+    <span class="ck">"years"</span>: [<span class="cn">2024</span>, <span class="cn">2023</span>, <span class="cn">2022</span>],
+    <span class="ck">"form"</span>: <span class="cs">"auto"</span>,        <span class="cm">// we detect election status</span>
+    <span class="ck">"products"</span>: [<span class="cs">"return_transcript"</span>, <span class="cs">"record_of_account"</span>],
+    <span class="ck">"authorization"</span>: { <span class="ck">"mode"</span>: <span class="cs">"upload"</span> },
+    <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
+    <span class="ck">"schema"</span>: <span class="cs">"partner.v2"</span>
+  }'
+
+<span class="cm"># 202 Accepted</span>
+{
+  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
+  <span class="ck">"status"</span>: <span class="cs">"awaiting_authorization"</span>,
+  <span class="ck">"form_detected"</span>: <span class="cs">"1120S"</span>,
+  <span class="ck">"authorization_url"</span>: <span class="cs">"https://.../8821/vrf_8af3c12e.pdf"</span>,
+  <span class="ck">"estimated_complete"</span>: <span class="cs">"2026-08-11T16:00:00Z"</span>
+}</pre>
+      </div>
+      <div class="cpane" id="c-hook">
+<pre><span class="cm"># POST to your endpoint when the pull completes</span>
+{
+  <span class="ck">"event"</span>: <span class="cs">"verification.completed"</span>,
+  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
+  <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
+  <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
+  <span class="ck">"compliance"</span>: {
+    <span class="ck">"status"</span>: <span class="cs">"warning"</span>,
+    <span class="ck">"unfiled_years"</span>: [<span class="cn">2025</span>],
+    <span class="ck">"civil_penalties"</span>: <span class="cp">false</span>,
+    <span class="ck">"balance_due"</span>: <span class="cn">0</span>
+  },
+  <span class="ck">"years"</span>: {
+    <span class="ck">"2024"</span>: {
+      <span class="ck">"gross_receipts"</span>: <span class="cn">4182910</span>,
+      <span class="ck">"total_income"</span>: <span class="cn">4204118</span>,
+      <span class="ck">"net_income"</span>: <span class="cn">612488</span>,
+      <span class="ck">"total_tax"</span>: <span class="cn">0</span>
+    }
+  },
+  <span class="ck">"artifacts"</span>: {
+    <span class="ck">"parsed"</span>: <span class="cs">"https://.../parsed.json"</span>,
+    <span class="ck">"raw_html"</span>: <span class="cs">"https://.../irs.html"</span>,
+    <span class="ck">"pdf"</span>:      <span class="cs">"https://.../transcript.pdf"</span>
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- quickstart flow -->
+<section class="section" id="quickstart" style="background:var(--paper-2);border-block:1px solid var(--rule-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Lifecycle</div>
+      <h2>Four states. <em>That's the whole API.</em></h2>
+      <p>No polling loops required — every transition fires a webhook, and a status endpoint is available if you'd rather poll.</p>
+    </div>
+    <div class="flow">
+      <div class="fstep">
+        <div class="n">01</div><h4>Create</h4>
+        <p>Create a verification with the entity, years, and products. Send <code>form:"auto"</code> and we resolve the actual election status before pulling.</p>
+      </div>
+      <div class="fstep">
+        <div class="n">02</div><h4>Authorize</h4>
+        <p>We return a pre-populated 8821 at <code>authorization_url</code>. Route it through your own signature flow, then <code>POST</code> it back — or set <code>mode:"cached"</code> to reuse one inside the 120-day window.</p>
+      </div>
+      <div class="fstep">
+        <div class="n">03</div><h4>Pull</h4>
+        <p>Status moves to <code>in_progress</code>. A credentialed expert on our network works the IRS PPS line with their own CAF — never a single shared credential.</p>
+      </div>
+      <div class="fstep">
+        <div class="n">04</div><h4>Deliver</h4>
+        <p><code>verification.completed</code> fires with parsed JSON, raw IRS HTML, and PDF. Same-day target available on integrated plans, 24h standard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- schema -->
+<section class="section" id="schema">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Response shape</div>
+      <h2>You pick the schema. <em>We conform to it.</em></h2>
+      <p>Every platform wants a different shape — some want four quarters of 941 detail, some want three Records of Account and nothing else. Name a schema on the request and every payload comes back in it. We version yours; it doesn't break when we ship.</p>
+    </div>
+
+    <div class="schema-wrap">
+      <div class="schema-head">
+        <div><h3>Same pull, three shapes</h3><p>Set <code class="mono">schema</code> per request, or pin a default per API key.</p></div>
+        <div class="seg" id="schema-seg">
+          <button class="on" data-s="minimal">minimal</button>
+          <button data-s="underwriting">underwriting</button>
+          <button data-s="raw">raw</button>
+        </div>
+      </div>
+      <div class="schema-body">
+        <div class="code">
+          <div class="cpane on" id="s-minimal">
+<pre><span class="cm">// schema: "minimal" — just tell me if it's clean</span>
+{
+  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
+  <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
+  <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
+  <span class="ck">"status"</span>: <span class="cs">"complete"</span>,
+  <span class="ck">"years_filed"</span>: [<span class="cn">2024</span>, <span class="cn">2023</span>, <span class="cn">2022</span>],
+  <span class="ck">"years_unfiled"</span>: [],
+  <span class="ck">"flags"</span>: <span class="cs">"clean"</span>,
+  <span class="ck">"pdf"</span>: <span class="cs">"https://.../transcript.pdf"</span>
+}</pre>
+          </div>
+          <div class="cpane" id="s-underwriting">
+<pre><span class="cm">// schema: "underwriting" — the five lines a credit memo needs</span>
+{
+  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
+  <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
+  <span class="ck">"entity"</span>: {
+    <span class="ck">"legal_name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
+    <span class="ck">"naics"</span>: <span class="cs">"238160"</span>,
+    <span class="ck">"established"</span>: <span class="cs">"2014-03-11"</span>,
+    <span class="ck">"election_status"</span>: <span class="cs">"S-Corp · required 1120S"</span>
+  },
+  <span class="ck">"years"</span>: {
+    <span class="ck">"2024"</span>: { <span class="ck">"gross_receipts"</span>: <span class="cn">4182910</span>, <span class="ck">"total_income"</span>: <span class="cn">4204118</span>,
+             <span class="ck">"deductions"</span>: <span class="cn">3591630</span>, <span class="ck">"net_income"</span>: <span class="cn">612488</span>, <span class="ck">"total_tax"</span>: <span class="cn">0</span> },
+    <span class="ck">"2023"</span>: { <span class="ck">"gross_receipts"</span>: <span class="cn">3740228</span>, <span class="ck">"total_income"</span>: <span class="cn">3752901</span>,
+             <span class="ck">"deductions"</span>: <span class="cn">3298440</span>, <span class="ck">"net_income"</span>: <span class="cn">454461</span>, <span class="ck">"total_tax"</span>: <span class="cn">0</span> }
+  },
+  <span class="ck">"compliance"</span>: {
+    <span class="ck">"status"</span>: <span class="cs">"clean"</span>, <span class="ck">"civil_penalties"</span>: <span class="cp">false</span>,
+    <span class="ck">"balance_due"</span>: <span class="cn">0</span>, <span class="ck">"liens"</span>: [], <span class="ck">"unfiled_years"</span>: []
+  },
+  <span class="ck">"sba_sop"</span>: { <span class="ck">"transcript_type"</span>: <span class="cs">"record_of_account"</span>, <span class="ck">"compliant"</span>: <span class="cp">true</span> }
+}</pre>
+          </div>
+          <div class="cpane" id="s-raw">
+<pre><span class="cm">// schema: "raw" — you parse it yourself</span>
+{
+  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
+  <span class="ck">"artifacts"</span>: [
+    { <span class="ck">"year"</span>: <span class="cn">2024</span>, <span class="ck">"type"</span>: <span class="cs">"record_of_account"</span>,
+      <span class="ck">"html"</span>: <span class="cs">"https://.../2024-roa.html"</span>,
+      <span class="ck">"pdf"</span>:  <span class="cs">"https://.../2024-roa.pdf"</span>,
+      <span class="ck">"sha256"</span>: <span class="cs">"9f2c…a41b"</span> },
+    { <span class="ck">"year"</span>: <span class="cn">2024</span>, <span class="ck">"type"</span>: <span class="cs">"return_transcript"</span>,
+      <span class="ck">"html"</span>: <span class="cs">"https://.../2024-rt.html"</span>,
+      <span class="ck">"pdf"</span>:  <span class="cs">"https://.../2024-rt.pdf"</span>,
+      <span class="ck">"sha256"</span>: <span class="cs">"3d81…7c02"</span> }
+  ],
+  <span class="ck">"retrieved_at"</span>: <span class="cs">"2026-08-10T15:42:11Z"</span>,
+  <span class="ck">"caf_on_file"</span>: <span class="cp">true</span>,
+  <span class="ck">"authorization_expires"</span>: <span class="cs">"2026-12-08"</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- dual surfaces -->
+<section class="section" id="surfaces" style="background:var(--paper-2);border-block:1px solid var(--rule-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">One record, two doors</div>
+      <h2>API orders show up <em>in the portal too.</em></h2>
+      <p>An underwriter who logs in sees the request your LOS created — same record, same artifacts, same audit trail. Your engineers integrate; your credit team never has to.</p>
+    </div>
+    <div class="dual">
+      <div>
+        <h3>What your LOS sees</h3>
+        <p>Structured payload against your pinned schema, delivered by webhook with signature verification and automatic retry.</p>
+        <div class="code" style="box-shadow:none;">
+<pre><span class="cm"># your handler</span>
+POST /webhooks/moderntax
+X-MT-Signature: <span class="cs">t=1754…,v1=8a3f…</span>
+
+{ <span class="ck">"event"</span>: <span class="cs">"verification.completed"</span>,
+  <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
+  <span class="ck">"schema"</span>: <span class="cs">"partner.v2"</span> }</pre>
+        </div>
+      </div>
+      <div>
+        <h3>What your underwriter sees</h3>
+        <p>The identical request in the portal — including the ones nobody ordered by hand. Downloadable indefinitely, for the audit that shows up eight months later.</p>
+        <div class="miniwin">
+          <div class="mwh">Loan SBA-7a-4482 · 3 entities</div>
+          <div class="mwr"><span class="l"><span class="srcpill api">api</span>Atlas Roofing LLC · 1120S</span><span class="r ok">Complete</span></div>
+          <div class="mwr"><span class="l"><span class="srcpill api">api</span>Sierra Equipment · 1065</span><span class="r ok">Complete</span></div>
+          <div class="mwr"><span class="l"><span class="srcpill">portal</span>R. Whitfield · 1040</span><span class="r">In progress</span></div>
+          <div class="mwr"><span class="l">Record of Account · 3 yrs each</span><span class="r">PDF · HTML · JSON</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg three" style="margin-top:16px;">
+      <div class="fcard">
+        <div class="fi" style="background:var(--ok-soft);color:var(--ok-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 2.5 L16.5 5.5 V10 c0 4-2.8 6.6-6.5 7.5C6.3 16.6 3.5 14 3.5 10 V5.5 Z" stroke-linejoin="round"/></svg></div>
+        <h3>A network of CAFs, not one</h3>
+        <p>Every pull runs under a credentialed practitioner's own CAF number and their own fax line. <b>No single credential to get flagged</b> — the failure mode that took the last API-first vendor offline doesn't exist here.</p>
+      </div>
+      <div class="fcard">
+        <div class="fi" style="background:var(--accent-soft);color:var(--accent-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10h12M4 6h12M4 14h8" stroke-linecap="round"/></svg></div>
+        <h3>SBA SOP transcript quality</h3>
+        <p>Records of Account and Return Transcripts delivered in the form the SOP expects, with source and retrieval timestamp on every artifact. <b>Audit-defensible, not screenshots.</b></p>
+      </div>
+      <div class="fcard">
+        <div class="fi" style="background:var(--warn-soft);color:var(--warn-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10a6 6 0 1 1 1.8 4.3M4 14v-3h3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Monitoring that shuts itself off</h3>
+        <p>Set <code class="mono">monitor:true</code> on a conditioned year and we re-poll until it lands, then auto-cancel. <b>Billed only when a fresh pull returns something new</b> — never for an empty check.</p>
+      </div>
+      <div class="fcard">
+        <div class="fi" style="background:var(--purple-soft);color:var(--purple);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10" cy="7" r="2.6"/><path d="M4.5 16.5a5.5 5.5 0 0 1 11 0" stroke-linecap="round"/></svg></div>
+        <h3>Broker &amp; counterparty checks</h3>
+        <p>A lightweight lien-and-compliance check on a 1099 individual or single-member entity — for vetting brokers, not underwriting a loan. Priced below a full verification.</p>
+      </div>
+      <div class="fcard">
+        <div class="fi" style="background:var(--accent-soft);color:var(--accent-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 4h9v12H7zM4 7h1M4 10h1M4 13h1" stroke-linecap="round"/></svg></div>
+        <h3>Sandbox with real fixtures</h3>
+        <p>Replayable fixtures for every terminal state — clean, no-record, civil penalty, wrong-election, IRS auth failure. <b>Test the unhappy paths</b> before you're live.</p>
+      </div>
+      <div class="fcard">
+        <div class="fi" style="background:var(--ok-soft);color:var(--ok-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 2.5v15M2.5 10h15" stroke-linecap="round"/></svg></div>
+        <h3>Idempotent by contract</h3>
+        <p>Send <code class="mono">Idempotency-Key</code> and a retry never double-charges or double-pulls. Rate limits and usage are visible per key in the dashboard your team already has.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- endpoint reference -->
+<section class="section" id="endpoints" style="background:var(--paper-2);border-block:1px solid var(--rule-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Reference</div>
+      <h2>Endpoints, <em>in one place.</em></h2>
+      <p>All requests authenticate with an <code class="mono">x-api-key</code> header against <code class="mono">https://portal.moderntax.io</code>. Rate limits and per-key usage are visible in your dashboard.</p>
+    </div>
+    <div class="ptable">
+      <table>
+        <thead><tr><th style="width:120px;">Method</th><th>Endpoint</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="pr" style="font-size:13px;color:var(--ok-ink);">POST</span></td>
+            <td><span class="tn mono" style="font-size:13.5px;">/api/webhook/employment-intake</span><span class="td2">Live in production</span></td>
+            <td>Submit an employment &amp; income verification. Takes <code class="mono">request_token</code>, <code class="mono">employee_name</code>, <code class="mono">employee_ssn</code>, and <code class="mono">years[]</code>. Returns <code class="mono">request_id</code> plus a <code class="mono">usage</code> object with requests used and remaining.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="fcard" style="margin-top:16px;border-style:dashed;">
+      <h3>Transcript verification endpoints</h3>
+      <p>The transcript ordering, authorization-upload, and usage endpoints are documented in the full API reference at <a href="https://moderntax.io/docs/" style="color:var(--accent-ink);font-weight:600;">moderntax.io/docs</a>. They are not reproduced here so this page can&rsquo;t drift out of sync with the canonical reference &mdash; check the docs, or email <a href="mailto:matt@moderntax.io" style="color:var(--accent-ink);font-weight:600;">matt@moderntax.io</a> and we&rsquo;ll send the current spec with your sandbox keys.</p>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- reseller pricing -->
+<section class="section" id="reseller">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Pricing</div>
+      <h2>From <em>$39.98</em> per verified entity.</h2>
+      <p>One flat per-entity price covers the Return Transcript, the Record of Account, entity-transcript detection, and compliance screening — there's no line-item ladder per document type. Where you land depends on committed monthly volume, and we'll quote it on a short call.</p>
+    </div>
+
+    <div class="ptable">
+      <table>
+        <thead><tr><th>What you get at every price point</th><th class="r">Unit rate</th></tr></thead>
+        <tbody>
+          <tr class="hl">
+            <td>
+              <span class="tn">Per verified entity (TIN)</span>
+              <span class="td2">Return Transcript + Record of Account, all requested years &middot; entity-transcript / election-status detection included &middot; compliance flag screening &middot; unlimited team seats &middot; REST API, webhooks and portal access on integrated plans.</span>
+              <span class="td2" style="margin-top:9px;">Rejections are never billed. Nothing re-pulls without you asking. Volume commitments move the rate down from here.</span>
+            </td>
+            <td class="r"><span class="pr">from $39.98</span><span class="td2">/ entity</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="fg" style="margin-top:16px;">
+      <div class="fcard">
+        <h3>What counts as billable</h3>
+        <p>A definitive IRS result bills — including <b>"no record of return filed,"</b> which is a real underwriting finding. Rejections (bad EIN, name mismatch, signer not on record) and abandoned pulls <b>never bill</b>, and we return the specific field to fix.</p>
+      </div>
+      <div class="fcard">
+        <h3>How we quote</h3>
+        <p>Tell us your expected monthly entity volume and whether you're pulling for your own book or reselling under your own brand. We come back with a firm per-entity rate the same day &mdash; <b>no procurement cycle to get a number</b>. Quotes already in flight are honored exactly as written.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="wrap" style="padding-bottom:8px;">
+  <div class="cta">
+    <div class="cta-in">
+      <div>
+        <div class="eyebrow" style="color:color-mix(in oklab,var(--paper) 60%,transparent);">Get started</div>
+        <h2>Sandbox keys in <em>one reply.</em></h2>
+      </div>
+      <div>
+        <p>Tell us your schema preference and volume band and we'll provision sandbox keys plus a staging webhook the same day — no procurement cycle to start testing.</p>
+        <div style="display:flex;gap:11px;margin-top:24px;flex-wrap:wrap;">
+          <a href="mailto:matt@moderntax.io?subject=ModernTax%20API%20sandbox%20keys" class="btn btn-accent">Request sandbox keys <span class="arrow">→</span></a>
+          <a href="mailto:matt@moderntax.io?subject=ModernTax%20pricing" class="btn btn-ghost">Get a quote</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <a href="/" style="color:var(--ink-2);font-weight:500;">← moderntax.io</a>
+    <span>© 2026 ModernTax, Inc. · SOC 2 · MFA · IRS PPS routing</span>
+  </div>
+</footer>
+
+<aside class="tw" id="tw">
+  <h6>Tweaks</h6>
+  <div class="row"><span>Theme</span><button id="tw-theme" class="toggle-btn">Light</button></div>
+  <div class="row" style="display:block;"><div style="margin-bottom:8px;">Accent</div>
+    <div class="swatches" id="tw-swatches">
+      <button class="swatch" data-h="155" style="background:oklch(48% .13 155)"></button>
+      <button class="swatch sel" data-h="240" style="background:oklch(48% .13 240)"></button>
+      <button class="swatch" data-h="20" style="background:oklch(48% .13 20)"></button>
+      <button class="swatch" data-h="80" style="background:oklch(58% .13 80)"></button>
+      <button class="swatch" data-h="320" style="background:oklch(48% .13 320)"></button>
+    </div>
+  </div>
+</aside>
+
+<script>
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{ "accentHue": 240, "theme": "light" }/*EDITMODE-END*/;
+const tw=document.getElementById('tw'),themeBtn=document.getElementById('tw-theme'),swatches=document.getElementById('tw-swatches');
+function applyTweaks(t){const h=t.accentHue,a=h===80?`oklch(58% .13 ${h})`:`oklch(48% .13 ${h})`;const r=document.documentElement.style;
+r.setProperty('--accent',a);r.setProperty('--accent-ink',`oklch(28% .1 ${h})`);r.setProperty('--accent-soft',`oklch(94% .04 ${h})`);
+if(t.theme==='dark'){r.setProperty('--accent-soft',`oklch(28% .05 ${h})`);r.setProperty('--accent-ink',`oklch(82% .1 ${h})`);}
+document.documentElement.dataset.theme=t.theme;themeBtn.textContent=t.theme==='dark'?'Dark':'Light';themeBtn.classList.toggle('on',t.theme==='dark');
+swatches.querySelectorAll('.swatch').forEach(s=>s.classList.toggle('sel',Number(s.dataset.h)===h));}
+let st={...TWEAKS_DEFAULTS};applyTweaks(st);
+themeBtn.addEventListener('click',()=>{st.theme=st.theme==='dark'?'light':'dark';applyTweaks(st);persist(st);});
+swatches.addEventListener('click',e=>{const b=e.target.closest('.swatch');if(!b)return;st.accentHue=Number(b.dataset.h);applyTweaks(st);persist(st);});
+function persist(t){try{window.parent.postMessage({type:'__edit_mode_set_keys',edits:t},'*');}catch(e){}}
+window.addEventListener('message',e=>{const d=e.data;if(!d||typeof d!=='object')return;
+if(d.type==='__activate_edit_mode')tw.classList.add('show');if(d.type==='__deactivate_edit_mode')tw.classList.remove('show');});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+
+/* hero code tabs */
+document.querySelectorAll('.code-tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.code-tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  document.querySelectorAll('#c-req,#c-hook').forEach(p=>p.classList.remove('on'));
+  document.getElementById('c-'+t.dataset.c).classList.add('on');
+}));
+/* schema seg */
+document.querySelectorAll('#schema-seg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#schema-seg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  document.querySelectorAll('#s-minimal,#s-underwriting,#s-raw').forEach(p=>p.classList.remove('on'));
+  document.getElementById('s-'+b.dataset.s).classList.add('on');
+}));
+</script>
+</body>
+</html>

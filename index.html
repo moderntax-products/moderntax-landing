@@ -1,749 +1,1439 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ModernTax — IRS Tax Transcripts & Income Verification for Lenders</title>
-  <meta name="description" content="Get IRS tax transcripts and employment income verification same or next day. Built for SBA lenders, commercial banks, and HR platforms.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'mt-green': '#00C48C',
-            'mt-green-dark': '#00A876',
-            'mt-dark': '#0A1929',
-            'mt-navy': '#102A43',
-            'mt-mid': '#243B53',
-            'mt-light': '#627D98',
-            'mt-pale': '#BCCCDC',
-            'mt-bg': '#F0F4F8',
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-          },
-        }
-      }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ModernTax — Tax intelligence for modern lenders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=GT+Walsheim&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ─────────────────────────  TOKENS  ───────────────────────── */
+  :root {
+    /* warm paper neutrals */
+    --paper:        oklch(98.4% 0.006 80);
+    --paper-2:      oklch(96.2% 0.008 80);
+    --paper-3:      oklch(93.4% 0.012 80);
+    --rule:         oklch(86% 0.014 80);
+    --rule-soft:    oklch(91% 0.012 80);
+
+    --ink:          oklch(18% 0.012 60);
+    --ink-2:        oklch(34% 0.014 60);
+    --ink-3:        oklch(52% 0.012 60);
+    --ink-4:        oklch(68% 0.010 60);
+
+    /* accent — overridable via tweak */
+    --accent:       oklch(48% 0.13 155);   /* moss green */
+    --accent-ink:   oklch(28% 0.10 155);
+    --accent-soft:  oklch(94% 0.04 155);
+
+    /* surfaces */
+    --bg:           var(--paper);
+    --surface:      #ffffff;
+    --surface-2:    var(--paper-2);
+    --surface-3:    var(--paper-3);
+
+    --serif:    'Instrument Serif', 'Iowan Old Style', 'Georgia', serif;
+    --sans:     'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono:     'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --maxw: 1280px;
+    --gutter: clamp(20px, 4vw, 56px);
+  }
+
+  /* dark mode */
+  html[data-theme="dark"] {
+    --paper:     oklch(16% 0.012 70);
+    --paper-2:   oklch(20% 0.013 70);
+    --paper-3:   oklch(24% 0.014 70);
+    --rule:      oklch(32% 0.014 70);
+    --rule-soft: oklch(26% 0.013 70);
+
+    --ink:       oklch(96% 0.008 80);
+    --ink-2:     oklch(82% 0.010 80);
+    --ink-3:     oklch(64% 0.010 80);
+    --ink-4:     oklch(48% 0.010 80);
+
+    --accent-soft: oklch(28% 0.05 155);
+    --accent-ink:  oklch(82% 0.10 155);
+
+    --surface:   var(--paper);
+    --surface-2: var(--paper-2);
+    --surface-3: var(--paper-3);
+  }
+
+  /* ─────────────────────────  RESET  ───────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+  button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+  input, select { font-family: inherit; font-size: inherit; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ─────────────────────────  TYPE  ───────────────────────── */
+  .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; }
+  .mono  { font-family: var(--mono); }
+  .eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .display-1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 7.2vw, 104px);
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .display-2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 5.2vw, 72px);
+    line-height: 1.0;
+    letter-spacing: -0.015em;
+  }
+  .display-3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .italic-em { font-style: italic; color: var(--accent-ink); }
+
+  .lede {
+    font-size: clamp(17px, 1.4vw, 21px);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 56ch;
+    text-wrap: pretty;
+  }
+
+  /* ─────────────────────────  LAYOUT  ───────────────────────── */
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+  section { position: relative; }
+
+  .hr-thin { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+  /* ─────────────────────────  NAV  ───────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: color-mix(in oklab, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .brand-mark {
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+  }
+  .nav-links { display: none; gap: 30px; align-items: center; }
+  .nav-links a {
+    color: var(--ink-2);
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    display: flex; align-items: center; gap: 16px;
+  }
+  @media (min-width: 920px) {
+    .nav-links { display: flex; }
+  }
+
+  /* ─────────────────────────  BUTTONS  ───────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 44px; padding: 0 20px;
+    border-radius: 999px;
+    font-size: 14.5px; font-weight: 500;
+    transition: transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .btn-primary:hover { background: var(--accent-ink); color: #fff; }
+  .btn-accent {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-accent:hover { filter: brightness(1.05); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--rule);
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--ink); font-weight: 500;
+    border-bottom: 1px solid var(--ink-3);
+    padding-bottom: 2px;
+  }
+  .btn-link:hover { border-bottom-color: var(--ink); }
+
+  /* ─────────────────────────  HERO  ───────────────────────── */
+  .hero {
+    padding: clamp(48px, 8vw, 100px) 0 clamp(40px, 6vw, 80px);
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 56px;
+    align-items: end;
+  }
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: clamp(48px, 6vw, 96px);
     }
-  </script>
-  <style>
-    html { scroll-behavior: smooth; }
-    .gradient-hero {
-      background: linear-gradient(135deg, #0A1929 0%, #102A43 50%, #0A1929 100%);
+  }
+  .hero h1 .stroke {
+    position: relative;
+    display: inline;
+  }
+  .hero-meta {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 28px;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    background: var(--surface);
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 22%, transparent);
+    animation: dotPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes dotPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.3);} }
+
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 36px; }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+    margin-top: 60px; padding-top: 28px;
+    border-top: 1px solid var(--rule-soft);
+    max-width: 540px;
+  }
+  .hero-stats .num {
+    font-family: var(--serif);
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .hero-stats .lbl {
+    font-size: 12px; color: var(--ink-3); margin-top: 8px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  /* ─── live request widget ─── */
+  .demo-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 0 color-mix(in oklab, var(--ink) 6%, transparent),
+      0 30px 60px -30px color-mix(in oklab, var(--ink) 18%, transparent);
+    position: relative;
+  }
+  .demo-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--surface-2);
+  }
+  .demo-head .tabs { display: flex; gap: 4px; }
+  .demo-tab {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--ink-3);
+    border: 1px solid transparent;
+  }
+  .demo-tab.active {
+    background: var(--surface);
+    color: var(--ink);
+    border-color: var(--rule);
+  }
+  .demo-body { padding: 22px; }
+
+  .form-row { display: grid; gap: 4px; margin-bottom: 14px; }
+  .form-row label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+  }
+  .form-row input, .form-row select {
+    height: 40px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 0 12px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .form-row input:focus, .form-row select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, transparent);
+  }
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .demo-footer {
+    border-top: 1px solid var(--rule-soft);
+    padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    background: var(--surface-2);
+  }
+  .demo-cost {
+    font-size: 12.5px; color: var(--ink-3);
+  }
+  .demo-cost b { color: var(--ink); font-weight: 600; }
+
+  /* status panel that replaces the form on submit */
+  .status-stage {
+    padding: 6px 0 4px;
+  }
+  .status-step {
+    display: flex; gap: 14px;
+    padding: 10px 0;
+    align-items: flex-start;
+  }
+  .status-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rule);
+    display: grid; place-items: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    background: var(--surface);
+  }
+  .status-step.done .status-icon {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .status-step.active .status-icon {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .status-step.active .status-icon::after {
+    content: '';
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    animation: dotPulse 1.2s ease-in-out infinite;
+  }
+  .status-title {
+    font-size: 14.5px; color: var(--ink); font-weight: 500;
+  }
+  .status-meta {
+    font-size: 12.5px; color: var(--ink-3); margin-top: 2px;
+  }
+  .status-step.idle .status-title { color: var(--ink-4); }
+  .status-step.idle .status-meta { color: var(--ink-4); }
+
+  .result-panel {
+    margin-top: 14px;
+    border-top: 1px dashed var(--rule);
+    padding-top: 18px;
+  }
+  .result-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+  .result-row .k { color: var(--ink-3); }
+  .result-row .v { color: var(--ink); font-weight: 500; }
+  .result-row .v.mono { font-family: var(--mono); font-size: 13px; }
+
+  .json-block {
+    margin-top: 14px;
+    background: var(--paper-3);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    overflow: auto;
+    max-height: 160px;
+  }
+  html[data-theme="dark"] .json-block { background: oklch(14% 0.012 70); }
+
+  .json-key { color: oklch(60% 0.13 250); }
+  .json-str { color: oklch(58% 0.12 145); }
+  .json-num { color: oklch(64% 0.14 50); }
+
+  /* ─────────────────────────  TICKER  ───────────────────────── */
+  .ticker-wrap {
+    border-top: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .ticker {
+    display: flex; gap: 64px;
+    align-items: center;
+    padding: 22px 0;
+    width: max-content;
+    animation: ticker 38s linear infinite;
+  }
+  .ticker-item {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+  .ticker-item .star {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ─────────────────────────  SECTION HEADERS  ───────────────────────── */
+  .section { padding: clamp(64px, 10vw, 140px) 0; }
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: clamp(40px, 6vw, 72px);
+  }
+  @media (min-width: 900px) {
+    .section-head {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: end;
+      gap: 64px;
     }
-    .gradient-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    }
-    .gradient-card { transition: all 0.3s ease; }
-    .code-block {
-      background: #1a1a2e;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .code-block pre {
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 0.85rem;
-      line-height: 1.7;
-    }
-    .nav-dropdown { display: none; pointer-events: none; }
-    .nav-group:hover .nav-dropdown { display: block; pointer-events: auto; }
-    .nav-group { padding-bottom: 8px; margin-bottom: -8px; }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-in { animation: fadeInUp 0.6s ease forwards; }
-    .animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
-    .animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
-    .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
-    .animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
-  </style>
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+
+  /* ─────────────────────────  PRODUCTS  ───────────────────────── */
+  .products {
+    display: grid; gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  @media (min-width: 900px) {
+    .products { grid-template-columns: 1fr 1fr; }
+  }
+  .product {
+    background: var(--surface);
+    padding: clamp(28px, 3.4vw, 48px);
+    display: flex; flex-direction: column;
+    min-height: 460px;
+    position: relative;
+  }
+  .product-eyebrow {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.1em; color: var(--ink-3);
+    text-transform: uppercase;
+  }
+  .product-eyebrow .dotsq { width: 6px; height: 6px; background: var(--accent); }
+  .product h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 2.8vw, 38px);
+    line-height: 1.05;
+    margin: 18px 0 14px;
+  }
+  .product p { color: var(--ink-2); margin: 0 0 24px; max-width: 44ch; }
+  .product ul { list-style: none; padding: 0; margin: 0 0 28px; }
+  .product li {
+    display: grid; grid-template-columns: 22px 1fr; gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid var(--rule-soft);
+    font-size: 14.5px;
+    color: var(--ink-2);
+  }
+  .product li:last-child { border-bottom: 1px solid var(--rule-soft); }
+  .check {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    display: grid; place-items: center;
+    margin-top: 2px;
+  }
+  .product .product-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
+  .badge-new {
+    position: absolute;
+    top: clamp(28px, 3.4vw, 48px); right: clamp(28px, 3.4vw, 48px);
+    font-family: var(--mono);
+    font-size: 10px; letter-spacing: 0.12em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+
+  /* ─────────────────────────  PERSONAS  ───────────────────────── */
+  .persona-grid {
+    display: grid; gap: 32px;
+  }
+  @media (min-width: 900px) { .persona-grid { grid-template-columns: 1fr 1fr; gap: 48px; } }
+
+  .persona {
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: clamp(28px, 3vw, 44px);
+    background: var(--surface);
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .persona::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(120% 60% at 100% 0%, color-mix(in oklab, var(--accent) 8%, transparent), transparent 60%);
+    pointer-events: none;
+  }
+  .persona > * { position: relative; }
+  .persona .role {
+    font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.1em; color: var(--ink-3);
+    text-transform: uppercase;
+  }
+  .persona h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 2.6vw, 36px);
+    margin: 14px 0 14px;
+    line-height: 1.1;
+  }
+  .persona p { color: var(--ink-2); margin: 0 0 24px; }
+  .persona-features {
+    list-style: none; padding: 0; margin: 0 0 28px;
+    display: grid; gap: 10px;
+  }
+  .persona-features li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14.5px; color: var(--ink-2);
+  }
+  .persona-features li svg { margin-top: 4px; flex-shrink: 0; color: var(--accent); }
+
+  .persona-mock {
+    background: var(--surface-2);
+    border: 1px solid var(--rule-soft);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+  .mock-row {
+    display: flex; justify-content: space-between; padding: 4px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .mock-row:last-child { border-bottom: 0; }
+  .mock-row .ok { color: var(--accent); }
+
+  /* ─────────────────────────  FOUNDER  ───────────────────────── */
+  .founder {
+    display: grid; gap: 40px; align-items: center;
+  }
+  @media (min-width: 900px) {
+    .founder { grid-template-columns: 0.85fr 1.15fr; gap: 80px; }
+  }
+  .founder-photo {
+    aspect-ratio: 4/5;
+    background:
+      repeating-linear-gradient(135deg, var(--paper-2) 0 8px, var(--paper-3) 8px 16px);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .founder-photo::after {
+    content: 'Founder portrait';
+    position: absolute; inset: auto 0 12px 0; text-align: center;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .quote {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.6vw, 36px);
+    line-height: 1.2;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .quote::before { content: '\201C'; color: var(--accent-ink); margin-right: 4px; }
+  .quote::after  { content: '\201D'; color: var(--accent-ink); margin-left: 2px; }
+  .quote-attr {
+    margin-top: 28px; display: flex; align-items: center; gap: 12px;
+    font-size: 13.5px; color: var(--ink-3);
+  }
+  .attr-line { width: 36px; height: 1px; background: var(--rule); }
+
+  /* ─────────────────────────  CTA  ───────────────────────── */
+  .cta-band {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 24px;
+    padding: clamp(48px, 7vw, 96px) clamp(28px, 5vw, 80px);
+    margin-top: clamp(40px, 6vw, 80px);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-band::before {
+    content: ''; position: absolute; inset: -50% -10% auto auto;
+    width: 60%; aspect-ratio: 1;
+    background: radial-gradient(circle, color-mix(in oklab, var(--accent) 28%, transparent), transparent 60%);
+    pointer-events: none;
+  }
+  .cta-grid { display: grid; gap: 32px; align-items: end; position: relative; }
+  @media (min-width: 900px) { .cta-grid { grid-template-columns: 1.5fr 1fr; gap: 64px; } }
+  .cta-band h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.015em;
+    color: var(--paper);
+    margin: 0;
+  }
+  .cta-band p { color: color-mix(in oklab, var(--paper) 70%, transparent); margin: 22px 0 0; max-width: 38ch; }
+  .cta-band .btn-accent { color: #fff; }
+  .cta-band .btn-ghost { color: var(--paper); border-color: color-mix(in oklab, var(--paper) 30%, transparent); }
+  .cta-band .btn-ghost:hover { border-color: var(--paper); }
+
+  /* ─────────────────────────  FOOTER  ───────────────────────── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 64px 0 36px;
+    background: var(--surface);
+  }
+  .foot-grid {
+    display: grid; gap: 36px;
+    grid-template-columns: 1fr;
+    margin-bottom: 48px;
+  }
+  @media (min-width: 800px) {
+    .foot-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; }
+  }
+  .foot-col h5 {
+    font-family: var(--mono);
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--ink-3);
+    margin: 0 0 14px; font-weight: 500;
+  }
+  .foot-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .foot-col a { color: var(--ink-2); font-size: 14px; }
+  .foot-col a:hover { color: var(--ink); }
+  .foot-newsletter {
+    display: flex; gap: 8px; margin-top: 16px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 4px 4px 4px 16px;
+    background: var(--surface);
+    max-width: 360px;
+  }
+  .foot-newsletter input {
+    flex: 1; border: 0; background: transparent;
+    color: var(--ink); height: 40px; outline: none;
+  }
+  .foot-newsletter button {
+    background: var(--ink); color: var(--bg);
+    border-radius: 999px; padding: 0 16px;
+    font-size: 13px; font-weight: 500;
+  }
+  .foot-bottom {
+    border-top: 1px solid var(--rule-soft);
+    padding-top: 22px;
+    display: flex; flex-wrap: wrap; gap: 16px;
+    align-items: center; justify-content: space-between;
+    font-size: 12.5px; color: var(--ink-3);
+  }
+
+  /* ─────────────────────────  ARROW HOVER  ───────────────────────── */
+  .arrow {
+    display: inline-block;
+    transition: transform .2s ease;
+  }
+  a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
+
+  /* fade-in on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* tweaks panel */
+  .tw {
+    position: fixed; right: 16px; bottom: 16px; z-index: 200;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 14px;
+    width: 240px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,.18);
+    display: none;
+    font-size: 13px;
+  }
+  .tw.show { display: block; }
+  .tw h6 {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em;
+    margin: 0 0 10px; font-weight: 500;
+  }
+  .tw .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .swatches { display: flex; gap: 6px; }
+  .swatch {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid var(--rule);
+    cursor: pointer;
+  }
+  .swatch.sel { box-shadow: 0 0 0 2px var(--ink); }
+  .toggle-btn {
+    border: 1px solid var(--rule); padding: 4px 10px; border-radius: 999px;
+    font-size: 12px;
+  }
+  .toggle-btn.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* ─────────────────────────  USE CASE ROW  ───────────────────────── */
+  .uc-list { border-top: 1px solid var(--rule); }
+  .uc-row {
+    display: grid; grid-template-columns: 60px 1fr auto; gap: 24px;
+    align-items: center;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: padding .25s ease, background .25s ease;
+  }
+  .uc-row:hover { padding-left: 12px; background: var(--surface-2); }
+  .uc-num { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+  .uc-title {
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.3vw, 32px);
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .uc-tag {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 6px 10px; border: 1px solid var(--rule); border-radius: 999px;
+  }
+  .uc-row:hover .uc-tag { border-color: var(--ink); color: var(--ink); }
+
+  @media (max-width: 700px) {
+    .uc-row { grid-template-columns: 40px 1fr; }
+    .uc-tag { display: none; }
+  }
+</style>
 </head>
-<body class="font-sans text-gray-900 antialiased">
+<body>
 
-<!-- ═══════════════════════════════════════════════════════ NAVIGATION -->
-<header class="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
-          <span class="text-white font-bold text-sm">M</span>
-        </div>
-        <span class="text-xl font-bold text-mt-dark">ModernTax</span>
-      </a>
+<!-- ════════════════════════════════ NAV ════════════════════════════════ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="/" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+          <!-- abstract M as two interlocking columns + serif crown -->
+          <rect x="3"  y="6" width="3.4" height="16" fill="currentColor"/>
+          <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+          <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+          <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+        </svg>
+      </span>
+      ModernTax
+    </a>
 
-      <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-8">
-        <!-- Products Dropdown -->
-        <div class="relative nav-group">
-          <button class="text-gray-600 hover:text-mt-dark font-medium flex items-center gap-1 py-2">
-            Products
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="nav-dropdown absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-            <a href="#transcripts" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 rounded-lg mx-2">
-              <span class="text-2xl mt-0.5">📋</span>
-              <div>
-                <div class="font-semibold text-mt-dark">Tax Transcript Retrieval</div>
-                <div class="text-sm text-gray-500">IRS 8821-based transcript pulls for lending</div>
-              </div>
-            </a>
-            <a href="#employment" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 rounded-lg mx-2">
-              <span class="text-2xl mt-0.5">🏢</span>
-              <div>
-                <div class="font-semibold text-mt-dark">Employment Verification</div>
-                <div class="text-sm text-gray-500">W-2 & 1099 income verification via API</div>
-              </div>
-            </a>
-          </div>
-        </div>
+    <nav class="nav-links" aria-label="primary">
+      <a href="#products">Product</a>
+      <a href="#use-cases">Use cases</a>
+      <a href="developers.html">Developers</a>
+      <a href="plans.html">Plans</a>
+      <a href="#founder">Why us</a>
+    </nav>
 
-        <!-- Use Cases Dropdown -->
-        <div class="relative nav-group">
-          <button class="text-gray-600 hover:text-mt-dark font-medium flex items-center gap-1 py-2">
-            Use Cases
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="nav-dropdown absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-            <a href="use-cases/sba-504.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">SBA 504 Lending</a>
-            <a href="use-cases/sba-7a.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">SBA 7(a) Lending</a>
-            <a href="use-cases/commercial-lending.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Commercial Lending</a>
-            <a href="use-cases/employment-hr.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Employment & HR</a>
-            <a href="use-cases/tax-payment-verification.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Tax Payment Verification</a>
-          </div>
-        </div>
-
-        <a href="docs/" class="text-gray-600 hover:text-mt-dark font-medium">API Docs</a>
-        <a href="#pricing" class="text-gray-600 hover:text-mt-dark font-medium">Pricing</a>
-      </div>
-
-      <!-- CTA Buttons -->
-      <div class="hidden md:flex items-center gap-3">
-        <a href="https://portal.moderntax.io/login" class="text-gray-600 hover:text-mt-dark font-medium">Sign In</a>
-        <a href="https://portal.moderntax.io/login" class="bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-5 py-2.5 rounded-lg transition-all shadow-sm hover:shadow-md">
-          Start Free Trial
-        </a>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobileMenuBtn" class="md:hidden p-2" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+    <div class="nav-cta">
+      <a href="https://portal.moderntax.io/login" class="nav-links" style="display:none" data-show-on-wide>Sign in</a>
+      <a href="https://portal.moderntax.io/login" class="btn btn-primary">Open portal <span class="arrow">→</span></a>
     </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="hidden md:hidden pb-4 border-t border-gray-100 mt-2 pt-4">
-      <a href="#transcripts" class="block py-2 text-gray-700 font-medium">Tax Transcript Retrieval</a>
-      <a href="#employment" class="block py-2 text-gray-700 font-medium">Employment Verification</a>
-      <a href="use-cases/sba-504.html" class="block py-2 text-gray-500">SBA 504 Lending</a>
-      <a href="use-cases/sba-7a.html" class="block py-2 text-gray-500">SBA 7(a) Lending</a>
-      <a href="use-cases/commercial-lending.html" class="block py-2 text-gray-500">Commercial Lending</a>
-      <a href="use-cases/employment-hr.html" class="block py-2 text-gray-500">Employment & HR</a>
-      <a href="use-cases/tax-payment-verification.html" class="block py-2 text-gray-500">Tax Payment Verification</a>
-      <a href="docs/" class="block py-2 text-gray-700 font-medium">API Docs</a>
-      <a href="#pricing" class="block py-2 text-gray-700 font-medium">Pricing</a>
-      <div class="flex flex-col gap-2 mt-4">
-        <a href="https://portal.moderntax.io/login" class="text-center py-2 text-gray-700 font-medium">Sign In</a>
-        <a href="https://portal.moderntax.io/login" class="text-center bg-mt-green text-white font-semibold px-5 py-2.5 rounded-lg">Start Free Trial</a>
-      </div>
-    </div>
-  </nav>
+  </div>
 </header>
 
-
-<!-- ═══════════════════════════════════════════════════════ HERO -->
-<section class="gradient-hero pt-32 pb-20 lg:pb-28 overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-      <!-- Left: Copy -->
-      <div class="animate-in">
-        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
-          <span class="w-2 h-2 bg-mt-green rounded-full animate-pulse"></span>
-          <span class="text-sm text-gray-300 font-medium">Now live: Employment & Income Verification API</span>
+<!-- ════════════════════════════════ HERO ════════════════════════════════ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-meta reveal">
+          <span class="pill"><span class="dot"></span> Entity transcripts now included on every business verification</span>
         </div>
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-          IRS Tax Transcripts &amp; Income Verification
-          <span class="text-mt-green"> in Hours, Not Weeks</span>
+        <h1 class="display-1 reveal" style="text-wrap: balance;">
+          IRS transcripts<br/>
+          <span class="italic-em" style="font-style: italic;">without the busywork.</span>
         </h1>
-        <p class="text-lg text-gray-300 mb-8 max-w-lg leading-relaxed">
-          The modern platform for tax transcript retrieval and employment verification. Built for SBA lenders, commercial banks, and HR platforms.
+        <p class="lede reveal" style="margin-top: 28px;">
+          Enter a borrower once and download a signature-ready 8821. We confirm which return they're actually required to file, pull it from the IRS, and have it back to you in 24 hours — with nothing re-pulled or re-billed behind your back.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 mb-12">
-          <a href="https://portal.moderntax.io/login" class="inline-flex items-center justify-center bg-mt-green hover:bg-mt-green-dark text-white font-bold px-8 py-4 rounded-xl text-lg transition-all shadow-lg shadow-mt-green/25 hover:shadow-mt-green/40">
-            Start Free Trial
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-          <a href="docs/" class="inline-flex items-center justify-center border-2 border-white/30 hover:border-white/60 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all">
-            View API Docs
-          </a>
+        <div class="hero-ctas reveal">
+          <a href="https://portal.moderntax.io/new" class="btn btn-accent">Start an order <span class="arrow">→</span></a>
+          <a href="developers.html" class="btn btn-ghost">Read the API docs</a>
         </div>
 
-        <!-- Stats Row -->
-        <div class="grid grid-cols-3 gap-6">
+        <div class="hero-stats reveal">
           <div>
-            <div class="text-3xl font-bold text-white">Same Day</div>
-            <div class="text-sm text-gray-400 mt-1">Turnaround Available</div>
+            <div class="num">24 hr</div>
+            <div class="lbl">Standard turnaround</div>
           </div>
           <div>
-            <div class="text-3xl font-bold text-white">SOC 2</div>
-            <div class="text-sm text-gray-400 mt-1">Compliant Platform</div>
+            <div class="num">34</div>
+            <div class="lbl">SBA lenders &amp; platforms</div>
           </div>
           <div>
-            <div class="text-3xl font-bold text-white">99.9%</div>
-            <div class="text-sm text-gray-400 mt-1">Accuracy Rate</div>
+            <div class="num">SOC 2</div>
+            <div class="lbl">Type II audited</div>
           </div>
         </div>
       </div>
 
-      <!-- Right: API Preview (static, no typing animation) -->
-      <div class="animate-in animate-delay-2 hidden lg:block">
-        <div class="code-block shadow-2xl">
-          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-            <span class="text-gray-500 text-xs ml-2 font-mono">employment-verification.sh</span>
+      <!-- LIVE INTERACTIVE WIDGET -->
+      <div id="demo" class="reveal">
+        <div class="demo-card">
+          <div class="demo-head">
+            <div class="tabs">
+              <button class="demo-tab active" data-tab="transcript">Portal</button>
+              <button class="demo-tab" data-tab="income">API</button>
+            </div>
+            <span class="mono" style="font-size:11px;color:var(--ink-3); letter-spacing:.08em; text-transform:uppercase;">New request</span>
           </div>
-          <pre class="p-5 text-sm text-gray-300 overflow-x-auto"><code><span class="text-gray-500"># Submit verification request</span>
-<span class="text-yellow-400">curl</span> -X POST https://portal.moderntax.io/api/webhook/employment-intake \
-  -H <span class="text-green-400">"x-api-key: your_api_key"</span> \
-  -d '{
-    <span class="text-blue-400">"request_token"</span>: <span class="text-green-400">"emp_abc123"</span>,
-    <span class="text-blue-400">"employee_name"</span>: <span class="text-green-400">"Jane Doe"</span>,
-    <span class="text-blue-400">"employee_ssn"</span>: <span class="text-green-400">"***-**-6789"</span>,
-    <span class="text-blue-400">"years"</span>: [<span class="text-green-400">"2025"</span>, <span class="text-green-400">"2024"</span>, <span class="text-green-400">"2023"</span>]
-  }'
 
-<span class="text-gray-500"># Response</span>
+          <div class="demo-body" id="demo-body">
+            <!-- form view -->
+            <div id="form-view">
+              <div class="form-grid-2">
+                <div class="form-row">
+                  <label>Borrower</label>
+                  <input id="f-name" type="text" value="Atlas Roofing LLC" />
+                </div>
+                <div class="form-row">
+                  <label>EIN / SSN</label>
+                  <input id="f-id" type="text" value="••-•••3417" />
+                </div>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-row">
+                  <label>Form</label>
+                  <select id="f-form">
+                    <option>1120S — S-Corp Return</option>
+                    <option>1065 — Partnership Return</option>
+                    <option>1120 — Corporate Return</option>
+                    <option>1040 — Personal Return</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label>Years</label>
+                  <select id="f-years">
+                    <option>2024, 2023, 2022</option>
+                    <option>2023, 2022, 2021</option>
+                    <option>2024 only</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <label>Loan reference</label>
+                <input type="text" value="SBA-7a · File 4471" />
+              </div>
+              <div style="margin-top:14px;padding:11px 13px;border-radius:9px;background:var(--accent-soft);display:flex;gap:10px;align-items:flex-start;">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;color:var(--accent-ink);"><path d="M8 1.5 L9.5 5.5 L13.5 7 L9.5 8.5 L8 12.5 L6.5 8.5 L2.5 7 L6.5 5.5 Z" fill="currentColor"/></svg>
+                <span style="font-size:12.5px;color:var(--ink-2);line-height:1.45;">Form auto-detected from election status — <b style="color:var(--ink);">no guessing 1120S vs 1065.</b></span>
+              </div>
+            </div>
+
+            <!-- status view -->
+            <div id="status-view" style="display:none;">
+              <div class="status-stage">
+                <div class="status-step" data-step="0">
+                  <div class="status-icon">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div>
+                    <div class="status-title">8821 generated, pre-filled</div>
+                    <div class="status-meta" id="step-0-meta">You download it and get it signed</div>
+                  </div>
+                </div>
+                <div class="status-step" data-step="1">
+                  <div class="status-icon"></div>
+                  <div>
+                    <div class="status-title">Election status confirmed</div>
+                    <div class="status-meta" id="step-1-meta">1120S required · included at no charge</div>
+                  </div>
+                </div>
+                <div class="status-step" data-step="2">
+                  <div class="status-icon"></div>
+                  <div>
+                    <div class="status-title">Expert pulling from IRS</div>
+                    <div class="status-meta" id="step-2-meta">Own CAF · PPS line · 2024, 2023, 2022</div>
+                  </div>
+                </div>
+                <div class="status-step" data-step="3">
+                  <div class="status-icon"></div>
+                  <div>
+                    <div class="status-title">Parsed & delivered</div>
+                    <div class="status-meta" id="step-3-meta">Structured JSON + PDF</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="result-panel" id="result-panel" style="display:none;">
+                <div class="result-row"><span class="k">Total revenue (2024)</span><span class="v">$4,182,910</span></div>
+                <div class="result-row"><span class="k">Net income (2024)</span><span class="v">$612,488</span></div>
+                <div class="result-row"><span class="k">Filing status</span><span class="v">Filed · Accepted</span></div>
+                <div class="result-row"><span class="k">Transcript ID</span><span class="v mono">tx_8af3·c12e</span></div>
+
+                <div class="json-block">
 {
-  <span class="text-blue-400">"success"</span>: <span class="text-yellow-400">true</span>,
-  <span class="text-blue-400">"request_id"</span>: <span class="text-green-400">"a1b2c3d4"</span>,
-  <span class="text-blue-400">"usage"</span>: { <span class="text-blue-400">"used"</span>: 1, <span class="text-blue-400">"remaining"</span>: 2 }
-}</code></pre>
+  <span class="json-key">"request_id"</span>: <span class="json-str">"req_8af3c12e"</span>,
+  <span class="json-key">"status"</span>: <span class="json-str">"complete"</span>,
+  <span class="json-key">"borrower"</span>: <span class="json-str">"Atlas Roofing LLC"</span>,
+  <span class="json-key">"years"</span>: [<span class="json-num">2024</span>, <span class="json-num">2023</span>, <span class="json-num">2022</span>],
+  <span class="json-key">"summary"</span>: {
+    <span class="json-key">"revenue_2024"</span>: <span class="json-num">4182910</span>,
+    <span class="json-key">"net_income_2024"</span>: <span class="json-num">612488</span>
+  }
+}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-footer">
+            <span class="demo-cost">24h standard turnaround · <b>from $39.98</b> / entity</span>
+            <button id="submit-btn" class="btn btn-accent" style="height:38px;padding:0 16px;">
+              Submit request <span class="arrow">→</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; font-size:12.5px; color:var(--ink-3); display:flex;align-items:center; gap:10px;">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 L13.5 4 V8.2 C13.5 11.4 11.2 13.5 8 14.5 C4.8 13.5 2.5 11.4 2.5 8.2 V4 Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+Illustrative flow. Rejections are never billed, and nothing re-pulls without you asking.
         </div>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════════════ TRUST BAR -->
-<section class="bg-white border-b border-gray-100 py-6">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-16 text-gray-400">
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5C17.944 5.66 18 6.326 18 7c0 5.004-3.546 9.194-8 10.123C5.546 16.194 2 12.004 2 7c0-.674.056-1.34.166-1.999zM10 5a1 1 0 011 1v3a1 1 0 11-2 0V6a1 1 0 011-1zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
-        <span class="font-semibold text-gray-600 text-sm">SOC 2 Compliant</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
-        <span class="font-semibold text-gray-600 text-sm">256-bit Encryption</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        <span class="font-semibold text-gray-600 text-sm">IRS Authorized</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span class="font-semibold text-gray-600 text-sm">MFA Required</span>
-      </div>
-    </div>
+<!-- ════════════════════════════════ TICKER ════════════════════════════════ -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <!-- duplicated for seamless loop -->
+    <span class="ticker-item">Cascade Capital</span><span class="star"></span>
+    <span class="ticker-item">Meridian SBA Group</span><span class="star"></span>
+    <span class="ticker-item">Northbrook Lending</span><span class="star"></span>
+    <span class="ticker-item">Pioneer CDC</span><span class="star"></span>
+    <span class="ticker-item">Lone Star Commercial</span><span class="star"></span>
+    <span class="ticker-item">Harbor Bancshares</span><span class="star"></span>
+    <span class="ticker-item">Vesta HR Platform</span><span class="star"></span>
+    <span class="ticker-item">Allegro Verifications</span><span class="star"></span>
+    <!-- copy -->
+    <span class="ticker-item">Cascade Capital</span><span class="star"></span>
+    <span class="ticker-item">Meridian SBA Group</span><span class="star"></span>
+    <span class="ticker-item">Northbrook Lending</span><span class="star"></span>
+    <span class="ticker-item">Pioneer CDC</span><span class="star"></span>
+    <span class="ticker-item">Lone Star Commercial</span><span class="star"></span>
+    <span class="ticker-item">Harbor Bancshares</span><span class="star"></span>
+    <span class="ticker-item">Vesta HR Platform</span><span class="star"></span>
+    <span class="ticker-item">Allegro Verifications</span><span class="star"></span>
   </div>
-</section>
+</div>
 
-
-<!-- ═══════════════════════════════════════════════════════ PRODUCTS -->
-<section id="products" class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-mt-dark mb-4">Two Products, One Platform</h2>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Everything you need for tax-related due diligence &mdash; from IRS transcript retrieval to employment income verification.</p>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- Tax Transcripts -->
-      <div id="transcripts" class="gradient-card bg-white border border-gray-200 rounded-2xl p-8 lg:p-10">
-        <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
-          <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        </div>
-        <h3 class="text-2xl font-bold text-mt-dark mb-3">Tax Transcript Retrieval</h3>
-        <p class="text-gray-600 mb-6 leading-relaxed">IRS 8821-based transcript pulls for loan underwriting. Submit requests via portal or CSV upload and receive verified transcripts delivered to your dashboard.</p>
-        <div class="space-y-3 mb-8">
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">1040, 1065, 1120, 1120S returns</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">CSV bulk upload or manual entry</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Secure dashboard with role-based access</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Real-time status tracking &amp; SLA alerts</span>
-          </div>
-        </div>
-        <a href="https://portal.moderntax.io/login" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold group">
-          Submit a Request
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-      </div>
-
-      <!-- Employment Verification -->
-      <div id="employment" class="gradient-card bg-white border-2 border-indigo-200 rounded-2xl p-8 lg:p-10 relative">
-        <div class="absolute top-4 right-4">
-          <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">NEW</span>
-        </div>
-        <div class="w-14 h-14 bg-indigo-50 rounded-xl flex items-center justify-center mb-6">
-          <svg class="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-        </div>
-        <h3 class="text-2xl font-bold text-mt-dark mb-3">Employment &amp; Income Verification</h3>
-        <p class="text-gray-600 mb-6 leading-relaxed">API-first W-2 and 1099 wage &amp; income verification via IRS transcripts. Purpose-built for HR platforms, background check providers, and lenders.</p>
-        <div class="space-y-3 mb-8">
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">W-2 and 1099 income data</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">RESTful API with webhook callbacks</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Employer, income, and PEO detection</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <svg class="w-5 h-5 text-mt-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Usage tracking &amp; quota management</span>
-          </div>
-        </div>
-        <a href="docs/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold group">
-          Read the API Docs
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════ USE CASES -->
-<section class="py-20 bg-mt-bg">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-mt-dark mb-4">Built for Your Workflow</h2>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Whether you're underwriting an SBA loan or verifying employment history, ModernTax fits into how you already work.</p>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- SBA 504 -->
-      <a href="use-cases/sba-504.html" class="gradient-card bg-white rounded-xl p-6 border border-gray-200 block">
-        <div class="text-3xl mb-4">🏛️</div>
-        <h3 class="text-lg font-bold text-mt-dark mb-2">SBA 504 Lending</h3>
-        <p class="text-sm text-gray-600 mb-4">Verified tax transcripts for 504 real estate and equipment loans. 1040 + business returns ready for CDC submission.</p>
-        <span class="text-mt-green text-sm font-semibold">Learn more &rarr;</span>
-      </a>
-
-      <!-- SBA 7(a) -->
-      <a href="use-cases/sba-7a.html" class="gradient-card bg-white rounded-xl p-6 border border-gray-200 block">
-        <div class="text-3xl mb-4">📑</div>
-        <h3 class="text-lg font-bold text-mt-dark mb-2">SBA 7(a) Lending</h3>
-        <p class="text-sm text-gray-600 mb-4">Complete borrower and business tax returns for 7(a) underwriting. Multi-year lookback with SBA-ready formatting.</p>
-        <span class="text-mt-green text-sm font-semibold">Learn more &rarr;</span>
-      </a>
-
-      <!-- Commercial -->
-      <a href="use-cases/commercial-lending.html" class="gradient-card bg-white rounded-xl p-6 border border-gray-200 block">
-        <div class="text-3xl mb-4">🏦</div>
-        <h3 class="text-lg font-bold text-mt-dark mb-2">Commercial Lending</h3>
-        <p class="text-sm text-gray-600 mb-4">Tax verification for commercial credit decisions. Verify revenue, filing status, and tax liability for any entity type.</p>
-        <span class="text-mt-green text-sm font-semibold">Learn more &rarr;</span>
-      </a>
-
-      <!-- Employment & HR -->
-      <a href="use-cases/employment-hr.html" class="gradient-card bg-white rounded-xl p-6 border border-gray-200 block">
-        <div class="text-3xl mb-4">👥</div>
-        <h3 class="text-lg font-bold text-mt-dark mb-2">Employment &amp; HR</h3>
-        <p class="text-sm text-gray-600 mb-4">IRS-sourced W-2 and 1099 verification for hiring, background checks, and compliance. More reliable than employer phone calls.</p>
-        <span class="text-mt-green text-sm font-semibold">Learn more &rarr;</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════ HOW IT WORKS -->
-<section class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-mt-dark mb-4">How It Works</h2>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Three steps from submission to verified results.</p>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8 relative">
-      <!-- Connector line -->
-      <div class="hidden md:block absolute top-16 left-1/6 right-1/6 h-0.5 bg-gray-200" style="left:16%;right:16%;"></div>
-
-      <div class="text-center relative">
-        <div class="w-14 h-14 bg-mt-green/10 rounded-2xl flex items-center justify-center mx-auto mb-6 relative z-10 border-4 border-white">
-          <span class="text-2xl font-bold text-mt-green">1</span>
-        </div>
-        <h3 class="text-xl font-bold text-mt-dark mb-3">Submit Your Request</h3>
-        <p class="text-gray-600">Upload a CSV, enter details manually in the portal, or call our REST API. Whatever fits your workflow.</p>
-      </div>
-      <div class="text-center relative">
-        <div class="w-14 h-14 bg-mt-green/10 rounded-2xl flex items-center justify-center mx-auto mb-6 relative z-10 border-4 border-white">
-          <span class="text-2xl font-bold text-mt-green">2</span>
-        </div>
-        <h3 class="text-xl font-bold text-mt-dark mb-3">We Pull IRS Records</h3>
-        <p class="text-gray-600">Our team retrieves transcripts directly from the IRS using authorized 8821 forms. Tracked and audited end-to-end.</p>
-      </div>
-      <div class="text-center relative">
-        <div class="w-14 h-14 bg-mt-green/10 rounded-2xl flex items-center justify-center mx-auto mb-6 relative z-10 border-4 border-white">
-          <span class="text-2xl font-bold text-mt-green">3</span>
-        </div>
-        <h3 class="text-xl font-bold text-mt-dark mb-3">Receive Verified Data</h3>
-        <p class="text-gray-600">Download transcripts from your dashboard or receive structured JSON via API. Ready for underwriting or compliance.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════ PERSONA PATHS -->
-<section class="py-20 bg-mt-bg">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-mt-dark mb-4">Choose Your Path</h2>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">ModernTax works for teams who prefer a dashboard and developers who prefer an API.</p>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- For Loan Teams -->
-      <div class="bg-white rounded-2xl p-8 lg:p-10 border border-gray-200 shadow-sm">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/></svg>
-          </div>
-          <h3 class="text-2xl font-bold text-mt-dark">For Loan Teams</h3>
-        </div>
-        <p class="text-gray-600 mb-6">Processors, managers, and underwriters who need transcripts for loan files. Upload borrower data, track progress, and download transcripts &mdash; all from one dashboard.</p>
-        <ul class="space-y-3 mb-8">
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">CSV bulk upload &mdash; submit 50 borrowers at once</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Role-based access for processors, managers, and admins</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Email notifications &amp; SLA tracking</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">First 3 requests free &mdash; no credit card required</span>
-          </li>
-        </ul>
-        <a href="https://portal.moderntax.io/new" class="inline-flex items-center justify-center w-full bg-mt-green hover:bg-mt-green-dark text-white font-bold px-6 py-3.5 rounded-xl transition-all text-center">
-          Submit a Request
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-      </div>
-
-      <!-- For Developers -->
-      <div class="bg-white rounded-2xl p-8 lg:p-10 border border-gray-200 shadow-sm">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
-            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-          </div>
-          <h3 class="text-2xl font-bold text-mt-dark">For Developers</h3>
-        </div>
-        <p class="text-gray-600 mb-6">CTOs and engineering teams building tax verification into their platforms. RESTful API with simple auth, clear contracts, and usage tracking built in.</p>
-        <ul class="space-y-3 mb-8">
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Simple REST API &mdash; <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">x-api-key</code> authentication</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Submit requests &amp; poll for results programmatically</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">Built-in rate limiting &amp; usage dashboards</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-mt-green mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            <span class="text-gray-700">First 3 requests free to start</span>
-          </li>
-        </ul>
-        <a href="docs/" class="inline-flex items-center justify-center w-full bg-mt-dark hover:bg-mt-navy text-white font-bold px-6 py-3.5 rounded-xl transition-all text-center">
-          Read the API Docs
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════ COMPARISON -->
-<section class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-mt-dark mb-4">Why ModernTax</h2>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Purpose-built for modern lending and compliance workflows.</p>
-    </div>
-
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="border-b-2 border-gray-200">
-            <th class="py-4 pr-4 text-gray-500 font-semibold w-1/3">Capability</th>
-            <th class="py-4 px-4 text-mt-dark font-bold">
-              <span class="inline-flex items-center gap-2">
-                <span class="w-6 h-6 bg-mt-green rounded flex items-center justify-center text-white text-xs font-bold">M</span>
-                ModernTax
-              </span>
-            </th>
-            <th class="py-4 pl-4 text-gray-500 font-semibold">Legacy Providers</th>
-          </tr>
-        </thead>
-        <tbody class="text-sm">
-          <tr class="border-b border-gray-100">
-            <td class="py-4 pr-4 font-medium text-gray-700">Turnaround Time</td>
-            <td class="py-4 px-4 text-mt-green font-semibold">Same or next day</td>
-            <td class="py-4 pl-4 text-gray-500">2-4 weeks</td>
-          </tr>
-          <tr class="border-b border-gray-100">
-            <td class="py-4 pr-4 font-medium text-gray-700">API Access</td>
-            <td class="py-4 px-4 text-mt-green font-semibold">REST API with auth</td>
-            <td class="py-4 pl-4 text-gray-500">Manual or limited</td>
-          </tr>
-          <tr class="border-b border-gray-100">
-            <td class="py-4 pr-4 font-medium text-gray-700">Bulk Upload</td>
-            <td class="py-4 px-4 text-mt-green font-semibold">CSV / Excel batch</td>
-            <td class="py-4 pl-4 text-gray-500">One-at-a-time</td>
-          </tr>
-          <tr class="border-b border-gray-100">
-            <td class="py-4 pr-4 font-medium text-gray-700">Employment Verification</td>
-            <td class="py-4 px-4 text-mt-green font-semibold">IRS W-2/1099 source</td>
-            <td class="py-4 pl-4 text-gray-500">Employer phone calls</td>
-          </tr>
-          <tr class="border-b border-gray-100">
-            <td class="py-4 pr-4 font-medium text-gray-700">Real-time Tracking</td>
-            <td class="py-4 px-4 text-mt-green font-semibold">Dashboard + email alerts</td>
-            <td class="py-4 pl-4 text-gray-500">Call for status updates</td>
-          </tr>
-          <tr>
-            <td class="py-4 pr-4 font-medium text-gray-700">Security</td>
-            <td class="py-4 px-4 text-mt-green font-semibold">SOC 2, MFA, encryption</td>
-            <td class="py-4 pl-4 text-gray-500">Varies</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════ PRICING -->
-<section id="pricing" class="py-20 bg-mt-bg">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-mt-dark mb-4">Simple, Transparent Pricing</h2>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Start free. Pay per request. No monthly minimums or long-term contracts.</p>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-      <!-- Free Trial -->
-      <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-2">Free Trial</h3>
-        <div class="text-4xl font-extrabold text-mt-dark mb-1">$0</div>
-        <p class="text-gray-500 text-sm mb-6">First 3 transcript requests free</p>
-        <ul class="space-y-3 mb-8 text-sm">
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            Full portal access
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            All form types supported
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            No credit card required
-          </li>
-        </ul>
-        <a href="https://portal.moderntax.io/login" class="block text-center bg-gray-100 hover:bg-gray-200 text-mt-dark font-semibold px-6 py-3 rounded-xl transition-all">
-          Get Started Free
-        </a>
-      </div>
-
-      <!-- Per Request -->
-      <div class="bg-white rounded-2xl p-8 border-2 border-mt-green shadow-lg relative">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span class="bg-mt-green text-white text-xs font-bold px-4 py-1 rounded-full">MOST POPULAR</span>
-        </div>
-        <h3 class="text-lg font-bold text-mt-dark mb-2">Pay Per Request</h3>
-        <div class="text-4xl font-extrabold text-mt-dark mb-1">$59<span class="text-lg font-normal text-gray-500">/request</span></div>
-        <p class="text-gray-500 text-sm mb-6">Per transcript or verification</p>
-        <ul class="space-y-3 mb-8 text-sm">
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            Everything in Free Trial
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            Unlimited requests
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            Priority SLA
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            CSV bulk upload
-          </li>
-        </ul>
-        <a href="https://portal.moderntax.io/login" class="block text-center bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-6 py-3 rounded-xl transition-all">
-          Start Free Trial
-        </a>
-      </div>
-
-      <!-- Enterprise / API -->
-      <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-2">Enterprise &amp; API</h3>
-        <div class="text-4xl font-extrabold text-mt-dark mb-1">Custom</div>
-        <p class="text-gray-500 text-sm mb-6">Volume pricing &amp; API access</p>
-        <ul class="space-y-3 mb-8 text-sm">
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            Volume discounts
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            REST API access
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            Dedicated support
-          </li>
-          <li class="flex items-center gap-2 text-gray-700">
-            <svg class="w-4 h-4 text-mt-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            White-label available
-          </li>
-        </ul>
-        <a href="mailto:matt@moderntax.io?subject=Enterprise%20Pricing%20Inquiry" class="block text-center bg-gray-100 hover:bg-gray-200 text-mt-dark font-semibold px-6 py-3 rounded-xl transition-all">
-          Contact Sales
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════ FINAL CTA -->
-<section class="gradient-hero py-20">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to get started?</h2>
-    <p class="text-lg text-gray-300 mb-8 max-w-xl mx-auto">Start your free trial today &mdash; no credit card required. Submit your first request in minutes.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="https://portal.moderntax.io/login" class="inline-flex items-center justify-center bg-mt-green hover:bg-mt-green-dark text-white font-bold px-8 py-4 rounded-xl text-lg transition-all shadow-lg shadow-mt-green/25">
-        Start Free Trial
-      </a>
-      <a href="mailto:matt@moderntax.io?subject=ModernTax%20Inquiry" class="inline-flex items-center justify-center border-2 border-white/30 hover:border-white/60 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all">
-        Talk to Us
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════ FOOTER -->
-<footer class="bg-mt-dark border-t border-white/10 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid md:grid-cols-4 gap-8 mb-12">
-      <!-- Brand -->
+<!-- ════════════════════════════════ PRODUCTS ════════════════════════════════ -->
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="section-head">
       <div>
-        <div class="flex items-center gap-2 mb-4">
-          <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
-            <span class="text-white font-bold text-sm">M</span>
-          </div>
-          <span class="text-xl font-bold text-white">ModernTax</span>
-        </div>
-        <p class="text-gray-400 text-sm leading-relaxed">IRS tax transcript retrieval and employment verification for modern lenders and platforms.</p>
+        <div class="eyebrow">01 · Products</div>
+        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
+          Two doors.<br/>
+          <em class="italic-em">One record behind them.</em>
+        </h2>
       </div>
-
-      <!-- Products -->
-      <div>
-        <h4 class="text-white font-semibold mb-4">Products</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="#transcripts" class="text-gray-400 hover:text-white transition-colors">Tax Transcript Retrieval</a></li>
-          <li><a href="#employment" class="text-gray-400 hover:text-white transition-colors">Employment Verification</a></li>
-          <li><a href="docs/" class="text-gray-400 hover:text-white transition-colors">API Documentation</a></li>
-          <li><a href="#pricing" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
-        </ul>
-      </div>
-
-      <!-- Use Cases -->
-      <div>
-        <h4 class="text-white font-semibold mb-4">Use Cases</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="use-cases/sba-504.html" class="text-gray-400 hover:text-white transition-colors">SBA 504 Lending</a></li>
-          <li><a href="use-cases/sba-7a.html" class="text-gray-400 hover:text-white transition-colors">SBA 7(a) Lending</a></li>
-          <li><a href="use-cases/commercial-lending.html" class="text-gray-400 hover:text-white transition-colors">Commercial Lending</a></li>
-          <li><a href="use-cases/employment-hr.html" class="text-gray-400 hover:text-white transition-colors">Employment &amp; HR</a></li>
-          <li><a href="use-cases/tax-payment-verification.html" class="text-gray-400 hover:text-white transition-colors">Tax Payment Verification</a></li>
-        </ul>
-      </div>
-
-      <!-- Company -->
-      <div>
-        <h4 class="text-white font-semibold mb-4">Company</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="https://portal.moderntax.io/login" class="text-gray-400 hover:text-white transition-colors">Sign In to Portal</a></li>
-          <li><a href="mailto:matt@moderntax.io" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
-          <li><a href="mailto:support@moderntax.io" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
-          <li><a href="https://moderntax.substack.com/" target="_blank" class="text-gray-400 hover:text-white transition-colors">Blog &amp; Newsletter</a></li>
-        </ul>
-      </div>
+      <p class="lede reveal">
+A portal for the processors doing the closing, an API for the platforms doing the originating. An order placed through either one shows up in both — same artifacts, same audit trail.
+      </p>
     </div>
 
-    <!-- Newsletter CTA -->
-    <div class="bg-mt-navy/50 border border-white/10 rounded-2xl p-8 mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div>
-        <h4 class="text-white font-bold text-lg mb-1">Stay in the loop</h4>
-        <p class="text-gray-400 text-sm">Industry insights, product updates, and lending best practices — delivered to your inbox.</p>
+    <div class="products reveal">
+      <!-- Transcripts -->
+      <div class="product">
+        <div class="product-eyebrow"><span class="dotsq"></span> For loan teams · the portal</div>
+        <h3>Enter it once. Download a form that&rsquo;s already filled out.</h3>
+        <p>The 8821 comes back pre-populated from what you typed — taxpayer, TIN, address, form, years, our CAF — with only the signature line blank. It goes through your own closing process. We never contact your borrower.</p>
+        <ul>
+          <li><span class="check">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>Election status confirmed before we pull — included.</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your own spreadsheet columns — no template to reformat.</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Per-processor billing breakdown for managers.</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Rejections never billed · nothing re-pulls on its own.</li>
+        </ul>
+        <div class="product-foot">
+          <a href="https://portal.moderntax.io/new" class="btn-link">See the order flow <span class="arrow">→</span></a>
+        </div>
       </div>
-      <a href="https://moderntax.substack.com/" target="_blank" class="inline-flex items-center gap-2 bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-6 py-3 rounded-xl transition-all flex-shrink-0">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        Subscribe to Our Newsletter
+
+      <!-- Employment -->
+      <div class="product">
+        <div class="product-eyebrow"><span class="dotsq"></span> For platforms · the API</div>
+        <h3>Verification as an endpoint, in your schema.</h3>
+        <p>One POST creates a verification; a webhook returns parsed JSON, raw IRS HTML, and PDF — shaped to a schema you name. Every pull runs under a credentialed practitioner&rsquo;s own CAF, so there&rsquo;s no single credential to get flagged.</p>
+        <ul>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>REST + webhooks · idempotency keys by contract.</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Name your response schema — we version it.</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>API orders visible in the portal to underwriters.</li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Wholesale lane for resellers and LOS platforms.</li>
+        </ul>
+        <div class="product-foot">
+          <a href="developers.html" class="btn-link">Read the API docs <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ USE CASES ════════════════════════════════ -->
+<section class="section" id="use-cases" style="background: var(--surface-2); border-top:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft);">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">02 · Built for</div>
+        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
+          The teams<br/>
+          <em class="italic-em">underwriting America.</em>
+        </h2>
+      </div>
+      <p class="lede reveal">
+        Most of our customers came to us because their old transcript provider missed a closing. We're built for the workflows that can't afford to.
+      </p>
+    </div>
+
+    <div class="uc-list reveal">
+      <a class="uc-row" href="use-cases/sba-504.html">
+        <div class="uc-num">01</div>
+        <div class="uc-title">SBA 504 lending — CDC-ready transcripts for real estate and equipment loans.</div>
+        <div class="uc-tag">CDC · 504</div>
+      </a>
+      <a class="uc-row" href="use-cases/sba-7a.html">
+        <div class="uc-num">02</div>
+        <div class="uc-title">SBA 7(a) lending — multi-year borrower and business returns, formatted for SBA submission.</div>
+        <div class="uc-tag">SBA · 7(a)</div>
+      </a>
+      <a class="uc-row" href="use-cases/commercial-lending.html">
+        <div class="uc-num">03</div>
+        <div class="uc-title">Commercial credit — verify revenue, filing status, and tax liability for any entity.</div>
+        <div class="uc-tag">Commercial</div>
+      </a>
+      <a class="uc-row" href="use-cases/employment-hr.html">
+        <div class="uc-num">04</div>
+        <div class="uc-title">Employment & HR — IRS-sourced W-2 and 1099 verification for hiring and compliance.</div>
+        <div class="uc-tag">HR · BGC</div>
+      </a>
+      <a class="uc-row" href="use-cases/tax-payment-verification.html">
+        <div class="uc-num">05</div>
+        <div class="uc-title">Tax payment verification — confirm settled balances before funding or closing.</div>
+        <div class="uc-tag">Payments</div>
       </a>
     </div>
+  </div>
+</section>
 
-    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-gray-500 text-sm">&copy; 2026 ModernTax, Inc. All rights reserved.</p>
-      <div class="flex items-center gap-6 text-sm text-gray-500">
-        <span>SOC 2 Compliant</span>
-        <span>&bull;</span>
-        <span>256-bit Encryption</span>
-        <span>&bull;</span>
-        <span>IRS Authorized</span>
+<!-- ════════════════════════════════ PERSONAS ════════════════════════════════ -->
+<section class="section" id="developers">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">03 · Choose your surface</div>
+        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
+          A portal for teams.<br/>
+          <em class="italic-em">An API for everyone else.</em>
+        </h2>
       </div>
+      <p class="lede reveal">
+        Whether you live in spreadsheets or in a terminal, ModernTax meets you where the work happens — without forcing you to change tools to fit ours.
+      </p>
+    </div>
+
+    <div class="persona-grid">
+      <div class="persona reveal">
+        <div class="role">For loan teams</div>
+        <h3>The dashboard your processors will actually use.</h3>
+        <p>Submit borrowers, track every request to the minute, and download verified files when they're ready. No new vendor portal to learn — it works the way your shop already works.</p>
+
+        <div class="persona-mock">
+          <div class="mock-row"><span>Atlas Roofing · 1120S · 2024</span><span class="ok">Delivered · 6h 12m</span></div>
+          <div class="mock-row"><span>J. Reyes · 1040 · 2023</span><span class="ok">Delivered · 4h 48m</span></div>
+          <div class="mock-row"><span>Ironwood Capital · 1065 · 2022</span><span style="color:var(--ink-3);">In progress · IRS auth</span></div>
+          <div class="mock-row"><span>Beacon Diner LLC · 1120 · 2024</span><span style="color:var(--ink-3);">Queued</span></div>
+        </div>
+
+        <ul class="persona-features">
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> CSV bulk upload — 50 borrowers per file.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Roles for processors, managers, and admins.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Email and SLA notifications you can trust.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> First three requests free — no card, no call.</li>
+        </ul>
+
+        <div>
+          <a href="https://portal.moderntax.io/new" class="btn btn-primary">Walk through an order <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="persona reveal">
+        <div class="role">For developers</div>
+        <h3>Income verification as a one-line POST.</h3>
+        <p>For platforms embedding tax data into a product. Predictable contracts, idempotent retries, webhook-driven async — written by people who shipped fintech APIs before.</p>
+
+        <div class="persona-mock">
+<span style="color:var(--ink-3);"># Submit verification</span>
+curl <span style="color:var(--accent);">-X POST</span> https://api.moderntax.io/v1/income \
+  -H <span style="color:var(--accent);">"x-api-key: $MT_KEY"</span> \
+  -d '{"ssn":"***-**-6789","years":[2024,2023]}'
+
+<span style="color:var(--ink-3);"># 200 OK</span>
+{ "request_id": "req_a1b2", "status": "queued",
+  "estimated_complete": "2026-05-06T16:24:00Z" }
+        </div>
+
+        <ul class="persona-features">
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> REST + webhooks · idempotency keys built in.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Sandbox keys with replay-able fixtures.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Usage dashboards with per-key quotas.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> SOC 2 Type II · MFA enforced for admins.</li>
+        </ul>
+
+        <div>
+          <a href="developers.html" class="btn btn-primary">Read the API docs <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ FOUNDER ════════════════════════════════ -->
+<section class="section" id="founder" style="background: var(--surface-2); border-top:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft);">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:48px;">
+      <div>
+        <div class="eyebrow">04 · Why we built this</div>
+      </div>
+      <span></span>
+    </div>
+
+    <div class="founder">
+      <div class="founder-photo reveal" aria-hidden="true"></div>
+      <div class="reveal">
+        <p class="quote">
+          We started ModernTax after watching a $4.2M SBA closing slip a quarter because a transcript request fell into a fax queue. The data already exists at the IRS. The problem isn't access — it's <em>access designed for the people who actually need it.</em>
+        </p>
+        <div class="quote-attr">
+          <span class="attr-line"></span>
+          <div>
+            <div style="color: var(--ink); font-weight: 500;">Matt Walters</div>
+            <div>Founder, ModernTax</div>
+          </div>
+        </div>
+        <div style="margin-top: 36px; display:flex; gap: 28px; flex-wrap: wrap;">
+          <div>
+            <div class="serif" style="font-size: 36px;">14 yrs</div>
+            <div style="font-size: 12px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em;">In SBA &amp; commercial lending</div>
+          </div>
+          <div>
+            <div class="serif" style="font-size: 36px;">700+</div>
+            <div style="font-size: 12px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em;">Lenders &amp; platforms served</div>
+          </div>
+          <div>
+            <div class="serif" style="font-size: 36px;">$1.2B</div>
+            <div style="font-size: 12px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em;">In loans verified to date</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ FINAL CTA ════════════════════════════════ -->
+<section class="wrap" style="padding-bottom: 0;">
+  <div class="cta-band">
+    <div class="cta-grid">
+      <div>
+        <h2>Underwriting<br/><em style="font-style:italic; color: color-mix(in oklab, var(--accent) 60%, white);">moves at the speed of its data.</em></h2>
+      </div>
+      <div>
+        <p>Open a portal account and run your first three requests on us — no card, no contract, no demo call required to get started.</p>
+        <div style="display:flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
+          <a href="https://portal.moderntax.io/new" class="btn btn-accent">Start an order <span class="arrow">→</span></a>
+          <a href="mailto:matt@moderntax.io" class="btn btn-ghost">Talk with the team</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer style="margin-top: clamp(64px,8vw,120px);">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <a href="/" class="brand" style="margin-bottom: 14px;">
+          <span class="brand-mark">
+            <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+              <rect x="3"  y="6" width="3.4" height="16" fill="currentColor"/>
+              <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+              <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+              <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+            </svg>
+          </span>
+          ModernTax
+        </a>
+        <p style="color: var(--ink-3); font-size: 14px; max-width: 36ch; margin: 12px 0 0;">
+          Tax intelligence for modern lenders. Built in the United States. SOC 2 Type II audited.
+        </p>
+        <form class="foot-newsletter" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='Subscribed ✓';">
+          <input type="email" placeholder="Get the underwriting brief, monthly" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="foot-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="https://portal.moderntax.io/new">Place an order</a></li>
+          <li><a href="developers.html">API &amp; webhooks</a></li>
+          <li><a href="mailto:matt@moderntax.io?subject=ModernTax%20pricing">Request pricing</a></li>
+          <li><a href="#">Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Use cases</h5>
+        <ul>
+          <li><a href="use-cases/sba-504.html">SBA 504</a></li>
+          <li><a href="use-cases/sba-7a.html">SBA 7(a)</a></li>
+          <li><a href="use-cases/commercial-lending.html">Commercial lending</a></li>
+          <li><a href="use-cases/employment-hr.html">Employment & HR</a></li>
+          <li><a href="use-cases/tax-payment-verification.html">Tax payment verification</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Customers</a></li>
+          <li><a href="https://moderntax.substack.com/">Newsroom</a></li>
+          <li><a href="mailto:matt@moderntax.io">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 ModernTax, Inc.</span>
+      <span>SOC 2 Type II · 256-bit encryption · IRS authorized · MFA enforced</span>
     </div>
   </div>
 </footer>
 
+<!-- ════════════════════════════════ TWEAKS PANEL ════════════════════════════════ -->
+<aside class="tw" id="tw">
+  <h6>Tweaks</h6>
+  <div class="row">
+    <span>Theme</span>
+    <button id="tw-theme" class="toggle-btn">Light</button>
+  </div>
+  <div class="row" style="display:block;">
+    <div style="margin-bottom: 8px;">Accent</div>
+    <div class="swatches" id="tw-swatches">
+      <button class="swatch sel" data-h="155" style="background: oklch(48% 0.13 155);"></button>
+      <button class="swatch" data-h="240" style="background: oklch(48% 0.13 240);"></button>
+      <button class="swatch" data-h="20"  style="background: oklch(48% 0.13 20);"></button>
+      <button class="swatch" data-h="80"  style="background: oklch(58% 0.13 80);"></button>
+      <button class="swatch" data-h="320" style="background: oklch(48% 0.13 320);"></button>
+    </div>
+  </div>
+</aside>
+
+<script>
+/* ═══════════════ Tweaks integration ═══════════════ */
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentHue": 240,
+  "theme": "light"
+}/*EDITMODE-END*/;
+
+const tw = document.getElementById('tw');
+const themeBtn = document.getElementById('tw-theme');
+const swatches = document.getElementById('tw-swatches');
+
+function applyTweaks(t) {
+  // accent
+  const h = t.accentHue;
+  const accent = h === 80
+    ? `oklch(58% 0.13 ${h})`
+    : `oklch(48% 0.13 ${h})`;
+  document.documentElement.style.setProperty('--accent', accent);
+  document.documentElement.style.setProperty('--accent-ink', `oklch(28% 0.10 ${h})`);
+  document.documentElement.style.setProperty('--accent-soft', `oklch(94% 0.04 ${h})`);
+  if (t.theme === 'dark') {
+    document.documentElement.style.setProperty('--accent-soft', `oklch(28% 0.05 ${h})`);
+    document.documentElement.style.setProperty('--accent-ink',  `oklch(82% 0.10 ${h})`);
+  }
+  // theme
+  document.documentElement.dataset.theme = t.theme;
+  themeBtn.textContent = t.theme === 'dark' ? 'Dark' : 'Light';
+  themeBtn.classList.toggle('on', t.theme === 'dark');
+  // sel state
+  swatches.querySelectorAll('.swatch').forEach(s => {
+    s.classList.toggle('sel', Number(s.dataset.h) === h);
+  });
+}
+
+let tweaksState = { ...TWEAKS_DEFAULTS };
+applyTweaks(tweaksState);
+
+themeBtn.addEventListener('click', () => {
+  tweaksState.theme = tweaksState.theme === 'dark' ? 'light' : 'dark';
+  applyTweaks(tweaksState);
+  persist(tweaksState);
+});
+swatches.addEventListener('click', (e) => {
+  const b = e.target.closest('.swatch');
+  if (!b) return;
+  tweaksState.accentHue = Number(b.dataset.h);
+  applyTweaks(tweaksState);
+  persist(tweaksState);
+});
+
+function persist(t) {
+  try {
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: t }, '*');
+  } catch (e) {}
+}
+
+// edit-mode protocol
+window.addEventListener('message', (e) => {
+  const d = e.data;
+  if (!d || typeof d !== 'object') return;
+  if (d.type === '__activate_edit_mode')   tw.classList.add('show');
+  if (d.type === '__deactivate_edit_mode') tw.classList.remove('show');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+/* ═══════════════ Reveal on scroll ═══════════════ */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ═══════════════ Demo widget ═══════════════ */
+const submitBtn = document.getElementById('submit-btn');
+const formView  = document.getElementById('form-view');
+const statusView= document.getElementById('status-view');
+const resultPanel = document.getElementById('result-panel');
+const steps = [...document.querySelectorAll('.status-step')];
+
+function setStep(active) {
+  steps.forEach((s, i) => {
+    s.classList.toggle('done', i < active);
+    s.classList.toggle('active', i === active);
+    s.classList.toggle('idle', i > active);
+  });
+}
+function reset() {
+  formView.style.display = '';
+  statusView.style.display = 'none';
+  resultPanel.style.display = 'none';
+  steps.forEach(s => s.classList.remove('done','active','idle'));
+  submitBtn.innerHTML = 'Submit request <span class="arrow">→</span>';
+  submitBtn.disabled = false;
+}
+
+let running = false;
+submitBtn.addEventListener('click', () => {
+  if (running) { reset(); running = false; return; }
+  running = true;
+  formView.style.display = 'none';
+  statusView.style.display = '';
+  submitBtn.innerHTML = 'Submitting…';
+  submitBtn.disabled = true;
+
+  setStep(0);
+  setTimeout(() => setStep(1), 700);
+  setTimeout(() => setStep(2), 2000);
+  setTimeout(() => setStep(3), 3600);
+  setTimeout(() => {
+    steps.forEach(s => { s.classList.add('done'); s.classList.remove('active'); });
+    resultPanel.style.display = '';
+    submitBtn.innerHTML = 'Submit another <span class="arrow">↻</span>';
+    submitBtn.disabled = false;
+  }, 4400);
+});
+
+/* tabs are decorative for the demo */
+document.querySelectorAll('.demo-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.demo-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+</script>
 </body>
 </html>
