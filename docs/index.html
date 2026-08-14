@@ -56,10 +56,12 @@
     <a href="#overview">Overview</a>
     <a href="#auth">Authentication</a>
     <a href="#base">Base URL</a>
+    <a href="#sandbox">Sandbox</a>
     <h4>Transcript API</h4>
     <a href="#submit">Submit a request</a>
     <a href="#authorize">Authorization (8821)</a>
     <a href="#poll">Poll for results</a>
+    <a href="#schemas">Response schemas</a>
     <a href="#structured">Structured JSON</a>
     <a href="#monitoring">Monitoring</a>
     <h4>Delivery &amp; ops</h4>
@@ -69,6 +71,7 @@
     <a href="#limits">Rate limits</a>
     <a href="#status">Status</a>
     <h4>Reference</h4>
+    <a href="#portal">Developer portal</a>
     <a href="#pricing">Pricing</a>
     <a href="#security">Security</a>
     <a href="#versioning">Versioning</a>
@@ -83,24 +86,31 @@
     <ol>
       <li><strong>Submit</strong> one or more entities to <code>POST /api/intake/transcript</code>.</li>
       <li><strong>Authorize</strong> each entity with a signed IRS Form 8821 — either upload a pre-signed PDF you collected yourself (<code>/api/intake/8821-pdf</code>), or let ModernTax collect the signature (<code>/api/intake/8821</code>). See <a href="#authorize">Authorization</a>.</li>
-      <li><strong>Receive results</strong> — poll <code>GET /api/intake/transcript?token=</code>, or have ModernTax POST them to your <a href="#webhooks">webhook</a>.</li>
+      <li><strong>Receive results</strong> — poll <code>GET /api/intake/transcript?token=</code> (optionally with a <a href="#schemas"><code>schema=</code> shape</a>), or have ModernTax POST them to your <a href="#webhooks">webhook</a>.</li>
     </ol>
     <p>Every endpoint below is authenticated with an <code>x-api-key</code> header. The portal also exposes cookie-authenticated admin/expert/processor endpoints; those are internal and not part of this contract.</p>
 
     <h2 id="auth">Authentication</h2>
-    <p>All requests require an <code>x-api-key</code> header issued by ModernTax. Contact <a href="mailto:matt@moderntax.io">matt@moderntax.io</a> to provision a key; new accounts include free test requests.</p>
-    <pre><code>x-api-key: &lt;your_api_key&gt;
+    <p>All requests require an <code>x-api-key</code> header. Live keys have the form <code>mt_live_txn_&lt;slug&gt;_&lt;12hex&gt;</code>. Manage keys — rotation, webhook config, default response schema, usage — self-serve in the <a href="#portal">developer portal</a> at <a href="https://portal.moderntax.io/developer">portal.moderntax.io/developer</a>. To try the API first, grab a free <a href="#sandbox">sandbox key</a>; for a live key, contact <a href="mailto:matt@moderntax.io">matt@moderntax.io</a>.</p>
+    <pre><code>x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx
 Content-Type: application/json    # or multipart/form-data where noted</code></pre>
     <p>Keys are stored as SHA-256 hashes and constant-time verified on every request. A missing or invalid key returns <code>401</code> via the same code path, so errors never reveal whether a partial match exists.</p>
 
     <h2 id="base">Base URL</h2>
     <pre><code>https://portal.moderntax.io</code></pre>
 
+    <h2 id="sandbox">Sandbox</h2>
+    <p>Self-serve at <a href="https://portal.moderntax.io/sandbox">portal.moderntax.io/sandbox</a> — enter a work email and company name and you get an instant <code>{company}-sandbox</code> API key against synthetic data. Endpoints and response shapes are production-identical; the key is capped at 250 requests. No sales call required.</p>
+
     <h2 id="submit">Submit a transcript request</h2>
     <div class="ep"><span class="m post">POST</span> /api/intake/transcript</div>
     <p>Creates a request with one or more entities and queues them for IRS retrieval.</p>
-    <div class="note"><strong>This endpoint does not collect authorization.</strong> It records the entities and moves them to the IRS queue; you must supply a signed 8821 for each entity via <a href="#authorize">one of the authorization endpoints</a> before results can be delivered. Signer fields are not read here — set them on <code>/api/intake/8821</code> if you want ModernTax to collect the signature.</div>
+    <div class="note"><strong>Authorization is separate unless you attach it inline.</strong> Each entity needs a signed 8821 before results can be delivered: attach one inline via <code>entities[].signed_8821</code> (below), upload one to <a href="#authorize"><code>/api/intake/8821-pdf</code></a>, or let ModernTax collect the signature via <code>/api/intake/8821</code>.</div>
     <h3>Request</h3>
+    <pre><code>curl -X POST https://portal.moderntax.io/api/intake/transcript \
+  -H "x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d @request.json</code></pre>
     <pre><code>{
   "request_token": "your-loan-12345",   // unique per account; idempotency key
   "loan_number":   "your-loan-12345",   // optional; used in invoice itemization
@@ -114,7 +124,17 @@ Content-Type: application/json    # or multipart/form-data where noted</code></p
       "address": "123 Main St", "city": "Austin", "state": "TX", "zip_code": "78701",
       "loan_officer_name":  "Jane Rep",  // optional
       "loan_officer_email": "jane@lender.com",
-      "fiscal_year_end_month": 12        // optional
+      "fiscal_year_end_month": 12,       // optional
+      "signed_8821": {                   // optional: attach a pre-signed 8821 inline
+        "pdf_base64": "&lt;base64 PDF, max 10 MB decoded&gt;",
+        "persona_inquiry_id": "inq_abc123",          // optional signature evidence —
+        "persona_verification_token": "…",           // all evidence fields optional
+        "signer_name": "Jane Founder",
+        "signer_email": "jane@acme.com",
+        "signed_at": "2026-08-12T18:04:00Z",         // ISO 8601
+        "signer_ip": "203.0.113.9",
+        "signature_vendor": "persona"
+      }
     }
   ]
 }</code></pre>
@@ -125,7 +145,8 @@ Content-Type: application/json    # or multipart/form-data where noted</code></p
       <tr><td><code>entities[].entity_name</code></td><td class="req">yes</td><td>Legal name on file with the IRS.</td></tr>
       <tr><td><code>entities[].tid</code> / <code>tid_kind</code></td><td class="req">yes</td><td>EIN (<code>XX-XXXXXXX</code>) or SSN (<code>XXX-XX-XXXX</code>); <code>"EIN"</code>/<code>"SSN"</code>.</td></tr>
       <tr><td><code>entities[].years</code></td><td class="req">yes</td><td>4-digit years, 1990–2028.</td></tr>
-      <tr><td><code>entities[].form_type</code></td><td class="opt">no</td><td><code>1120</code>, <code>1120S</code>, <code>1065</code>, <code>1040</code>, … Inferred from <code>tid_kind</code> if omitted.</td></tr>
+      <tr><td><code>entities[].form_type</code></td><td class="opt">no</td><td><code>1040</code>, <code>1065</code>, <code>1120</code>, <code>1120S</code>, <code>941</code>. Inferred from <code>tid_kind</code> if omitted.</td></tr>
+      <tr><td><code>entities[].signed_8821</code></td><td class="opt">no</td><td>Inline pre-signed 8821: <code>pdf_base64</code> (≤10&nbsp;MB decoded) plus optional evidence fields (<code>persona_inquiry_id</code>, <code>persona_verification_token</code>, <code>signer_name</code>, <code>signer_email</code>, <code>signed_at</code>, <code>signer_ip</code>, <code>signature_vendor</code>).</td></tr>
     </table>
     <h3>Response <code>201</code></h3>
     <pre><code>{
@@ -136,10 +157,13 @@ Content-Type: application/json    # or multipart/form-data where noted</code></p
   "status": "irs_queue",
   "entities": [
     { "entity_id": "uuid", "entity_name": "ACME Holdings LLC",
-      "form_type": "1120S", "years": ["2022","2023","2024"], "status": "irs_queue" }
+      "form_type": "1120S", "years": ["2022","2023","2024"], "status": "irs_queue",
+      "signed_8821": "attached" }   // only when entities[].signed_8821 was sent:
+                                    // attached | unreadable_attached | rejected_designee_mismatch
   ],
   "usage": { "used": 47, "remaining": 953, "limit": 1000 }
 }</code></pre>
+    <p>An inline 8821 whose designee CAF isn't a ModernTax designee <strong>never fails the request</strong> — the entity is created without the form (<code>signed_8821: "rejected_designee_mismatch"</code>) and you can re-upload via <a href="#authorize"><code>/api/intake/8821-pdf</code></a>.</p>
     <p>Errors: <code>401</code> (auth), <code>402</code> (account not enrolled in billing — see <a href="#pricing">Pricing</a>), <code>409</code> (duplicate <code>request_token</code>).</p>
 
     <h2 id="authorize">Authorization — IRS Form 8821</h2>
@@ -147,16 +171,36 @@ Content-Type: application/json    # or multipart/form-data where noted</code></p
 
     <h3>A. Upload a pre-signed 8821 (you collect the signature)</h3>
     <div class="ep"><span class="m post">POST</span> /api/intake/8821-pdf</div>
-    <p>For partners who obtain the borrower's signature through their own workflow (DocuSign, wet-sign, etc.). The entity advances straight to <code>8821_signed</code>. This is the model a fully-automated reseller uses.</p>
+    <p>For partners who obtain the taxpayer's signature through their own workflow (DocuSign, wet-sign, Persona-verified e-sign, etc.). The entity advances straight to <code>8821_signed</code>. This is the model a fully-automated reseller uses. Optional evidence fields record how the signature was collected; they're stored with the entity and returned as <code>signature_evidence</code> on <a href="#poll">poll responses</a>.</p>
+    <pre><code>curl -X POST https://portal.moderntax.io/api/intake/8821-pdf \
+  -H "x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx" \
+  -F "file=@signed-8821.pdf" \
+  -F "request_token=your-loan-12345" \
+  -F "entity_id=uuid" \
+  -F "persona_inquiry_id=inq_abc123" \
+  -F "signer_name=Jane Founder" \
+  -F "signed_at=2026-08-12T18:04:00Z"</code></pre>
     <pre><code># multipart/form-data
 file:          &lt;signed PDF, application/pdf, max 10 MB&gt;   (required)
 request_token: your-loan-12345                            (required)
 entity_id:     uuid          # or entity_name if the request has one entity
 years:         "2022,2023,2024"   # optional override
-form_type:     "1120S"            # optional override</code></pre>
+form_type:     "1120S"            # optional override
+
+# optional signature evidence
+persona_inquiry_id:          inq_abc123
+persona_verification_token:  &lt;token&gt;
+signer_name:                 Jane Founder
+signer_email:                jane@acme.com
+signed_at:                   2026-08-12T18:04:00Z   # ISO 8601
+signer_ip:                   203.0.113.9
+signature_vendor:            persona</code></pre>
     <pre><code>{ "success": true,
+  "designee_check": "ok",                 // "ok" | "unreadable" (PDF accepted either way)
+  "signature_evidence_stored": true,      // true when any evidence field was sent
   "entity": { "id":"uuid","name":"ACME Holdings LLC","status":"8821_signed",
               "signed_8821_url":"https://…1h-expiry…","years":["2022","2023","2024"],"form_type":"1120S" } }</code></pre>
+    <div class="note">If the uploaded 8821 names a designee CAF that is <strong>not</strong> a ModernTax designee, the endpoint returns <code>422 { "code": "designee_caf_mismatch", "designee_cafs": ["…"] }</code> and the PDF is <strong>not</strong> attached — fix the form and re-upload.</div>
 
     <h3>B. Let ModernTax collect the signature</h3>
     <div class="ep"><span class="m post">POST</span> /api/intake/8821</div>
@@ -166,7 +210,7 @@ form_type:     "1120S"            # optional override</code></pre>
 
     <h2 id="poll">Poll for results</h2>
     <div class="ep"><span class="m get">GET</span> /api/intake/transcript?token=&lt;request_token&gt;</div>
-    <p>Returns every entity's current status, 1-hour signed transcript URLs, and a compliance read.</p>
+    <p>Returns every entity's current status, 1-hour signed transcript URLs, and a compliance read. Without a <a href="#schemas"><code>schema</code></a> query parameter (and no portal-pinned default) the legacy shape below is returned unchanged.</p>
     <pre><code>{
   "request_id": "your-loan-12345",
   "status": "completed",              // collapses to "completed" | "pending"
@@ -176,6 +220,11 @@ form_type:     "1120S"            # optional override</code></pre>
     "entity_id":"uuid","entity_name":"ACME Holdings LLC","tid":"12-3456789","form_type":"1120S",
     "years":["2022","2023","2024"],"status":"completed",
     "signed_8821_url":"https://…1h-expiry…","signature_created_at":"2026-05-08T…",
+    "signature_evidence": {           // present when evidence was supplied at upload
+      "persona_inquiry_id":"inq_abc123","signer_name":"Jane Founder","signer_email":"jane@acme.com",
+      "signed_at":"2026-08-12T18:04:00Z","signature_vendor":"persona",
+      "recorded_at":"2026-08-12T18:05:02Z","source":"api_8821_pdf"
+    },                                // signer_ip is stored but never returned
     "transcript_urls":["https://…/2022-record-of-account.pdf", "…"],
     "transcript_html_urls":["https://…"],
     "compliance": {
@@ -186,6 +235,51 @@ form_type:     "1120S"            # optional override</code></pre>
     }
   }]
 }</code></pre>
+
+    <h2 id="schemas">Response schemas</h2>
+    <div class="ep"><span class="m get">GET</span> /api/intake/transcript?token=&lt;request_token&gt;&amp;schema=minimal|underwriting|raw</div>
+    <p><code>schema</code> is a <strong>query parameter on the results poll</strong> — it is not a field on the create-request body. You can also pin an org-wide default ("default response schema") in the <a href="#portal">developer portal</a>; an explicit query parameter overrides the pin. No parameter and no pin returns the <a href="#poll">legacy shape</a> unchanged. An invalid value returns <code>400</code> listing the valid values.</p>
+    <pre><code>curl "https://portal.moderntax.io/api/intake/transcript?token=your-loan-12345&amp;schema=underwriting" \
+  -H "x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx"</code></pre>
+    <p>All three shapes share one envelope; only the per-entity objects differ. PDF/HTML URLs are 1-hour signed.</p>
+    <pre><code>{
+  "request_id": "uuid",
+  "reference": "your-loan-12345",
+  "schema": "minimal",                // echoes the shape served
+  "status": "completed",
+  "request_status": "completed",
+  "created_at": "2026-08-10T14:02:00Z",
+  "completed_at": "2026-08-11T10:32:11Z",
+  "entities": [ … ]                   // shape per schema, below
+}</code></pre>
+    <h3><code>schema=minimal</code> — just tell me if it's clean</h3>
+    <pre><code>{ "id":"uuid", "name":"ACME Holdings LLC", "form":"1120S",
+  "years":["2022","2023","2024"], "status":"completed",
+  "years_filed":["2022","2023","2024"], "years_unfiled":[],
+  "flags":[{"type":"BALANCE_DUE","severity":"WARNING","message":"Account balance: $4,287.21"}],
+  "pdf":["https://…1h-expiry…"], "html":["https://…1h-expiry…"] }</code></pre>
+    <h3><code>schema=underwriting</code> — the lines a credit memo needs</h3>
+    <p>Everything in <code>minimal</code>, plus:</p>
+    <pre><code>{ …minimal fields…,
+  "financials":[{ "year":"2023","form":"1120S","gross_receipts":1240000,"total_income":1262400,
+                  "total_deductions":1108000,"total_tax":42000,"account_balance":4287.21,
+                  "accrued_interest":112.04,"accrued_penalty":0,"account_balance_plus_accruals":4399.25 }],
+  "tax_liabilities":{ "total_assessed":42000,"total_paid":37712.79,"total_balance":4287.21,"total_accrued":112.04 },
+  "repayment_plan":{ "has_installment_agreement":false,"has_offer_in_compromise":false,
+                     "has_currently_not_collectible":false,"details":null,
+                     "recommendation":"Balance due with no active agreement — condition the loan on proof of payment or an installment agreement." },
+  "overall_severity":"WARNING",
+  "headline":"Filed all 3 requested years; $4,287.21 balance due on 2023." }</code></pre>
+    <h3><code>schema=raw</code> — you parse it yourself</h3>
+    <pre><code>{ "id":"uuid", "name":"ACME Holdings LLC", "form":"1120S",
+  "years":["2022","2023","2024"], "status":"completed",
+  "retrieved_at":"2026-08-11T10:32:11Z",
+  "artifacts":[
+    { "kind":"pdf",  "file":"2023-record-of-account.pdf", "url":"https://…1h-expiry…", "sha256":"9f2c…a41b" },
+    { "kind":"html", "file":"2023-record-of-account.html","url":"https://…1h-expiry…", "sha256":"3d81…7c02" },
+    { "kind":"signed_8821", "file":"signed-8821.pdf",     "url":"https://…1h-expiry…", "sha256":"77aa…09c3" }
+  ] }</code></pre>
+    <p><code>sha256</code> is computed at serve time; it may be <code>null</code> for legacy externally-stored artifacts.</p>
 
     <h2 id="structured">Structured JSON</h2>
     <div class="ep"><span class="m get">GET</span> /api/v1/transcripts/{entityId}/structured</div>
@@ -202,24 +296,40 @@ form_type:     "1120S"            # optional override</code></pre>
     <p>Returns the created <code>subscription</code>. If <code>skip_initial_pull=false</code> (default) an <code>immediate_pull</code> is queued. An entity with an active/paused subscription returns <code>409</code> with the existing one.</p>
 
     <h2 id="webhooks">Webhooks — push result delivery</h2>
-    <p>Results are pushed to the <strong>webhook URL ModernTax provisions for your account during onboarding</strong> (there is no per-request <code>callback_url</code> field). Delivery fires when an entity's transcripts are completed. There is no separate event for intermediate steps like <em>8821 signed</em> or <em>IRS queued</em> — poll for those.</p>
+    <p>Configure your webhook <strong>self-serve</strong> in the <a href="#portal">developer portal</a>: set the delivery URL and a signing secret (the secret is shown once — store it immediately), and send yourself signed test deliveries. There is no per-request <code>callback_url</code> field. Delivery fires when an entity's transcripts are completed; there is no separate event for intermediate steps like <em>8821 signed</em> or <em>IRS queued</em> — poll for those.</p>
     <h3>Headers</h3>
     <pre><code>Content-Type: application/json
 User-Agent: ModernTax-Webhook/1.0
 X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webhook secret&gt;</code></pre>
-    <div class="note">The signature header is present only if a <strong>webhook secret</strong> has been provisioned for your account. If you require signed payloads, ask for a secret at onboarding and verify the signature constant-time before processing. There is no <code>x-moderntax-event</code> header.</div>
+    <h3>Verifying the signature</h3>
+    <p>Compute the HMAC over the <strong>raw request body</strong> (before any JSON parsing) and compare constant-time:</p>
+    <pre><code>// node
+const crypto = require('crypto');
+
+function verifyModernTax(rawBody, signatureHeader, secret) {
+  const expected = crypto.createHmac('sha256', secret)
+                         .update(rawBody)            // Buffer or exact raw string
+                         .digest('hex');
+  const given = Buffer.from(signatureHeader || '', 'utf8');
+  const want  = Buffer.from(expected, 'utf8');
+  return given.length === want.length && crypto.timingSafeEqual(given, want);
+}</code></pre>
     <h3>Payload</h3>
-    <p>Two formats are supported; your account is configured for one:</p>
-    <pre><code>// files format
+    <p>Two contracts are delivered; your account is configured for one:</p>
+    <pre><code>// v2 — incremental file delivery
 { "request_token":"your-loan-12345", "status":"complete",   // partial | complete | error
   "files":[{ "file_id":"uuid","type":"record_of_account","year":"2023",
              "entity_name":"ACME Holdings LLC","html":"&lt;…&gt;","created_at":"…" }] }
 
-// structured format
-{ "request_token":"your-loan-12345","status":"complete","record_id":"uuid",
-  "record_type":"account_transcript","generated_at":"…","entity":{…},"data":{…},"raw_html":"…" }</code></pre>
+// v3 — structured records
+{ "request_token":"your-loan-12345","status":"complete",
+  "record_id":"uuid",                 // deterministic — use for idempotency/dedupe
+  "record_type":"financial_verification",
+  // entity_profile | form_discovery | employment_compliance |
+  // financial_verification | risk_signals | credit_recommendation
+  "generated_at":"…","entity":{…},"data":{…} }</code></pre>
     <h3>Retries</h3>
-    <p>On any non-2xx response ModernTax retries up to 5 times with backoff: <code>10s, 30s, 90s, 5m, 15m</code>.</p>
+    <p>On failure ModernTax retries up to 5 attempts with backoff <code>10s, 30s, 90s, 5m, 15m</code>. A <code>4xx</code> response (except <code>413</code> and <code>429</code>) marks the delivery dead immediately — no further retries.</p>
 
     <h2 id="employment">Employment &amp; income verification</h2>
     <p>A separate product for W-2/1099 verification. Same <code>x-api-key</code> scheme.</p>
@@ -230,11 +340,12 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
     <h2 id="errors">Errors</h2>
     <table>
       <tr><th>Status</th><th>Meaning</th></tr>
-      <tr><td><code>400</code></td><td>Validation error (bad TID, non-PDF upload, file &gt; 10 MB, missing required field).</td></tr>
+      <tr><td><code>400</code></td><td>Validation error (bad TID, non-PDF upload, file &gt; 10 MB, missing required field, invalid <code>schema</code> value — body lists the valid values).</td></tr>
       <tr><td><code>401</code></td><td>Missing or invalid <code>x-api-key</code>.</td></tr>
       <tr><td><code>402</code></td><td>Account not enrolled in billing — a payment method / billing setup is required before ordering.</td></tr>
       <tr><td><code>404</code></td><td><code>request_token</code> or entity not found for your account.</td></tr>
       <tr><td><code>409</code></td><td>Duplicate <code>request_token</code>, or an entity already has a monitoring subscription.</td></tr>
+      <tr><td><code>422</code></td><td><code>designee_caf_mismatch</code> on <code>/api/intake/8821-pdf</code> — the uploaded 8821 names a non-ModernTax designee CAF; body includes <code>designee_cafs</code>.</td></tr>
       <tr><td><code>429</code></td><td>Account request quota reached (body includes <code>usage</code>).</td></tr>
     </table>
 
@@ -244,6 +355,15 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
     <h2 id="status">System status</h2>
     <div class="ep"><span class="m get">GET</span> /api/public/status</div>
     <p>No auth. Returns <code>{ "status": "ok" }</code> when healthy — safe to poll for monitoring.</p>
+
+    <h2 id="portal">Developer portal</h2>
+    <p><a href="https://portal.moderntax.io/developer">portal.moderntax.io/developer</a> is self-serve management for your API account:</p>
+    <ul>
+      <li><strong>API keys</strong> — rotate keys without a support ticket.</li>
+      <li><strong>Webhooks</strong> — set the delivery URL and signing secret (secret shown once) and fire signed test deliveries at your endpoint.</li>
+      <li><strong>Default response schema</strong> — pin <code>minimal</code>, <code>underwriting</code>, or <code>raw</code> org-wide; an explicit <code>schema=</code> query parameter still overrides.</li>
+      <li><strong>Usage</strong> — request counts against your quota.</li>
+    </ul>
 
     <h2 id="pricing">Pricing &amp; quotas</h2>
     <p>API accounts are billed monthly via ACH (Mercury) or Stripe at your negotiated rates. Representative default tier:</p>
@@ -272,7 +392,7 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
 
     <footer>
       Questions or a key: <a href="mailto:matt@moderntax.io">matt@moderntax.io</a> · ModernTax, Inc.<br>
-      Last updated: 2026-07-31 — this reference is kept in sync with the deployed API.
+      Last updated: 2026-08-14 — this reference is kept in sync with the deployed API.
     </footer>
   </main>
 </div>

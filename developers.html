@@ -212,59 +212,45 @@
         <span class="fn">portal.moderntax.io/api</span>
       </div>
       <div class="cpane on" id="c-req">
-<pre><span class="cm"># Create a verification — see moderntax.io/docs for the current path</span>
-curl -X POST https://portal.moderntax.io/api/<span class="cm">{verification-endpoint}</span> \
-  -H <span class="cs">"x-api-key: $MT_API_KEY"</span> \
-  -H <span class="cs">"Idempotency-Key: loan-4482-atlas"</span> \
+<pre><span class="cm"># Create a transcript request</span>
+curl -X POST https://portal.moderntax.io/api/intake/transcript \
+  -H <span class="cs">"x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx"</span> \
+  -H <span class="cs">"Content-Type: application/json"</span> \
   -d '{
-    <span class="ck">"entity"</span>: {
-      <span class="ck">"legal_name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
-      <span class="ck">"tin"</span>: <span class="cs">"88-1213417"</span>,
-      <span class="ck">"tin_type"</span>: <span class="cs">"ein"</span>
-    },
-    <span class="ck">"years"</span>: [<span class="cn">2024</span>, <span class="cn">2023</span>, <span class="cn">2022</span>],
-    <span class="ck">"form"</span>: <span class="cs">"auto"</span>,        <span class="cm">// we detect election status</span>
-    <span class="ck">"products"</span>: [<span class="cs">"return_transcript"</span>, <span class="cs">"record_of_account"</span>],
-    <span class="ck">"authorization"</span>: { <span class="ck">"mode"</span>: <span class="cs">"upload"</span> },
-    <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
-    <span class="ck">"schema"</span>: <span class="cs">"partner.v2"</span>
+    <span class="ck">"request_token"</span>: <span class="cs">"SBA-7a-4482"</span>,  <span class="cm">// your id — also the idempotency key</span>
+    <span class="ck">"entities"</span>: [{
+      <span class="ck">"entity_name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
+      <span class="ck">"tid"</span>: <span class="cs">"88-1213417"</span>,
+      <span class="ck">"tid_kind"</span>: <span class="cs">"EIN"</span>,
+      <span class="ck">"form_type"</span>: <span class="cs">"1120S"</span>,
+      <span class="ck">"years"</span>: [<span class="cs">"2022"</span>, <span class="cs">"2023"</span>, <span class="cs">"2024"</span>]
+    }]
   }'
 
-<span class="cm"># 202 Accepted</span>
+<span class="cm"># 201 Created</span>
 {
-  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
-  <span class="ck">"status"</span>: <span class="cs">"awaiting_authorization"</span>,
-  <span class="ck">"form_detected"</span>: <span class="cs">"1120S"</span>,
-  <span class="ck">"authorization_url"</span>: <span class="cs">"https://.../8821/vrf_8af3c12e.pdf"</span>,
-  <span class="ck">"estimated_complete"</span>: <span class="cs">"2026-08-11T16:00:00Z"</span>
+  <span class="ck">"request_id"</span>: <span class="cs">"uuid"</span>,
+  <span class="ck">"request_token"</span>: <span class="cs">"SBA-7a-4482"</span>,
+  <span class="ck">"status"</span>: <span class="cs">"irs_queue"</span>,
+  <span class="ck">"entities"</span>: [{ <span class="ck">"entity_id"</span>: <span class="cs">"uuid"</span>, <span class="ck">"status"</span>: <span class="cs">"irs_queue"</span> }],
+  <span class="ck">"usage"</span>: { <span class="ck">"used"</span>: <span class="cn">47</span>, <span class="ck">"remaining"</span>: <span class="cn">953</span> }
 }</pre>
       </div>
       <div class="cpane" id="c-hook">
 <pre><span class="cm"># POST to your endpoint when the pull completes</span>
+<span class="cm"># X-ModernTax-Signature: HMAC-SHA256 hex of the raw body</span>
 {
-  <span class="ck">"event"</span>: <span class="cs">"verification.completed"</span>,
-  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
-  <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
-  <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
-  <span class="ck">"compliance"</span>: {
-    <span class="ck">"status"</span>: <span class="cs">"warning"</span>,
-    <span class="ck">"unfiled_years"</span>: [<span class="cn">2025</span>],
-    <span class="ck">"civil_penalties"</span>: <span class="cp">false</span>,
-    <span class="ck">"balance_due"</span>: <span class="cn">0</span>
+  <span class="ck">"request_token"</span>: <span class="cs">"SBA-7a-4482"</span>,
+  <span class="ck">"status"</span>: <span class="cs">"complete"</span>,         <span class="cm">// partial | complete | error</span>
+  <span class="ck">"record_id"</span>: <span class="cs">"uuid"</span>,           <span class="cm">// deterministic — dedupe on this</span>
+  <span class="ck">"record_type"</span>: <span class="cs">"financial_verification"</span>,
+  <span class="ck">"generated_at"</span>: <span class="cs">"2026-08-11T10:32:11Z"</span>,
+  <span class="ck">"entity"</span>: {
+    <span class="ck">"entity_name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
+    <span class="ck">"tid"</span>: <span class="cs">"88-1213417"</span>,
+    <span class="ck">"form_type"</span>: <span class="cs">"1120S"</span>
   },
-  <span class="ck">"years"</span>: {
-    <span class="ck">"2024"</span>: {
-      <span class="ck">"gross_receipts"</span>: <span class="cn">4182910</span>,
-      <span class="ck">"total_income"</span>: <span class="cn">4204118</span>,
-      <span class="ck">"net_income"</span>: <span class="cn">612488</span>,
-      <span class="ck">"total_tax"</span>: <span class="cn">0</span>
-    }
-  },
-  <span class="ck">"artifacts"</span>: {
-    <span class="ck">"parsed"</span>: <span class="cs">"https://.../parsed.json"</span>,
-    <span class="ck">"raw_html"</span>: <span class="cs">"https://.../irs.html"</span>,
-    <span class="ck">"pdf"</span>:      <span class="cs">"https://.../transcript.pdf"</span>
-  }
+  <span class="ck">"data"</span>: { <span class="cm">/* shape per record_type — see moderntax.io/docs */</span> }
 }</pre>
       </div>
     </div>
@@ -276,25 +262,25 @@ curl -X POST https://portal.moderntax.io/api/<span class="cm">{verification-endp
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">Lifecycle</div>
-      <h2>Four states. <em>That's the whole API.</em></h2>
-      <p>No polling loops required — every transition fires a webhook, and a status endpoint is available if you'd rather poll.</p>
+      <h2>Four steps. <em>That's the whole API.</em></h2>
+      <p>A signed webhook fires when the pull completes, and <code class="mono">GET /api/intake/transcript?token=</code> is there if you'd rather poll.</p>
     </div>
     <div class="flow">
       <div class="fstep">
         <div class="n">01</div><h4>Create</h4>
-        <p>Create a verification with the entity, years, and products. Send <code>form:"auto"</code> and we resolve the actual election status before pulling.</p>
+        <p><code>POST /api/intake/transcript</code> with your entities, TINs, and years. Your <code>request_token</code> is the idempotency key — a retry returns <code>409</code>, never a double order.</p>
       </div>
       <div class="fstep">
         <div class="n">02</div><h4>Authorize</h4>
-        <p>We return a pre-populated 8821 at <code>authorization_url</code>. Route it through your own signature flow, then <code>POST</code> it back — or set <code>mode:"cached"</code> to reuse one inside the 120-day window.</p>
+        <p>Collect the 8821 signature in your own flow (Persona, DocuSign, wet-sign) and send it back — inline as <code>signed_8821</code> on the create call or via <code>POST /api/intake/8821-pdf</code>, with signature evidence attached. Or let ModernTax collect it.</p>
       </div>
       <div class="fstep">
         <div class="n">03</div><h4>Pull</h4>
-        <p>Status moves to <code>in_progress</code>. A credentialed expert on our network works the IRS PPS line with their own CAF — never a single shared credential.</p>
+        <p>Status moves through <code>irs_queue</code> and <code>processing</code>. A credentialed expert on our network works the IRS PPS line with their own CAF — never a single shared credential.</p>
       </div>
       <div class="fstep">
         <div class="n">04</div><h4>Deliver</h4>
-        <p><code>verification.completed</code> fires with parsed JSON, raw IRS HTML, and PDF. Same-day target available on integrated plans, 24h standard.</p>
+        <p>A webhook signed with <code>X-ModernTax-Signature</code> delivers parsed JSON, raw IRS HTML, and PDF. Same-day target available on integrated plans, 24h standard.</p>
       </div>
     </div>
   </div>
@@ -306,12 +292,12 @@ curl -X POST https://portal.moderntax.io/api/<span class="cm">{verification-endp
     <div class="sec-head">
       <div class="eyebrow">Response shape</div>
       <h2>You pick the schema. <em>We conform to it.</em></h2>
-      <p>Every platform wants a different shape — some want four quarters of 941 detail, some want three Records of Account and nothing else. Name a schema on the request and every payload comes back in it. We version yours; it doesn't break when we ship.</p>
+      <p>Three named shapes — <code class="mono">minimal</code>, <code class="mono">underwriting</code>, <code class="mono">raw</code>. Pass <code class="mono">schema=</code> on the results call (<code class="mono">GET /api/intake/transcript?token=…&amp;schema=underwriting</code>), or pin an org-wide default in the developer portal at <a href="https://portal.moderntax.io/developer" style="color:var(--accent-ink);font-weight:600;">portal.moderntax.io/developer</a>. No parameter and no pin? The legacy response shape, unchanged — nothing breaks when we ship.</p>
     </div>
 
     <div class="schema-wrap">
       <div class="schema-head">
-        <div><h3>Same pull, three shapes</h3><p>Set <code class="mono">schema</code> per request, or pin a default per API key.</p></div>
+        <div><h3>Same pull, three shapes</h3><p>Per-entity payload for each <code class="mono">schema=</code> value. Every shape shares one envelope; PDF/HTML URLs are 1-hour signed.</p></div>
         <div class="seg" id="schema-seg">
           <button class="on" data-s="minimal">minimal</button>
           <button data-s="underwriting">underwriting</button>
@@ -321,59 +307,64 @@ curl -X POST https://portal.moderntax.io/api/<span class="cm">{verification-endp
       <div class="schema-body">
         <div class="code">
           <div class="cpane on" id="s-minimal">
-<pre><span class="cm">// schema: "minimal" — just tell me if it's clean</span>
+<pre><span class="cm">// GET /api/intake/transcript?token=SBA-7a-4482&amp;schema=minimal</span>
+<span class="cm">// — just tell me if it's clean</span>
 {
-  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
-  <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
+  <span class="ck">"id"</span>: <span class="cs">"uuid"</span>,
+  <span class="ck">"name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
   <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
-  <span class="ck">"status"</span>: <span class="cs">"complete"</span>,
-  <span class="ck">"years_filed"</span>: [<span class="cn">2024</span>, <span class="cn">2023</span>, <span class="cn">2022</span>],
+  <span class="ck">"years"</span>: [<span class="cs">"2022"</span>, <span class="cs">"2023"</span>, <span class="cs">"2024"</span>],
+  <span class="ck">"status"</span>: <span class="cs">"completed"</span>,
+  <span class="ck">"years_filed"</span>: [<span class="cs">"2022"</span>, <span class="cs">"2023"</span>, <span class="cs">"2024"</span>],
   <span class="ck">"years_unfiled"</span>: [],
-  <span class="ck">"flags"</span>: <span class="cs">"clean"</span>,
-  <span class="ck">"pdf"</span>: <span class="cs">"https://.../transcript.pdf"</span>
+  <span class="ck">"flags"</span>: [],                          <span class="cm">// [{type, severity, message}]</span>
+  <span class="ck">"pdf"</span>: [<span class="cs">"https://…"</span>],                <span class="cm">// 1-hour signed URLs</span>
+  <span class="ck">"html"</span>: [<span class="cs">"https://…"</span>]
 }</pre>
           </div>
           <div class="cpane" id="s-underwriting">
-<pre><span class="cm">// schema: "underwriting" — the five lines a credit memo needs</span>
+<pre><span class="cm">// schema: "underwriting" — everything in minimal, plus the lines a credit memo needs</span>
 {
-  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
-  <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
-  <span class="ck">"entity"</span>: {
-    <span class="ck">"legal_name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
-    <span class="ck">"naics"</span>: <span class="cs">"238160"</span>,
-    <span class="ck">"established"</span>: <span class="cs">"2014-03-11"</span>,
-    <span class="ck">"election_status"</span>: <span class="cs">"S-Corp · required 1120S"</span>
+  <span class="cm">…all minimal fields…</span>,
+  <span class="ck">"financials"</span>: [
+    { <span class="ck">"year"</span>: <span class="cs">"2024"</span>, <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
+      <span class="ck">"gross_receipts"</span>: <span class="cn">4182910</span>, <span class="ck">"total_income"</span>: <span class="cn">4204118</span>,
+      <span class="ck">"total_deductions"</span>: <span class="cn">3591630</span>, <span class="ck">"total_tax"</span>: <span class="cn">0</span>,
+      <span class="ck">"account_balance"</span>: <span class="cn">0</span>, <span class="ck">"accrued_interest"</span>: <span class="cn">0</span>,
+      <span class="ck">"accrued_penalty"</span>: <span class="cn">0</span>, <span class="ck">"account_balance_plus_accruals"</span>: <span class="cn">0</span> }
+  ],
+  <span class="ck">"tax_liabilities"</span>: {
+    <span class="ck">"total_assessed"</span>: <span class="cn">0</span>, <span class="ck">"total_paid"</span>: <span class="cn">0</span>,
+    <span class="ck">"total_balance"</span>: <span class="cn">0</span>, <span class="ck">"total_accrued"</span>: <span class="cn">0</span>
   },
-  <span class="ck">"years"</span>: {
-    <span class="ck">"2024"</span>: { <span class="ck">"gross_receipts"</span>: <span class="cn">4182910</span>, <span class="ck">"total_income"</span>: <span class="cn">4204118</span>,
-             <span class="ck">"deductions"</span>: <span class="cn">3591630</span>, <span class="ck">"net_income"</span>: <span class="cn">612488</span>, <span class="ck">"total_tax"</span>: <span class="cn">0</span> },
-    <span class="ck">"2023"</span>: { <span class="ck">"gross_receipts"</span>: <span class="cn">3740228</span>, <span class="ck">"total_income"</span>: <span class="cn">3752901</span>,
-             <span class="ck">"deductions"</span>: <span class="cn">3298440</span>, <span class="ck">"net_income"</span>: <span class="cn">454461</span>, <span class="ck">"total_tax"</span>: <span class="cn">0</span> }
+  <span class="ck">"repayment_plan"</span>: {
+    <span class="ck">"has_installment_agreement"</span>: <span class="cp">false</span>,
+    <span class="ck">"has_offer_in_compromise"</span>: <span class="cp">false</span>,
+    <span class="ck">"has_currently_not_collectible"</span>: <span class="cp">false</span>,
+    <span class="ck">"details"</span>: <span class="cp">null</span>,
+    <span class="ck">"recommendation"</span>: <span class="cs">"No balance due and no collection activity — clear to proceed."</span>
   },
-  <span class="ck">"compliance"</span>: {
-    <span class="ck">"status"</span>: <span class="cs">"clean"</span>, <span class="ck">"civil_penalties"</span>: <span class="cp">false</span>,
-    <span class="ck">"balance_due"</span>: <span class="cn">0</span>, <span class="ck">"liens"</span>: [], <span class="ck">"unfiled_years"</span>: []
-  },
-  <span class="ck">"sba_sop"</span>: { <span class="ck">"transcript_type"</span>: <span class="cs">"record_of_account"</span>, <span class="ck">"compliant"</span>: <span class="cp">true</span> }
+  <span class="ck">"overall_severity"</span>: <span class="cs">"CLEAN"</span>,      <span class="cm">// CRITICAL | WARNING | CLEAN</span>
+  <span class="ck">"headline"</span>: <span class="cs">"Filed all 3 requested years. No balance due."</span>
 }</pre>
           </div>
           <div class="cpane" id="s-raw">
 <pre><span class="cm">// schema: "raw" — you parse it yourself</span>
 {
-  <span class="ck">"id"</span>: <span class="cs">"vrf_8af3c12e"</span>,
-  <span class="ck">"artifacts"</span>: [
-    { <span class="ck">"year"</span>: <span class="cn">2024</span>, <span class="ck">"type"</span>: <span class="cs">"record_of_account"</span>,
-      <span class="ck">"html"</span>: <span class="cs">"https://.../2024-roa.html"</span>,
-      <span class="ck">"pdf"</span>:  <span class="cs">"https://.../2024-roa.pdf"</span>,
-      <span class="ck">"sha256"</span>: <span class="cs">"9f2c…a41b"</span> },
-    { <span class="ck">"year"</span>: <span class="cn">2024</span>, <span class="ck">"type"</span>: <span class="cs">"return_transcript"</span>,
-      <span class="ck">"html"</span>: <span class="cs">"https://.../2024-rt.html"</span>,
-      <span class="ck">"pdf"</span>:  <span class="cs">"https://.../2024-rt.pdf"</span>,
-      <span class="ck">"sha256"</span>: <span class="cs">"3d81…7c02"</span> }
-  ],
+  <span class="ck">"id"</span>: <span class="cs">"uuid"</span>,
+  <span class="ck">"name"</span>: <span class="cs">"Atlas Roofing LLC"</span>,
+  <span class="ck">"form"</span>: <span class="cs">"1120S"</span>,
+  <span class="ck">"years"</span>: [<span class="cs">"2022"</span>, <span class="cs">"2023"</span>, <span class="cs">"2024"</span>],
+  <span class="ck">"status"</span>: <span class="cs">"completed"</span>,
   <span class="ck">"retrieved_at"</span>: <span class="cs">"2026-08-10T15:42:11Z"</span>,
-  <span class="ck">"caf_on_file"</span>: <span class="cp">true</span>,
-  <span class="ck">"authorization_expires"</span>: <span class="cs">"2026-12-08"</span>
+  <span class="ck">"artifacts"</span>: [
+    { <span class="ck">"kind"</span>: <span class="cs">"pdf"</span>,  <span class="ck">"file"</span>: <span class="cs">"2024-record-of-account.pdf"</span>,
+      <span class="ck">"url"</span>: <span class="cs">"https://…"</span>, <span class="ck">"sha256"</span>: <span class="cs">"9f2c…a41b"</span> },
+    { <span class="ck">"kind"</span>: <span class="cs">"html"</span>, <span class="ck">"file"</span>: <span class="cs">"2024-record-of-account.html"</span>,
+      <span class="ck">"url"</span>: <span class="cs">"https://…"</span>, <span class="ck">"sha256"</span>: <span class="cs">"3d81…7c02"</span> },
+    { <span class="ck">"kind"</span>: <span class="cs">"signed_8821"</span>, <span class="ck">"file"</span>: <span class="cs">"signed-8821.pdf"</span>,
+      <span class="ck">"url"</span>: <span class="cs">"https://…"</span>, <span class="ck">"sha256"</span>: <span class="cs">"77aa…09c3"</span> }
+  ]  <span class="cm">// sha256 computed at serve time; null for legacy externally-stored artifacts</span>
 }</pre>
           </div>
         </div>
@@ -393,15 +384,16 @@ curl -X POST https://portal.moderntax.io/api/<span class="cm">{verification-endp
     <div class="dual">
       <div>
         <h3>What your LOS sees</h3>
-        <p>Structured payload against your pinned schema, delivered by webhook with signature verification and automatic retry.</p>
+        <p>Structured records delivered by webhook — HMAC-signed, with automatic retry and backoff. Configure the URL and secret self-serve in the developer portal.</p>
         <div class="code" style="box-shadow:none;">
 <pre><span class="cm"># your handler</span>
 POST /webhooks/moderntax
-X-MT-Signature: <span class="cs">t=1754…,v1=8a3f…</span>
+X-ModernTax-Signature: <span class="cs">8a3f…</span>  <span class="cm"># HMAC-SHA256 hex of raw body</span>
 
-{ <span class="ck">"event"</span>: <span class="cs">"verification.completed"</span>,
-  <span class="ck">"reference"</span>: <span class="cs">"SBA-7a-4482"</span>,
-  <span class="ck">"schema"</span>: <span class="cs">"partner.v2"</span> }</pre>
+{ <span class="ck">"request_token"</span>: <span class="cs">"SBA-7a-4482"</span>,
+  <span class="ck">"status"</span>: <span class="cs">"complete"</span>,
+  <span class="ck">"record_id"</span>: <span class="cs">"uuid"</span>,
+  <span class="ck">"record_type"</span>: <span class="cs">"financial_verification"</span> }</pre>
         </div>
       </div>
       <div>
@@ -431,7 +423,7 @@ X-MT-Signature: <span class="cs">t=1754…,v1=8a3f…</span>
       <div class="fcard">
         <div class="fi" style="background:var(--warn-soft);color:var(--warn-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10a6 6 0 1 1 1.8 4.3M4 14v-3h3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3>Monitoring that shuts itself off</h3>
-        <p>Set <code class="mono">monitor:true</code> on a conditioned year and we re-poll until it lands, then auto-cancel. <b>Billed only when a fresh pull returns something new</b> — never for an empty check.</p>
+        <p>Enroll a conditioned entity via <code class="mono">POST /api/intake/monitoring</code> and we re-poll until it lands, then auto-cancel. <b>Billed only when a fresh pull returns something new</b> — never for an empty check.</p>
       </div>
       <div class="fcard">
         <div class="fi" style="background:var(--purple-soft);color:var(--purple);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10" cy="7" r="2.6"/><path d="M4.5 16.5a5.5 5.5 0 0 1 11 0" stroke-linecap="round"/></svg></div>
@@ -440,13 +432,13 @@ X-MT-Signature: <span class="cs">t=1754…,v1=8a3f…</span>
       </div>
       <div class="fcard">
         <div class="fi" style="background:var(--accent-soft);color:var(--accent-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 4h9v12H7zM4 7h1M4 10h1M4 13h1" stroke-linecap="round"/></svg></div>
-        <h3>Sandbox with real fixtures</h3>
-        <p>Replayable fixtures for every terminal state — clean, no-record, civil penalty, wrong-election, IRS auth failure. <b>Test the unhappy paths</b> before you're live.</p>
+        <h3>Self-serve sandbox</h3>
+        <p>Work email + company at <a href="https://portal.moderntax.io/sandbox" style="color:var(--accent-ink);font-weight:600;">portal.moderntax.io/sandbox</a> gets you an instant <code class="mono">{company}-sandbox</code> key against synthetic data. <b>Production-identical endpoints</b>, 250 requests free — test before you talk to anyone.</p>
       </div>
       <div class="fcard">
         <div class="fi" style="background:var(--ok-soft);color:var(--ok-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 2.5v15M2.5 10h15" stroke-linecap="round"/></svg></div>
         <h3>Idempotent by contract</h3>
-        <p>Send <code class="mono">Idempotency-Key</code> and a retry never double-charges or double-pulls. Rate limits and usage are visible per key in the dashboard your team already has.</p>
+        <p>Your <code class="mono">request_token</code> is the idempotency key — a retried create returns <code class="mono">409</code>, never a double charge or a double pull. Usage against your quota is visible in the developer portal.</p>
       </div>
     </div>
   </div>
@@ -458,7 +450,7 @@ X-MT-Signature: <span class="cs">t=1754…,v1=8a3f…</span>
     <div class="sec-head">
       <div class="eyebrow">Reference</div>
       <h2>Endpoints, <em>in one place.</em></h2>
-      <p>All requests authenticate with an <code class="mono">x-api-key</code> header against <code class="mono">https://portal.moderntax.io</code>. Rate limits and per-key usage are visible in your dashboard.</p>
+      <p>All requests authenticate with an <code class="mono">x-api-key</code> header against <code class="mono">https://portal.moderntax.io</code>. Keys, webhooks, default schema, and usage are managed self-serve at <code class="mono">portal.moderntax.io/developer</code>.</p>
     </div>
     <div class="ptable">
       <table>
