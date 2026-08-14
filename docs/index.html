@@ -1,400 +1,821 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ModernTax Partner API Reference</title>
-  <meta name="description" content="ModernTax Partner API: transcript intake, IRS Form 8821 authorization, monitoring enrollment, structured compliance data, and webhook result delivery. x-api-key auth. SOC 2 Type I complete.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#ffffff;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--code-bg:#0a1929;--accent:#00966e;--accent2:#00C48C;--warn:#b45309;--warn-bg:#fffbeb}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
-    a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
-    code,pre{font-family:'JetBrains Mono',monospace}
-    code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:.86em}
-    pre{background:var(--code-bg);color:#e2e8f0;padding:16px 18px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.55}
-    pre code{background:none;padding:0;color:inherit}
-    .wrap{display:grid;grid-template-columns:260px 1fr;max-width:1180px;margin:0 auto;min-height:100vh}
-    .side{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;border-right:1px solid var(--line);padding:24px 18px}
-    .brand{font-weight:800;font-size:20px;color:var(--accent);margin:0 0 4px}
-    .brand span{color:var(--ink)}
-    .side .tag{font-size:11px;color:var(--muted);margin-bottom:20px;display:block}
-    .side h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 6px}
-    .side a{display:block;color:#334155;font-size:14px;padding:4px 0}
-    .main{padding:40px 48px;max-width:820px}
-    h1{font-size:30px;margin:0 0 6px}
-    h2{font-size:22px;margin:40px 0 10px;padding-top:12px;border-top:1px solid var(--line)}
-    h3{font-size:16px;margin:26px 0 8px}
-    .lead{color:var(--muted);font-size:16px}
-    table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
-    th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-    th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-    .ep{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:13px;background:#f8fafc;border:1px solid var(--line);border-radius:6px;padding:5px 10px;margin:10px 0}
-    .m{font-weight:700;padding:1px 7px;border-radius:4px;color:#fff;font-size:11px}
-    .m.get{background:#2563eb}.m.post{background:#059669}
-    .note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:11px 15px;border-radius:6px;color:#7c4a03;font-size:14px;margin:14px 0}
-    .ok{background:#f0fdf4;border-left:3px solid var(--accent2);padding:11px 15px;border-radius:6px;color:#065f46;font-size:14px;margin:14px 0}
-    .req{color:#dc2626;font-weight:600;font-size:12px}.opt{color:var(--muted);font-size:12px}
-    footer{color:var(--muted);font-size:13px;margin:48px 0 24px;padding-top:16px;border-top:1px solid var(--line)}
-    @media(max-width:820px){
-      .wrap{grid-template-columns:1fr}.side{display:none}.main{padding:28px 20px}
-      /* mobile: the 1fr grid track was being forced to ~820px by table/endpoint
-         min-content width; let the column shrink and scroll wide tables in place */
-      .main{min-width:0;max-width:100%;overflow-wrap:break-word}
-      table{display:block;overflow-x:auto}
-      .ep{flex-wrap:wrap;max-width:100%;word-break:break-all}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ModernTax — Partner API Reference</title>
+<meta name="description" content="ModernTax Partner API: transcript intake, IRS Form 8821 authorization, monitoring enrollment, structured compliance data, and webhook result delivery. x-api-key auth. SOC 2 Type I complete." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:oklch(98.4% 0.006 80);--paper-2:oklch(96.2% 0.008 80);--paper-3:oklch(93.4% 0.012 80);
+    --rule:oklch(86% 0.014 80);--rule-soft:oklch(91% 0.012 80);
+    --ink:oklch(18% 0.012 60);--ink-2:oklch(34% 0.014 60);--ink-3:oklch(52% 0.012 60);--ink-4:oklch(68% 0.010 60);
+    --accent:oklch(48% 0.13 240);--accent-ink:oklch(28% 0.10 240);--accent-soft:oklch(94% 0.04 240);
+    --warn-ink:oklch(40% 0.13 60);--warn-soft:oklch(95% 0.045 75);
+    --ok:oklch(50% 0.12 155);--ok-ink:oklch(34% 0.12 155);--ok-soft:oklch(95% 0.035 155);
+    --danger:oklch(54% 0.18 25);--danger-soft:oklch(95% 0.035 25);
+    --purple:oklch(50% 0.15 300);--purple-soft:oklch(95% 0.035 300);
+    --code-bg:oklch(21% 0.014 265);--code-ink:oklch(88% 0.012 250);
+    --bg:var(--paper);--surface:#fff;
+    --serif:'Instrument Serif',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  html[data-theme="dark"]{
+    --paper:oklch(16% 0.012 70);--paper-2:oklch(20% 0.013 70);--paper-3:oklch(24% 0.014 70);
+    --rule:oklch(32% 0.014 70);--rule-soft:oklch(26% 0.013 70);
+    --ink:oklch(96% 0.008 80);--ink-2:oklch(82% 0.010 80);--ink-3:oklch(64% 0.010 80);--ink-4:oklch(48% 0.010 80);
+    --accent-soft:oklch(28% 0.05 240);--accent-ink:oklch(82% 0.10 240);
+    --warn-soft:oklch(28% 0.05 75);--warn-ink:oklch(80% 0.11 75);
+    --ok-soft:oklch(28% 0.05 155);--ok-ink:oklch(80% 0.11 155);
+    --danger-soft:oklch(28% 0.05 25);--purple-soft:oklch(28% 0.05 300);
+    --code-bg:oklch(13% 0.012 265);
+    --surface:var(--paper-2);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  a.tl{color:var(--accent-ink);font-weight:500;border-bottom:1px solid color-mix(in oklab,var(--accent) 35%,transparent)}
+  a.tl:hover{border-bottom-color:var(--accent)}
+  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  ::selection{background:var(--accent);color:#fff}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);font-weight:500}
+
+  /* ── header ── */
+  .head{border-bottom:1px solid var(--rule);background:color-mix(in oklab,var(--surface) 88%,transparent);backdrop-filter:saturate(140%) blur(10px);position:sticky;top:0;z-index:50;height:60px}
+  .head-in{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,3vw,28px);height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-size:20px;letter-spacing:-.01em;flex-shrink:0}
+  .brand .tag{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--ink-3);padding-left:8px;border-left:1px solid var(--rule)}
+  .head-r{display:flex;align-items:center;gap:8px}
+  .head-l{display:none;align-items:center;gap:2px}
+  @media(min-width:1080px){.head-l{display:flex}}
+  .hlink{padding:6px 10px;border-radius:7px;color:var(--ink-2);font-size:13.5px;font-weight:500}
+  .hlink:hover{background:var(--paper-2);color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:8px;font-size:13px;font-weight:500;transition:all .15s ease;white-space:nowrap}
+  .btn-accent{background:var(--accent);color:#fff}
+  .btn-accent:hover{filter:brightness(1.06)}
+  .btn-ghost{background:var(--surface);border:1px solid var(--rule);color:var(--ink-2)}
+  .btn-ghost:hover{color:var(--ink);border-color:var(--ink-3)}
+  .arrow{display:inline-block;transition:transform .18s ease}
+  a:hover .arrow{transform:translateX(3px)}
+  .menu-btn{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--rule);border-radius:8px;color:var(--ink-2)}
+  @media(min-width:1000px){.menu-btn{display:none}}
+
+  /* ── shell ── */
+  .shell{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,3vw,28px);display:grid;grid-template-columns:1fr;gap:0}
+  @media(min-width:1000px){.shell{grid-template-columns:250px minmax(0,1fr);gap:clamp(32px,4vw,64px)}}
+
+  /* ── sidebar ── */
+  .side{display:none;position:sticky;top:60px;align-self:start;max-height:calc(100vh - 60px);overflow-y:auto;padding:32px 0 64px;scrollbar-width:thin}
+  @media(min-width:1000px){.side{display:block}}
+  .side.open{display:block;position:fixed;top:60px;left:0;right:0;bottom:0;z-index:60;background:var(--bg);height:calc(100dvh - 60px);max-height:calc(100dvh - 60px);padding:24px clamp(16px,4vw,28px) 64px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .sgroup{margin-bottom:26px}
+  .sgroup h5{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-4);margin:0 0 9px;font-weight:500;padding-left:11px}
+  .sgroup a{display:block;padding:5px 11px;border-radius:7px;font-size:13.5px;color:var(--ink-2);line-height:1.4;position:relative}
+  .sgroup a:hover{background:var(--paper-2);color:var(--ink)}
+  .sgroup a.on{background:var(--accent-soft);color:var(--accent-ink);font-weight:500}
+  .sgroup a .m{font-family:var(--mono);font-size:9.5px;color:var(--ink-4);margin-right:5px;letter-spacing:.04em}
+  .sgroup a.on .m{color:var(--accent-ink)}
+  .side-cta{border:1px dashed var(--rule);border-radius:11px;padding:14px;margin-top:8px}
+  .side-cta p{font-size:12.5px;color:var(--ink-3);margin:0 0 10px;line-height:1.5}
+
+  /* ── content ── */
+  .doc{min-width:0;padding:40px 0 120px;max-width:860px}
+  .doc-hero{padding-bottom:36px;margin-bottom:44px;border-bottom:1px solid var(--rule)}
+  .doc-hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.4vw,64px);line-height:1.04;letter-spacing:-.02em;margin:14px 0 0;padding-bottom:.08em}
+  .doc-hero h1 em{font-style:italic;color:var(--accent-ink)}
+  .doc-hero .sub{font-size:clamp(16px,1.5vw,19px);color:var(--ink-2);margin:20px 0 0;max-width:62ch;text-wrap:pretty}
+  .meta-strip{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px}
+  .meta-strip span{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2)}
+  .meta-strip svg{color:var(--ok);flex-shrink:0}
+
+  section{scroll-margin-top:76px}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.06;letter-spacing:-.015em;margin:0 0 4px;padding-bottom:.06em}
+  h2 em{font-style:italic;color:var(--accent-ink)}
+  h3{font-size:17px;font-weight:600;margin:36px 0 10px;color:var(--ink);letter-spacing:-.01em}
+  h4{font-size:14.5px;font-weight:600;margin:26px 0 8px;color:var(--ink)}
+  .sec{padding:0 0 52px;margin-bottom:52px;border-bottom:1px solid var(--rule-soft)}
+  .sec:last-of-type{border-bottom:0}
+  .sec > p, .sec li{color:var(--ink-2)}
+  p{margin:14px 0;text-wrap:pretty}
+  code{font-family:var(--mono);font-size:.88em;background:var(--paper-3);color:var(--ink);padding:1.5px 5px;border-radius:4px;word-break:break-word}
+  html[data-theme="dark"] code{background:var(--paper-3)}
+  ul,ol{padding-left:20px;margin:14px 0}
+  li{margin:6px 0}
+  b,strong{font-weight:600;color:var(--ink)}
+
+  /* endpoint plate */
+  .ep{display:flex;align-items:center;gap:11px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:11px 14px;margin:18px 0}
+  .verb{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.09em;padding:3px 8px;border-radius:5px;flex-shrink:0}
+  .verb.post{background:var(--ok-soft);color:var(--ok-ink)}
+  .verb.get{background:var(--accent-soft);color:var(--accent-ink)}
+  .ep .path{font-family:var(--mono);font-size:13.5px;color:var(--ink);font-weight:500;word-break:break-all;min-width:0}
+  .ep .live{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--ok-soft);color:var(--ok-ink);margin-left:auto;flex-shrink:0}
+
+  /* code block */
+  .cb{background:var(--code-bg);border-radius:11px;margin:16px 0;overflow:hidden;border:1px solid color-mix(in oklab,var(--code-bg) 70%,var(--rule))}
+  .cb-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;border-bottom:1px solid color-mix(in oklab,var(--code-ink) 12%,transparent)}
+  .cb-top .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in oklab,var(--code-ink) 55%,transparent)}
+  .cb-top .cp{font-family:var(--mono);font-size:10.5px;color:color-mix(in oklab,var(--code-ink) 55%,transparent);border:1px solid color-mix(in oklab,var(--code-ink) 18%,transparent);border-radius:5px;padding:2px 8px}
+  .cb-top .cp:hover{color:var(--code-ink);border-color:color-mix(in oklab,var(--code-ink) 40%,transparent)}
+  .cb pre{margin:0;padding:15px 16px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.68;color:var(--code-ink)}
+  .cb pre code{background:none;padding:0;color:inherit;font-size:inherit}
+  .ck{color:oklch(72% 0.13 250)}   /* key */
+  .cs{color:oklch(76% 0.13 145)}   /* string */
+  .cn{color:oklch(80% 0.12 60)}    /* number/literal */
+  .cm{color:oklch(58% 0.02 260)}   /* comment */
+  .cf{color:oklch(74% 0.14 320)}   /* fn/keyword */
+
+  /* tables */
+  .tw-tbl{border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin:18px 0;background:var(--surface)}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:500;padding:10px 15px;background:var(--paper-2);border-bottom:1px solid var(--rule-soft)}
+  tbody td{padding:12px 15px;border-bottom:1px solid var(--rule-soft);font-size:13.5px;color:var(--ink-2);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  td .fn{font-family:var(--mono);font-size:12.5px;color:var(--ink);font-weight:500;word-break:break-word}
+  .req-y{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--danger-soft);color:var(--danger);white-space:nowrap}
+  .req-n{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--paper-3);color:var(--ink-3);white-space:nowrap}
+  .sc{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
+  @media(max-width:700px){
+    .tw-tbl thead{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    .tw-tbl tr{display:block;border-bottom:1px solid var(--rule-soft);padding:6px 0}
+    .tw-tbl tr:last-child{border-bottom:0}
+    .tw-tbl td{display:block;border-bottom:0;padding:4px 15px}
+    .tw-tbl td:first-child{padding-top:10px}
+    .tw-tbl td:last-child{padding-bottom:12px}
+  }
+
+  /* callouts */
+  .note{border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px;margin:18px 0;background:var(--surface)}
+  .note.warn{border-left-color:oklch(60% 0.14 60);background:color-mix(in oklab,var(--warn-soft) 55%,var(--surface))}
+  .note.stop{border-left-color:var(--danger);background:color-mix(in oklab,var(--danger-soft) 55%,var(--surface))}
+  .note .nt{font-size:12px;font-family:var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+  .note p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .note p + p{margin-top:9px}
+
+  /* flow steps */
+  .flow{display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin:20px 0}
+  @media(min-width:720px){.flow{grid-template-columns:repeat(3,1fr)}}
+  .fs{background:var(--surface);padding:18px}
+  .fs .n{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:600;margin-bottom:10px}
+  .fs h4{margin:0 0 5px;font-size:14px}
+  .fs p{margin:0;font-size:12.5px;color:var(--ink-3);line-height:1.55}
+
+  /* schema cards */
+  .schemas{display:grid;gap:12px;margin:20px 0}
+  @media(min-width:800px){.schemas{grid-template-columns:repeat(3,1fr)}}
+  .schema{border:1px solid var(--rule);border-radius:11px;padding:16px;background:var(--surface)}
+  .schema .sn{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--accent-ink)}
+  .schema p{margin:7px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+
+  /* seclead */
+  .seclead{font-size:16px;color:var(--ink-2);margin:12px 0 0;max-width:64ch}
+
+  footer{border-top:1px solid var(--rule);padding:30px 0;margin-top:20px}
+  .foot-in{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,3vw,28px);display:flex;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3)}
+
+  /* tweaks */
+  .tw{position:fixed;right:16px;bottom:16px;z-index:200;background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px;width:236px;box-shadow:0 10px 30px -10px rgba(0,0,0,.18);display:none;font-size:13px}
+  .tw.show{display:block}
+  .tw h6{font-family:var(--mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.1em;margin:0 0 10px;font-weight:500}
+  .tw .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .swatches{display:flex;gap:6px}
+  .swatch{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);cursor:pointer}
+  .swatch.sel{box-shadow:0 0 0 2px var(--ink)}
+  .toggle-btn{border:1px solid var(--rule);padding:4px 10px;border-radius:999px;font-size:12px}
+  .toggle-btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  /* Mobile containment patch (2026-08-14): pre blocks already scroll via .cb pre,
+     but bare <pre> outside .cb and the sticky header's right cluster overflowed
+     narrow viewports. Desktop untouched. */
+  pre{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+  .cb{max-width:100%;min-width:0}
+  @media(max-width:480px){
+    .head-r{flex-wrap:wrap;justify-content:flex-end;gap:6px;min-width:0}
+    .head-r .btn,.head-r a{font-size:12px;padding:5px 8px}
+  }
+</style>
 </head>
 <body>
-<div class="wrap">
-  <nav class="side">
-    <p class="brand">Modern<span>Tax</span></p>
-    <span class="tag">Partner API Reference</span>
-    <h4>Getting started</h4>
-    <a href="#overview">Overview</a>
-    <a href="#auth">Authentication</a>
-    <a href="#base">Base URL</a>
-    <a href="#sandbox">Sandbox</a>
-    <h4>Transcript API</h4>
-    <a href="#submit">Submit a request</a>
-    <a href="#authorize">Authorization (8821)</a>
-    <a href="#poll">Poll for results</a>
-    <a href="#schemas">Response schemas</a>
-    <a href="#structured">Structured JSON</a>
-    <a href="#monitoring">Monitoring</a>
-    <h4>Delivery &amp; ops</h4>
-    <a href="#webhooks">Webhooks</a>
-    <a href="#employment">Employment API</a>
-    <a href="#errors">Errors</a>
-    <a href="#limits">Rate limits</a>
-    <a href="#status">Status</a>
-    <h4>Reference</h4>
-    <a href="#portal">Developer portal</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#security">Security</a>
-    <a href="#versioning">Versioning</a>
+
+<header class="head">
+  <div class="head-in">
+    <a href="moderntax-redesign.html" class="brand">
+      <svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+        <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
+        <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+        <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+        <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+      </svg>
+      ModernTax<span class="tag">API Reference</span>
+    </a>
+    <div class="head-l">
+      <a href="developers.html" class="hlink">Developers</a>
+      <a href="#sandbox" class="hlink">Sandbox</a>
+      <a href="#webhooks" class="hlink">Webhooks</a>
+      <a href="#errors" class="hlink">Errors</a>
+      <a href="#status" class="hlink">Status</a>
+    </div>
+    <div class="head-r">
+      <a href="https://portal.moderntax.io/developer" class="btn btn-ghost">Developer portal</a>
+      <a href="https://portal.moderntax.io/sandbox" class="btn btn-accent">Get a sandbox key <span class="arrow">→</span></a>
+      <button class="menu-btn" id="menu-btn" aria-label="Table of contents">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 4h11M2.5 8h11M2.5 12h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- ─────────── SIDEBAR ─────────── -->
+  <nav class="side" id="side" aria-label="Contents">
+    <div class="sgroup">
+      <h5>Getting started</h5>
+      <a href="#overview">Overview</a>
+      <a href="#auth">Authentication</a>
+      <a href="#base">Base URL</a>
+      <a href="#sandbox">Sandbox</a>
+    </div>
+    <div class="sgroup">
+      <h5>Transcript API</h5>
+      <a href="#submit"><span class="m">POST</span>Submit a request</a>
+      <a href="#authorize"><span class="m">POST</span>Authorization (8821)</a>
+      <a href="#poll"><span class="m">GET</span>Poll for results</a>
+      <a href="#schemas"><span class="m">GET</span>Response schemas</a>
+      <a href="#structured"><span class="m">GET</span>Structured JSON</a>
+      <a href="#monitoring"><span class="m">POST</span>Monitoring</a>
+    </div>
+    <div class="sgroup">
+      <h5>Delivery &amp; ops</h5>
+      <a href="#webhooks">Webhooks</a>
+      <a href="#employment">Employment API</a>
+      <a href="#errors">Errors</a>
+      <a href="#limits">Rate limits</a>
+      <a href="#status"><span class="m">GET</span>Status</a>
+    </div>
+    <div class="sgroup">
+      <h5>Reference</h5>
+      <a href="#portal">Developer portal</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#security">Security</a>
+      <a href="#versioning">Versioning</a>
+    </div>
+    <div class="side-cta">
+      <p>Instant sandbox key against synthetic data — no sales call.</p>
+      <a href="https://portal.moderntax.io/sandbox" class="btn btn-accent" style="width:100%;justify-content:center;">Start in the sandbox</a>
+    </div>
   </nav>
 
-  <main class="main">
-    <h1>ModernTax Partner API</h1>
-    <p class="lead">Programmatic IRS transcript verification: submit an entity, obtain Form 8821 authorization, and receive the pulled transcripts plus a structured compliance read — by polling or by webhook.</p>
+  <!-- ─────────── DOC ─────────── -->
+  <main class="doc">
+    <div class="doc-hero">
+      <div class="eyebrow">Partner API · v1</div>
+      <h1>Verification your platform can <em>call.</em></h1>
+      <p class="sub">Programmatic IRS transcript verification: submit an entity, obtain Form 8821 authorization, and receive the pulled transcripts plus a structured compliance read — by polling or by webhook.</p>
+      <div class="meta-strip">
+        <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <code>x-api-key</code> auth · no OAuth dance</span>
+        <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Self-serve sandbox, 250 requests</span>
+        <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> SOC 2 Type I complete</span>
+      </div>
+    </div>
 
-    <h2 id="overview">Overview</h2>
-    <p>A typical automated integration (how a reseller like a lending platform runs it end to end):</p>
-    <ol>
-      <li><strong>Submit</strong> one or more entities to <code>POST /api/intake/transcript</code>.</li>
-      <li><strong>Authorize</strong> each entity with a signed IRS Form 8821 — either upload a pre-signed PDF you collected yourself (<code>/api/intake/8821-pdf</code>), or let ModernTax collect the signature (<code>/api/intake/8821</code>). See <a href="#authorize">Authorization</a>.</li>
-      <li><strong>Receive results</strong> — poll <code>GET /api/intake/transcript?token=</code> (optionally with a <a href="#schemas"><code>schema=</code> shape</a>), or have ModernTax POST them to your <a href="#webhooks">webhook</a>.</li>
-    </ol>
-    <p>Every endpoint below is authenticated with an <code>x-api-key</code> header. The portal also exposes cookie-authenticated admin/expert/processor endpoints; those are internal and not part of this contract.</p>
+    <!-- OVERVIEW -->
+    <section class="sec" id="overview">
+      <h2>Overview</h2>
+      <p class="seclead">A typical automated integration — how a reseller such as a lending platform runs it end to end.</p>
+      <div class="flow">
+        <div class="fs"><div class="n">1</div><h4>Submit</h4><p>Send one or more entities to <code>POST /api/intake/transcript</code>.</p></div>
+        <div class="fs"><div class="n">2</div><h4>Authorize</h4><p>Each entity needs a signed IRS Form 8821 — upload a pre-signed PDF you collected yourself, or let ModernTax collect the signature.</p></div>
+        <div class="fs"><div class="n">3</div><h4>Receive results</h4><p>Poll <code>GET /api/intake/transcript?token=</code> with an optional <code>schema=</code> shape, or have us POST to your webhook.</p></div>
+      </div>
+      <p>Every endpoint in this reference authenticates with an <code>x-api-key</code> header. The portal also exposes cookie-authenticated admin, expert, and processor endpoints; those are internal and not part of this contract.</p>
+    </section>
 
-    <h2 id="auth">Authentication</h2>
-    <p>All requests require an <code>x-api-key</code> header. Live keys have the form <code>mt_live_txn_&lt;slug&gt;_&lt;12hex&gt;</code>. Manage keys — rotation, webhook config, default response schema, usage — self-serve in the <a href="#portal">developer portal</a> at <a href="https://portal.moderntax.io/developer">portal.moderntax.io/developer</a>. To try the API first, grab a free <a href="#sandbox">sandbox key</a>; for a live key, contact <a href="mailto:matt@moderntax.io">matt@moderntax.io</a>.</p>
-    <pre><code>x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx
-Content-Type: application/json    # or multipart/form-data where noted</code></pre>
-    <p>Keys are stored as SHA-256 hashes and constant-time verified on every request. A missing or invalid key returns <code>401</code> via the same code path, so errors never reveal whether a partial match exists.</p>
+    <!-- AUTH -->
+    <section class="sec" id="auth">
+      <h2>Authentication</h2>
+      <p class="seclead">All requests require an <code>x-api-key</code> header. Live keys have the form <code>mt_live_txn_&lt;slug&gt;_&lt;12hex&gt;</code>.</p>
+      <p>Manage keys — rotation, webhook config, default response schema, usage — self-serve in the <a href="#portal" class="tl">developer portal</a> at <a href="https://portal.moderntax.io/developer" class="tl">portal.moderntax.io/developer</a>. To try the API first, grab a free <a href="#sandbox" class="tl">sandbox key</a>; for a live key, contact <a href="mailto:matt@moderntax.io" class="tl">matt@moderntax.io</a>.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Headers</span><button class="cp">Copy</button></div>
+        <pre><code>x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx
+Content-Type: application/json    <span class="cm"># or multipart/form-data where noted</span></code></pre>
+      </div>
+      <div class="note">
+        <div class="nt">How keys are handled</div>
+        <p>Keys are stored as SHA-256 hashes and constant-time verified on every request. A missing or invalid key returns <code>401</code> via the same code path, so errors never reveal whether a partial match exists.</p>
+      </div>
+    </section>
 
-    <h2 id="base">Base URL</h2>
-    <pre><code>https://portal.moderntax.io</code></pre>
+    <!-- BASE URL -->
+    <section class="sec" id="base">
+      <h2>Base URL</h2>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Base</span><button class="cp">Copy</button></div>
+        <pre><code>https://portal.moderntax.io</code></pre>
+      </div>
+    </section>
 
-    <h2 id="sandbox">Sandbox</h2>
-    <p>Self-serve at <a href="https://portal.moderntax.io/sandbox">portal.moderntax.io/sandbox</a> — enter a work email and company name and you get an instant <code>{company}-sandbox</code> API key against synthetic data. Endpoints and response shapes are production-identical; the key is capped at 250 requests. No sales call required.</p>
+    <!-- SANDBOX -->
+    <section class="sec" id="sandbox">
+      <h2>Sandbox</h2>
+      <p class="seclead">Self-serve at <a href="https://portal.moderntax.io/sandbox" class="tl">portal.moderntax.io/sandbox</a> — enter a work email and company name and you get an instant <code>{company}-sandbox</code> API key against synthetic data.</p>
+      <p>Endpoints and response shapes are production-identical; the key is capped at 250 requests. No sales call required.</p>
+    </section>
 
-    <h2 id="submit">Submit a transcript request</h2>
-    <div class="ep"><span class="m post">POST</span> /api/intake/transcript</div>
-    <p>Creates a request with one or more entities and queues them for IRS retrieval.</p>
-    <div class="note"><strong>Authorization is separate unless you attach it inline.</strong> Each entity needs a signed 8821 before results can be delivered: attach one inline via <code>entities[].signed_8821</code> (below), upload one to <a href="#authorize"><code>/api/intake/8821-pdf</code></a>, or let ModernTax collect the signature via <code>/api/intake/8821</code>.</div>
-    <h3>Request</h3>
-    <pre><code>curl -X POST https://portal.moderntax.io/api/intake/transcript \
-  -H "x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx" \
-  -H "Content-Type: application/json" \
+    <!-- SUBMIT -->
+    <section class="sec" id="submit">
+      <h2>Submit a transcript request</h2>
+      <div class="ep"><span class="verb post">POST</span><span class="path">/api/intake/transcript</span></div>
+      <p>Creates a request with one or more entities and queues them for IRS retrieval.</p>
+      <div class="note warn">
+        <div class="nt">Authorization is separate unless you attach it inline</div>
+        <p>Each entity needs a signed 8821 before results can be delivered: attach one inline via <code>entities[].signed_8821</code>, upload one to <a href="#authorize" class="tl"><code>/api/intake/8821-pdf</code></a>, or let ModernTax collect the signature via <code>/api/intake/8821</code>.</p>
+      </div>
+
+      <h3>Request</h3>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">cURL</span><button class="cp">Copy</button></div>
+        <pre><code>curl -X POST https://portal.moderntax.io/api/intake/transcript \
+  -H <span class="cs">"x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx"</span> \
+  -H <span class="cs">"Content-Type: application/json"</span> \
   -d @request.json</code></pre>
-    <pre><code>{
-  "request_token": "your-loan-12345",   // unique per account; idempotency key
-  "loan_number":   "your-loan-12345",   // optional; used in invoice itemization
-  "entities": [
+      </div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">request.json</span><button class="cp">Copy</button></div>
+        <pre><code>{
+  <span class="ck">"request_token"</span>: <span class="cs">"your-loan-12345"</span>,   <span class="cm">// unique per account; idempotency key</span>
+  <span class="ck">"loan_number"</span>:   <span class="cs">"your-loan-12345"</span>,   <span class="cm">// optional; used in invoice itemization</span>
+  <span class="ck">"entities"</span>: [
     {
-      "entity_name": "ACME Holdings LLC",
-      "tid":         "12-3456789",
-      "tid_kind":    "EIN",              // "EIN" or "SSN"
-      "form_type":   "1120S",            // optional; inferred from tid_kind if omitted
-      "years":       ["2022","2023","2024"],
-      "address": "123 Main St", "city": "Austin", "state": "TX", "zip_code": "78701",
-      "loan_officer_name":  "Jane Rep",  // optional
-      "loan_officer_email": "jane@lender.com",
-      "fiscal_year_end_month": 12,       // optional
-      "signed_8821": {                   // optional: attach a pre-signed 8821 inline
-        "pdf_base64": "&lt;base64 PDF, max 10 MB decoded&gt;",
-        "persona_inquiry_id": "inq_abc123",          // optional signature evidence —
-        "persona_verification_token": "…",           // all evidence fields optional
-        "signer_name": "Jane Founder",
-        "signer_email": "jane@acme.com",
-        "signed_at": "2026-08-12T18:04:00Z",         // ISO 8601
-        "signer_ip": "203.0.113.9",
-        "signature_vendor": "persona"
+      <span class="ck">"entity_name"</span>: <span class="cs">"ACME Holdings LLC"</span>,
+      <span class="ck">"tid"</span>:         <span class="cs">"12-3456789"</span>,
+      <span class="ck">"tid_kind"</span>:    <span class="cs">"EIN"</span>,              <span class="cm">// "EIN" or "SSN"</span>
+      <span class="ck">"form_type"</span>:   <span class="cs">"1120S"</span>,            <span class="cm">// optional; inferred from tid_kind if omitted</span>
+      <span class="ck">"years"</span>:       [<span class="cs">"2022"</span>,<span class="cs">"2023"</span>,<span class="cs">"2024"</span>],
+      <span class="ck">"address"</span>: <span class="cs">"123 Main St"</span>, <span class="ck">"city"</span>: <span class="cs">"Austin"</span>, <span class="ck">"state"</span>: <span class="cs">"TX"</span>, <span class="ck">"zip_code"</span>: <span class="cs">"78701"</span>,
+      <span class="ck">"loan_officer_name"</span>:  <span class="cs">"Jane Rep"</span>,  <span class="cm">// optional</span>
+      <span class="ck">"loan_officer_email"</span>: <span class="cs">"jane@lender.com"</span>,
+      <span class="ck">"fiscal_year_end_month"</span>: <span class="cn">12</span>,       <span class="cm">// optional</span>
+      <span class="ck">"signed_8821"</span>: {                   <span class="cm">// optional: attach a pre-signed 8821 inline</span>
+        <span class="ck">"pdf_base64"</span>: <span class="cs">"&lt;base64 PDF, max 10 MB decoded&gt;"</span>,
+        <span class="ck">"persona_inquiry_id"</span>: <span class="cs">"inq_abc123"</span>,          <span class="cm">// optional signature evidence —</span>
+        <span class="ck">"persona_verification_token"</span>: <span class="cs">"…"</span>,           <span class="cm">// all evidence fields optional</span>
+        <span class="ck">"signer_name"</span>: <span class="cs">"Jane Founder"</span>,
+        <span class="ck">"signer_email"</span>: <span class="cs">"jane@acme.com"</span>,
+        <span class="ck">"signed_at"</span>: <span class="cs">"2026-08-12T18:04:00Z"</span>,         <span class="cm">// ISO 8601</span>
+        <span class="ck">"signer_ip"</span>: <span class="cs">"203.0.113.9"</span>,
+        <span class="ck">"signature_vendor"</span>: <span class="cs">"persona"</span>
       }
     }
   ]
 }</code></pre>
-    <table>
-      <tr><th>Field</th><th>Req</th><th>Notes</th></tr>
-      <tr><td><code>request_token</code></td><td class="req">yes</td><td>Your unique id for the request. Reusing one returns <code>409</code>.</td></tr>
-      <tr><td><code>loan_number</code></td><td class="opt">no</td><td>Falls back to <code>request_token</code>. Used on invoices.</td></tr>
-      <tr><td><code>entities[].entity_name</code></td><td class="req">yes</td><td>Legal name on file with the IRS.</td></tr>
-      <tr><td><code>entities[].tid</code> / <code>tid_kind</code></td><td class="req">yes</td><td>EIN (<code>XX-XXXXXXX</code>) or SSN (<code>XXX-XX-XXXX</code>); <code>"EIN"</code>/<code>"SSN"</code>.</td></tr>
-      <tr><td><code>entities[].years</code></td><td class="req">yes</td><td>4-digit years, 1990–2028.</td></tr>
-      <tr><td><code>entities[].form_type</code></td><td class="opt">no</td><td><code>1040</code>, <code>1065</code>, <code>1120</code>, <code>1120S</code>, <code>941</code>. Inferred from <code>tid_kind</code> if omitted.</td></tr>
-      <tr><td><code>entities[].signed_8821</code></td><td class="opt">no</td><td>Inline pre-signed 8821: <code>pdf_base64</code> (≤10&nbsp;MB decoded) plus optional evidence fields (<code>persona_inquiry_id</code>, <code>persona_verification_token</code>, <code>signer_name</code>, <code>signer_email</code>, <code>signed_at</code>, <code>signer_ip</code>, <code>signature_vendor</code>).</td></tr>
-    </table>
-    <h3>Response <code>201</code></h3>
-    <pre><code>{
-  "success": true,
-  "request_id": "uuid",
-  "request_token": "your-loan-12345",
-  "loan_number": "your-loan-12345",
-  "status": "irs_queue",
-  "entities": [
-    { "entity_id": "uuid", "entity_name": "ACME Holdings LLC",
-      "form_type": "1120S", "years": ["2022","2023","2024"], "status": "irs_queue",
-      "signed_8821": "attached" }   // only when entities[].signed_8821 was sent:
-                                    // attached | unreadable_attached | rejected_designee_mismatch
+      </div>
+
+      <div class="tw-tbl">
+        <table>
+          <thead><tr><th style="width:230px;">Field</th><th style="width:70px;">Req</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><span class="fn">request_token</span></td><td><span class="req-y">yes</span></td><td>Your unique id for the request. Reusing one returns <code>409</code>.</td></tr>
+            <tr><td><span class="fn">loan_number</span></td><td><span class="req-n">no</span></td><td>Falls back to <code>request_token</code>. Used on invoices.</td></tr>
+            <tr><td><span class="fn">entities[].entity_name</span></td><td><span class="req-y">yes</span></td><td>Legal name on file with the IRS.</td></tr>
+            <tr><td><span class="fn">entities[].tid</span> / <span class="fn">tid_kind</span></td><td><span class="req-y">yes</span></td><td>EIN (<code>XX-XXXXXXX</code>) or SSN (<code>XXX-XX-XXXX</code>); <code>"EIN"</code>/<code>"SSN"</code>.</td></tr>
+            <tr><td><span class="fn">entities[].years</span></td><td><span class="req-y">yes</span></td><td>4-digit years, 1990–2028.</td></tr>
+            <tr><td><span class="fn">entities[].form_type</span></td><td><span class="req-n">no</span></td><td><code>1040</code>, <code>1065</code>, <code>1120</code>, <code>1120S</code>, <code>941</code>. Inferred from <code>tid_kind</code> if omitted.</td></tr>
+            <tr><td><span class="fn">entities[].signed_8821</span></td><td><span class="req-n">no</span></td><td>Inline pre-signed 8821: <code>pdf_base64</code> (≤10 MB decoded) plus optional evidence fields (<code>persona_inquiry_id</code>, <code>persona_verification_token</code>, <code>signer_name</code>, <code>signer_email</code>, <code>signed_at</code>, <code>signer_ip</code>, <code>signature_vendor</code>).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Response <code>201</code></h3>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">201 Created</span><button class="cp">Copy</button></div>
+        <pre><code>{
+  <span class="ck">"success"</span>: <span class="cn">true</span>,
+  <span class="ck">"request_id"</span>: <span class="cs">"uuid"</span>,
+  <span class="ck">"request_token"</span>: <span class="cs">"your-loan-12345"</span>,
+  <span class="ck">"loan_number"</span>: <span class="cs">"your-loan-12345"</span>,
+  <span class="ck">"status"</span>: <span class="cs">"irs_queue"</span>,
+  <span class="ck">"entities"</span>: [
+    { <span class="ck">"entity_id"</span>: <span class="cs">"uuid"</span>, <span class="ck">"entity_name"</span>: <span class="cs">"ACME Holdings LLC"</span>,
+      <span class="ck">"form_type"</span>: <span class="cs">"1120S"</span>, <span class="ck">"years"</span>: [<span class="cs">"2022"</span>,<span class="cs">"2023"</span>,<span class="cs">"2024"</span>], <span class="ck">"status"</span>: <span class="cs">"irs_queue"</span>,
+      <span class="ck">"signed_8821"</span>: <span class="cs">"attached"</span> }   <span class="cm">// only when entities[].signed_8821 was sent:</span>
+                                    <span class="cm">// attached | unreadable_attached | rejected_designee_mismatch</span>
   ],
-  "usage": { "used": 47, "remaining": 953, "limit": 1000 }
+  <span class="ck">"usage"</span>: { <span class="ck">"used"</span>: <span class="cn">47</span>, <span class="ck">"remaining"</span>: <span class="cn">953</span>, <span class="ck">"limit"</span>: <span class="cn">1000</span> }
 }</code></pre>
-    <p>An inline 8821 whose designee CAF isn't a ModernTax designee <strong>never fails the request</strong> — the entity is created without the form (<code>signed_8821: "rejected_designee_mismatch"</code>) and you can re-upload via <a href="#authorize"><code>/api/intake/8821-pdf</code></a>.</p>
-    <p>Errors: <code>401</code> (auth), <code>402</code> (account not enrolled in billing — see <a href="#pricing">Pricing</a>), <code>409</code> (duplicate <code>request_token</code>).</p>
+      </div>
+      <div class="note">
+        <div class="nt">A bad designee never fails your request</div>
+        <p>An inline 8821 whose designee CAF isn't a ModernTax designee <b>never fails the request</b> — the entity is created without the form (<code>signed_8821: "rejected_designee_mismatch"</code>) and you can re-upload via <a href="#authorize" class="tl"><code>/api/intake/8821-pdf</code></a>.</p>
+      </div>
+      <p><b>Errors:</b> <code>401</code> (auth), <code>402</code> (account not enrolled in billing — see <a href="#pricing" class="tl">Pricing</a>), <code>409</code> (duplicate <code>request_token</code>).</p>
+    </section>
 
-    <h2 id="authorize">Authorization — IRS Form 8821</h2>
-    <p>The IRS requires a signed Form 8821 authorizing ModernTax as designee before transcripts can be pulled. Two integration models:</p>
+    <!-- AUTHORIZE -->
+    <section class="sec" id="authorize">
+      <h2>Authorization — <em>IRS Form 8821</em></h2>
+      <p class="seclead">The IRS requires a signed Form 8821 authorizing ModernTax as designee before transcripts can be pulled. There are two integration models.</p>
 
-    <h3>A. Upload a pre-signed 8821 (you collect the signature)</h3>
-    <div class="ep"><span class="m post">POST</span> /api/intake/8821-pdf</div>
-    <p>For partners who obtain the taxpayer's signature through their own workflow (DocuSign, wet-sign, Persona-verified e-sign, etc.). The entity advances straight to <code>8821_signed</code>. This is the model a fully-automated reseller uses. Optional evidence fields record how the signature was collected; they're stored with the entity and returned as <code>signature_evidence</code> on <a href="#poll">poll responses</a>.</p>
-    <pre><code>curl -X POST https://portal.moderntax.io/api/intake/8821-pdf \
-  -H "x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx" \
-  -F "file=@signed-8821.pdf" \
-  -F "request_token=your-loan-12345" \
-  -F "entity_id=uuid" \
-  -F "persona_inquiry_id=inq_abc123" \
-  -F "signer_name=Jane Founder" \
-  -F "signed_at=2026-08-12T18:04:00Z"</code></pre>
-    <pre><code># multipart/form-data
-file:          &lt;signed PDF, application/pdf, max 10 MB&gt;   (required)
-request_token: your-loan-12345                            (required)
-entity_id:     uuid          # or entity_name if the request has one entity
-years:         "2022,2023,2024"   # optional override
-form_type:     "1120S"            # optional override
+      <h3>A. Upload a pre-signed 8821 — you collect the signature</h3>
+      <div class="ep"><span class="verb post">POST</span><span class="path">/api/intake/8821-pdf</span></div>
+      <p>For partners who obtain the taxpayer's signature through their own workflow (DocuSign, wet-sign, Persona-verified e-sign). The entity advances straight to <code>8821_signed</code>. This is the model a fully-automated reseller uses. Optional evidence fields record how the signature was collected; they're stored with the entity and returned as <code>signature_evidence</code> on <a href="#poll" class="tl">poll responses</a>.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">cURL · multipart</span><button class="cp">Copy</button></div>
+        <pre><code>curl -X POST https://portal.moderntax.io/api/intake/8821-pdf \
+  -H <span class="cs">"x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx"</span> \
+  -F <span class="cs">"file=@signed-8821.pdf"</span> \
+  -F <span class="cs">"request_token=your-loan-12345"</span> \
+  -F <span class="cs">"entity_id=uuid"</span> \
+  -F <span class="cs">"persona_inquiry_id=inq_abc123"</span> \
+  -F <span class="cs">"signer_name=Jane Founder"</span> \
+  -F <span class="cs">"signed_at=2026-08-12T18:04:00Z"</span></code></pre>
+      </div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Fields · multipart/form-data</span><button class="cp">Copy</button></div>
+        <pre><code>file:          &lt;signed PDF, application/pdf, max 10 MB&gt;   <span class="cm">(required)</span>
+request_token: your-loan-12345                            <span class="cm">(required)</span>
+entity_id:     uuid          <span class="cm"># or entity_name if the request has one entity</span>
+years:         <span class="cs">"2022,2023,2024"</span>   <span class="cm"># optional override</span>
+form_type:     <span class="cs">"1120S"</span>            <span class="cm"># optional override</span>
 
-# optional signature evidence
+<span class="cm"># optional signature evidence</span>
 persona_inquiry_id:          inq_abc123
 persona_verification_token:  &lt;token&gt;
 signer_name:                 Jane Founder
 signer_email:                jane@acme.com
-signed_at:                   2026-08-12T18:04:00Z   # ISO 8601
+signed_at:                   2026-08-12T18:04:00Z   <span class="cm"># ISO 8601</span>
 signer_ip:                   203.0.113.9
 signature_vendor:            persona</code></pre>
-    <pre><code>{ "success": true,
-  "designee_check": "ok",                 // "ok" | "unreadable" (PDF accepted either way)
-  "signature_evidence_stored": true,      // true when any evidence field was sent
-  "entity": { "id":"uuid","name":"ACME Holdings LLC","status":"8821_signed",
-              "signed_8821_url":"https://…1h-expiry…","years":["2022","2023","2024"],"form_type":"1120S" } }</code></pre>
-    <div class="note">If the uploaded 8821 names a designee CAF that is <strong>not</strong> a ModernTax designee, the endpoint returns <code>422 { "code": "designee_caf_mismatch", "designee_cafs": ["…"] }</code> and the PDF is <strong>not</strong> attached — fix the form and re-upload.</div>
+      </div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">200 OK</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"success"</span>: <span class="cn">true</span>,
+  <span class="ck">"designee_check"</span>: <span class="cs">"ok"</span>,                 <span class="cm">// "ok" | "unreadable" (PDF accepted either way)</span>
+  <span class="ck">"signature_evidence_stored"</span>: <span class="cn">true</span>,      <span class="cm">// true when any evidence field was sent</span>
+  <span class="ck">"entity"</span>: { <span class="ck">"id"</span>:<span class="cs">"uuid"</span>,<span class="ck">"name"</span>:<span class="cs">"ACME Holdings LLC"</span>,<span class="ck">"status"</span>:<span class="cs">"8821_signed"</span>,
+              <span class="ck">"signed_8821_url"</span>:<span class="cs">"https://…1h-expiry…"</span>,<span class="ck">"years"</span>:[<span class="cs">"2022"</span>,<span class="cs">"2023"</span>,<span class="cs">"2024"</span>],<span class="ck">"form_type"</span>:<span class="cs">"1120S"</span> } }</code></pre>
+      </div>
+      <div class="note stop">
+        <div class="nt">422 · designee_caf_mismatch</div>
+        <p>If the uploaded 8821 names a designee CAF that is <b>not</b> a ModernTax designee, the endpoint returns <code>422 { "code": "designee_caf_mismatch", "designee_cafs": ["…"] }</code> and the PDF is <b>not</b> attached — fix the form and re-upload.</p>
+      </div>
 
-    <h3>B. Let ModernTax collect the signature</h3>
-    <div class="ep"><span class="m post">POST</span> /api/intake/8821</div>
-    <p>Submit entities with signer details (CSV/XLSX file or JSON <code>{ entities: [...] }</code>) and ModernTax generates a pre-filled 8821, e-mails the signer for signature, then proceeds automatically.</p>
-    <p>CSV columns: <code>entity_name, tid, tid_kind, email, signer_first_name, signer_last_name, years, address, city, state, zip, form_type</code>.</p>
-    <pre><code>{ "request_id":"uuid","entities_created":12,"signature_requests_sent":12,"status":"8821_sent" }</code></pre>
+      <h3>B. Let ModernTax collect the signature</h3>
+      <div class="ep"><span class="verb post">POST</span><span class="path">/api/intake/8821</span></div>
+      <p>Submit entities with signer details (CSV/XLSX file or JSON <code>{ entities: [...] }</code>) and ModernTax generates a pre-filled 8821, e-mails the signer for signature, then proceeds automatically.</p>
+      <p><b>CSV columns:</b> <code>entity_name, tid, tid_kind, email, signer_first_name, signer_last_name, years, address, city, state, zip, form_type</code>.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Response</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"request_id"</span>:<span class="cs">"uuid"</span>,<span class="ck">"entities_created"</span>:<span class="cn">12</span>,<span class="ck">"signature_requests_sent"</span>:<span class="cn">12</span>,<span class="ck">"status"</span>:<span class="cs">"8821_sent"</span> }</code></pre>
+      </div>
+    </section>
 
-    <h2 id="poll">Poll for results</h2>
-    <div class="ep"><span class="m get">GET</span> /api/intake/transcript?token=&lt;request_token&gt;</div>
-    <p>Returns every entity's current status, 1-hour signed transcript URLs, and a compliance read. Without a <a href="#schemas"><code>schema</code></a> query parameter (and no portal-pinned default) the legacy shape below is returned unchanged.</p>
-    <pre><code>{
-  "request_id": "your-loan-12345",
-  "status": "completed",              // collapses to "completed" | "pending"
-  "request_status": "completed",      // raw: submitted | 8821_sent | 8821_signed | irs_queue | processing | completed | failed
-  "completed_at": "2026-05-09T10:32:11Z",
-  "entities": [{
-    "entity_id":"uuid","entity_name":"ACME Holdings LLC","tid":"12-3456789","form_type":"1120S",
-    "years":["2022","2023","2024"],"status":"completed",
-    "signed_8821_url":"https://…1h-expiry…","signature_created_at":"2026-05-08T…",
-    "signature_evidence": {           // present when evidence was supplied at upload
-      "persona_inquiry_id":"inq_abc123","signer_name":"Jane Founder","signer_email":"jane@acme.com",
-      "signed_at":"2026-08-12T18:04:00Z","signature_vendor":"persona",
-      "recorded_at":"2026-08-12T18:05:02Z","source":"api_8821_pdf"
-    },                                // signer_ip is stored but never returned
-    "transcript_urls":["https://…/2022-record-of-account.pdf", "…"],
-    "transcript_html_urls":["https://…"],
-    "compliance": {
-      "severity":"WARNING",           // CRITICAL | WARNING | CLEAN  (max across forms)
-      "flags":[{"type":"BALANCE_DUE","severity":"WARNING","message":"Account balance: $4,287.21"}],
-      "financials":{"grossReceipts":1240000,"totalTax":42000,"accountBalance":4287.21,"accruedInterest":0,"accruedPenalty":0},
-      "recent_transactions":[{"code":"150","explanation":"Tax return filed","date":"2024-04-12","amount":"42000"}]  // ≤10, newest first
+    <!-- POLL -->
+    <section class="sec" id="poll">
+      <h2>Poll for results</h2>
+      <div class="ep"><span class="verb get">GET</span><span class="path">/api/intake/transcript?token=&lt;request_token&gt;</span></div>
+      <p>Returns every entity's current status, 1-hour signed transcript URLs, and a compliance read. Without a <a href="#schemas" class="tl"><code>schema</code></a> query parameter (and no portal-pinned default) the legacy shape below is returned unchanged.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">200 OK · legacy shape</span><button class="cp">Copy</button></div>
+        <pre><code>{
+  <span class="ck">"request_id"</span>: <span class="cs">"your-loan-12345"</span>,
+  <span class="ck">"status"</span>: <span class="cs">"completed"</span>,              <span class="cm">// collapses to "completed" | "pending"</span>
+  <span class="ck">"request_status"</span>: <span class="cs">"completed"</span>,      <span class="cm">// raw: submitted | 8821_sent | 8821_signed | irs_queue | processing | completed | failed</span>
+  <span class="ck">"completed_at"</span>: <span class="cs">"2026-05-09T10:32:11Z"</span>,
+  <span class="ck">"entities"</span>: [{
+    <span class="ck">"entity_id"</span>:<span class="cs">"uuid"</span>,<span class="ck">"entity_name"</span>:<span class="cs">"ACME Holdings LLC"</span>,<span class="ck">"tid"</span>:<span class="cs">"12-3456789"</span>,<span class="ck">"form_type"</span>:<span class="cs">"1120S"</span>,
+    <span class="ck">"years"</span>:[<span class="cs">"2022"</span>,<span class="cs">"2023"</span>,<span class="cs">"2024"</span>],<span class="ck">"status"</span>:<span class="cs">"completed"</span>,
+    <span class="ck">"signed_8821_url"</span>:<span class="cs">"https://…1h-expiry…"</span>,<span class="ck">"signature_created_at"</span>:<span class="cs">"2026-05-08T…"</span>,
+    <span class="ck">"signature_evidence"</span>: {           <span class="cm">// present when evidence was supplied at upload</span>
+      <span class="ck">"persona_inquiry_id"</span>:<span class="cs">"inq_abc123"</span>,<span class="ck">"signer_name"</span>:<span class="cs">"Jane Founder"</span>,<span class="ck">"signer_email"</span>:<span class="cs">"jane@acme.com"</span>,
+      <span class="ck">"signed_at"</span>:<span class="cs">"2026-08-12T18:04:00Z"</span>,<span class="ck">"signature_vendor"</span>:<span class="cs">"persona"</span>,
+      <span class="ck">"recorded_at"</span>:<span class="cs">"2026-08-12T18:05:02Z"</span>,<span class="ck">"source"</span>:<span class="cs">"api_8821_pdf"</span>
+    },                                <span class="cm">// signer_ip is stored but never returned</span>
+    <span class="ck">"transcript_urls"</span>:[<span class="cs">"https://…/2022-record-of-account.pdf"</span>, <span class="cs">"…"</span>],
+    <span class="ck">"transcript_html_urls"</span>:[<span class="cs">"https://…"</span>],
+    <span class="ck">"compliance"</span>: {
+      <span class="ck">"severity"</span>:<span class="cs">"WARNING"</span>,           <span class="cm">// CRITICAL | WARNING | CLEAN  (max across forms)</span>
+      <span class="ck">"flags"</span>:[{<span class="ck">"type"</span>:<span class="cs">"BALANCE_DUE"</span>,<span class="ck">"severity"</span>:<span class="cs">"WARNING"</span>,<span class="ck">"message"</span>:<span class="cs">"Account balance: $4,287.21"</span>}],
+      <span class="ck">"financials"</span>:{<span class="ck">"grossReceipts"</span>:<span class="cn">1240000</span>,<span class="ck">"totalTax"</span>:<span class="cn">42000</span>,<span class="ck">"accountBalance"</span>:<span class="cn">4287.21</span>,<span class="ck">"accruedInterest"</span>:<span class="cn">0</span>,<span class="ck">"accruedPenalty"</span>:<span class="cn">0</span>},
+      <span class="ck">"recent_transactions"</span>:[{<span class="ck">"code"</span>:<span class="cs">"150"</span>,<span class="ck">"explanation"</span>:<span class="cs">"Tax return filed"</span>,<span class="ck">"date"</span>:<span class="cs">"2024-04-12"</span>,<span class="ck">"amount"</span>:<span class="cs">"42000"</span>}]  <span class="cm">// ≤10, newest first</span>
     }
   }]
 }</code></pre>
+      </div>
+    </section>
 
-    <h2 id="schemas">Response schemas</h2>
-    <div class="ep"><span class="m get">GET</span> /api/intake/transcript?token=&lt;request_token&gt;&amp;schema=minimal|underwriting|raw</div>
-    <p><code>schema</code> is a <strong>query parameter on the results poll</strong> — it is not a field on the create-request body. You can also pin an org-wide default ("default response schema") in the <a href="#portal">developer portal</a>; an explicit query parameter overrides the pin. No parameter and no pin returns the <a href="#poll">legacy shape</a> unchanged. An invalid value returns <code>400</code> listing the valid values.</p>
-    <pre><code>curl "https://portal.moderntax.io/api/intake/transcript?token=your-loan-12345&amp;schema=underwriting" \
-  -H "x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx"</code></pre>
-    <p>All three shapes share one envelope; only the per-entity objects differ. PDF/HTML URLs are 1-hour signed.</p>
-    <pre><code>{
-  "request_id": "uuid",
-  "reference": "your-loan-12345",
-  "schema": "minimal",                // echoes the shape served
-  "status": "completed",
-  "request_status": "completed",
-  "created_at": "2026-08-10T14:02:00Z",
-  "completed_at": "2026-08-11T10:32:11Z",
-  "entities": [ … ]                   // shape per schema, below
+    <!-- SCHEMAS -->
+    <section class="sec" id="schemas">
+      <h2>Response schemas</h2>
+      <div class="ep"><span class="verb get">GET</span><span class="path">/api/intake/transcript?token=&lt;request_token&gt;&amp;schema=minimal|underwriting|raw</span></div>
+      <p><code>schema</code> is a <b>query parameter on the results poll</b> — it is not a field on the create-request body. You can also pin an org-wide default ("default response schema") in the <a href="#portal" class="tl">developer portal</a>; an explicit query parameter overrides the pin. No parameter and no pin returns the <a href="#poll" class="tl">legacy shape</a> unchanged. An invalid value returns <code>400</code> listing the valid values.</p>
+      <div class="schemas">
+        <div class="schema"><div class="sn">schema=minimal</div><p>Just tell me if it's clean — filed years, unfiled years, flags, and file URLs.</p></div>
+        <div class="schema"><div class="sn">schema=underwriting</div><p>The lines a credit memo needs — financials, liabilities, repayment posture, headline.</p></div>
+        <div class="schema"><div class="sn">schema=raw</div><p>You parse it yourself — artifact list with per-file <code>sha256</code>.</p></div>
+      </div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">cURL</span><button class="cp">Copy</button></div>
+        <pre><code>curl <span class="cs">"https://portal.moderntax.io/api/intake/transcript?token=your-loan-12345&amp;schema=underwriting"</span> \
+  -H <span class="cs">"x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx"</span></code></pre>
+      </div>
+      <p>All three shapes share one envelope; only the per-entity objects differ. PDF and HTML URLs are 1-hour signed.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Shared envelope</span><button class="cp">Copy</button></div>
+        <pre><code>{
+  <span class="ck">"request_id"</span>: <span class="cs">"uuid"</span>,
+  <span class="ck">"reference"</span>: <span class="cs">"your-loan-12345"</span>,
+  <span class="ck">"schema"</span>: <span class="cs">"minimal"</span>,                <span class="cm">// echoes the shape served</span>
+  <span class="ck">"status"</span>: <span class="cs">"completed"</span>,
+  <span class="ck">"request_status"</span>: <span class="cs">"completed"</span>,
+  <span class="ck">"created_at"</span>: <span class="cs">"2026-08-10T14:02:00Z"</span>,
+  <span class="ck">"completed_at"</span>: <span class="cs">"2026-08-11T10:32:11Z"</span>,
+  <span class="ck">"entities"</span>: [ … ]                   <span class="cm">// shape per schema, below</span>
 }</code></pre>
-    <h3><code>schema=minimal</code> — just tell me if it's clean</h3>
-    <pre><code>{ "id":"uuid", "name":"ACME Holdings LLC", "form":"1120S",
-  "years":["2022","2023","2024"], "status":"completed",
-  "years_filed":["2022","2023","2024"], "years_unfiled":[],
-  "flags":[{"type":"BALANCE_DUE","severity":"WARNING","message":"Account balance: $4,287.21"}],
-  "pdf":["https://…1h-expiry…"], "html":["https://…1h-expiry…"] }</code></pre>
-    <h3><code>schema=underwriting</code> — the lines a credit memo needs</h3>
-    <p>Everything in <code>minimal</code>, plus:</p>
-    <pre><code>{ …minimal fields…,
-  "financials":[{ "year":"2023","form":"1120S","gross_receipts":1240000,"total_income":1262400,
-                  "total_deductions":1108000,"total_tax":42000,"account_balance":4287.21,
-                  "accrued_interest":112.04,"accrued_penalty":0,"account_balance_plus_accruals":4399.25 }],
-  "tax_liabilities":{ "total_assessed":42000,"total_paid":37712.79,"total_balance":4287.21,"total_accrued":112.04 },
-  "repayment_plan":{ "has_installment_agreement":false,"has_offer_in_compromise":false,
-                     "has_currently_not_collectible":false,"details":null,
-                     "recommendation":"Balance due with no active agreement — condition the loan on proof of payment or an installment agreement." },
-  "overall_severity":"WARNING",
-  "headline":"Filed all 3 requested years; $4,287.21 balance due on 2023." }</code></pre>
-    <h3><code>schema=raw</code> — you parse it yourself</h3>
-    <pre><code>{ "id":"uuid", "name":"ACME Holdings LLC", "form":"1120S",
-  "years":["2022","2023","2024"], "status":"completed",
-  "retrieved_at":"2026-08-11T10:32:11Z",
-  "artifacts":[
-    { "kind":"pdf",  "file":"2023-record-of-account.pdf", "url":"https://…1h-expiry…", "sha256":"9f2c…a41b" },
-    { "kind":"html", "file":"2023-record-of-account.html","url":"https://…1h-expiry…", "sha256":"3d81…7c02" },
-    { "kind":"signed_8821", "file":"signed-8821.pdf",     "url":"https://…1h-expiry…", "sha256":"77aa…09c3" }
+      </div>
+
+      <h3><code>schema=minimal</code> — just tell me if it's clean</h3>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Entity object</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"id"</span>:<span class="cs">"uuid"</span>, <span class="ck">"name"</span>:<span class="cs">"ACME Holdings LLC"</span>, <span class="ck">"form"</span>:<span class="cs">"1120S"</span>,
+  <span class="ck">"years"</span>:[<span class="cs">"2022"</span>,<span class="cs">"2023"</span>,<span class="cs">"2024"</span>], <span class="ck">"status"</span>:<span class="cs">"completed"</span>,
+  <span class="ck">"years_filed"</span>:[<span class="cs">"2022"</span>,<span class="cs">"2023"</span>,<span class="cs">"2024"</span>], <span class="ck">"years_unfiled"</span>:[],
+  <span class="ck">"flags"</span>:[{<span class="ck">"type"</span>:<span class="cs">"BALANCE_DUE"</span>,<span class="ck">"severity"</span>:<span class="cs">"WARNING"</span>,<span class="ck">"message"</span>:<span class="cs">"Account balance: $4,287.21"</span>}],
+  <span class="ck">"pdf"</span>:[<span class="cs">"https://…1h-expiry…"</span>], <span class="ck">"html"</span>:[<span class="cs">"https://…1h-expiry…"</span>] }</code></pre>
+      </div>
+
+      <h3><code>schema=underwriting</code> — the lines a credit memo needs</h3>
+      <p>Everything in <code>minimal</code>, plus:</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Entity object</span><button class="cp">Copy</button></div>
+        <pre><code>{ …minimal fields…,
+  <span class="ck">"financials"</span>:[{ <span class="ck">"year"</span>:<span class="cs">"2023"</span>,<span class="ck">"form"</span>:<span class="cs">"1120S"</span>,<span class="ck">"gross_receipts"</span>:<span class="cn">1240000</span>,<span class="ck">"total_income"</span>:<span class="cn">1262400</span>,
+                  <span class="ck">"total_deductions"</span>:<span class="cn">1108000</span>,<span class="ck">"total_tax"</span>:<span class="cn">42000</span>,<span class="ck">"account_balance"</span>:<span class="cn">4287.21</span>,
+                  <span class="ck">"accrued_interest"</span>:<span class="cn">112.04</span>,<span class="ck">"accrued_penalty"</span>:<span class="cn">0</span>,<span class="ck">"account_balance_plus_accruals"</span>:<span class="cn">4399.25</span> }],
+  <span class="ck">"tax_liabilities"</span>:{ <span class="ck">"total_assessed"</span>:<span class="cn">42000</span>,<span class="ck">"total_paid"</span>:<span class="cn">37712.79</span>,<span class="ck">"total_balance"</span>:<span class="cn">4287.21</span>,<span class="ck">"total_accrued"</span>:<span class="cn">112.04</span> },
+  <span class="ck">"repayment_plan"</span>:{ <span class="ck">"has_installment_agreement"</span>:<span class="cn">false</span>,<span class="ck">"has_offer_in_compromise"</span>:<span class="cn">false</span>,
+                     <span class="ck">"has_currently_not_collectible"</span>:<span class="cn">false</span>,<span class="ck">"details"</span>:<span class="cn">null</span>,
+                     <span class="ck">"recommendation"</span>:<span class="cs">"Balance due with no active agreement — condition the loan on proof of payment or an installment agreement."</span> },
+  <span class="ck">"overall_severity"</span>:<span class="cs">"WARNING"</span>,
+  <span class="ck">"headline"</span>:<span class="cs">"Filed all 3 requested years; $4,287.21 balance due on 2023."</span> }</code></pre>
+      </div>
+
+      <h3><code>schema=raw</code> — you parse it yourself</h3>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Entity object</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"id"</span>:<span class="cs">"uuid"</span>, <span class="ck">"name"</span>:<span class="cs">"ACME Holdings LLC"</span>, <span class="ck">"form"</span>:<span class="cs">"1120S"</span>,
+  <span class="ck">"years"</span>:[<span class="cs">"2022"</span>,<span class="cs">"2023"</span>,<span class="cs">"2024"</span>], <span class="ck">"status"</span>:<span class="cs">"completed"</span>,
+  <span class="ck">"retrieved_at"</span>:<span class="cs">"2026-08-11T10:32:11Z"</span>,
+  <span class="ck">"artifacts"</span>:[
+    { <span class="ck">"kind"</span>:<span class="cs">"pdf"</span>,  <span class="ck">"file"</span>:<span class="cs">"2023-record-of-account.pdf"</span>, <span class="ck">"url"</span>:<span class="cs">"https://…1h-expiry…"</span>, <span class="ck">"sha256"</span>:<span class="cs">"9f2c…a41b"</span> },
+    { <span class="ck">"kind"</span>:<span class="cs">"html"</span>, <span class="ck">"file"</span>:<span class="cs">"2023-record-of-account.html"</span>,<span class="ck">"url"</span>:<span class="cs">"https://…1h-expiry…"</span>, <span class="ck">"sha256"</span>:<span class="cs">"3d81…7c02"</span> },
+    { <span class="ck">"kind"</span>:<span class="cs">"signed_8821"</span>, <span class="ck">"file"</span>:<span class="cs">"signed-8821.pdf"</span>,     <span class="ck">"url"</span>:<span class="cs">"https://…1h-expiry…"</span>, <span class="ck">"sha256"</span>:<span class="cs">"77aa…09c3"</span> }
   ] }</code></pre>
-    <p><code>sha256</code> is computed at serve time; it may be <code>null</code> for legacy externally-stored artifacts.</p>
+      </div>
+      <p><code>sha256</code> is computed at serve time; it may be <code>null</code> for legacy externally-stored artifacts.</p>
+    </section>
 
-    <h2 id="structured">Structured JSON</h2>
-    <div class="ep"><span class="m get">GET</span> /api/v1/transcripts/{entityId}/structured</div>
-    <p>Machine-readable parse of a completed entity — filings, per-year compliance, and an income baseline — for resellers who consume data rather than files. Same <code>x-api-key</code> auth. A companion <code>GET /api/v1/transcripts/{entityId}/cross-reference</code> compares declared vs. IRS-of-record values.</p>
-    <pre><code>{ "entity": {…}, "filings": [{ "year":"2023","form":"1120S","filed":true,… }],
-  "compliance": {…}, "income_baseline": {…} }</code></pre>
+    <!-- STRUCTURED -->
+    <section class="sec" id="structured">
+      <h2>Structured JSON</h2>
+      <div class="ep"><span class="verb get">GET</span><span class="path">/api/v1/transcripts/{entityId}/structured</span></div>
+      <p>Machine-readable parse of a completed entity — filings, per-year compliance, and an income baseline — for resellers who consume data rather than files. Same <code>x-api-key</code> auth.</p>
+      <div class="ep"><span class="verb get">GET</span><span class="path">/api/v1/transcripts/{entityId}/cross-reference</span></div>
+      <p>Companion endpoint: compares declared values against IRS-of-record values.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">200 OK</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"entity"</span>: {…}, <span class="ck">"filings"</span>: [{ <span class="ck">"year"</span>:<span class="cs">"2023"</span>,<span class="ck">"form"</span>:<span class="cs">"1120S"</span>,<span class="ck">"filed"</span>:<span class="cn">true</span>,… }],
+  <span class="ck">"compliance"</span>: {…}, <span class="ck">"income_baseline"</span>: {…} }</code></pre>
+      </div>
+    </section>
 
-    <h2 id="monitoring">Enroll in monitoring</h2>
-    <div class="ep"><span class="m post">POST</span> /api/intake/monitoring</div>
-    <pre><code>{ "request_token":"your-loan-12345", "entity_name":"ACME Holdings LLC",
-  "frequency":"annual",            // weekly | monthly | quarterly | annual | custom
-  "custom_interval_days":365,      // required if frequency=="custom"
-  "skip_initial_pull":true, "expires_at":"2031-05-09", "next_pull_date":"2027-04-15" }</code></pre>
-    <p>Returns the created <code>subscription</code>. If <code>skip_initial_pull=false</code> (default) an <code>immediate_pull</code> is queued. An entity with an active/paused subscription returns <code>409</code> with the existing one.</p>
+    <!-- MONITORING -->
+    <section class="sec" id="monitoring">
+      <h2>Enroll in monitoring</h2>
+      <div class="ep"><span class="verb post">POST</span><span class="path">/api/intake/monitoring</span></div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Request</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"request_token"</span>:<span class="cs">"your-loan-12345"</span>, <span class="ck">"entity_name"</span>:<span class="cs">"ACME Holdings LLC"</span>,
+  <span class="ck">"frequency"</span>:<span class="cs">"annual"</span>,            <span class="cm">// weekly | monthly | quarterly | annual | custom</span>
+  <span class="ck">"custom_interval_days"</span>:<span class="cn">365</span>,      <span class="cm">// required if frequency=="custom"</span>
+  <span class="ck">"skip_initial_pull"</span>:<span class="cn">true</span>, <span class="ck">"expires_at"</span>:<span class="cs">"2031-05-09"</span>, <span class="ck">"next_pull_date"</span>:<span class="cs">"2027-04-15"</span> }</code></pre>
+      </div>
+      <p>Returns the created <code>subscription</code>. If <code>skip_initial_pull=false</code> (default) an <code>immediate_pull</code> is queued. An entity with an active or paused subscription returns <code>409</code> with the existing one.</p>
+    </section>
 
-    <h2 id="webhooks">Webhooks — push result delivery</h2>
-    <p>Configure your webhook <strong>self-serve</strong> in the <a href="#portal">developer portal</a>: set the delivery URL and a signing secret (the secret is shown once — store it immediately), and send yourself signed test deliveries. There is no per-request <code>callback_url</code> field. Delivery fires when an entity's transcripts are completed; there is no separate event for intermediate steps like <em>8821 signed</em> or <em>IRS queued</em> — poll for those.</p>
-    <h3>Headers</h3>
-    <pre><code>Content-Type: application/json
+    <!-- WEBHOOKS -->
+    <section class="sec" id="webhooks">
+      <h2>Webhooks — <em>push result delivery</em></h2>
+      <p class="seclead">Configure your webhook self-serve in the <a href="#portal" class="tl">developer portal</a>: set the delivery URL and a signing secret, and send yourself signed test deliveries.</p>
+      <div class="note warn">
+        <div class="nt">Two things to know</div>
+        <p>The signing secret is <b>shown once</b> — store it immediately. There is no per-request <code>callback_url</code> field.</p>
+        <p>Delivery fires when an entity's transcripts are completed. There is <b>no separate event</b> for intermediate steps like <i>8821 signed</i> or <i>IRS queued</i> — poll for those.</p>
+      </div>
+
+      <h3>Headers</h3>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Request headers we send</span><button class="cp">Copy</button></div>
+        <pre><code>Content-Type: application/json
 User-Agent: ModernTax-Webhook/1.0
 X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webhook secret&gt;</code></pre>
-    <h3>Verifying the signature</h3>
-    <p>Compute the HMAC over the <strong>raw request body</strong> (before any JSON parsing) and compare constant-time:</p>
-    <pre><code>// node
-const crypto = require('crypto');
+      </div>
 
-function verifyModernTax(rawBody, signatureHeader, secret) {
-  const expected = crypto.createHmac('sha256', secret)
-                         .update(rawBody)            // Buffer or exact raw string
-                         .digest('hex');
-  const given = Buffer.from(signatureHeader || '', 'utf8');
-  const want  = Buffer.from(expected, 'utf8');
-  return given.length === want.length && crypto.timingSafeEqual(given, want);
+      <h3>Verifying the signature</h3>
+      <p>Compute the HMAC over the <b>raw request body</b> (before any JSON parsing) and compare constant-time:</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Node</span><button class="cp">Copy</button></div>
+        <pre><code><span class="cf">const</span> crypto = <span class="cf">require</span>(<span class="cs">'crypto'</span>);
+
+<span class="cf">function</span> <span class="ck">verifyModernTax</span>(rawBody, signatureHeader, secret) {
+  <span class="cf">const</span> expected = crypto.<span class="ck">createHmac</span>(<span class="cs">'sha256'</span>, secret)
+                         .<span class="ck">update</span>(rawBody)            <span class="cm">// Buffer or exact raw string</span>
+                         .<span class="ck">digest</span>(<span class="cs">'hex'</span>);
+  <span class="cf">const</span> given = Buffer.<span class="ck">from</span>(signatureHeader || <span class="cs">''</span>, <span class="cs">'utf8'</span>);
+  <span class="cf">const</span> want  = Buffer.<span class="ck">from</span>(expected, <span class="cs">'utf8'</span>);
+  <span class="cf">return</span> given.length === want.length &amp;&amp; crypto.<span class="ck">timingSafeEqual</span>(given, want);
 }</code></pre>
-    <h3>Payload</h3>
-    <p>Two contracts are delivered; your account is configured for one:</p>
-    <pre><code>// v2 — incremental file delivery
-{ "request_token":"your-loan-12345", "status":"complete",   // partial | complete | error
-  "files":[{ "file_id":"uuid","type":"record_of_account","year":"2023",
-             "entity_name":"ACME Holdings LLC","html":"&lt;…&gt;","created_at":"…" }] }
+      </div>
 
-// v3 — structured records
-{ "request_token":"your-loan-12345","status":"complete",
-  "record_id":"uuid",                 // deterministic — use for idempotency/dedupe
-  "record_type":"financial_verification",
-  // entity_profile | form_discovery | employment_compliance |
-  // financial_verification | risk_signals | credit_recommendation
-  "generated_at":"…","entity":{…},"data":{…} }</code></pre>
-    <h3>Retries</h3>
-    <p>On failure ModernTax retries up to 5 attempts with backoff <code>10s, 30s, 90s, 5m, 15m</code>. A <code>4xx</code> response (except <code>413</code> and <code>429</code>) marks the delivery dead immediately — no further retries.</p>
+      <h3>Payload</h3>
+      <p>Two contracts are delivered; your account is configured for one.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">v2 · incremental file delivery</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"request_token"</span>:<span class="cs">"your-loan-12345"</span>, <span class="ck">"status"</span>:<span class="cs">"complete"</span>,   <span class="cm">// partial | complete | error</span>
+  <span class="ck">"files"</span>:[{ <span class="ck">"file_id"</span>:<span class="cs">"uuid"</span>,<span class="ck">"type"</span>:<span class="cs">"record_of_account"</span>,<span class="ck">"year"</span>:<span class="cs">"2023"</span>,
+             <span class="ck">"entity_name"</span>:<span class="cs">"ACME Holdings LLC"</span>,<span class="ck">"html"</span>:<span class="cs">"&lt;…&gt;"</span>,<span class="ck">"created_at"</span>:<span class="cs">"…"</span> }] }</code></pre>
+      </div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">v3 · structured records</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"request_token"</span>:<span class="cs">"your-loan-12345"</span>,<span class="ck">"status"</span>:<span class="cs">"complete"</span>,
+  <span class="ck">"record_id"</span>:<span class="cs">"uuid"</span>,                 <span class="cm">// deterministic — use for idempotency/dedupe</span>
+  <span class="ck">"record_type"</span>:<span class="cs">"financial_verification"</span>,
+  <span class="cm">// entity_profile | form_discovery | employment_compliance |</span>
+  <span class="cm">// financial_verification | risk_signals | credit_recommendation</span>
+  <span class="ck">"generated_at"</span>:<span class="cs">"…"</span>,<span class="ck">"entity"</span>:{…},<span class="ck">"data"</span>:{…} }</code></pre>
+      </div>
 
-    <h2 id="employment">Employment &amp; income verification</h2>
-    <p>A separate product for W-2/1099 verification. Same <code>x-api-key</code> scheme.</p>
-    <div class="ep"><span class="m post">POST</span> /api/webhook/employment-intake</div>
-    <div class="ep"><span class="m get">GET</span> /api/webhook/employment-result?token=&lt;request_token&gt;</div>
-    <p>Poll returns parsed <code>employment_data</code> instead of transcripts. Ask for the employment schema when provisioning.</p>
+      <h3>Retries</h3>
+      <p>On failure ModernTax retries up to <b>5 attempts</b> with backoff <code>10s, 30s, 90s, 5m, 15m</code>. A <code>4xx</code> response (except <code>413</code> and <code>429</code>) marks the delivery dead immediately — no further retries.</p>
+    </section>
 
-    <h2 id="errors">Errors</h2>
-    <table>
-      <tr><th>Status</th><th>Meaning</th></tr>
-      <tr><td><code>400</code></td><td>Validation error (bad TID, non-PDF upload, file &gt; 10 MB, missing required field, invalid <code>schema</code> value — body lists the valid values).</td></tr>
-      <tr><td><code>401</code></td><td>Missing or invalid <code>x-api-key</code>.</td></tr>
-      <tr><td><code>402</code></td><td>Account not enrolled in billing — a payment method / billing setup is required before ordering.</td></tr>
-      <tr><td><code>404</code></td><td><code>request_token</code> or entity not found for your account.</td></tr>
-      <tr><td><code>409</code></td><td>Duplicate <code>request_token</code>, or an entity already has a monitoring subscription.</td></tr>
-      <tr><td><code>422</code></td><td><code>designee_caf_mismatch</code> on <code>/api/intake/8821-pdf</code> — the uploaded 8821 names a non-ModernTax designee CAF; body includes <code>designee_cafs</code>.</td></tr>
-      <tr><td><code>429</code></td><td>Account request quota reached (body includes <code>usage</code>).</td></tr>
-    </table>
+    <!-- EMPLOYMENT -->
+    <section class="sec" id="employment">
+      <h2>Employment &amp; income verification</h2>
+      <p class="seclead">A separate product for W-2 and 1099 verification. Same <code>x-api-key</code> scheme.</p>
+      <div class="ep"><span class="verb post">POST</span><span class="path">/api/webhook/employment-intake</span><span class="live">Live</span></div>
+      <div class="ep"><span class="verb get">GET</span><span class="path">/api/webhook/employment-result?token=&lt;request_token&gt;</span></div>
+      <p>Poll returns parsed <code>employment_data</code> instead of transcripts. Ask for the employment schema when provisioning.</p>
+    </section>
 
-    <h2 id="limits">Rate limits</h2>
-    <p>A cumulative request quota is enforced per account when configured. Exceeding it returns <code>429</code> with <code>{ "error": "...", "usage": { "used", "limit" } }</code>. Quotas are set with your plan — contact sales to raise one.</p>
+    <!-- ERRORS -->
+    <section class="sec" id="errors">
+      <h2>Errors</h2>
+      <div class="tw-tbl">
+        <table>
+          <thead><tr><th style="width:110px;">Status</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><span class="sc">400</span></td><td>Validation error (bad TID, non-PDF upload, file &gt; 10 MB, missing required field, invalid <code>schema</code> value — body lists the valid values).</td></tr>
+            <tr><td><span class="sc">401</span></td><td>Missing or invalid <code>x-api-key</code>.</td></tr>
+            <tr><td><span class="sc">402</span></td><td>Account not enrolled in billing — a payment method or billing setup is required before ordering.</td></tr>
+            <tr><td><span class="sc">404</span></td><td><code>request_token</code> or entity not found for your account.</td></tr>
+            <tr><td><span class="sc">409</span></td><td>Duplicate <code>request_token</code>, or an entity already has a monitoring subscription.</td></tr>
+            <tr><td><span class="sc">422</span></td><td><code>designee_caf_mismatch</code> on <code>/api/intake/8821-pdf</code> — the uploaded 8821 names a non-ModernTax designee CAF; body includes <code>designee_cafs</code>.</td></tr>
+            <tr><td><span class="sc">429</span></td><td>Account request quota reached (body includes <code>usage</code>).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-    <h2 id="status">System status</h2>
-    <div class="ep"><span class="m get">GET</span> /api/public/status</div>
-    <p>No auth. Returns <code>{ "status": "ok" }</code> when healthy — safe to poll for monitoring.</p>
+    <!-- LIMITS -->
+    <section class="sec" id="limits">
+      <h2>Rate limits</h2>
+      <p>A cumulative request quota is enforced per account when configured. Exceeding it returns <code>429</code> with <code>{ "error": "...", "usage": { "used", "limit" } }</code>. Quotas are set with your plan — contact sales to raise one.</p>
+    </section>
 
-    <h2 id="portal">Developer portal</h2>
-    <p><a href="https://portal.moderntax.io/developer">portal.moderntax.io/developer</a> is self-serve management for your API account:</p>
-    <ul>
-      <li><strong>API keys</strong> — rotate keys without a support ticket.</li>
-      <li><strong>Webhooks</strong> — set the delivery URL and signing secret (secret shown once) and fire signed test deliveries at your endpoint.</li>
-      <li><strong>Default response schema</strong> — pin <code>minimal</code>, <code>underwriting</code>, or <code>raw</code> org-wide; an explicit <code>schema=</code> query parameter still overrides.</li>
-      <li><strong>Usage</strong> — request counts against your quota.</li>
-    </ul>
+    <!-- STATUS -->
+    <section class="sec" id="status">
+      <h2>System status</h2>
+      <div class="ep"><span class="verb get">GET</span><span class="path">/api/public/status</span><span class="live">No auth</span></div>
+      <p>Returns <code>{ "status": "ok" }</code> when healthy — safe to poll for monitoring.</p>
+    </section>
 
-    <h2 id="pricing">Pricing &amp; quotas</h2>
-    <p>API accounts are billed monthly via ACH (Mercury) or Stripe at your negotiated rates. Representative default tier:</p>
-    <table>
-      <tr><th>Item</th><th>Rate</th></tr>
-      <tr><td>Transcript pull (per entity — record-of-account + return transcript, up to 3 yrs)</td><td>$39.99</td></tr>
-      <tr><td>Monitoring enrollment (one-time per entity)</td><td>$19.99</td></tr>
-      <tr><td>Monitoring per-pull (billed only when fresh transcripts are delivered)</td><td>$59.98</td></tr>
-      <tr><td>Entity pre-validation (filing-requirement check)</td><td>$19.99</td></tr>
-    </table>
-    <p>Setup fee and monthly minimums apply per contract; volume pricing above 100 pulls/month — contact <a href="mailto:sales@moderntax.io">sales@moderntax.io</a>.</p>
+    <!-- PORTAL -->
+    <section class="sec" id="portal">
+      <h2>Developer portal</h2>
+      <p class="seclead"><a href="https://portal.moderntax.io/developer" class="tl">portal.moderntax.io/developer</a> is self-serve management for your API account.</p>
+      <ul>
+        <li><b>API keys</b> — rotate keys without a support ticket.</li>
+        <li><b>Webhooks</b> — set the delivery URL and signing secret (secret shown once) and fire signed test deliveries at your endpoint.</li>
+        <li><b>Default response schema</b> — pin <code>minimal</code>, <code>underwriting</code>, or <code>raw</code> org-wide; an explicit <code>schema=</code> query parameter still overrides.</li>
+        <li><b>Usage</b> — request counts against your quota.</li>
+      </ul>
+    </section>
 
-    <h2 id="security">Security &amp; compliance</h2>
-    <ul>
-      <li>SOC 2 Type I complete; Type II in progress.</li>
-      <li>Encrypted in transit (TLS 1.2+) and at rest (AES-256; encrypted SSN/credential columns).</li>
-      <li>API keys SHA-256 hashed, constant-time verified.</li>
-      <li>Per-tenant storage isolation via Postgres Row-Level Security on the storage bucket.</li>
-      <li>Every partner request and result fetch is audit-logged with client identity, timestamp, and token.</li>
-      <li>Signed transcript/8821 URLs expire in 1 hour.</li>
-    </ul>
-    <p>For SOC 2 evidence or vendor questionnaires: <a href="mailto:security@moderntax.io">security@moderntax.io</a>.</p>
+    <!-- PRICING -->
+    <section class="sec" id="pricing">
+      <h2>Pricing &amp; quotas</h2>
+      <p class="seclead">API accounts are billed monthly via ACH (Mercury) or Stripe at your negotiated rates, from <b>$39.98 per verified entity</b> — record-of-account plus return transcript, up to three years.</p>
+      <p>Setup fee and monthly minimums apply per contract. Add-ons — monitoring enrollment, per-pull monitoring, entity pre-validation — and volume pricing above 100 pulls per month are quoted with your plan. Email <a href="mailto:sales@moderntax.io" class="tl">sales@moderntax.io</a> and we'll send a firm rate the same day.</p>
+    </section>
 
-    <h2 id="versioning">Versioning</h2>
-    <p>This document describes the <code>v1</code> surface (the <code>/api/intake/*</code> endpoints and <code>/api/v1/transcripts/*</code>). Breaking changes land under a new version path; existing endpoints remain stable.</p>
+    <!-- SECURITY -->
+    <section class="sec" id="security">
+      <h2>Security &amp; compliance</h2>
+      <ul>
+        <li>SOC 2 Type I complete; Type II in progress.</li>
+        <li>Encrypted in transit (TLS 1.2+) and at rest (AES-256; encrypted SSN and credential columns).</li>
+        <li>API keys SHA-256 hashed, constant-time verified.</li>
+        <li>Per-tenant storage isolation via Postgres Row-Level Security on the storage bucket.</li>
+        <li>Every partner request and result fetch is audit-logged with client identity, timestamp, and token.</li>
+        <li>Signed transcript and 8821 URLs expire in 1 hour.</li>
+      </ul>
+      <p>For SOC 2 evidence or vendor questionnaires: <a href="mailto:security@moderntax.io" class="tl">security@moderntax.io</a>.</p>
+    </section>
 
-    <footer>
-      Questions or a key: <a href="mailto:matt@moderntax.io">matt@moderntax.io</a> · ModernTax, Inc.<br>
-      Last updated: 2026-08-14 — this reference is kept in sync with the deployed API.
-    </footer>
+    <!-- VERSIONING -->
+    <section class="sec" id="versioning">
+      <h2>Versioning</h2>
+      <p>This document describes the <code>v1</code> surface — the <code>/api/intake/*</code> endpoints and <code>/api/v1/transcripts/*</code>. Breaking changes land under a new version path; existing endpoints remain stable.</p>
+      <div class="note">
+        <div class="nt">Questions or a key</div>
+        <p><a href="mailto:matt@moderntax.io" class="tl">matt@moderntax.io</a> · ModernTax, Inc. — this reference is kept in sync with the deployed API.</p>
+      </div>
+    </section>
   </main>
 </div>
+
+<footer>
+  <div class="foot-in">
+    <span>© 2026 ModernTax, Inc. · SOC 2 Type I · TLS 1.2+ · AES-256</span>
+    <span>Last updated 2026-08-14</span>
+  </div>
+</footer>
+
+<aside class="tw" id="tw">
+  <h6>Tweaks</h6>
+  <div class="row"><span>Theme</span><button id="tw-theme" class="toggle-btn">Light</button></div>
+  <div class="row" style="display:block;">
+    <div style="margin-bottom:8px;">Accent</div>
+    <div class="swatches" id="tw-swatches">
+      <button class="swatch" data-h="155" style="background:oklch(48% 0.13 155);"></button>
+      <button class="swatch sel" data-h="240" style="background:oklch(48% 0.13 240);"></button>
+      <button class="swatch" data-h="20" style="background:oklch(48% 0.13 20);"></button>
+      <button class="swatch" data-h="80" style="background:oklch(58% 0.13 80);"></button>
+      <button class="swatch" data-h="320" style="background:oklch(48% 0.13 320);"></button>
+    </div>
+  </div>
+</aside>
+
+<script>
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{ "accentHue": 240, "theme": "light" }/*EDITMODE-END*/;
+const tw=document.getElementById('tw'),themeBtn=document.getElementById('tw-theme'),swatches=document.getElementById('tw-swatches');
+function applyTweaks(t){
+  const h=t.accentHue, accent = h===80?`oklch(58% 0.13 ${h})`:`oklch(48% 0.13 ${h})`;
+  const r=document.documentElement.style;
+  r.setProperty('--accent',accent); r.setProperty('--accent-ink',`oklch(28% 0.10 ${h})`); r.setProperty('--accent-soft',`oklch(94% 0.04 ${h})`);
+  if(t.theme==='dark'){ r.setProperty('--accent-soft',`oklch(28% 0.05 ${h})`); r.setProperty('--accent-ink',`oklch(82% 0.10 ${h})`); }
+  document.documentElement.dataset.theme=t.theme;
+  themeBtn.textContent=t.theme==='dark'?'Dark':'Light';
+  themeBtn.classList.toggle('on',t.theme==='dark');
+  swatches.querySelectorAll('.swatch').forEach(s=>s.classList.toggle('sel',Number(s.dataset.h)===h));
+}
+let state={...TWEAKS_DEFAULTS}; applyTweaks(state);
+themeBtn.addEventListener('click',()=>{state.theme=state.theme==='dark'?'light':'dark';applyTweaks(state);persist(state);});
+swatches.addEventListener('click',e=>{const b=e.target.closest('.swatch');if(!b)return;state.accentHue=Number(b.dataset.h);applyTweaks(state);persist(state);});
+function persist(t){try{window.parent.postMessage({type:'__edit_mode_set_keys',edits:t},'*');}catch(e){}}
+window.addEventListener('message',e=>{const d=e.data;if(!d||typeof d!=='object')return;
+  if(d.type==='__activate_edit_mode')tw.classList.add('show');
+  if(d.type==='__deactivate_edit_mode')tw.classList.remove('show');});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+
+/* copy buttons */
+document.querySelectorAll('.cb').forEach(cb=>{
+  const btn=cb.querySelector('.cp'), pre=cb.querySelector('pre');
+  if(!btn||!pre)return;
+  btn.addEventListener('click',async()=>{
+    try{ await navigator.clipboard.writeText(pre.innerText); btn.textContent='Copied'; }
+    catch(e){ btn.textContent='Select & copy'; }
+    setTimeout(()=>{btn.textContent='Copy';},1400);
+  });
+});
+
+/* scroll-spy */
+const links=[...document.querySelectorAll('.sgroup a')];
+const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+const spy=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.remove('on')); const a=map.get(e.target.id); if(a)a.classList.add('on'); } });
+},{rootMargin:'-70px 0px -72% 0px',threshold:0});
+document.querySelectorAll('section[id]').forEach(s=>spy.observe(s));
+
+/* mobile TOC */
+const side=document.getElementById('side');
+document.getElementById('menu-btn').addEventListener('click',()=>side.classList.toggle('open'));
+side.addEventListener('click',e=>{ if(e.target.tagName==='A')side.classList.remove('open'); });
+</script>
 </body>
 </html>
