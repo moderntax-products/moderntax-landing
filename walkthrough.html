@@ -183,6 +183,12 @@
 .lf-fine{margin:2px 0 0;font-size:12px;color:var(--ink-3);text-align:center}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .btn-block{width:100%;justify-content:center}
+
+/* name pair + inline validation */
+.lf-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.lf-pair{grid-template-columns:1fr}}
+.lf-row input.is-invalid{border-color:#c13234;outline-color:#c13234}
+.lf-error{margin:6px 0 0;font-size:13px;color:#c13234}
 </style>
 </head>
 <body>
@@ -250,6 +256,17 @@
       <!-- Bots fill this; people never see it. -->
       <p class="hp"><label>Company website <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
 
+      <div class="lf-pair">
+        <div class="lf-row">
+          <label for="first_name">First name</label>
+          <input id="first_name" name="first_name" type="text" required autocomplete="given-name" placeholder="Alex" />
+        </div>
+        <div class="lf-row">
+          <label for="last_name">Last name</label>
+          <input id="last_name" name="last_name" type="text" required autocomplete="family-name" placeholder="Rivera" />
+        </div>
+      </div>
+
       <div class="lf-row">
         <label for="business_name">Business name</label>
         <input id="business_name" name="business_name" type="text" required autocomplete="organization" placeholder="Cascade Regional CDC" />
@@ -257,7 +274,9 @@
 
       <div class="lf-row">
         <label for="business_email">Business email</label>
-        <input id="business_email" name="business_email" type="email" required autocomplete="email" placeholder="you@yourfirm.com" />
+        <input id="business_email" name="business_email" type="email" required autocomplete="email"
+               placeholder="you@yourfirm.com" aria-describedby="email_error" />
+        <p class="lf-error" id="email_error" role="alert" hidden></p>
       </div>
 
       <div class="lf-row">
@@ -330,14 +349,9 @@ document.querySelectorAll('#schema-seg button').forEach(b=>b.addEventListener('c
  * and form GUID are public identifiers, and it is CORS-enabled. So there is no
  * secret on this page and no server in the middle.
  *
- * If HS_FORM_GUID is ever blanked out, this script does nothing at all and the
- * form falls back to submitting natively to Netlify — so the page cannot end
- * up in a state where the form silently swallows a lead.
- *
- * The form was verified live against the submissions endpoint before this was
- * switched on: it is published (unpublished forms 404 there), and all three
- * field names are part of the form definition (unknown fields are rejected
- * with "The field 'X' is not part of the form definition").
+ * If HS_FORM_GUID is ever blanked out, the submission falls through to the
+ * native Netlify POST — validation below still runs either way, so the page
+ * cannot end up accepting an address we mean to reject.
  * ------------------------------------------------------------------------- */
 (() => {
   'use strict';
@@ -345,23 +359,90 @@ document.querySelectorAll('#schema-seg button').forEach(b=>b.addEventListener('c
   const HS_PORTAL_ID = '7122036';
   const HS_FORM_GUID = 'a965457a-f8e2-4ef6-8936-0d4e93ae617d';
 
-  if (!HS_FORM_GUID) return; // fall through to the native Netlify submission
-
   const form = document.querySelector('form[name="walkthrough-access"]');
   if (!form) return;
 
   const endpoint =
     `https://api.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL_ID}/${HS_FORM_GUID}`;
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
+  /* --- business-email check ------------------------------------------------
+   * Consumer mailbox providers. A borrower's lender does not run on gmail, and
+   * a free address usually means a tyre-kicker or a bad-faith signup.
+   *
+   * Matched on the full domain, never a substring: a naive `includes('mail.com')`
+   * would also reject gmail.com's lookalikes AND legitimate firms like
+   * `stonemail.com`. Subdomains of a blocked provider are matched too, so
+   * `foo.gmail.com` does not slip through.
+   * --------------------------------------------------------------------- */
+  const CONSUMER_DOMAINS = new Set([
+    'gmail.com', 'googlemail.com',
+    'yahoo.com', 'yahoo.co.uk', 'yahoo.ca', 'ymail.com', 'rocketmail.com',
+    'icloud.com', 'me.com', 'mac.com',
+    'hotmail.com', 'hotmail.co.uk', 'outlook.com', 'live.com', 'msn.com',
+    'aol.com', 'aim.com',
+    'proton.me', 'protonmail.com', 'pm.me',
+    'gmx.com', 'gmx.net', 'mail.com', 'inbox.com', 'zoho.com',
+    'yandex.com', 'yandex.ru', 'qq.com', '163.com', '126.com',
+    'comcast.net', 'verizon.net', 'att.net', 'sbcglobal.net', 'bellsouth.net',
+    'cox.net', 'charter.net', 'earthlink.net', 'roadrunner.com', 'optonline.net',
+    'juno.com', 'netzero.net', 'frontier.com', 'windstream.net',
+  ]);
 
-    // Honeypot: a real person never sees this field, so anything in it is a bot.
-    // Pretend it worked rather than telling the bot it was caught.
+  const emailField = form.elements.business_email;
+  const emailError = document.getElementById('email_error');
+
+  function domainOf(value) {
+    const at = String(value).lastIndexOf('@');
+    return at === -1 ? '' : value.slice(at + 1).trim().toLowerCase();
+  }
+
+  function isConsumerDomain(domain) {
+    if (!domain) return false;
+    if (CONSUMER_DOMAINS.has(domain)) return true;
+    // A subdomain of a blocked provider counts as that provider.
+    return [...CONSUMER_DOMAINS].some((d) => domain.endsWith('.' + d));
+  }
+
+  function showEmailError(message) {
+    emailError.textContent = message;
+    emailError.hidden = false;
+    emailField.setAttribute('aria-invalid', 'true');
+    emailField.classList.add('is-invalid');
+  }
+
+  function clearEmailError() {
+    emailError.hidden = true;
+    emailField.removeAttribute('aria-invalid');
+    emailField.classList.remove('is-invalid');
+  }
+
+  // Clear the message as soon as they start fixing it, rather than leaving a
+  // red error sitting under a field they have already corrected.
+  emailField.addEventListener('input', clearEmailError);
+
+  form.addEventListener('submit', async (event) => {
+    clearEmailError();
+
+    const domain = domainOf(emailField.value);
+    if (isConsumerDomain(domain)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      showEmailError(`Please use your work email — we can't set up an account on a ${domain} address.`);
+      emailField.focus();
+      return;
+    }
+
+    // Honeypot: a real person never sees this field, so anything in it is a
+    // bot. Send it to the thank-you page rather than telling it it was caught.
     if (form.elements['company-website'] && form.elements['company-website'].value) {
+      event.preventDefault();
       window.location.href = form.getAttribute('action');
       return;
     }
+
+    if (!HS_FORM_GUID) return; // fall through to the native Netlify submission
+
+    event.preventDefault();
 
     const button = form.querySelector('button[type="submit"]');
     const originalLabel = button.innerHTML;
@@ -375,9 +456,11 @@ document.querySelectorAll('#schema-seg button').forEach(b=>b.addEventListener('c
 
     const payload = {
       fields: [
-        { objectTypeId: '0-1', name: 'company', value: form.elements.business_name.value.trim() },
-        { objectTypeId: '0-1', name: 'email',   value: form.elements.business_email.value.trim() },
-        { objectTypeId: '0-1', name: 'phone',   value: form.elements.phone.value.trim() },
+        { objectTypeId: '0-1', name: 'firstname', value: form.elements.first_name.value.trim() },
+        { objectTypeId: '0-1', name: 'lastname',  value: form.elements.last_name.value.trim() },
+        { objectTypeId: '0-1', name: 'company',   value: form.elements.business_name.value.trim() },
+        { objectTypeId: '0-1', name: 'email',     value: emailField.value.trim() },
+        { objectTypeId: '0-1', name: 'phone',     value: form.elements.phone.value.trim() },
       ],
       context: {
         pageUri: window.location.href,

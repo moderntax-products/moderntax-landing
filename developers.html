@@ -183,6 +183,12 @@
 .lf-fine{margin:2px 0 0;font-size:12px;color:var(--ink-3);text-align:center}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .btn-block{width:100%;justify-content:center}
+
+/* name pair + inline validation */
+.lf-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.lf-pair{grid-template-columns:1fr}}
+.lf-row input.is-invalid{border-color:#c13234;outline-color:#c13234}
+.lf-error{margin:6px 0 0;font-size:13px;color:#c13234}
 </style>
 </head>
 <body>
