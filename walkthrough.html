@@ -320,5 +320,91 @@ document.querySelectorAll('#schema-seg button').forEach(b=>b.addEventListener('c
   document.getElementById('s-'+b.dataset.s).classList.add('on');
 }));
 </script>
+
+<script>
+/* ---------------------------------------------------------------------------
+ * Lead capture → HubSpot.
+ *
+ * Posts to HubSpot's public Forms submission endpoint. That endpoint is
+ * designed to be called from the browser: it takes no API key, the portal ID
+ * and form GUID are public identifiers, and it is CORS-enabled. So there is no
+ * secret on this page and no server in the middle.
+ *
+ * Until HS_FORM_GUID is filled in, this script does nothing at all and the
+ * form submits natively to Netlify exactly as before — so the page is never in
+ * a broken state, whichever of the two is wired up.
+ *
+ * To finish the HubSpot connection:
+ *   HubSpot → Marketing → Forms → Create form → Embedded form
+ *   Add three fields: Company name, Email, Phone number
+ *   Publish, then copy the GUID out of the embed snippet (the "formId")
+ *   and paste it below.
+ * ------------------------------------------------------------------------- */
+(() => {
+  'use strict';
+
+  const HS_PORTAL_ID = '7122036';
+  const HS_FORM_GUID = ''; // ← paste the form GUID here to switch on HubSpot
+
+  if (!HS_FORM_GUID) return; // fall through to the native Netlify submission
+
+  const form = document.querySelector('form[name="walkthrough-access"]');
+  if (!form) return;
+
+  const endpoint =
+    `https://api.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL_ID}/${HS_FORM_GUID}`;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    // Honeypot: a real person never sees this field, so anything in it is a bot.
+    // Pretend it worked rather than telling the bot it was caught.
+    if (form.elements['company-website'] && form.elements['company-website'].value) {
+      window.location.href = form.getAttribute('action');
+      return;
+    }
+
+    const button = form.querySelector('button[type="submit"]');
+    const originalLabel = button.innerHTML;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+
+    // HubSpot's own tracking cookie, when the tracking code is installed. It
+    // ties this submission to everything else that visitor has done. Entirely
+    // optional — the submission is accepted without it.
+    const hutk = document.cookie.match(/(?:^|;\s*)hubspotutk=([^;]*)/);
+
+    const payload = {
+      fields: [
+        { objectTypeId: '0-1', name: 'company', value: form.elements.business_name.value.trim() },
+        { objectTypeId: '0-1', name: 'email',   value: form.elements.business_email.value.trim() },
+        { objectTypeId: '0-1', name: 'phone',   value: form.elements.phone.value.trim() },
+      ],
+      context: {
+        pageUri: window.location.href,
+        pageName: document.title,
+        ...(hutk ? { hutk: hutk[1] } : {}),
+      },
+    };
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`HubSpot returned ${res.status}`);
+      window.location.href = form.getAttribute('action');
+    } catch (err) {
+      // Never strand someone who just typed their details in. Fall back to the
+      // plain form POST, which Netlify still captures.
+      console.error('[walkthrough] HubSpot submission failed, falling back:', err);
+      button.disabled = false;
+      button.innerHTML = originalLabel;
+      form.submit();
+    }
+  });
+})();
+</script>
 </body>
 </html>
