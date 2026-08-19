@@ -1,0 +1,927 @@
+<title>Partner API Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+  /* ---------------------------------------------------------------------
+   * Tokens copied from the portal's app/brand-tokens.css so this demo and
+   * the product it demonstrates are literally the same brand.
+   * ------------------------------------------------------------------- */
+  :root {
+    --mt-paper:       oklch(98.4% 0.006 80);
+    --mt-paper-2:     oklch(96.2% 0.008 80);
+    --mt-paper-3:     oklch(93.4% 0.012 80);
+    --mt-rule:        oklch(86% 0.014 80);
+    --mt-rule-soft:   oklch(91% 0.012 80);
+
+    --mt-ink:         oklch(18% 0.012 60);
+    --mt-ink-2:       oklch(34% 0.014 60);
+    --mt-ink-3:       oklch(52% 0.012 60);
+    --mt-ink-4:       oklch(68% 0.010 60);
+
+    --mt-accent:      oklch(48% 0.13 155);
+    --mt-accent-ink:  oklch(28% 0.10 155);
+    --mt-accent-soft: oklch(94% 0.04 155);
+
+    --mt-surface:     #ffffff;
+    --mt-surface-2:   var(--mt-paper-2);
+    --mt-surface-3:   var(--mt-paper-3);
+    --mt-bg:          var(--mt-paper);
+
+    --mt-ok:          oklch(52% 0.12 155);
+    --mt-warn:        oklch(62% 0.14 75);
+    --mt-danger:      oklch(54% 0.18 25);
+    --mt-ok-soft:     oklch(95% 0.035 155);
+    --mt-warn-soft:   oklch(95% 0.045 75);
+    --mt-danger-soft: oklch(95% 0.04 25);
+
+    --stage-shadow: 0 1px 2px oklch(18% 0.012 60 / 0.05), 0 12px 32px oklch(18% 0.012 60 / 0.08);
+
+    --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+    --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  :root:not([data-theme="light"]) { }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --mt-paper:       oklch(17% 0.008 80);
+      --mt-paper-2:     oklch(21% 0.010 80);
+      --mt-paper-3:     oklch(25% 0.012 80);
+      --mt-rule:        oklch(33% 0.014 80);
+      --mt-rule-soft:   oklch(28% 0.012 80);
+
+      --mt-ink:         oklch(95% 0.008 80);
+      --mt-ink-2:       oklch(82% 0.010 80);
+      --mt-ink-3:       oklch(66% 0.010 80);
+      --mt-ink-4:       oklch(52% 0.010 80);
+
+      --mt-accent:      oklch(72% 0.14 155);
+      --mt-accent-ink:  oklch(88% 0.10 155);
+      --mt-accent-soft: oklch(28% 0.06 155);
+
+      --mt-surface:     oklch(21% 0.010 80);
+      --mt-surface-2:   oklch(25% 0.012 80);
+      --mt-surface-3:   oklch(29% 0.012 80);
+      --mt-bg:          oklch(14% 0.008 80);
+
+      --mt-ok:          oklch(74% 0.13 155);
+      --mt-warn:        oklch(78% 0.13 75);
+      --mt-danger:      oklch(70% 0.16 25);
+      --mt-ok-soft:     oklch(28% 0.05 155);
+      --mt-warn-soft:   oklch(30% 0.06 75);
+      --mt-danger-soft: oklch(30% 0.06 25);
+
+      --stage-shadow: 0 1px 2px oklch(0% 0 0 / 0.4), 0 16px 40px oklch(0% 0 0 / 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --mt-paper:       oklch(17% 0.008 80);
+    --mt-paper-2:     oklch(21% 0.010 80);
+    --mt-paper-3:     oklch(25% 0.012 80);
+    --mt-rule:        oklch(33% 0.014 80);
+    --mt-rule-soft:   oklch(28% 0.012 80);
+
+    --mt-ink:         oklch(95% 0.008 80);
+    --mt-ink-2:       oklch(82% 0.010 80);
+    --mt-ink-3:       oklch(66% 0.010 80);
+    --mt-ink-4:       oklch(52% 0.010 80);
+
+    --mt-accent:      oklch(72% 0.14 155);
+    --mt-accent-ink:  oklch(88% 0.10 155);
+    --mt-accent-soft: oklch(28% 0.06 155);
+
+    --mt-surface:     oklch(21% 0.010 80);
+    --mt-surface-2:   oklch(25% 0.012 80);
+    --mt-surface-3:   oklch(29% 0.012 80);
+    --mt-bg:          oklch(14% 0.008 80);
+
+    --mt-ok:          oklch(74% 0.13 155);
+    --mt-warn:        oklch(78% 0.13 75);
+    --mt-danger:      oklch(70% 0.16 25);
+    --mt-ok-soft:     oklch(28% 0.05 155);
+    --mt-warn-soft:   oklch(30% 0.06 75);
+    --mt-danger-soft: oklch(30% 0.06 25);
+
+    --stage-shadow: 0 1px 2px oklch(0% 0 0 / 0.4), 0 16px 40px oklch(0% 0 0 / 0.5);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--mt-bg);
+    color: var(--mt-ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 24px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .brandline { display: flex; align-items: center; gap: 10px; }
+  .mark {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: var(--mt-accent);
+    display: grid; place-items: center;
+    color: #fff; font-family: var(--serif); font-size: 17px; line-height: 1;
+  }
+  :root[data-theme="dark"] .mark, :root:not([data-theme="light"]) .mark { color: oklch(14% 0.008 80); }
+  @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .mark { color: #fff; } }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 6px 0 0;
+    text-wrap: balance;
+  }
+  .kicker {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mt-ink-3); margin: 0;
+  }
+  .sub { margin: 8px 0 0; color: var(--mt-ink-2); max-width: 62ch; }
+
+  /* ---------- transport ---------- */
+  .transport { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  button {
+    font: inherit; font-size: 13px; font-weight: 500;
+    color: var(--mt-ink); background: var(--mt-surface);
+    border: 1px solid var(--mt-rule); border-radius: 7px;
+    padding: 7px 13px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+  button:hover { background: var(--mt-surface-2); border-color: var(--mt-ink-4); }
+  button:focus-visible { outline: 2px solid var(--mt-accent); outline-offset: 2px; }
+  button[aria-pressed="true"], button.primary {
+    background: var(--mt-accent); border-color: var(--mt-accent); color: #fff;
+  }
+  :root[data-theme="dark"] button[aria-pressed="true"], :root[data-theme="dark"] button.primary { color: oklch(14% 0.008 80); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) button[aria-pressed="true"],
+    :root:not([data-theme="light"]) button.primary { color: oklch(14% 0.008 80); }
+  }
+
+  /* ---------- chapter rail ---------- */
+  .rail { display: flex; gap: 3px; }
+  .rail button {
+    flex: 1; padding: 0; height: 4px; border-radius: 2px;
+    background: var(--mt-rule); border: none; position: relative; overflow: hidden;
+  }
+  .rail button:hover { background: var(--mt-ink-4); }
+  .rail button .fill {
+    position: absolute; inset: 0 100% 0 0; background: var(--mt-accent);
+    transition: right 80ms linear;
+  }
+  .rail button[data-done="1"] .fill { right: 0; }
+
+  .chapline {
+    display: flex; justify-content: space-between; gap: 12px;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mt-ink-3); font-weight: 600;
+  }
+  .chapline .num { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+
+  /* ---------- the recording stage ---------- */
+  .stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    background: var(--mt-surface);
+    border: 1px solid var(--mt-rule);
+    border-radius: 12px;
+    box-shadow: var(--stage-shadow);
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  /* Everything inside the stage scales with its width so the 16:9 frame is
+     resolution-independent — record it at any size and the layout holds. */
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    font-size: 1.35cqw;
+    opacity: 0;
+    animation: fade 340ms ease forwards;
+  }
+  @keyframes fade { to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .screen { animation: none; opacity: 1; }
+    .rail button .fill { transition: none; }
+  }
+
+  /* simulated portal chrome */
+  .app-bar {
+    display: flex; align-items: center; gap: 1.1em;
+    padding: 0.85em 1.4em;
+    border-bottom: 1px solid var(--mt-rule-soft);
+    background: var(--mt-surface);
+    flex-shrink: 0;
+  }
+  .app-bar .logo { display: flex; align-items: center; gap: 0.5em; font-weight: 600; font-size: 1.05em; }
+  .app-bar .logo .mark { width: 1.6em; height: 1.6em; border-radius: 0.35em; font-size: 1.05em; }
+  .navs { display: flex; gap: 1.2em; color: var(--mt-ink-3); font-size: 0.95em; }
+  .navs .on { color: var(--mt-accent); font-weight: 600; }
+  .app-bar .who { margin-left: auto; color: var(--mt-ink-3); font-size: 0.9em; }
+
+  .body-area { flex: 1; padding: 1.6em 1.9em; overflow: hidden; background: var(--mt-bg); }
+
+  .screen h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 2.2em; line-height: 1.1; margin: 0 0 0.15em;
+    letter-spacing: -0.01em;
+  }
+  .screen .lede { color: var(--mt-ink-2); font-size: 1.02em; margin: 0 0 1.1em; max-width: 60ch; }
+
+  /* cards + tables inside the stage */
+  .cards { display: grid; gap: 0.85em; }
+  .card {
+    background: var(--mt-surface); border: 1px solid var(--mt-rule-soft);
+    border-radius: 0.6em; padding: 1em 1.15em;
+  }
+  .card h3 { margin: 0 0 0.3em; font-size: 1em; font-weight: 600; }
+  .card p { margin: 0; color: var(--mt-ink-2); font-size: 0.95em; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+  th {
+    text-align: left; font-size: 0.78em; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mt-ink-3); font-weight: 600; padding: 0 0.9em 0.6em 0;
+    border-bottom: 1px solid var(--mt-rule);
+  }
+  td { padding: 0.72em 0.9em 0.72em 0; border-bottom: 1px solid var(--mt-rule-soft); color: var(--mt-ink-2); }
+  td.name { color: var(--mt-ink); font-weight: 500; }
+  .num-cell { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.4em;
+    font-size: 0.8em; font-weight: 600; padding: 0.22em 0.7em; border-radius: 999px;
+    border: 1px solid transparent; white-space: nowrap;
+  }
+  .pill.ok { background: var(--mt-ok-soft); color: var(--mt-ok); border-color: var(--mt-ok); }
+  .pill.warn { background: var(--mt-warn-soft); color: var(--mt-warn); border-color: var(--mt-warn); }
+  .pill.crit { background: var(--mt-danger-soft); color: var(--mt-danger); border-color: var(--mt-danger); }
+  .pill.idle { background: var(--mt-surface-2); color: var(--mt-ink-3); border-color: var(--mt-rule); }
+
+  .dot { width: 0.5em; height: 0.5em; border-radius: 50%; background: currentColor; }
+
+  /* the verdict card — the thing processors actually read */
+  .verdict { border-left: 0.28em solid var(--mt-ok); padding-left: 1em; }
+  .verdict.crit { border-left-color: var(--mt-danger); }
+  .verdict.warn { border-left-color: var(--mt-warn); }
+  .verdict .head {
+    font-family: var(--serif); font-size: 1.55em; line-height: 1.15; color: var(--mt-ok);
+    letter-spacing: -0.005em;
+  }
+  .verdict.crit .head { color: var(--mt-danger); }
+  .verdict.warn .head { color: var(--mt-warn); }
+
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 0.35em 1.2em; font-size: 0.95em; }
+  .kv dt { color: var(--mt-ink-3); }
+  .kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  /* pipeline / status chain */
+  .chain { display: flex; align-items: center; gap: 0.5em; flex-wrap: wrap; }
+  .chain .step {
+    font-size: 0.82em; font-weight: 600; padding: 0.3em 0.8em; border-radius: 0.4em;
+    background: var(--mt-surface-2); color: var(--mt-ink-3); border: 1px solid var(--mt-rule);
+    font-family: var(--mono);
+  }
+  .chain .step.on { background: var(--mt-accent); color: #fff; border-color: var(--mt-accent); }
+  :root[data-theme="dark"] .chain .step.on { color: oklch(14% 0.008 80); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chain .step.on { color: oklch(14% 0.008 80); } }
+  .chain .arrow { color: var(--mt-ink-4); font-size: 0.9em; }
+
+  /* the five order routes */
+  .routes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8em; }
+  .route {
+    background: var(--mt-surface); border: 1px solid var(--mt-rule-soft);
+    border-radius: 0.6em; padding: 0.95em 1.05em; display: flex; flex-direction: column; gap: 0.3em;
+  }
+  .route .path { font-family: var(--mono); font-size: 0.82em; color: var(--mt-accent); }
+  .route .t { font-weight: 600; font-size: 1em; }
+  .route .d { font-size: 0.9em; color: var(--mt-ink-2); }
+  .route.hot { border-color: var(--mt-accent); box-shadow: 0 0 0 1px var(--mt-accent); }
+
+  code, .mono { font-family: var(--mono); }
+
+  /* caption bar burned into the stage — reads on the recording */
+  .caption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 1.1em 1.6em;
+    background: linear-gradient(to top, oklch(18% 0.012 60 / 0.92), oklch(18% 0.012 60 / 0.72) 60%, transparent);
+    color: oklch(98% 0 0);
+    font-size: 1.28cqw; line-height: 1.45;
+    display: flex; align-items: baseline; gap: 0.9em;
+  }
+  .caption .n {
+    font-family: var(--mono); font-size: 0.85em; opacity: 0.75; flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .caption p { margin: 0; max-width: 74ch; }
+
+  /* ---------- script panel ---------- */
+  .script { border: 1px solid var(--mt-rule); border-radius: 10px; background: var(--mt-surface); overflow: hidden; }
+  .script > header {
+    padding: 14px 18px; border-bottom: 1px solid var(--mt-rule-soft);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  }
+  .script h2 { font-family: var(--serif); font-weight: 400; font-size: 22px; margin: 0; }
+  .script .hint { font-size: 12px; color: var(--mt-ink-3); }
+  .script ol { list-style: none; margin: 0; padding: 0; }
+  .script li {
+    display: grid; grid-template-columns: 76px 1fr; gap: 18px;
+    padding: 14px 18px; border-bottom: 1px solid var(--mt-rule-soft);
+  }
+  .script li:last-child { border-bottom: none; }
+  .script li.live { background: var(--mt-accent-soft); }
+  .script .tc { font-family: var(--mono); font-size: 12px; color: var(--mt-ink-3); font-variant-numeric: tabular-nums; padding-top: 2px; }
+  .script .who { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mt-accent-ink); margin: 0 0 3px; }
+  .script .line { margin: 0; color: var(--mt-ink); }
+  .script .onscreen { margin: 5px 0 0; font-size: 13px; color: var(--mt-ink-3); }
+  .script .onscreen b { color: var(--mt-ink-2); font-weight: 600; }
+
+  .note {
+    font-size: 13px; color: var(--mt-ink-3); border-left: 2px solid var(--mt-rule);
+    padding-left: 12px; max-width: 70ch;
+  }
+
+  /* record mode: strip everything that isn't the stage */
+  body.recording .wrap > *:not(.stage) { display: none; }
+  body.recording .wrap { padding: 0; max-width: none; }
+  body.recording .stage { border-radius: 0; border: none; box-shadow: none; }
+  body.recording .exit-rec { display: flex !important; }
+  .exit-rec {
+    display: none !important; position: fixed; top: 12px; right: 12px; z-index: 50;
+    opacity: 0.25;
+  }
+  body.recording .exit-rec { display: inline-flex !important; }
+  .exit-rec:hover { opacity: 1; }
+
+  @media (max-width: 720px) {
+    .routes { grid-template-columns: 1fr; }
+    .script li { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+
+<style>
+  .endpoint {
+    font-family: var(--mono); font-size: 0.92em; color: var(--mt-accent);
+    background: var(--mt-accent-soft); border: 1px solid var(--mt-accent);
+    padding: 0.2em 0.7em; border-radius: 0.35em; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; max-width: 62%;
+  }
+  .code {
+    margin: 0; padding: 1em 1.2em; border-radius: 0.5em; overflow: auto;
+    background: var(--mt-surface); border: 1px solid var(--mt-rule-soft);
+    border-left: 0.28em solid var(--mt-ink-4);
+    font-family: var(--mono); font-size: 1.02em; line-height: 1.6;
+    color: var(--mt-ink); font-variant-numeric: tabular-nums;
+  }
+  .code.ok { border-left-color: var(--mt-ok); }
+  .code.warn { border-left-color: var(--mt-warn); }
+  .code.crit { border-left-color: var(--mt-danger); }
+  .flowline { display: flex; align-items: center; gap: 0.55em; flex-wrap: wrap; }
+  .flowline .node {
+    font-size: 0.9em; font-weight: 600; padding: 0.4em 0.85em; border-radius: 0.4em;
+    background: var(--mt-surface-2); color: var(--mt-ink-2); border: 1px solid var(--mt-rule);
+  }
+  .flowline .node.on { background: var(--mt-accent); color: #fff; border-color: var(--mt-accent); }
+  :root[data-theme="dark"] .flowline .node.on { color: oklch(14% 0.008 80); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .flowline .node.on { color: oklch(14% 0.008 80); }
+  }
+  .flowline .arrow { color: var(--mt-ink-4); }
+</style>
+<style>
+  /* ---------------------------------------------------------------------
+   * Embed mode (?embed=1): the page becomes nothing but the 16:9 stage, so
+   * it can be dropped into an <iframe> on the portal dashboard or the
+   * marketing site. The host page owns the aspect ratio; the stage fills it.
+   * ------------------------------------------------------------------- */
+  body.embedded { background: var(--mt-bg); overflow: hidden; }
+  body.embedded .wrap { padding: 0; max-width: none; gap: 0; }
+  body.embedded .wrap > *:not(.stage) { display: none; }
+  body.embedded .exit-rec { display: none !important; }
+  body.embedded .stage {
+    width: 100vw; height: 100vh; aspect-ratio: auto;
+    border: none; border-radius: 0; box-shadow: none;
+  }
+  /* Click anywhere to pause/resume when embedded. */
+  body.embedded .stage { cursor: pointer; }
+  /* A quiet replay chip appears when a non-looping embed reaches the end. */
+  .replay {
+    position: absolute; inset: 0; display: none;
+    place-items: center; background: oklch(18% 0.012 60 / 0.55);
+  }
+  .replay span {
+    background: var(--mt-accent); color: #fff; font-weight: 600;
+    padding: 0.7em 1.4em; border-radius: 0.5em; font-size: 1.3cqw;
+  }
+  body.ended .replay { display: grid; }
+</style>
+
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="brandline">
+        <span class="mark">M</span>
+        <p class="kicker">ModernTax · Partner API</p>
+      </div>
+      <h1>One POST, verified tax data</h1>
+      <p class="sub">
+        A complete walkthrough of the ModernTax partner API — placing an order, getting
+        results by poll or webhook, the structured and cross-reference endpoints, and
+        every error you can hit. Press play, screen-record the frame.
+      </p>
+    </div>
+    <div class="transport">
+      <button id="play" class="primary">▶ Play</button>
+      <button id="prev" title="Previous scene">◀</button>
+      <button id="next" title="Next scene">▶</button>
+      <button id="rec" title="Hide everything except the 16:9 frame">Record mode</button>
+      <button id="toggleScript" aria-pressed="false">Script</button>
+    </div>
+  </header>
+
+  <div class="chapline">
+    <span id="chapName">Chapter 1 — What you get</span>
+    <span class="num"><span id="sceneNo">1</span> / <span id="sceneCount">13</span> · <span id="clock">0:00</span></span>
+  </div>
+  <nav class="rail" id="rail" aria-label="Scenes"></nav>
+
+  <main class="stage" id="stage" aria-live="polite"></main>
+
+  <p class="note">
+    Space plays and pauses. Left and right arrows step between scenes. Record mode hides
+    everything but the frame, so a screen recording captures only the demo.
+  </p>
+
+  <section class="script" id="scriptPanel" hidden>
+    <header>
+      <h2>Narration script</h2>
+      <span class="hint">Timecodes follow the scene durations below — read at a natural pace.</span>
+    </header>
+    <ol id="scriptList"></ol>
+  </section>
+</div>
+
+<button class="exit-rec" id="exitRec">Exit record mode</button>
+
+<script>
+(() => {
+  'use strict';
+
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // A request/response pane: a titled endpoint bar over a body.
+  const term = (title, inner, auth) => `
+    <div class="app-bar">
+      <span class="logo"><span class="mark">M</span> ModernTax API</span>
+      ${title ? `<span class="endpoint">${esc(title)}</span>` : ''}
+      ${auth ? `<span class="who mono">${esc(auth)}</span>` : '<span class="who">portal.moderntax.io</span>'}
+    </div>
+    <div class="body-area">${inner}</div>`;
+
+  // A JSON block. `tone` colours the left rule so a 422 reads as a 422
+  // before anyone has parsed a word of it.
+  const code = (src, tone) => `<pre class="code ${tone || ''}"><code>${esc(src)}</code></pre>`;
+
+  /* -------------------------------------------------------------------
+   * SCENES — every screen is a real endpoint: the request bodies, response
+   * shapes, webhook record_types and status codes below are the ones the
+   * API actually sends and accepts.
+   * ----------------------------------------------------------------- */
+  const SCENES = [
+    {
+      chapter: 'What you get',
+      ms: 10000,
+      caption: 'One POST. Verified IRS transcripts come back as structured data.',
+      narration: 'The ModernTax API turns an IRS transcript pull into one HTTP call. You post a borrower, we handle the authorization and the phone call to the IRS, and you get structured, verified data back.',
+      onscreen: 'Title — the shape of the integration',
+      render: () => term('The whole integration', `
+        <div class="flowline">
+          <span class="node on">POST a borrower</span><span class="arrow">→</span>
+          <span class="node">We get the 8821 signed</span><span class="arrow">→</span>
+          <span class="node">Expert pulls from the IRS</span><span class="arrow">→</span>
+          <span class="node on">Webhook + structured JSON</span>
+        </div>
+        <p class="lede" style="margin-top:1.2em;">
+          No screen scraping, no IRS credentials on your side, no waiting on a human to email a PDF.
+        </p>
+        <div class="cards" style="grid-template-columns:1fr 1fr; display:grid; margin-top:0.6em;">
+          <div class="card"><h3>Base URL</h3><p class="mono">https://portal.moderntax.io</p></div>
+          <div class="card"><h3>Auth</h3><p class="mono">x-api-key: &lt;your key&gt;</p></div>
+        </div>`),
+    },
+    {
+      chapter: 'Getting a key',
+      ms: 9000,
+      caption: 'Start in the sandbox. Same contract, no real IRS calls.',
+      narration: 'Start in the sandbox. It speaks the exact same contract as production against seeded borrowers, so you can build the whole integration before a single real order exists.',
+      onscreen: 'Sandbox vs production keys',
+      render: () => term('Two environments, one contract', `
+        <table>
+          <thead><tr><th></th><th>Sandbox</th><th>Production</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Request shape</td><td>Identical</td><td>Identical</td></tr>
+            <tr><td class="name">Response shape</td><td>Identical</td><td>Identical</td></tr>
+            <tr><td class="name">Borrowers</td><td>Seeded fixtures</td><td>Your real pipeline</td></tr>
+            <tr><td class="name">IRS contact</td><td>None</td><td>Licensed expert on the phone</td></tr>
+            <tr><td class="name">Billing</td><td>Free</td><td>Per completed borrower</td></tr>
+          </tbody>
+        </table>
+        <p class="lede" style="margin-top:1em;">Get a sandbox key from the developer page in the portal — nothing to install.</p>`),
+    },
+    {
+      chapter: 'Placing an order',
+      ms: 12000,
+      caption: 'POST /api/intake/transcript — your token, your borrowers.',
+      narration: 'Placing an order is one POST. You send your own request token — usually your loan number — and an array of entities. Name, tax ID, and the years you need. Form type is optional; we infer it.',
+      onscreen: 'POST request body',
+      render: () => term('POST /api/intake/transcript', code(`{
+  "request_token": "loan-40112",
+  "loan_number": "40112",
+  "entities": [
+    {
+      "entity_name": "Brightwater Glass Inc.",
+      "tid": "47-2019338",
+      "tid_kind": "EIN",
+      "form_type": "1120S",
+      "years": ["2022", "2023", "2024"]
+    }
+  ]
+}`), 'x-api-key: mt_sandbox_••••••••'),
+    },
+    {
+      chapter: 'Placing an order',
+      ms: 10000,
+      caption: 'You get an ID back immediately. The work happens behind it.',
+      narration: 'You get an acknowledgement immediately — an ID and a status. The authorization and the IRS call happen behind that ID; your request does not block on them.',
+      onscreen: '200 response',
+      render: () => term('200 OK', code(`{
+  "request_id": "loan-40112",
+  "status": "pending",
+  "request_status": "pending",
+  "created_at": "2026-08-19T14:02:11.884Z",
+  "completed_at": null,
+  "entities": [
+    { "entity_name": "Brightwater Glass Inc.", "status": "irs_queue" }
+  ]
+}`, 'ok')),
+    },
+    {
+      chapter: 'Getting results',
+      ms: 10500,
+      caption: 'Poll with your own token — no ID mapping to store.',
+      narration: 'To check on it, you GET the same endpoint with the token you chose. That means you never have to store a mapping between your loan numbers and our IDs.',
+      onscreen: 'GET poll, completed',
+      render: () => term('GET /api/intake/transcript?request_token=loan-40112', code(`{
+  "request_id": "loan-40112",
+  "status": "completed",
+  "completed_at": "2026-08-21T16:44:03.017Z",
+  "entities": [
+    {
+      "entity_name": "Brightwater Glass Inc.",
+      "status": "completed",
+      "transcripts": 9,
+      "served_from_record": false
+    }
+  ]
+}`, 'ok')),
+    },
+    {
+      chapter: 'Getting results',
+      ms: 11500,
+      caption: 'Or let us push. Webhooks fire as each piece lands.',
+      narration: 'Better than polling: let us push. Webhooks fire as each piece lands, so you can start underwriting on the first year while the rest are still being pulled.',
+      onscreen: 'Webhook record_type sequence',
+      render: () => term('Webhooks — delivered as work completes', `
+        <table>
+          <thead><tr><th>record_type</th><th>status</th><th>Fires when</th></tr></thead>
+          <tbody>
+            <tr><td class="name mono">entity_profile</td><td><span class="pill idle">partial</span></td><td>Borrower identity confirmed at the IRS</td></tr>
+            <tr><td class="name mono">form_discovery</td><td><span class="pill idle">partial</span></td><td>We learn which returns they are required to file</td></tr>
+            <tr><td class="name mono">employment_compliance</td><td><span class="pill idle">partial</span></td><td>Payroll (941) picture resolves</td></tr>
+            <tr><td class="name mono">complete</td><td><span class="pill ok">complete</span></td><td>Every requested year is delivered</td></tr>
+            <tr><td class="name mono">error</td><td><span class="pill crit">error</span></td><td>Something needs your attention</td></tr>
+          </tbody>
+        </table>
+        <p class="lede" style="margin-top:0.9em;">Every delivery is signed, so you can verify it came from us.</p>`),
+    },
+    {
+      chapter: 'The data',
+      ms: 12000,
+      caption: 'Parsed figures, not a PDF you have to read.',
+      narration: 'The point of the API is that you get numbers, not paperwork. The structured endpoint returns the figures already parsed out of each filing — balances, income, deductions, per year.',
+      onscreen: 'GET structured',
+      render: () => term('GET /api/v1/transcripts/{entityId}/structured', code(`{
+  "entity": { "entity_name": "Brightwater Glass Inc.", "form_type": "1120S" },
+  "filings": [
+    {
+      "tax_year": "2024",
+      "financials": {
+        "gross_receipts": 2106013,
+        "total_income": 738488,
+        "total_deductions": 305809,
+        "account_balance": 1943.16,
+        "account_balance_plus_accruals": 2026.49
+      }
+    }
+  ]
+}`, 'ok')),
+    },
+    {
+      chapter: 'The data',
+      ms: 12000,
+      caption: 'Cross-reference: what they told you vs what they filed.',
+      narration: 'And this is the one people build their whole underwriting step on. You send what the borrower told you, and we diff it against what they actually filed with the IRS.',
+      onscreen: 'POST cross-reference request',
+      render: () => term('POST /api/v1/transcripts/{entityId}/cross-reference', code(`{
+  "tax_year": "2024",
+  "self_reported": {
+    "gross_receipts": 2450000,
+    "total_income": 738488
+  }
+}`)),
+    },
+    {
+      chapter: 'The data',
+      ms: 11500,
+      caption: 'The discrepancy comes back as a number, not an opinion.',
+      narration: 'The answer comes back as a diff. Total income matched exactly. Gross receipts were overstated by about three hundred forty-four thousand dollars — and now that is a field in your system, not a hunch.',
+      onscreen: 'Cross-reference response',
+      render: () => term('200 OK', code(`{
+  "tax_year": "2024",
+  "filed": true,
+  "overall_match": false,
+  "diffs": [
+    {
+      "field": "gross_receipts",
+      "self_reported": 2450000,
+      "filed": 2106013,
+      "variance": 343987,
+      "match": false
+    },
+    { "field": "total_income", "self_reported": 738488,
+      "filed": 738488, "variance": 0, "match": true }
+  ]
+}`, 'warn')),
+    },
+    {
+      chapter: 'More endpoints',
+      ms: 11000,
+      caption: 'Authorization, monitoring, and broker checks are all API-native.',
+      narration: 'The rest of the platform is API-native too. Pass through an 8821 you already had signed, enroll a borrower in monitoring after closing, or run a broker check — all without touching the portal.',
+      onscreen: 'Remaining endpoints',
+      render: () => term('The rest of the surface', `
+        <table>
+          <thead><tr><th>Endpoint</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td class="name mono">POST /api/intake/8821</td><td>Send signature evidence for an authorization you collected</td></tr>
+            <tr><td class="name mono">POST /api/intake/8821-pdf</td><td>Send the signed PDF itself</td></tr>
+            <tr><td class="name mono">POST /api/intake/monitoring</td><td>Watch a borrower's unfiled years after closing</td></tr>
+            <tr><td class="name mono">POST /api/v1/broker-check</td><td>Screen a broker or principal against IRS records</td></tr>
+            <tr><td class="name mono">GET&nbsp; /api/public/status</td><td>Platform health, no key required</td></tr>
+          </tbody>
+        </table>`),
+    },
+    {
+      chapter: 'When things go wrong',
+      ms: 11000,
+      caption: 'Errors tell you what to fix, per row.',
+      narration: 'When something is wrong we tell you exactly what, and where. Validation errors come back per entity and per field, so you fix row four rather than resubmitting the batch.',
+      onscreen: '422 validation error',
+      render: () => term('422 Unprocessable Entity', code(`{
+  "error": "Validation failed",
+  "details": [
+    "entities[3].tid is required",
+    "entities[3].years[0] must be a 4-digit year"
+  ]
+}`, 'crit')),
+    },
+    {
+      chapter: 'When things go wrong',
+      ms: 10000,
+      caption: 'Every failure has one meaning.',
+      narration: 'The full set is small and unambiguous. Four-oh-one means your key. Four-oh-nine means you have already used that token. Four-twenty-two means fix the payload and retry.',
+      onscreen: 'Status code table',
+      render: () => term('Status codes', `
+        <table>
+          <thead><tr><th>Code</th><th>Meaning</th><th>What to do</th></tr></thead>
+          <tbody>
+            <tr><td class="name mono">200</td><td>Accepted</td><td>Store the request_id</td></tr>
+            <tr><td class="name mono">401</td><td>Missing or invalid key</td><td>Check the x-api-key header</td></tr>
+            <tr><td class="name mono">409</td><td>Token already used</td><td>Your token must be unique per order</td></tr>
+            <tr><td class="name mono">422</td><td>Payload problem</td><td>Read <span class="mono">details[]</span>, fix, resend</td></tr>
+            <tr><td class="name mono">413</td><td>Body too large</td><td>Send the PDF by upload rather than inline</td></tr>
+          </tbody>
+        </table>`),
+    },
+    {
+      chapter: 'When things go wrong',
+      ms: 9000,
+      caption: 'moderntax.io/docs',
+      narration: 'Full reference, request and response schemas, and a sandbox key are at ModernTax dot I O slash docs. Build against the sandbox today, flip one key to go live.',
+      onscreen: 'Close card',
+      render: () => term('', `
+        <div style="height:100%; display:flex; flex-direction:column; justify-content:center; gap:0.5em;">
+          <h2 style="font-size:2.8em; margin:0;">Build against the sandbox.<br>Flip one key to go live.</h2>
+          <p class="lede" style="font-size:1.1em;">Same contract in both. Nothing to rewrite.</p>
+          <p class="mono" style="color:var(--mt-accent); font-size:1.2em;">moderntax.io/docs</p>
+        </div>`),
+    },
+  ];
+
+  const stage = document.getElementById('stage');
+  const rail = document.getElementById('rail');
+  const playBtn = document.getElementById('play');
+  const scriptPanel = document.getElementById('scriptPanel');
+  const scriptList = document.getElementById('scriptList');
+
+  let i = 0;
+  let playing = false;
+  let started = 0;      // timestamp the current scene began
+  let elapsed = 0;      // ms into the current scene
+  let raf = null;
+
+  const total = SCENES.length;
+  document.getElementById('sceneCount').textContent = total;
+
+  // Cumulative start time of each scene, for the script timecodes.
+  const starts = SCENES.reduce((acc, s) => (acc.push((acc[acc.length - 1] || 0) + (acc.length ? SCENES[acc.length - 1].ms : 0)), acc), []);
+  const tc = (ms) => {
+    const t = Math.round(ms / 1000);
+    return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
+  };
+
+  // Build the chapter rail and the script once.
+  SCENES.forEach((s, n) => {
+    const b = document.createElement('button');
+    b.innerHTML = '<span class="fill"></span>';
+    b.title = `${n + 1}. ${s.chapter} — ${s.onscreen}`;
+    b.setAttribute('aria-label', `Scene ${n + 1}: ${s.onscreen}`);
+    b.addEventListener('click', () => go(n));
+    rail.appendChild(b);
+
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="tc">${tc(starts[n])}</span>
+      <div>
+        <p class="who">${esc(s.chapter)}</p>
+        <p class="line">${esc(s.narration)}</p>
+        <p class="onscreen"><b>On screen:</b> ${esc(s.onscreen)}</p>
+      </div>`;
+    scriptList.appendChild(li);
+  });
+
+  const railBtns = [...rail.children];
+  const scriptItems = [...scriptList.children];
+
+  function paint() {
+    const s = SCENES[i];
+    stage.innerHTML = `<div class="screen">${s.render()}</div>
+      <div class="caption"><span class="n">${String(i + 1).padStart(2, '0')}</span><p>${esc(s.caption)}</p></div>`;
+    document.getElementById('chapName').textContent = `Chapter ${i + 1} — ${s.chapter}`;
+    document.getElementById('sceneNo').textContent = i + 1;
+    railBtns.forEach((b, n) => {
+      b.dataset.done = n < i ? '1' : '0';
+      if (n !== i) b.querySelector('.fill').style.right = n < i ? '0%' : '100%';
+    });
+    scriptItems.forEach((el, n) => el.classList.toggle('live', n === i));
+  }
+
+  // Driven by setInterval rather than requestAnimationFrame on purpose:
+  // rAF is suspended entirely in a background tab, which would freeze the
+  // walkthrough mid-scene for anyone who switches away and back. The 100ms
+  // tick only needs to be coarse — the progress fill has its own CSS
+  // transition, so it still reads as smooth motion.
+  function tick() {
+    if (!playing) return;
+    elapsed = performance.now() - started;
+    const s = SCENES[i];
+    const pct = Math.min(1, elapsed / s.ms);
+    railBtns[i].querySelector('.fill').style.right = `${(1 - pct) * 100}%`;
+    document.getElementById('clock').textContent = tc(starts[i] + Math.min(elapsed, s.ms));
+    if (pct >= 1) {
+      if (i < total - 1) { go(i + 1, true); }
+      else if (LOOP) { go(0, true); }
+      else { pause(); document.body.classList.add('ended'); }
+    }
+  }
+
+  function go(n, keepPlaying) {
+    i = Math.max(0, Math.min(total - 1, n));
+    elapsed = 0;
+    started = performance.now();
+    paint();
+    document.getElementById('clock').textContent = tc(starts[i]);
+    if (!keepPlaying && playing) { started = performance.now(); }
+  }
+
+  function play() {
+    playing = true;
+    playBtn.textContent = '❚❚ Pause';
+    playBtn.classList.add('primary');
+    started = performance.now() - elapsed;
+    if (raf) clearInterval(raf);
+    raf = setInterval(tick, 100);
+  }
+  function pause() {
+    playing = false;
+    playBtn.textContent = '▶ Play';
+    if (raf) { clearInterval(raf); raf = null; }
+  }
+
+  // Hold position while the tab is hidden instead of letting wall-clock time
+  // run the timeline forward behind the viewer's back, then pick up where
+  // they left off.
+  let resumeOnReturn = false;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && playing) { resumeOnReturn = true; pause(); }
+    else if (!document.hidden && resumeOnReturn) { resumeOnReturn = false; play(); }
+  });
+
+  playBtn.addEventListener('click', () => (playing ? pause() : play()));
+  document.getElementById('next').addEventListener('click', () => go(i + 1, playing));
+  document.getElementById('prev').addEventListener('click', () => go(i - 1, playing));
+
+  document.getElementById('toggleScript').addEventListener('click', (e) => {
+    const open = scriptPanel.hasAttribute('hidden');
+    scriptPanel.toggleAttribute('hidden', !open);
+    e.currentTarget.setAttribute('aria-pressed', String(open));
+  });
+
+  const rec = () => {
+    document.body.classList.add('recording');
+    if (!playing) { go(0); play(); }
+  };
+  document.getElementById('rec').addEventListener('click', rec);
+  document.getElementById('exitRec').addEventListener('click', () => document.body.classList.remove('recording'));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches('input, textarea')) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1, playing); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(i - 1, playing); }
+    if (e.key === 'Escape') document.body.classList.remove('recording');
+  });
+
+  paint();
+
+  // ---------------------------------------------------------------------
+  // Embed + autoplay wiring. `?embed=1` strips the page to the stage for an
+  // <iframe>; `?autoplay=1` starts playback on a normal page; `?loop=0`
+  // stops at the end and shows a replay affordance instead of restarting.
+  // ---------------------------------------------------------------------
+  const params = new URLSearchParams(location.search);
+  // Embed when explicitly asked, OR whenever we are inside a frame. The
+  // second half matters: some static hosts 301 `/x.html?embed=1` to `/x` and
+  // drop the query on the way, which would serve the full page — masthead,
+  // transport controls and all — inside a marketing page's 16:9 iframe.
+  // Being framed is the actual condition we care about, so test it directly.
+  const framed = (() => { try { return window.self !== window.top; } catch { return true; } })();
+  const EMBED = params.get('embed') === '1' || framed;
+  const LOOP = params.get('loop') !== '0';
+  const AUTOPLAY = EMBED || params.get('autoplay') === '1';
+
+  if (EMBED) {
+    document.body.classList.add('embedded');
+    stage.insertAdjacentHTML('beforeend', '<div class="replay"><span>Replay</span></div>');
+    stage.addEventListener('click', () => {
+      if (document.body.classList.contains('ended')) {
+        document.body.classList.remove('ended');
+        go(0); play();
+      } else { playing ? pause() : play(); }
+    });
+  }
+
+  if (AUTOPLAY) {
+    // Only start once the stage is actually on screen, so an embed far down
+    // a marketing page doesn't play to nobody and finish before it is seen.
+    if ('IntersectionObserver' in window && !EMBED) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) { play(); io.disconnect(); }
+        }
+      }, { threshold: 0.4 });
+      io.observe(stage);
+    } else {
+      play();
+    }
+  }
+})();
+</script>

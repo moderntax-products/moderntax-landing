@@ -12,6 +12,17 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# The product walkthroughs under /demos are framed by walkthrough.html and
+# developers.html. The site-wide X-Frame-Options: DENY above would block that
+# even same-origin, so these files opt down to SAMEORIGIN. They are static,
+# self-contained, take no input and hold no secrets. Every other path on the
+# site keeps DENY.
+[[headers]]
+  for = "/demos/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    Content-Security-Policy = "frame-ancestors 'self'"
+
 [[redirects]]
   from = "/docs"
   to = "/docs/"
