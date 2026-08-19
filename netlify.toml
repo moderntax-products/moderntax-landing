@@ -17,6 +17,20 @@
   to = "/docs/"
   status = 301
 
+# Two URLs that only ever existed as dead hrefs inside docs/index.html
+# (the logo pointed at moderntax-redesign.html, the nav at a docs-relative
+# developers.html). Both hrefs were fixed in e1fd550, but anyone who
+# clicked them before that has the 404 in their history.
+[[redirects]]
+  from = "/docs/moderntax-redesign.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/docs/developers.html"
+  to = "/developers.html"
+  status = 301
+
 [[redirects]]
   from = "/api/v1/verify"
   to = "/.netlify/functions/verify"
