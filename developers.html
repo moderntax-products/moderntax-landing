@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-  :root{--paper:oklch(98.4% .006 80);--paper-2:oklch(96.2% .008 80);--paper-3:oklch(93.4% .012 80);--rule:oklch(86% .014 80);--rule-soft:oklch(91% .012 80);--ink:oklch(18% .012 60);--ink-2:oklch(34% .014 60);--ink-3:oklch(52% .012 60);--ink-4:oklch(68% .01 60);--accent:oklch(48% .13 240);--accent-ink:oklch(28% .1 240);--accent-soft:oklch(94% .04 240);--ok:oklch(50% .12 155);--ok-ink:oklch(34% .12 155);--ok-soft:oklch(95% .035 155);--warn-ink:oklch(40% .13 60);--warn-soft:oklch(95% .045 75);--purple:oklch(50% .15 300);--purple-soft:oklch(95% .035 300);--bg:var(--paper);--surface:#fff;--code-bg:oklch(21% .014 260);--serif:'Instrument Serif',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
-  html[data-theme="dark"]{--paper:oklch(16% .012 70);--paper-2:oklch(20% .013 70);--paper-3:oklch(24% .014 70);--rule:oklch(32% .014 70);--rule-soft:oklch(26% .013 70);--ink:oklch(96% .008 80);--ink-2:oklch(82% .01 80);--ink-3:oklch(64% .01 80);--ink-4:oklch(48% .01 80);--accent-soft:oklch(28% .05 240);--accent-ink:oklch(82% .1 240);--ok-soft:oklch(28% .05 155);--ok-ink:oklch(80% .11 155);--warn-soft:oklch(28% .05 75);--warn-ink:oklch(80% .11 75);--purple-soft:oklch(28% .05 300);--surface:var(--paper-2);--code-bg:oklch(13% .012 260)}
+  :root{--paper:oklch(98.4% .006 80);--paper-2:oklch(96.2% .008 80);--paper-3:oklch(93.4% .012 80);--rule:oklch(86% .014 80);--rule-soft:oklch(91% .012 80);--ink:oklch(18% .012 60);--ink-2:oklch(34% .014 60);--ink-3:oklch(52% .012 60);--ink-4:oklch(68% .01 60);--accent:oklch(48% .13 155);--accent-ink:oklch(28% .1 155);--accent-soft:oklch(94% .04 155);--ok:oklch(50% .12 155);--ok-ink:oklch(34% .12 155);--ok-soft:oklch(95% .035 155);--warn-ink:oklch(40% .13 60);--warn-soft:oklch(95% .045 75);--purple:oklch(50% .15 300);--purple-soft:oklch(95% .035 300);--bg:var(--paper);--surface:#fff;--code-bg:oklch(21% .014 260);--serif:'Instrument Serif',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+  html[data-theme="dark"]{--paper:oklch(16% .012 70);--paper-2:oklch(20% .013 70);--paper-3:oklch(24% .014 70);--rule:oklch(32% .014 70);--rule-soft:oklch(26% .013 70);--ink:oklch(96% .008 80);--ink-2:oklch(82% .01 80);--ink-3:oklch(64% .01 80);--ink-4:oklch(48% .01 80);--accent-soft:oklch(28% .05 155);--accent-ink:oklch(82% .1 155);--ok-soft:oklch(28% .05 155);--ok-ink:oklch(80% .11 155);--warn-soft:oklch(28% .05 75);--warn-ink:oklch(80% .11 75);--purple-soft:oklch(28% .05 300);--surface:var(--paper-2);--code-bg:oklch(13% .012 260)}
   *,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0}html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
@@ -543,8 +543,8 @@ X-ModernTax-Signature: <span class="cs">8a3f…</span>  <span class="cm"># HMAC-
   <div class="row"><span>Theme</span><button id="tw-theme" class="toggle-btn">Light</button></div>
   <div class="row" style="display:block;"><div style="margin-bottom:8px;">Accent</div>
     <div class="swatches" id="tw-swatches">
-      <button class="swatch" data-h="155" style="background:oklch(48% .13 155)"></button>
-      <button class="swatch sel" data-h="240" style="background:oklch(48% .13 240)"></button>
+      <button class="swatch sel" data-h="155" style="background:oklch(48% .13 155)"></button>
+      <button class="swatch" data-h="240" style="background:oklch(48% .13 240)"></button>
       <button class="swatch" data-h="20" style="background:oklch(48% .13 20)"></button>
       <button class="swatch" data-h="80" style="background:oklch(58% .13 80)"></button>
       <button class="swatch" data-h="320" style="background:oklch(48% .13 320)"></button>
@@ -553,7 +553,7 @@ X-ModernTax-Signature: <span class="cs">8a3f…</span>  <span class="cm"># HMAC-
 </aside>
 
 <script>
-const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{ "accentHue": 240, "theme": "light" }/*EDITMODE-END*/;
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{ "accentHue": 155, "theme": "light" }/*EDITMODE-END*/;
 const tw=document.getElementById('tw'),themeBtn=document.getElementById('tw-theme'),swatches=document.getElementById('tw-swatches');
 function applyTweaks(t){const h=t.accentHue,a=h===80?`oklch(58% .13 ${h})`:`oklch(48% .13 ${h})`;const r=document.documentElement.style;
 r.setProperty('--accent',a);r.setProperty('--accent-ink',`oklch(28% .1 ${h})`);r.setProperty('--accent-soft',`oklch(94% .04 ${h})`);

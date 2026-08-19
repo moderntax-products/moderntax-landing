@@ -12,9 +12,9 @@
       <rect x="140" y="-70" width="20" height="170" fill="#2a2622" stroke="none"/>
       <path d="M-140 -70 L0 100 L140 -70" stroke-linecap="square"/>
     </g>
-    <circle cx="600" cy="430" r="11" fill="#2f5fd0"/>
+    <circle cx="600" cy="430" r="11" fill="#00723b"/>
     <text x="600" y="540" font-family="Georgia, serif" font-size="58" fill="#2a2622" text-anchor="middle">ModernTax</text>
-    <text x="600" y="600" font-family="Georgia, serif" font-style="italic" font-size="34" fill="#2f5fd0" text-anchor="middle">Plans &amp; add-ons</text>
+    <text x="600" y="600" font-family="Georgia, serif" font-style="italic" font-size="34" fill="#00723b" text-anchor="middle">Plans &amp; add-ons</text>
   </svg>
 </template>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,9 +31,9 @@
     --ink-2: oklch(34% 0.014 60);
     --ink-3: oklch(52% 0.012 60);
     --ink-4: oklch(68% 0.010 60);
-    --accent: oklch(48% 0.13 240);
-    --accent-ink: oklch(28% 0.10 240);
-    --accent-soft: oklch(94% 0.04 240);
+    --accent: oklch(48% 0.13 155);
+    --accent-ink: oklch(28% 0.10 155);
+    --accent-soft: oklch(94% 0.04 155);
     --warn-ink: oklch(40% 0.13 60);
     --warn-soft: oklch(95% 0.045 75);
     --ok: oklch(50% 0.12 155);
@@ -51,7 +51,7 @@
     --paper: oklch(16% 0.012 70); --paper-2: oklch(20% 0.013 70); --paper-3: oklch(24% 0.014 70);
     --rule: oklch(32% 0.014 70); --rule-soft: oklch(26% 0.013 70);
     --ink: oklch(96% 0.008 80); --ink-2: oklch(82% 0.010 80); --ink-3: oklch(64% 0.010 80); --ink-4: oklch(48% 0.010 80);
-    --accent-soft: oklch(28% 0.05 240); --accent-ink: oklch(82% 0.10 240);
+    --accent-soft: oklch(28% 0.05 155); --accent-ink: oklch(82% 0.10 155);
     --warn-soft: oklch(28% 0.05 75); --warn-ink: oklch(80% 0.11 75);
     --ok-soft: oklch(28% 0.05 155); --ok-ink: oklch(80% 0.11 155);
     --purple-soft: oklch(28% 0.05 300);
@@ -573,8 +573,8 @@
   <div class="row" style="display:block;">
     <div style="margin-bottom: 8px;">Accent</div>
     <div class="swatches" id="tw-swatches">
-      <button class="swatch" data-h="155" style="background: oklch(48% 0.13 155);"></button>
-      <button class="swatch sel" data-h="240" style="background: oklch(48% 0.13 240);"></button>
+      <button class="swatch sel" data-h="155" style="background: oklch(48% 0.13 155);"></button>
+      <button class="swatch" data-h="240" style="background: oklch(48% 0.13 240);"></button>
       <button class="swatch" data-h="20" style="background: oklch(48% 0.13 20);"></button>
       <button class="swatch" data-h="80" style="background: oklch(58% 0.13 80);"></button>
       <button class="swatch" data-h="320" style="background: oklch(48% 0.13 320);"></button>
@@ -584,7 +584,7 @@
 
 <script>
 const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accentHue": 240,
+  "accentHue": 155,
   "theme": "light"
 }/*EDITMODE-END*/;
 const tw = document.getElementById('tw');

@@ -3,289 +3,277 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employment & HR Verification — ModernTax</title>
-  <meta name="description" content="W-2 and 1099 income verification via IRS Wage & Income transcripts. API-first employment verification for HR platforms, background checks, and lenders.">
+  <title>Employment &amp; HR Verification — ModernTax</title>
+  <meta name="description" content="W-2 and 1099 income verification via IRS Wage &amp; Income transcripts. API-first employment verification for HR platforms, background checks, and lenders.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'mt-green': '#00C48C',
-            'mt-green-dark': '#00A876',
-            'mt-dark': '#0A1929',
-            'mt-navy': '#102A43',
-            'mt-mid': '#243B53',
-            'mt-light': '#627D98',
-            'mt-pale': '#BCCCDC',
-            'mt-bg': '#F0F4F8',
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
-  <style>
-    html { scroll-behavior: smooth; }
-    .gradient-hero {
-      background: linear-gradient(135deg, #0A1929 0%, #102A43 50%, #0A1929 100%);
-    }
-    .nav-dropdown { display: none; pointer-events: none; }
-    .nav-group:hover .nav-dropdown { display: block; pointer-events: auto; }
-    .nav-group { padding-bottom: 8px; margin-bottom: -8px; }
-  </style>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="brand.css">
 </head>
-<body class="font-sans text-gray-900 antialiased">
+<body>
 
-<!-- NAVIGATION -->
-<header class="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <a href="../" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
-          <span class="text-white font-bold text-sm">M</span>
-        </div>
-        <span class="text-xl font-bold text-mt-dark">ModernTax</span>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ════════════════════════════════ NAV ════════════════════════════════ -->
+<header class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="../" class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+            <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
+            <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+            <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+            <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+          </svg>
+        </span>
+        ModernTax<span class="tag">Employment</span>
       </a>
 
-      <div class="hidden md:flex items-center gap-8">
-        <div class="relative nav-group">
-          <button class="text-gray-600 hover:text-mt-dark font-medium flex items-center gap-1 py-2">
-            Products
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="nav-dropdown absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-            <a href="../#transcripts" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 rounded-lg mx-2">
-              <span class="text-2xl mt-0.5">&#x1F4CB;</span>
-              <div>
-                <div class="font-semibold text-mt-dark">Tax Transcript Retrieval</div>
-                <div class="text-sm text-gray-500">IRS 8821-based transcript pulls for lending</div>
-              </div>
-            </a>
-            <a href="../#employment" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 rounded-lg mx-2">
-              <span class="text-2xl mt-0.5">&#x1F3E2;</span>
-              <div>
-                <div class="font-semibold text-mt-dark">Employment Verification</div>
-                <div class="text-sm text-gray-500">W-2 & 1099 income verification via API</div>
-              </div>
-            </a>
+      <nav class="nav-links" aria-label="primary">
+        <div class="ng">
+          <button class="navbtn" aria-haspopup="true" aria-expanded="false">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="ng-menu">
+            <a href="../#products"><span class="t">Tax Transcript Retrieval</span><span class="d">IRS 8821-based transcript pulls for lending</span></a>
+            <a href="../#products"><span class="t">Employment Verification</span><span class="d">W-2 &amp; 1099 income verification via API</span></a>
           </div>
         </div>
 
-        <div class="relative nav-group">
-          <button class="text-gray-600 hover:text-mt-dark font-medium flex items-center gap-1 py-2">
-            Use Cases
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div class="nav-dropdown absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-            <a href="sba-504.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">SBA 504 Lending</a>
-            <a href="sba-7a.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">SBA 7(a) Lending</a>
-            <a href="commercial-lending.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Commercial Lending</a>
-            <a href="employment-hr.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Employment & HR</a>
-            <a href="tax-payment-verification.html" class="block px-4 py-2.5 hover:bg-gray-50 mx-2 rounded-lg text-gray-700 hover:text-mt-dark font-medium">Tax Payment Verification</a>
+        <div class="ng">
+          <button class="navbtn" aria-haspopup="true" aria-expanded="false">Use Cases <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="ng-menu">
+            <a href="sba-504.html"><span class="t">SBA 504 Lending</span></a>
+            <a href="sba-7a.html"><span class="t">SBA 7(a) Lending</span></a>
+            <a href="commercial-lending.html"><span class="t">Commercial Lending</span></a>
+            <a href="employment-hr.html"><span class="t">Employment &amp; HR</span></a>
+            <a href="tax-payment-verification.html"><span class="t">Tax Payment Verification</span></a>
           </div>
         </div>
 
-        <a href="../docs/" class="text-gray-600 hover:text-mt-dark font-medium">API Docs</a>
-        <a href="../#pricing" class="text-gray-600 hover:text-mt-dark font-medium">Pricing</a>
+        <a href="../docs/">API Docs</a>
+        <a href="../plans.html">Pricing</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="https://portal.moderntax.io/login" class="signin">Sign In</a>
+        <a href="https://portal.moderntax.io/login" class="btn btn-accent">Start Free Trial</a>
       </div>
 
-      <div class="hidden md:flex items-center gap-3">
-        <a href="https://portal.moderntax.io/login" class="text-gray-600 hover:text-mt-dark font-medium">Sign In</a>
-        <a href="https://portal.moderntax.io/login" class="bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-5 py-2.5 rounded-lg transition-all shadow-sm hover:shadow-md">
-          Start Free Trial
-        </a>
-      </div>
-
-      <button class="md:hidden p-2" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       </button>
     </div>
 
-    <div id="mobileMenu" class="hidden md:hidden pb-4 border-t border-gray-100 mt-2 pt-4">
-      <a href="../#transcripts" class="block py-2 text-gray-700 font-medium">Tax Transcript Retrieval</a>
-      <a href="../#employment" class="block py-2 text-gray-700 font-medium">Employment Verification</a>
-      <a href="sba-504.html" class="block py-2 text-gray-500">SBA 504 Lending</a>
-      <a href="sba-7a.html" class="block py-2 text-gray-500">SBA 7(a) Lending</a>
-      <a href="commercial-lending.html" class="block py-2 text-gray-500">Commercial Lending</a>
-      <a href="employment-hr.html" class="block py-2 text-gray-500">Employment & HR</a>
-      <a href="tax-payment-verification.html" class="block py-2 text-gray-500">Tax Payment Verification</a>
-      <a href="../docs/" class="block py-2 text-gray-700 font-medium">API Docs</a>
-      <a href="../#pricing" class="block py-2 text-gray-700 font-medium">Pricing</a>
-      <div class="flex flex-col gap-2 mt-4">
-        <a href="https://portal.moderntax.io/login" class="text-center py-2 text-gray-700 font-medium">Sign In</a>
-        <a href="https://portal.moderntax.io/login" class="text-center bg-mt-green text-white font-semibold px-5 py-2.5 rounded-lg">Start Free Trial</a>
+    <nav class="mnav" id="mnav" aria-label="mobile">
+      <div class="mh">Products</div>
+      <a href="../#products">Tax Transcript Retrieval</a>
+      <a href="../#products">Employment Verification</a>
+      <div class="mh">Use cases</div>
+      <a href="sba-504.html">SBA 504 Lending</a>
+      <a href="sba-7a.html">SBA 7(a) Lending</a>
+      <a href="commercial-lending.html">Commercial Lending</a>
+      <a href="employment-hr.html">Employment &amp; HR</a>
+      <a href="tax-payment-verification.html">Tax Payment Verification</a>
+      <div class="mh">More</div>
+      <a href="../docs/">API Docs</a>
+      <a href="../plans.html">Pricing</a>
+      <div class="mcta">
+        <a href="https://portal.moderntax.io/login" class="btn btn-ghost">Sign In</a>
+        <a href="https://portal.moderntax.io/login" class="btn btn-accent">Start Free Trial</a>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </header>
 
+<main id="main">
 
-<!-- HERO -->
-<section class="gradient-hero pt-32 pb-20">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <span class="inline-block bg-mt-green/10 text-mt-green font-semibold text-sm px-4 py-1.5 rounded-full mb-6">Employment & HR Verification</span>
-    <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-      IRS-Sourced Income Verification<br class="hidden md:block"> for Platforms and Lenders
-    </h1>
-    <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
-      Verify W-2 and 1099 income directly from IRS Wage & Income transcripts. More reliable than employer phone calls or pay stubs, with an API-first approach built for platform integration.
-    </p>
-    <a href="../docs/" class="inline-flex items-center justify-center bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl">
-      View API Docs
-    </a>
-  </div>
-</section>
-
-
-<!-- WHAT YOU NEED -->
-<section class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="text-3xl font-bold text-mt-dark mb-4 text-center">What Employment Verification Requires</h2>
-    <p class="text-lg text-mt-light text-center max-w-3xl mx-auto mb-12">
-      HR platforms, background check companies, and lenders need reliable income and employment data. IRS records are the gold standard.
-    </p>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-mt-bg rounded-2xl p-8">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">W-2 Income Verification</h3>
-        <p class="text-mt-light">Confirm employer name, wages, and withholdings directly from IRS Wage & Income transcripts. Covers current and prior-year W-2s.</p>
-      </div>
-      <div class="bg-mt-bg rounded-2xl p-8">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">1099 Contractor Income</h3>
-        <p class="text-mt-light">Verify 1099-NEC, 1099-MISC, and 1099-K income for self-employed individuals and gig workers. See total non-employee compensation by payer.</p>
-      </div>
-      <div class="bg-mt-bg rounded-2xl p-8">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">Multi-Year History</h3>
-        <p class="text-mt-light">Access up to 10 years of wage and income records to build a complete employment and income history for any individual.</p>
-      </div>
+<!-- ════════════════════════════════ HERO ════════════════════════════════ -->
+<section class="hero">
+  <div class="wrap hero-in">
+    <span class="pill"><span class="dot"></span>Employment &amp; HR Verification</span>
+    <h1 class="display-2">IRS-Sourced Income Verification<br class="br-md"> <span class="italic-em">for Platforms and Lenders</span></h1>
+    <p class="lede">Verify W-2 and 1099 income directly from IRS Wage &amp; Income transcripts. More reliable than employer phone calls or pay stubs, with an API-first approach built for platform integration.</p>
+    <div class="hero-ctas">
+      <a href="../docs/" class="btn btn-lg btn-accent">View API Docs <span class="arrow">&rarr;</span></a>
     </div>
   </div>
 </section>
 
-
-<!-- HOW MODERNTAX HELPS -->
-<section class="py-20 bg-mt-bg">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="text-3xl font-bold text-mt-dark mb-12 text-center">How ModernTax Helps</h2>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="bg-white rounded-2xl p-8 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">API-First Design</h3>
-        <p class="text-mt-light">RESTful API with webhook notifications. Submit verification requests programmatically and receive structured JSON results.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">Employer Detection</h3>
-        <p class="text-mt-light">Automatically identify employers from W-2 data, including EIN matching and employer name normalization across tax years.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">PEO Flagging</h3>
-        <p class="text-mt-light">Detect when a Professional Employer Organization (PEO) is the W-2 employer of record, so you know the true hiring entity.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">Structured Data</h3>
-        <p class="text-mt-light">Parsed, structured JSON responses with employer details, income amounts, and filing metadata — no PDF scraping required.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">More Reliable Than VOE</h3>
-        <p class="text-mt-light">IRS records cannot be fabricated. Eliminate the risk of fraudulent pay stubs or unresponsive employer HR departments.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 shadow-sm">
-        <h3 class="text-lg font-bold text-mt-dark mb-3">Webhook Notifications</h3>
-        <p class="text-mt-light">Get notified the moment results are ready. No polling required — integrate directly into your existing workflow automation.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- IRS FORMS -->
-<section class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-3xl font-bold text-mt-dark mb-8">Relevant IRS Forms</h2>
-    <div class="flex flex-wrap justify-center gap-4">
-      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">W-2</span>
-      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">1099-NEC</span>
-      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">1099-MISC</span>
-      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">1099-K</span>
-      <span class="bg-mt-dark text-white font-semibold px-6 py-3 rounded-xl">Wage & Income Transcript</span>
-    </div>
-  </div>
-</section>
-
-
-<!-- CTA -->
-<section class="gradient-hero py-20">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Build Employment Verification Into Your Platform</h2>
-    <p class="text-lg text-gray-300 mb-10">Explore the API documentation and start integrating IRS-sourced income verification today.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="../docs/" class="inline-flex items-center justify-center bg-mt-green hover:bg-mt-green-dark text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl">
-        View API Docs
-      </a>
-      <a href="mailto:matt@moderntax.io?subject=Employment%20Verification%20API" class="inline-flex items-center justify-center border-2 border-white/30 hover:border-white/60 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all">
-        Talk to Us
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- FOOTER -->
-<footer class="bg-mt-dark border-t border-white/10 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid md:grid-cols-4 gap-8 mb-12">
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
       <div>
-        <div class="flex items-center gap-2 mb-4">
-          <div class="w-8 h-8 rounded-lg bg-mt-green flex items-center justify-center">
-            <span class="text-white font-bold text-sm">M</span>
-          </div>
-          <span class="text-xl font-bold text-white">ModernTax</span>
+        <div class="section-num">01</div>
+        <span class="eyebrow">Requirements</span>
+      </div>
+      <div>
+        <h2 class="display-3">What Employment Verification Requires</h2>
+        <p class="lede">HR platforms, background check companies, and lenders need reliable income and employment data. IRS records are the gold standard.</p>
+      </div>
+    </div>
+    <div class="grid-flush three">
+      <article class="gcell">
+        <div class="idx"><span class="dotsq"></span>01</div>
+        <h3>W-2 Income Verification</h3>
+        <p>Confirm employer name, wages, and withholdings directly from IRS Wage &amp; Income transcripts. Covers current and prior-year W-2s.</p>
+      </article>
+      <article class="gcell">
+        <div class="idx"><span class="dotsq"></span>02</div>
+        <h3>1099 Contractor Income</h3>
+        <p>Verify 1099-NEC, 1099-MISC, and 1099-K income for self-employed individuals and gig workers. See total non-employee compensation by payer.</p>
+      </article>
+      <article class="gcell">
+        <div class="idx"><span class="dotsq"></span>03</div>
+        <h3>Multi-Year History</h3>
+        <p>Access up to 10 years of wage and income records to build a complete employment and income history for any individual.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-num">02</div>
+        <span class="eyebrow">The platform</span>
+      </div>
+      <div>
+        <h2 class="display-3">How ModernTax Helps</h2>
+
+      </div>
+    </div>
+    <div class="cards three">
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>API-First Design</h3>
+        <p>RESTful API with webhook notifications. Submit verification requests programmatically and receive structured JSON results.</p>
+      </article>
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Employer Detection</h3>
+        <p>Automatically identify employers from W-2 data, including EIN matching and employer name normalization across tax years.</p>
+      </article>
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>PEO Flagging</h3>
+        <p>Detect when a Professional Employer Organization (PEO) is the W-2 employer of record, so you know the true hiring entity.</p>
+      </article>
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Structured Data</h3>
+        <p>Parsed, structured JSON responses with employer details, income amounts, and filing metadata &mdash; no PDF scraping required.</p>
+      </article>
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>More Reliable Than VOE</h3>
+        <p>IRS records cannot be fabricated. Eliminate the risk of fraudulent pay stubs or unresponsive employer HR departments.</p>
+      </article>
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Webhook Notifications</h3>
+        <p>Get notified the moment results are ready. No polling required &mdash; integrate directly into your existing workflow automation.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-num">03</div>
+        <span class="eyebrow">Coverage</span>
+      </div>
+      <div>
+        <h2 class="display-3">Relevant IRS Forms</h2>
+
+      </div>
+    </div>
+    <div class="forms">
+      <span class="fpill">W-2</span>
+      <span class="fpill">1099-NEC</span>
+      <span class="fpill">1099-MISC</span>
+      <span class="fpill">1099-K</span>
+      <span class="fpill">Wage &amp; Income Transcript</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ CTA ════════════════════════════════ -->
+<section class="cta-sec">
+  <div class="wrap">
+    <div class="cta-band">
+      <div class="cta-in">
+        <h2>Build Employment Verification <span class="italic-em">Into Your Platform</span></h2>
+        <p>Explore the API documentation and start integrating IRS-sourced income verification today.</p>
+        <div class="cta-btns">
+          <a href="../docs/" class="btn btn-lg btn-accent">View API Docs <span class="arrow">&rarr;</span></a>
+          <a href="mailto:matt@moderntax.io?subject=Employment%20Verification%20API" class="btn btn-lg btn-ghost">Talk to Us</a>
         </div>
-        <p class="text-gray-400 text-sm leading-relaxed">IRS tax transcript retrieval and employment verification for modern lenders and platforms.</p>
       </div>
-      <div>
-        <h4 class="text-white font-semibold mb-4">Products</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="../#transcripts" class="text-gray-400 hover:text-white transition-colors">Tax Transcript Retrieval</a></li>
-          <li><a href="../#employment" class="text-gray-400 hover:text-white transition-colors">Employment Verification</a></li>
-          <li><a href="../docs/" class="text-gray-400 hover:text-white transition-colors">API Documentation</a></li>
-          <li><a href="../#pricing" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-about">
+        <a href="../" class="brand">
+          <span class="brand-mark">
+          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+            <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
+            <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+            <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+            <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+          </svg>
+        </span>
+          ModernTax
+        </a>
+        <p>IRS tax transcript retrieval and employment verification for modern lenders and platforms.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="../#products">Tax Transcript Retrieval</a></li>
+          <li><a href="../#products">Employment Verification</a></li>
+          <li><a href="../docs/">API Documentation</a></li>
+          <li><a href="../plans.html">Pricing</a></li>
         </ul>
       </div>
-      <div>
-        <h4 class="text-white font-semibold mb-4">Use Cases</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="sba-504.html" class="text-gray-400 hover:text-white transition-colors">SBA 504 Lending</a></li>
-          <li><a href="sba-7a.html" class="text-gray-400 hover:text-white transition-colors">SBA 7(a) Lending</a></li>
-          <li><a href="commercial-lending.html" class="text-gray-400 hover:text-white transition-colors">Commercial Lending</a></li>
-          <li><a href="employment-hr.html" class="text-gray-400 hover:text-white transition-colors">Employment &amp; HR</a></li>
-          <li><a href="tax-payment-verification.html" class="text-gray-400 hover:text-white transition-colors">Tax Payment Verification</a></li>
+      <div class="foot-col">
+        <h5>Use Cases</h5>
+        <ul>
+            <li><a href="sba-504.html">SBA 504 Lending</a></li>
+            <li><a href="sba-7a.html">SBA 7(a) Lending</a></li>
+            <li><a href="commercial-lending.html">Commercial Lending</a></li>
+            <li><a href="employment-hr.html">Employment &amp; HR</a></li>
+            <li><a href="tax-payment-verification.html">Tax Payment Verification</a></li>
         </ul>
       </div>
-      <div>
-        <h4 class="text-white font-semibold mb-4">Company</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="https://portal.moderntax.io/login" class="text-gray-400 hover:text-white transition-colors">Sign In to Portal</a></li>
-          <li><a href="mailto:matt@moderntax.io" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
-          <li><a href="mailto:support@moderntax.io" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="https://portal.moderntax.io/login">Sign In to Portal</a></li>
+          <li><a href="mailto:matt@moderntax.io">Contact Us</a></li>
+          <li><a href="mailto:support@moderntax.io">Support</a></li>
         </ul>
       </div>
     </div>
-    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-gray-500 text-sm">&copy; 2026 ModernTax, Inc. All rights reserved.</p>
-      <div class="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-500">
-        <span>SOC 2 Compliant</span>
-        <span>&bull;</span>
-        <span>256-bit Encryption</span>
-        <span>&bull;</span>
+    <div class="foot-bottom">
+      <p>&copy; 2026 ModernTax, Inc. All rights reserved.</p>
+      <div class="badges">
+        <span>SOC 2 Compliant</span><span class="sep">&bull;</span>
+        <span>256-bit Encryption</span><span class="sep">&bull;</span>
         <span>IRS Authorized</span>
       </div>
     </div>
   </div>
 </footer>
 
+<script src="brand.js"></script>
 </body>
 </html>
