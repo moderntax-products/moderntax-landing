@@ -330,21 +330,20 @@ document.querySelectorAll('#schema-seg button').forEach(b=>b.addEventListener('c
  * and form GUID are public identifiers, and it is CORS-enabled. So there is no
  * secret on this page and no server in the middle.
  *
- * Until HS_FORM_GUID is filled in, this script does nothing at all and the
- * form submits natively to Netlify exactly as before — so the page is never in
- * a broken state, whichever of the two is wired up.
+ * If HS_FORM_GUID is ever blanked out, this script does nothing at all and the
+ * form falls back to submitting natively to Netlify — so the page cannot end
+ * up in a state where the form silently swallows a lead.
  *
- * To finish the HubSpot connection:
- *   HubSpot → Marketing → Forms → Create form → Embedded form
- *   Add three fields: Company name, Email, Phone number
- *   Publish, then copy the GUID out of the embed snippet (the "formId")
- *   and paste it below.
+ * The form was verified live against the submissions endpoint before this was
+ * switched on: it is published (unpublished forms 404 there), and all three
+ * field names are part of the form definition (unknown fields are rejected
+ * with "The field 'X' is not part of the form definition").
  * ------------------------------------------------------------------------- */
 (() => {
   'use strict';
 
   const HS_PORTAL_ID = '7122036';
-  const HS_FORM_GUID = ''; // ← paste the form GUID here to switch on HubSpot
+  const HS_FORM_GUID = 'a965457a-f8e2-4ef6-8936-0d4e93ae617d';
 
   if (!HS_FORM_GUID) return; // fall through to the native Netlify submission
 
