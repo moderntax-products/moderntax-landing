@@ -238,6 +238,25 @@
     color: var(--ink-2);
     background: var(--surface);
   }
+  /* Credential pill — the IRS authorization is the single hardest thing for a
+     competitor to reproduce, so it sits in the hero rather than the footer.
+     Accent-bordered to read as a credential, not another announcement. */
+  .pill-credential {
+    border-color: color-mix(in oklab, var(--accent) 45%, var(--rule));
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  /* Hero sub — carries the speed promise directly under the headline so the
+     h1 can hold the positioning claim on its own. */
+  .hero-sub {
+    margin-top: 20px;
+    font-size: clamp(19px, 1.7vw, 25px);
+    line-height: 1.3;
+    color: var(--ink-1);
+    font-weight: 600;
+    text-wrap: balance;
+  }
   .dot {
     width: 7px; height: 7px; border-radius: 50%;
     background: var(--accent);
@@ -835,14 +854,16 @@
     <div class="hero-grid">
       <div>
         <div class="hero-meta reveal">
-          <span class="pill"><span class="dot"></span> Entity transcripts now included on every business verification</span>
+          <span class="pill"><span class="dot"></span> The verified-income platform for lenders</span>
+          <span class="pill pill-credential">IRS Authorized</span>
         </div>
         <h1 class="display-1 reveal" style="text-wrap: balance;">
-          IRS transcripts<br/>
-          <span class="italic-em" style="font-style: italic;">without the busywork.</span>
+          The IRS is the source of truth.<br/>
+          <span class="italic-em" style="font-style: italic;">We made it an API.</span>
         </h1>
-        <p class="lede reveal" style="margin-top: 28px;">
-          Enter a borrower once and download a signature-ready 8821. We confirm which return they're actually required to file, pull it from the IRS, and have it back to you in 24 hours — with nothing re-pulled or re-billed behind your back.
+        <p class="hero-sub reveal">Hours, not weeks.</p>
+        <p class="lede reveal" style="margin-top: 20px;">
+          Income verification still runs on fax-era turnaround and self-reported documents. ModernTax pulls from the IRS directly — transcripts and W-2/1099 employment records, under your borrower's signed 8821.
         </p>
         <div class="hero-ctas reveal">
           <a href="https://portal.moderntax.io/new" class="btn btn-accent">Start an order <span class="arrow">→</span></a>
@@ -851,12 +872,12 @@
 
         <div class="hero-stats reveal">
           <div>
-            <div class="num">24 hr</div>
-            <div class="lbl">Standard turnaround</div>
+            <div class="num">500</div>
+            <div class="lbl">Verifications delivered</div>
           </div>
           <div>
-            <div class="num">34</div>
-            <div class="lbl">SBA lenders &amp; platforms</div>
+            <div class="num">396</div>
+            <div class="lbl">Businesses &amp; borrowers</div>
           </div>
           <div>
             <div class="num">SOC 2</div>
