@@ -1,1 +1,37 @@
+# ModernTax — Netlify redirect map
+# Fixes stale URLs still indexed by Google/Bing and held by LLM training data.
+# Netlify serves these top-to-bottom; first match wins.
+#
+# NOTE: redirects declared in netlify.toml are evaluated BEFORE this file.
+# The API proxies (/api/v1/verify, /employment-verify/*) and the /docs rules
+# live there — do not duplicate them here.
+
+# --- Sandbox host — DO NOT REMOVE ---
+# Live API sandbox (Lendesca and other integrators point at this host).
+# This was the only rule in the previous _redirects; dropping it takes the
+# sandbox offline.
 https://sandbox.moderntax.io/* /sandbox-interface.html 200!
+
+# --- Legacy /solutions/* -> current /use-cases/* ---
+# All four targets verified present in use-cases/.
+/solutions/small-business      /use-cases/sba-7a                    301!
+/solutions/government          /use-cases/tax-payment-verification  301!
+/solutions/lending             /use-cases/commercial-lending        301!
+/solutions/employment          /use-cases/employment-hr             301!
+/solutions/*                   /use-cases/sba-7a                    301!
+
+# --- Canonicalize host: force apex, strip www ---
+https://www.moderntax.io/*     https://moderntax.io/:splat          301!
+
+# --- HELD BACK: targets do not exist yet ---
+# Redirecting an indexed URL to a 404 is worse than leaving it alone — Google
+# treats it as a soft 404 and the old URL's equity is lost rather than passed.
+# There is no /about page, and no /legal/ directory; terms.html and
+# privacy.html exist only in an unmerged worktree. Uncomment each line as its
+# target page actually ships.
+#
+# /company/about               /about                               301!
+# /company/*                   /about                               301!
+# /contact                     /about                               301!
+# /terms                       /legal/terms                         301!
+# /privacy                     /legal/privacy                       301!
