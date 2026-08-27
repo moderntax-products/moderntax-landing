@@ -275,9 +275,13 @@
   }
   .hero-stats .num {
     font-family: var(--serif);
-    font-size: 32px;
-    line-height: 1;
+    /* Sized for words, not digits: these tiles carry qualitative proof
+       ("Direct", "Nationwide") rather than counts, and 32px overflowed the
+       ~161px column at three-up. */
+    font-size: clamp(20px, 1.9vw, 26px);
+    line-height: 1.1;
     color: var(--ink);
+    text-wrap: balance;
   }
   .hero-stats .lbl {
     font-size: 12px; color: var(--ink-3); margin-top: 8px;
@@ -872,12 +876,12 @@
 
         <div class="hero-stats reveal">
           <div>
-            <div class="num">500</div>
-            <div class="lbl">Verifications delivered</div>
+            <div class="num">Direct</div>
+            <div class="lbl">From the IRS, not the borrower</div>
           </div>
           <div>
-            <div class="num">396</div>
-            <div class="lbl">Businesses &amp; borrowers</div>
+            <div class="num">Nationwide</div>
+            <div class="lbl">SBA lenders, CDCs &amp; platforms</div>
           </div>
           <div>
             <div class="num">SOC 2</div>
