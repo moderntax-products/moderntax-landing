@@ -238,6 +238,25 @@
     color: var(--ink-2);
     background: var(--surface);
   }
+  /* Credential pill — the IRS authorization is the single hardest thing for a
+     competitor to reproduce, so it sits in the hero rather than the footer.
+     Accent-bordered to read as a credential, not another announcement. */
+  .pill-credential {
+    border-color: color-mix(in oklab, var(--accent) 45%, var(--rule));
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  /* Hero sub — carries the speed promise directly under the headline so the
+     h1 can hold the positioning claim on its own. */
+  .hero-sub {
+    margin-top: 20px;
+    font-size: clamp(19px, 1.7vw, 25px);
+    line-height: 1.3;
+    color: var(--ink-1);
+    font-weight: 600;
+    text-wrap: balance;
+  }
   .dot {
     width: 7px; height: 7px; border-radius: 50%;
     background: var(--accent);
@@ -256,9 +275,13 @@
   }
   .hero-stats .num {
     font-family: var(--serif);
-    font-size: 32px;
-    line-height: 1;
+    /* Sized for words, not digits: these tiles carry qualitative proof
+       ("Direct", "Nationwide") rather than counts, and 32px overflowed the
+       ~161px column at three-up. */
+    font-size: clamp(20px, 1.9vw, 26px);
+    line-height: 1.1;
     color: var(--ink);
+    text-wrap: balance;
   }
   .hero-stats .lbl {
     font-size: 12px; color: var(--ink-3); margin-top: 8px;
@@ -802,6 +825,100 @@
    subject sits high in a 4:5 frame. */
 .founder-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;z-index:1;display:block}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://moderntax.io/#organization",
+      "name": "ModernTax",
+      "legalName": "Rapidly Financial, Inc.",
+      "alternateName": [
+        "ModernTax, Inc.",
+        "Modern Tax"
+      ],
+      "url": "https://moderntax.io",
+      "description": "ModernTax provides IRS tax transcript retrieval and verified income data for SBA and commercial lenders, including self-employed and 1099 borrowers, using IRS Form 8821 authorization.",
+      "slogan": "Tax intelligence for modern lenders",
+      "foundingDate": "2017",
+      "email": "matt@moderntax.io",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://moderntax.io/#founder",
+        "name": "Matt Parker",
+        "jobTitle": "Founder & Chief Executive Officer",
+        "worksFor": {
+          "@id": "https://moderntax.io/#organization"
+        }
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "San Francisco",
+        "addressRegion": "CA",
+        "addressCountry": "US"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      "knowsAbout": [
+        "IRS Form 8821",
+        "IRS Form 4506-C",
+        "IRS tax transcripts",
+        "Income Verification Express Service (IVES)",
+        "SBA 7(a) lending",
+        "SBA 504 lending",
+        "Self-employed income verification",
+        "Schedule C income verification",
+        "Commercial loan underwriting"
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/company/moderntax",
+        "https://www.crunchbase.com/organization/rapidly",
+        "https://moderntax.substack.com/"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "matt@moderntax.io",
+          "areaServed": "US",
+          "availableLanguage": "English"
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://moderntax.io/#website",
+      "url": "https://moderntax.io",
+      "name": "ModernTax",
+      "publisher": {
+        "@id": "https://moderntax.io/#organization"
+      },
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://moderntax.io/#service",
+      "name": "IRS Tax Transcript Verification for Lenders",
+      "serviceType": "Income and tax data verification",
+      "provider": {
+        "@id": "https://moderntax.io/#organization"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "SBA lenders, commercial lenders, CDCs, loan processors and underwriters"
+      },
+      "description": "Authorization-based IRS transcript retrieval for lenders underwriting self-employed, 1099, and sole-proprietor borrowers, including SBA 7(a) and 504 files."
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -842,14 +959,16 @@
     <div class="hero-grid">
       <div>
         <div class="hero-meta reveal">
-          <span class="pill"><span class="dot"></span> Entity transcripts now included on every business verification</span>
+          <span class="pill"><span class="dot"></span> The verified-income platform for lenders</span>
+          <span class="pill pill-credential">IRS Authorized</span>
         </div>
         <h1 class="display-1 reveal" style="text-wrap: balance;">
-          IRS transcripts<br/>
-          <span class="italic-em" style="font-style: italic;">without the busywork.</span>
+          The IRS is the source of truth.<br/>
+          <span class="italic-em" style="font-style: italic;">We made it an API.</span>
         </h1>
-        <p class="lede reveal" style="margin-top: 28px;">
-          Enter a borrower once and download a signature-ready 8821. We confirm which return they're actually required to file, pull it from the IRS, and have it back to you in 24 hours — with nothing re-pulled or re-billed behind your back.
+        <p class="hero-sub reveal">Hours, not weeks.</p>
+        <p class="lede reveal" style="margin-top: 20px;">
+          Income verification still runs on fax-era turnaround and self-reported documents. ModernTax pulls from the IRS directly — transcripts and W-2/1099 employment records, under your borrower's signed 8821.
         </p>
         <div class="hero-ctas reveal">
           <a href="https://portal.moderntax.io/new?src=home_cta&amp;v=submit_a_live_file" class="btn btn-accent" data-cta="home_primary" data-variant="submit_a_live_file">Submit a live file <span class="arrow">→</span></a>
@@ -858,12 +977,12 @@
 
         <div class="hero-stats reveal">
           <div>
-            <div class="num">24 hr</div>
-            <div class="lbl">Standard turnaround</div>
+            <div class="num">Direct</div>
+            <div class="lbl">From the IRS, not the borrower</div>
           </div>
           <div>
-            <div class="num">34</div>
-            <div class="lbl">SBA lenders &amp; platforms</div>
+            <div class="num">Nationwide</div>
+            <div class="lbl">SBA lenders, CDCs &amp; platforms</div>
           </div>
           <div>
             <div class="num">SOC 2</div>
