@@ -359,7 +359,7 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
       <span class="ck">"address"</span>: <span class="cs">"123 Main St"</span>, <span class="ck">"city"</span>: <span class="cs">"Austin"</span>, <span class="ck">"state"</span>: <span class="cs">"TX"</span>, <span class="ck">"zip_code"</span>: <span class="cs">"78701"</span>,
       <span class="ck">"loan_officer_name"</span>:  <span class="cs">"Jane Rep"</span>,  <span class="cm">// optional</span>
       <span class="ck">"loan_officer_email"</span>: <span class="cs">"jane@lender.com"</span>,
-      <span class="ck">"fiscal_year_end_month"</span>: <span class="cn">12</span>,       <span class="cm">// optional</span>
+      <span class="ck">"fiscal_year_end_month"</span>: <span class="cn">12</span>,       <span class="cm">// REQUIRED for 1120 / 1120S / 1065; 12 = calendar year</span>
       <span class="ck">"signed_8821"</span>: {                   <span class="cm">// optional: attach a pre-signed 8821 inline</span>
         <span class="ck">"pdf_base64"</span>: <span class="cs">"&lt;base64 PDF, max 10 MB decoded&gt;"</span>,
         <span class="ck">"persona_inquiry_id"</span>: <span class="cs">"inq_abc123"</span>,          <span class="cm">// optional signature evidence —</span>
@@ -385,6 +385,7 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
             <tr><td><span class="fn">entities[].tid</span> / <span class="fn">tid_kind</span></td><td><span class="req-y">yes</span></td><td>EIN (<code>XX-XXXXXXX</code>) or SSN (<code>XXX-XX-XXXX</code>); <code>"EIN"</code>/<code>"SSN"</code>.</td></tr>
             <tr><td><span class="fn">entities[].years</span></td><td><span class="req-y">yes</span></td><td>4-digit years, 1990–2028.</td></tr>
             <tr><td><span class="fn">entities[].form_type</span></td><td><span class="req-n">no</span></td><td><code>1040</code>, <code>1065</code>, <code>1120</code>, <code>1120S</code>, <code>941</code>. Inferred from <code>tid_kind</code> if omitted.</td></tr>
+            <tr><td><span class="fn">entities[].fiscal_year_end_month</span></td><td><span class="req-y">yes*</span></td><td>Month the entity’s fiscal year ends, <code>1</code>–<code>12</code>; <code>12</code> = calendar year. <strong>Required for <code>1120</code>, <code>1120S</code> and <code>1065</code></strong> (explicit or inferred from an EIN) — omitting it returns <code>400</code>. Ignored for <code>1040</code> and <code>941</code>, which are always calendar. The IRS keys the account by period ending, so a fiscal-year filer pulled on 12/31 comes back &ldquo;No Record Found&rdquo;.</td></tr>
             <tr><td><span class="fn">entities[].signed_8821</span></td><td><span class="req-n">no</span></td><td>Inline pre-signed 8821: <code>pdf_base64</code> (≤10 MB decoded) plus optional evidence fields (<code>persona_inquiry_id</code>, <code>persona_verification_token</code>, <code>signer_name</code>, <code>signer_email</code>, <code>signed_at</code>, <code>signer_ip</code>, <code>signature_vendor</code>).</td></tr>
           </tbody>
         </table>
