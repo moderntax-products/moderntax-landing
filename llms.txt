@@ -1,0 +1,23 @@
+# ModernTax
+
+> ModernTax retrieves IRS tax transcripts for SBA and commercial lenders and lending platforms. A borrower is entered once, signs an IRS Form 8821, and ModernTax pulls the transcripts from the IRS and returns them through a web portal or an API (parsed JSON, the raw IRS HTML and a PDF, delivered by webhook).
+
+## Product
+
+- [Home](https://moderntax.io/): what ModernTax does and how an order works
+- [Developers](https://moderntax.io/developers): the API for lending platforms. One POST creates a verification; a webhook returns the result.
+- [API reference](https://moderntax.io/docs/): partner API endpoints. Covers transcript intake, Form 8821 authorization, monitoring enrollment, structured compliance data, webhook delivery and x-api-key authentication.
+- [Portal](https://portal.moderntax.io/): where lenders place orders and download transcripts (sign-in required)
+
+## Use cases
+
+- [All use cases](https://moderntax.io/use-cases/)
+- [SBA 504 lending](https://moderntax.io/use-cases/sba-504)
+- [SBA 7(a) lending](https://moderntax.io/use-cases/sba-7a)
+- [Commercial lending](https://moderntax.io/use-cases/commercial-lending)
+- [Employment and income verification](https://moderntax.io/use-cases/employment-hr): W-2 and 1099 income from IRS Wage & Income transcripts
+- [Tax payment verification](https://moderntax.io/use-cases/tax-payment-verification): IRS payment posting and account balances
+
+## Contact
+
+- Sales and partnerships: matt@moderntax.io
