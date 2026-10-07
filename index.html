@@ -4,6 +4,19 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ModernTax — Tax intelligence for modern lenders</title>
+<meta name="description" content="IRS tax transcripts for SBA and commercial lenders. Enter a borrower once, download a signature-ready Form 8821, and get the transcripts pulled from the IRS, with nothing re-pulled or re-billed behind your back." />
+<link rel="canonical" href="https://moderntax.io/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="ModernTax" />
+<meta property="og:title" content="ModernTax — Tax intelligence for modern lenders" />
+<meta property="og:url" content="https://moderntax.io/" />
+<meta property="og:description" content="IRS tax transcripts for SBA and commercial lenders. Enter a borrower once, download a signature-ready Form 8821, and get the transcripts pulled from the IRS, with nothing re-pulled or re-billed behind your back." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="ModernTax — Tax intelligence for modern lenders" />
+<meta name="twitter:description" content="IRS tax transcripts for SBA and commercial lenders. Enter a borrower once, download a signature-ready Form 8821, and get the transcripts pulled from the IRS, with nothing re-pulled or re-billed behind your back." />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=GT+Walsheim&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -22,10 +35,11 @@
     --ink-3:        oklch(52% 0.012 60);
     --ink-4:        oklch(68% 0.010 60);
 
-    /* accent — overridable via tweak */
-    --accent:       oklch(48% 0.13 155);   /* moss green */
-    --accent-ink:   oklch(28% 0.10 155);
-    --accent-soft:  oklch(94% 0.04 155);
+    /* accent — hue 240. The removed design-tweaks script applied this on
+       every page load, so it is what production has always shown. */
+    --accent:       oklch(48% 0.13 240);
+    --accent-ink:   oklch(28% 0.10 240);
+    --accent-soft:  oklch(94% 0.04 240);
 
     /* surfaces */
     --bg:           var(--paper);
@@ -54,8 +68,8 @@
     --ink-3:     oklch(64% 0.010 80);
     --ink-4:     oklch(48% 0.010 80);
 
-    --accent-soft: oklch(28% 0.05 155);
-    --accent-ink:  oklch(82% 0.10 155);
+    --accent-soft: oklch(28% 0.05 240);
+    --accent-ink:  oklch(82% 0.10 240);
 
     --surface:   var(--paper);
     --surface-2: var(--paper-2);
@@ -717,37 +731,6 @@
     transform: none;
   }
 
-  /* tweaks panel */
-  .tw {
-    position: fixed; right: 16px; bottom: 16px; z-index: 200;
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 14px;
-    padding: 14px;
-    width: 240px;
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,.18);
-    display: none;
-    font-size: 13px;
-  }
-  .tw.show { display: block; }
-  .tw h6 {
-    font-family: var(--mono); font-size: 11px;
-    color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em;
-    margin: 0 0 10px; font-weight: 500;
-  }
-  .tw .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .swatches { display: flex; gap: 6px; }
-  .swatch {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 1.5px solid var(--rule);
-    cursor: pointer;
-  }
-  .swatch.sel { box-shadow: 0 0 0 2px var(--ink); }
-  .toggle-btn {
-    border: 1px solid var(--rule); padding: 4px 10px; border-radius: 999px;
-    font-size: 12px;
-  }
-  .toggle-btn.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
   /* ─────────────────────────  USE CASE ROW  ───────────────────────── */
   .uc-list { border-top: 1px solid var(--rule); }
@@ -816,6 +799,7 @@
         "Modern Tax"
       ],
       "url": "https://moderntax.io",
+      "logo": "https://moderntax.io/apple-touch-icon.png",
       "description": "ModernTax provides IRS tax transcript retrieval and verified income data for SBA and commercial lenders, including self-employed and 1099 borrowers, using IRS Form 8821 authorization.",
       "slogan": "Tax intelligence for modern lenders",
       "foundingDate": "2017",
@@ -917,8 +901,9 @@
 
     <nav class="nav-links" aria-label="primary">
       <a href="#products">Product</a>
-      <a href="#use-cases">Use cases</a>
+      <a href="use-cases/">Use cases</a>
       <a href="developers.html">Developers</a>
+      <a href="docs/">Docs</a>
       <a href="plans.html">Plans</a>
       <a href="#founder">Why us</a>
     </nav>
@@ -1382,8 +1367,8 @@ curl <span style="color:var(--accent);">-X POST</span> https://api.moderntax.io/
         <ul>
           <li><a href="https://portal.moderntax.io/new">Place an order</a></li>
           <li><a href="developers.html">API &amp; webhooks</a></li>
+          <li><a href="docs/">API reference</a></li>
           <li><a href="mailto:matt@moderntax.io?subject=ModernTax%20pricing">Request pricing</a></li>
-          <li><a href="#">Security</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -1394,13 +1379,12 @@ curl <span style="color:var(--accent);">-X POST</span> https://api.moderntax.io/
           <li><a href="use-cases/commercial-lending.html">Commercial lending</a></li>
           <li><a href="use-cases/employment-hr.html">Employment & HR</a></li>
           <li><a href="use-cases/tax-payment-verification.html">Tax payment verification</a></li>
+          <li><a href="use-cases/">All use cases</a></li>
         </ul>
       </div>
       <div class="foot-col">
         <h5>Company</h5>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Customers</a></li>
           <li><a href="https://moderntax.substack.com/">Newsroom</a></li>
           <li><a href="mailto:matt@moderntax.io">Contact</a></li>
         </ul>
@@ -1414,90 +1398,8 @@ curl <span style="color:var(--accent);">-X POST</span> https://api.moderntax.io/
   </div>
 </footer>
 
-<!-- ════════════════════════════════ TWEAKS PANEL ════════════════════════════════ -->
-<aside class="tw" id="tw">
-  <h6>Tweaks</h6>
-  <div class="row">
-    <span>Theme</span>
-    <button id="tw-theme" class="toggle-btn">Light</button>
-  </div>
-  <div class="row" style="display:block;">
-    <div style="margin-bottom: 8px;">Accent</div>
-    <div class="swatches" id="tw-swatches">
-      <button class="swatch sel" data-h="155" style="background: oklch(48% 0.13 155);"></button>
-      <button class="swatch" data-h="240" style="background: oklch(48% 0.13 240);"></button>
-      <button class="swatch" data-h="20"  style="background: oklch(48% 0.13 20);"></button>
-      <button class="swatch" data-h="80"  style="background: oklch(58% 0.13 80);"></button>
-      <button class="swatch" data-h="320" style="background: oklch(48% 0.13 320);"></button>
-    </div>
-  </div>
-</aside>
 
 <script>
-/* ═══════════════ Tweaks integration ═══════════════ */
-const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accentHue": 240,
-  "theme": "light"
-}/*EDITMODE-END*/;
-
-const tw = document.getElementById('tw');
-const themeBtn = document.getElementById('tw-theme');
-const swatches = document.getElementById('tw-swatches');
-
-function applyTweaks(t) {
-  // accent
-  const h = t.accentHue;
-  const accent = h === 80
-    ? `oklch(58% 0.13 ${h})`
-    : `oklch(48% 0.13 ${h})`;
-  document.documentElement.style.setProperty('--accent', accent);
-  document.documentElement.style.setProperty('--accent-ink', `oklch(28% 0.10 ${h})`);
-  document.documentElement.style.setProperty('--accent-soft', `oklch(94% 0.04 ${h})`);
-  if (t.theme === 'dark') {
-    document.documentElement.style.setProperty('--accent-soft', `oklch(28% 0.05 ${h})`);
-    document.documentElement.style.setProperty('--accent-ink',  `oklch(82% 0.10 ${h})`);
-  }
-  // theme
-  document.documentElement.dataset.theme = t.theme;
-  themeBtn.textContent = t.theme === 'dark' ? 'Dark' : 'Light';
-  themeBtn.classList.toggle('on', t.theme === 'dark');
-  // sel state
-  swatches.querySelectorAll('.swatch').forEach(s => {
-    s.classList.toggle('sel', Number(s.dataset.h) === h);
-  });
-}
-
-let tweaksState = { ...TWEAKS_DEFAULTS };
-applyTweaks(tweaksState);
-
-themeBtn.addEventListener('click', () => {
-  tweaksState.theme = tweaksState.theme === 'dark' ? 'light' : 'dark';
-  applyTweaks(tweaksState);
-  persist(tweaksState);
-});
-swatches.addEventListener('click', (e) => {
-  const b = e.target.closest('.swatch');
-  if (!b) return;
-  tweaksState.accentHue = Number(b.dataset.h);
-  applyTweaks(tweaksState);
-  persist(tweaksState);
-});
-
-function persist(t) {
-  try {
-    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: t }, '*');
-  } catch (e) {}
-}
-
-// edit-mode protocol
-window.addEventListener('message', (e) => {
-  const d = e.data;
-  if (!d || typeof d !== 'object') return;
-  if (d.type === '__activate_edit_mode')   tw.classList.add('show');
-  if (d.type === '__deactivate_edit_mode') tw.classList.remove('show');
-});
-window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-
 /* ═══════════════ Reveal on scroll ═══════════════ */
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });

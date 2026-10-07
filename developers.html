@@ -4,6 +4,37 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ModernTax — API for lending platforms</title>
+<meta name="description" content="Transcripts as an endpoint, not a vendor portal. One POST creates a verification; a webhook returns parsed JSON, the raw IRS HTML and a PDF. Built for lending platforms." />
+<link rel="canonical" href="https://moderntax.io/developers" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="ModernTax" />
+<meta property="og:title" content="ModernTax — API for lending platforms" />
+<meta property="og:url" content="https://moderntax.io/developers" />
+<meta property="og:description" content="Transcripts as an endpoint, not a vendor portal. One POST creates a verification; a webhook returns parsed JSON, the raw IRS HTML and a PDF. Built for lending platforms." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="ModernTax — API for lending platforms" />
+<meta name="twitter:description" content="Transcripts as an endpoint, not a vendor portal. One POST creates a verification; a webhook returns parsed JSON, the raw IRS HTML and a PDF. Built for lending platforms." />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ModernTax API",
+  "url": "https://moderntax.io/developers",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "IRS tax transcript verification API",
+  "operatingSystem": "Web",
+  "description": "Transcripts as an endpoint, not a vendor portal. One POST creates a verification; a webhook returns parsed JSON, the raw IRS HTML and a PDF. Built for lending platforms.",
+  "provider": {
+    "@type": "Organization",
+    "@id": "https://moderntax.io/#organization",
+    "name": "ModernTax",
+    "url": "https://moderntax.io"
+  }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -209,6 +240,7 @@
       <a href="#surfaces">Portal + API</a>
       <a href="#endpoints">Endpoints</a>
       <a href="#reseller">Pricing</a>
+      <a href="/docs/">API reference</a>
     </nav>
     <a href="#reseller" class="btn btn-accent btn-sm">Get sandbox keys</a>
   </div>
@@ -578,7 +610,11 @@ X-ModernTax-Signature: <span class="cs">8a3f…</span>  <span class="cm"># HMAC-
 
 <footer>
   <div class="wrap foot-in">
-    <a href="/" style="color:var(--ink-2);font-weight:500;">← moderntax.io</a>
+    <span style="display:flex;gap:18px;flex-wrap:wrap;">
+      <a href="/" style="color:var(--ink-2);font-weight:500;">← moderntax.io</a>
+      <a href="/docs/" style="color:var(--ink-2);">API reference</a>
+      <a href="/use-cases/" style="color:var(--ink-2);">Use cases</a>
+    </span>
     <span>© 2026 ModernTax, Inc. · SOC 2 · MFA · IRS PPS routing</span>
   </div>
 </footer>
