@@ -20,6 +20,11 @@ https://sandbox.moderntax.io/* /sandbox-interface.html 200!
 /solutions/employment          /use-cases/employment-hr             301!
 /solutions/*                   /use-cases/sba-7a                    301!
 
+# --- Use-case aliases ---
+# The commercial page is titled "Tax Verification for Commercial Credit
+# Decisions"; /commercial-credit was the URL people guessed (site audit 10/6).
+/use-cases/commercial-credit   /use-cases/commercial-lending        301!
+
 # --- Canonicalize host: force apex, strip www ---
 https://www.moderntax.io/*     https://moderntax.io/:splat          301!
 
