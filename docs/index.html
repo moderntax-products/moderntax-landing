@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ModernTax — Partner API Reference</title>
-<meta name="description" content="ModernTax Partner API: transcript intake, IRS Form 8821 authorization, monitoring enrollment, structured compliance data, and webhook result delivery. x-api-key auth. SOC 2 Type I complete." />
+<meta name="description" content="ModernTax Partner API: transcript intake, IRS Form 8821 authorization, monitoring enrollment, structured compliance data, and webhook result delivery. x-api-key auth." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -278,7 +278,7 @@
       <div class="meta-strip">
         <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <code>x-api-key</code> auth · no OAuth dance</span>
         <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Self-serve sandbox, 250 requests</span>
-        <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> SOC 2 Type I complete</span>
+        <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> SOC 2 readiness in progress</span>
       </div>
     </div>
 
@@ -728,14 +728,14 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
     <section class="sec" id="security">
       <h2>Security &amp; compliance</h2>
       <ul>
-        <li>SOC 2 Type I complete; Type II in progress.</li>
+        <li>SOC 2 readiness in progress; security documentation available under NDA.</li>
         <li>Encrypted in transit (TLS 1.2+) and at rest (AES-256; encrypted SSN and credential columns).</li>
         <li>API keys SHA-256 hashed, constant-time verified.</li>
         <li>Per-tenant storage isolation via Postgres Row-Level Security on the storage bucket.</li>
         <li>Every partner request and result fetch is audit-logged with client identity, timestamp, and token.</li>
         <li>Signed transcript and 8821 URLs expire in 1 hour.</li>
       </ul>
-      <p>For SOC 2 evidence or vendor questionnaires: <a href="mailto:security@moderntax.io" class="tl">security@moderntax.io</a>.</p>
+      <p>For security documentation or vendor questionnaires: <a href="mailto:security@moderntax.io" class="tl">security@moderntax.io</a>.</p>
     </section>
 
     <!-- VERSIONING -->
@@ -752,7 +752,7 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
 
 <footer>
   <div class="foot-in">
-    <span>© 2026 ModernTax, Inc. · SOC 2 Type I · TLS 1.2+ · AES-256</span>
+    <span>© 2026 ModernTax, Inc. · TLS 1.2+ · AES-256</span>
     <span>Last updated 2026-08-14</span>
   </div>
 </footer>
