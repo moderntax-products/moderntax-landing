@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Resolution Firms — ModernTax</title>
+  <meta name="description" content="How tax resolution firms onboard CAF holders to ModernTax: agents upload 8821s to the IRS, book Practitioner Priority callbacks and attach transcripts to each case, step by step.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="brand.css">
+  <link rel="canonical" href="https://moderntax.io/use-cases/tax-resolution">
+  <style>
+    /* Walkthrough: step list on the left (two columns on phones), a mock portal screen on the right. */
+    .wt{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;align-items:start}
+    @media(max-width:900px){.wt{grid-template-columns:1fr}}
+    .wt-steps{display:grid;gap:6px;position:sticky;top:84px}
+    @media(max-width:900px){.wt-steps{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .wt-who{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:10px 4px 2px}
+    @media(max-width:900px){.wt-who{grid-column:1/-1}}
+    .wt-step{text-align:left;border:1px solid var(--rule);background:var(--surface);border-radius:12px;padding:10px 14px;display:grid;gap:2px}
+    .wt-step b{font-weight:600;font-size:14.5px}
+    .wt-step span{color:var(--ink-3);font-size:12.5px}
+    .wt-step[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+    .wt-stage{background:var(--surface);border:1px solid var(--rule);border-radius:18px;overflow:hidden;min-width:0}
+    .wt-chrome{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--rule);background:var(--surface-2);font-family:var(--mono);font-size:12px;color:var(--ink-3);min-width:0}
+    .wt-url{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .wt-dots{display:flex;gap:5px;flex:none}.wt-dots i{width:9px;height:9px;border-radius:50%;background:var(--rule);display:block}
+    .wt-pane{padding:24px;display:grid;gap:16px}
+    @media(max-width:520px){.wt-pane{padding:16px}}
+    .wt-panel{border:1px solid var(--rule);border-radius:14px;padding:18px;display:grid;gap:12px;min-width:0}
+    .wt-panel h3{font-size:16px;font-weight:600;margin:0}
+    .wt-panel.hl{border-color:color-mix(in oklab,var(--accent) 40%,var(--rule));background:color-mix(in oklab,var(--accent-soft) 45%,var(--surface))}
+    .wt-explain{background:var(--surface-2);border-radius:12px;padding:14px 16px;font-size:14.5px;display:grid;gap:6px;color:var(--ink-2)}
+    .wt-explain b{color:var(--ink);font-weight:600}
+    .wt-explain ul{margin:0;padding-left:18px;display:grid;gap:4px}
+    .wt-toast{border-radius:10px;padding:10px 14px;background:var(--accent-soft);color:var(--ink);font-size:14.5px}
+    .wt-list{display:grid;gap:10px}
+    .wt-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+    .wt-row .grow{flex:1 1 220px;min-width:0}
+    .wt-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    @media(max-width:680px){.wt-split{grid-template-columns:1fr}}
+    .wt-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    @media(max-width:560px){.wt-form{grid-template-columns:1fr}}
+    .wt-form .full{grid-column:1/-1}
+    .wt fieldset{border:0;padding:0;margin:0;display:grid;gap:6px}
+    .wt input[type=text],.wt input[type=email],.wt input[type=time],.wt select{font:inherit;font-size:14.5px;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:8px 10px;min-width:0}
+    .wt label.f{display:grid;gap:4px;font-size:12.5px;font-weight:600;color:var(--ink-3)}
+    .wt .small{font-size:13.5px;color:var(--ink-3);margin:0}
+    .wt .strong{font-weight:600}
+    .wbtn{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:var(--accent);color:#fff;font-size:14px;font-weight:500}
+    .linkish{font-size:13px;color:var(--accent-ink);text-decoration:underline;padding:0}
+    .linkish.danger{color:oklch(50% 0.17 28)}
+    .chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap;justify-self:start}
+    .chip.ok{background:var(--accent-soft);color:var(--accent-ink)}
+    .chip.warn{background:oklch(94% 0.05 75);color:oklch(42% 0.11 60)}
+    .chip.off{background:var(--surface-3);color:var(--ink-3)}
+    html[data-theme="dark"] .chip.warn{background:oklch(30% 0.05 70);color:oklch(84% 0.10 75)}
+    .holder{display:grid;gap:8px;border-bottom:1px solid var(--rule-soft);padding-bottom:10px}
+    .holder:last-child{border-bottom:0;padding-bottom:0}
+    .code6{display:flex;gap:6px}.code6 input{width:38px;text-align:center;font:600 17px var(--mono)!important;padding:8px 0!important}
+    .drop{border:1.5px dashed color-mix(in oklab,var(--accent) 55%,var(--rule));border-radius:14px;padding:22px;display:grid;gap:4px;text-align:center;cursor:pointer;background:var(--surface)}
+    .drop.done{border-style:solid}
+    .up-list{list-style:none;margin:0;padding:0;display:grid;gap:0;border:1px solid var(--rule);border-radius:10px;background:var(--surface);font-size:14px}
+    .up-list li{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;border-bottom:1px solid var(--rule-soft)}
+    .up-list li:last-child{border-bottom:0}
+    .wt-flow ol{margin:0;padding:0;list-style:none;display:grid;gap:14px}
+    .wt-flow li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:start}
+    .wt-flow h4{margin:0 0 2px;font-size:15px;font-weight:600}
+    .flow-h{font-family:var(--serif);font-weight:400;font-size:24px;margin:0}
+    .n{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);font:600 12px/26px var(--mono);text-align:center}
+    .tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:12px}
+    .wt table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+    .wt th{text-align:left;font-weight:600;color:var(--ink-3);font-size:12px;padding:9px 12px;background:var(--surface-2);border-bottom:1px solid var(--rule)}
+    .wt td{padding:9px 12px;border-bottom:1px solid var(--rule-soft)}
+    .wt tr:last-child td{border-bottom:0}
+    .wt-foot{color:var(--ink-3);font-size:13px;margin:18px 0 0}
+  </style>
+
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ════════════════════════════════ NAV ════════════════════════════════ -->
+<header class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="../" class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+            <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
+            <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+            <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+            <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+          </svg>
+        </span>
+        ModernTax<span class="tag">Tax Resolution</span>
+      </a>
+
+      <nav class="nav-links" aria-label="primary">
+        <div class="ng">
+          <button class="navbtn" aria-haspopup="true" aria-expanded="false">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="ng-menu">
+            <a href="../#products"><span class="t">Tax Transcript Retrieval</span><span class="d">IRS 8821-based transcript pulls for lending</span></a>
+            <a href="../#products"><span class="t">Employment Verification</span><span class="d">W-2 &amp; 1099 income verification via API</span></a>
+          </div>
+        </div>
+
+        <div class="ng">
+          <button class="navbtn" aria-haspopup="true" aria-expanded="false">Use Cases <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="ng-menu">
+            <a href="sba-504.html"><span class="t">SBA 504 Lending</span></a>
+            <a href="sba-7a.html"><span class="t">SBA 7(a) Lending</span></a>
+            <a href="commercial-lending.html"><span class="t">Commercial Lending</span></a>
+            <a href="employment-hr.html"><span class="t">Employment &amp; HR</span></a>
+            <a href="tax-payment-verification.html"><span class="t">Tax Payment Verification</span></a>
+            <a href="tax-resolution.html"><span class="t">Tax Resolution Firms</span></a>
+          </div>
+        </div>
+
+        <a href="../docs/">API Docs</a>
+        <a href="../plans.html">Pricing</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="https://portal.moderntax.io/login" class="signin">Sign In</a>
+        <a href="https://portal.moderntax.io/login" class="btn btn-accent">Start Free Trial</a>
+      </div>
+
+      <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <nav class="mnav" id="mnav" aria-label="mobile">
+      <div class="mh">Products</div>
+      <a href="../#products">Tax Transcript Retrieval</a>
+      <a href="../#products">Employment Verification</a>
+      <div class="mh">Use cases</div>
+      <a href="sba-504.html">SBA 504 Lending</a>
+      <a href="sba-7a.html">SBA 7(a) Lending</a>
+      <a href="commercial-lending.html">Commercial Lending</a>
+      <a href="employment-hr.html">Employment &amp; HR</a>
+      <a href="tax-payment-verification.html">Tax Payment Verification</a>
+      <a href="tax-resolution.html">Tax Resolution Firms</a>
+      <div class="mh">More</div>
+      <a href="../docs/">API Docs</a>
+      <a href="../plans.html">Pricing</a>
+      <div class="mcta">
+        <a href="https://portal.moderntax.io/login" class="btn btn-ghost">Sign In</a>
+        <a href="https://portal.moderntax.io/login" class="btn btn-accent">Start Free Trial</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ════════════════════════════════ HERO ════════════════════════════════ -->
+<section class="hero">
+  <div class="wrap hero-in">
+    <span class="pill"><span class="dot"></span>Tax Resolution Firms</span>
+    <h1 class="display-2">Your CAF holders.<br class="br-md"> <span class="italic-em">Our IRS agents.</span></h1>
+    <p class="lede">Your practitioners keep working under their own CAF numbers. ModernTax handles the IRS legwork around them: uploading 8821s, waiting on the Practitioner Priority line, booking callbacks and attaching transcripts to the right case.</p>
+    <div class="hero-ctas">
+      <a href="#walkthrough" class="btn btn-lg btn-accent">See the setup, step by step <span class="arrow">&rarr;</span></a>
+      <a href="mailto:matt@moderntax.io?subject=Tax%20resolution%20setup" class="btn btn-lg btn-ghost">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-num">01</div>
+        <span class="eyebrow">What changes</span>
+      </div>
+      <div>
+        <h2 class="display-3">Built around how resolution firms already work</h2>
+        <p class="lede">You keep the authorization, the client relationship and the CAF. We take over the slow parts between a signed 8821 and the transcripts on your desk.</p>
+      </div>
+    </div>
+    <div class="grid-flush four">
+      <article class="gcell">
+        <div class="idx"><span class="dotsq"></span>01</div>
+        <h3>Your CAF, not ours</h3>
+        <p>Every order runs under the holder named on the client's 8821. Orders are labeled by client and case number.</p>
+      </article>
+      <article class="gcell">
+        <div class="idx"><span class="dotsq"></span>02</div>
+        <h3>8821s to the IRS online</h3>
+        <p>The holder signs in with ID.me once. Our agent uploads every waiting signed 8821 and checks when each one posts.</p>
+      </article>
+      <article class="gcell">
+        <div class="idx"><span class="dotsq"></span>03</div>
+        <h3>No more hold music</h3>
+        <p>Our agent calls the Practitioner Priority line and books the callback to your holder's phone, inside the hours they set.</p>
+      </article>
+      <article class="gcell">
+        <div class="idx"><span class="dotsq"></span>04</div>
+        <h3>Transcripts on the case</h3>
+        <p>Transcripts are picked up from the holder's SOR mailbox and attached to the right case by tax ID.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ WALKTHROUGH ════════════════════════════════ -->
+<section class="section" id="walkthrough">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-num">02</div>
+        <span class="eyebrow">Setup walkthrough</span>
+      </div>
+      <div>
+        <h2 class="display-3">Onboarding your first CAF holder</h2>
+        <p class="lede">Start with one holder, run one real case end to end, then invite the rest the same way. Each step shows the screen and what to do on it. Click through; nothing here is saved.</p>
+      </div>
+    </div>
+
+    <div class="wt">
+      <nav class="wt-steps" role="tablist" aria-label="Setup steps">
+        <div class="wt-who">Firm owner</div>
+        <button class="wt-step" role="tab" data-s="invite" aria-selected="true"><b>1. Invite one holder</b><span>Team page</span></button>
+        <div class="wt-who">CAF holder</div>
+        <button class="wt-step" role="tab" data-s="signin" aria-selected="false"><b>2. Sign in securely</b><span>Password and authenticator</span></button>
+        <button class="wt-step" role="tab" data-s="ids" aria-selected="false"><b>3. IRS identifiers</b><span>SOR mailbox, e-Services, identity</span></button>
+        <button class="wt-step" role="tab" data-s="hours" aria-selected="false"><b>4. Callback phone and hours</b><span>When the IRS can call back</span></button>
+        <button class="wt-step" role="tab" data-s="order" aria-selected="false"><b>5. Start a case</b><span>Drop in the signed 8821</span></button>
+        <button class="wt-step" role="tab" data-s="upload" aria-selected="false"><b>6. Send new 8821s to the IRS</b><span>One ID.me sign-in</span></button>
+        <button class="wt-step" role="tab" data-s="flow" aria-selected="false"><b>7. What happens next</b><span>TDS, callback, transcripts</span></button>
+        <div class="wt-who">Firm owner</div>
+        <button class="wt-step" role="tab" data-s="team" aria-selected="false"><b>8. Run the team</b><span>More holders, offboarding</span></button>
+      </nav>
+
+      <div class="wt-stages">
+        <!-- 1 -->
+        <section class="wt-stage" id="s-invite" role="tabpanel">
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/team · firm owner</span></div>
+          <div class="wt-pane">
+            <div class="wt-panel hl">
+              <h3>Ready to invite (3)</h3>
+              <p class="small">Loaded from the roster you send us: each holder's name, CAF number, callback phone, office address and call hours. Enter a holder's work email to send their sign-in link.</p>
+              <div class="wt-list" id="ready"></div>
+            </div>
+            <div id="invite-toast" class="wt-toast" hidden></div>
+            <div class="wt-explain"><b>What to do</b><ul>
+              <li>Invite only your first holder now. The others stay in this list until you're ready; nothing is sent to them.</li>
+              <li>Their CAF number, phone, address and hours come from your roster, so nothing gets mistyped here.</li>
+              <li>Each holder needs their own callback phone. Two holders sharing one is flagged so the IRS callback reaches the right person.</li>
+            </ul></div>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section class="wt-stage" id="s-signin" role="tabpanel" hidden>
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/account/security</span></div>
+          <div class="wt-pane">
+            <div class="wt-split">
+              <div class="wt-panel"><h3>Welcome email</h3><p class="small">The holder gets "You've been invited to ModernTax" with a link to set a password. The link signs them in the first time.</p><span class="chip ok">Sign-in link sent</span></div>
+              <div class="wt-panel"><h3>Authenticator app</h3><p class="small">Required for CAF holder accounts. Scan the QR code with Google Authenticator, 1Password or Authy, then enter the 6-digit code.</p>
+                <div class="code6" aria-label="6-digit code"><input aria-label="digit 1" value="4"><input aria-label="digit 2" value="1"><input aria-label="digit 3" value="9"><input aria-label="digit 4" value="0"><input aria-label="digit 5" value="2"><input aria-label="digit 6" value="7"></div>
+                <span class="chip ok">Two-step sign-in on</span></div>
+            </div>
+            <div class="wt-explain"><b>Why it's required</b><ul>
+              <li>Holder accounts reach taxpayer records under a CAF, so every sign-in needs the password and a code from the phone.</li>
+              <li>A lost phone is reset by ModernTax support after we confirm who you are; the holder can't reset it alone.</li>
+            </ul></div>
+          </div>
+        </section>
+
+        <!-- 3 -->
+        <section class="wt-stage" id="s-ids" role="tabpanel" hidden>
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/expert/profile</span></div>
+          <div class="wt-pane">
+            <div class="wt-panel">
+              <h3>Protected IRS identifiers</h3>
+              <p class="small">Encrypted when saved and never displayed again: not to the holder, the firm owner, or ModernTax staff. Used only when the IRS needs it during a call or a transcript pull.</p>
+              <div class="wt-list" id="ids"></div>
+              <div><button class="wbtn" id="save-ids">Save securely</button></div>
+              <div id="ids-toast" class="wt-toast" hidden></div>
+            </div>
+            <div class="wt-panel">
+              <h3>IRS identity verification</h3>
+              <p class="small">On a Practitioner Priority call the IRS verifies the practitioner. The holder enters their SSN and date of birth once and gives consent; both are stored encrypted and spoken only to the IRS on that holder's calls.</p>
+              <span class="chip ok">On file · consent recorded</span>
+            </div>
+            <div class="wt-explain"><b>Good to know</b><ul>
+              <li>The firm owner can enter a holder's SOR mailbox ID and organization from the Team page, but can't read them back either.</li>
+              <li>The IRS API user ID is optional and comes later, after a one-time IRS consent step.</li>
+            </ul></div>
+          </div>
+        </section>
+
+        <!-- 4 -->
+        <section class="wt-stage" id="s-hours" role="tabpanel" hidden>
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/team · Calls &amp; availability</span></div>
+          <div class="wt-pane">
+            <div class="wt-panel">
+              <div class="wt-form">
+                <label class="f" for="cb">Callback phone (the IRS calls back here)<input type="text" id="cb" value="(555) 010-0142"></label>
+                <label class="f" for="tz">Time zone<select id="tz"><option>Los Angeles time</option><option>Denver time</option><option>Chicago time</option><option selected>New York time</option></select></label>
+              </div>
+              <div><p class="small strong">Available for the IRS callback (weekdays, local time)</p>
+                <div class="wt-list" id="wins" style="margin-top:6px"></div>
+                <button class="linkish" id="add-win" style="margin-top:6px">Add a window</button></div>
+              <label class="wt-row small" for="auto"><input type="checkbox" id="auto" checked> Schedule IRS calls automatically inside these windows</label>
+              <div><button class="wbtn" id="save-hours">Save availability</button></div>
+              <div id="hours-toast" class="wt-toast" hidden></div>
+            </div>
+            <div class="wt-explain"><b>How the callback works</b><ul>
+              <li>Our agent calls the IRS Practitioner Priority line for the holder and asks for a callback. The IRS calls back to this phone, inside these hours.</li>
+              <li>Holders set their own hours on their AI Agents page; the firm owner can change them here for anyone.</li>
+            </ul></div>
+          </div>
+        </section>
+
+        <!-- 5 -->
+        <section class="wt-stage" id="s-order" role="tabpanel" hidden>
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/expert · New order from a signed 8821</span></div>
+          <div class="wt-pane">
+            <form class="wt-panel" id="order-form">
+              <div class="drop" id="drop" role="button" tabindex="0" aria-label="Add the signed 8821">
+                <b>Drop the client's signed 8821 here</b>
+                <span class="small">PDF or photo. We read the form and fill in the order for you.</span>
+              </div>
+              <div id="read-banner" class="wt-toast" hidden>Read from your 8821. Check the details, add your case number, and create the order.</div>
+              <div class="wt-form" id="order-fields" hidden>
+                <label class="f" for="o-case">Case or file number *<input type="text" id="o-case" placeholder="Your case number"></label>
+                <label class="f" for="o-file">Signed 8821 *<input type="text" id="o-file" value="Example_Client_8821_signed.pdf" readonly></label>
+                <label class="f full" for="o-name">Taxpayer legal name *<input type="text" id="o-name" value="Jordan A. Example"></label>
+                <label class="f" for="o-kind">Tax ID type *<select id="o-kind"><option>SSN (individual)</option><option>EIN (business)</option></select></label>
+                <label class="f" for="o-tid">Tax ID *<input type="text" id="o-tid" value="•••-••-1234"></label>
+                <label class="f" for="o-form">Form *<select id="o-form"><option>1040</option><option>1120S</option><option>1065</option><option>941</option></select></label>
+                <label class="f" for="o-years">Tax years *<input type="text" id="o-years" value="2019-2024"></label>
+                <label class="f full" for="o-addr">Taxpayer address *<input type="text" id="o-addr" value="123 Example Ave, Springfield, IL 62701"></label>
+                <label class="f" for="o-signer">Signer *<input type="text" id="o-signer" value="Jordan Example"></label>
+                <label class="f" for="o-email">Signer email<input type="email" id="o-email" value="jordan@example.com"></label>
+                <fieldset class="full">
+                  <legend class="small strong">Is this client already on your CAF file? *</legend>
+                  <label class="wt-row small" for="caf-yes"><input type="radio" name="caf" id="caf-yes" value="yes" checked> Yes, pull now</label>
+                  <label class="wt-row small" for="caf-no"><input type="radio" name="caf" id="caf-no" value="no"> No, new client (the 8821 goes to the IRS first, step 6)</label>
+                </fieldset>
+                <div class="full"><button class="wbtn" type="submit">Create order</button></div>
+              </div>
+              <div id="order-toast" class="wt-toast" hidden></div>
+            </form>
+            <div class="wt-explain"><b>First-case tip</b><ul>
+              <li>Pick a client who is already on the holder's CAF file. That pull doesn't wait on the IRS to post a new authorization, so you see the whole flow fastest.</li>
+              <li>If the CAF number on the 8821 isn't the holder's, the portal warns before the order is created.</li>
+              <li>The order is assigned to the holder who uploads it, because the 8821 names their CAF.</li>
+            </ul></div>
+          </div>
+        </section>
+
+        <!-- 6 -->
+        <section class="wt-stage" id="s-upload" role="tabpanel" hidden>
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/expert · Upload signed 8821s to the IRS</span></div>
+          <div class="wt-pane">
+            <div class="wt-panel hl">
+              <h3>Upload signed 8821s to the IRS</h3>
+              <p class="small" id="up-lead">3 signed 8821s are waiting to go to the CAF unit. Sign in with ID.me once; the agent fills in and uploads each one at irs.gov, then checks when it posts.</p>
+              <div class="wt-row"><button class="wbtn" id="up-go">Sign in with ID.me and upload all</button></div>
+              <ul class="up-list" id="up-list"></ul>
+              <div id="up-toast" class="wt-toast" hidden></div>
+            </div>
+            <div class="wt-explain"><b>How it works</b><ul>
+              <li>The IRS window opens for the holder. They sign in with ID.me; that is the only step that needs them.</li>
+              <li>The agent answers the IRS form and attaches each signed 8821. Each confirmation number is saved on the case.</li>
+              <li>The agent never ticks an attestation for the holder. If the IRS asks them to confirm a statement, the agent stops so they can tick it themselves.</li>
+              <li>After 5, 7 and 10 business days the agent checks the IRS Transcript Delivery System to see whether the 8821 has posted. Once it has, the pull runs on its own.</li>
+            </ul></div>
+          </div>
+        </section>
+
+        <!-- 7 -->
+        <section class="wt-stage" id="s-flow" role="tabpanel" hidden>
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/request · Case EX-1048</span></div>
+          <div class="wt-pane wt-flow">
+            <h3 class="flow-h">Case EX-1048 · 1 client</h3>
+            <ol>
+              <li><span class="n">1</span><div><h4>Authorization on file</h4><p class="small">The case sits in the holder's queue with their CAF on it. New clients go through step 6 first.</p></div></li>
+              <li><span class="n">2</span><div><h4>Transcript Delivery System</h4><p class="small">When the 8821 is on the CAF file, the agent requests transcripts through TDS under the holder's own access, and they often come back in minutes.</p></div></li>
+              <li><span class="n">3</span><div><h4>Practitioner Priority, when needed</h4><p class="small">For anything TDS can't return, the agent calls the PPS line inside the holder's hours and books a callback. It waits on hold and connects the holder when an IRS agent picks up.</p></div></li>
+              <li><span class="n">4</span><div><h4>Transcripts land on the case</h4><p class="small">The pickup agent opens the holder's SOR mailbox with them, attaches each transcript to the right case by tax ID, and completes the order.</p></div></li>
+            </ol>
+            <div class="wt-explain"><b>Where to watch it</b><ul>
+              <li>The holder sees every step on their dashboard. The firm owner sees all cases on the firm account, labeled by case number.</li>
+              <li>Cancelled orders aren't billed.</li>
+            </ul></div>
+          </div>
+        </section>
+
+        <!-- 8 -->
+        <section class="wt-stage" id="s-team" role="tabpanel" hidden>
+          <div class="wt-chrome"><span class="wt-dots"><i></i><i></i><i></i></span><span class="wt-url">portal.moderntax.io/team · firm owner</span></div>
+          <div class="wt-pane">
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>CAF holder</th><th>Identifiers</th><th>Calls</th><th>Access</th></tr></thead>
+              <tbody id="team-rows"></tbody>
+            </table></div>
+            <div id="team-toast" class="wt-toast" hidden></div>
+            <div class="wt-split">
+              <div class="wt-panel"><h3>Invite the rest</h3><p class="small">Once the first case completes, go back to Ready to invite and enter the other holders' emails. Each one repeats steps 2 to 4.</p></div>
+              <div class="wt-panel"><h3>Offboarding</h3><p class="small">Offboard removes access immediately. Their open cases come back to you to reassign; the 8821 names the old holder's CAF, so the new holder may need a new signed 8821.</p></div>
+            </div>
+            <div class="wt-explain"><b>Also on this page</b><ul>
+              <li>"Invite a team member" adds staff who place orders but don't hold a CAF, such as case managers.</li>
+              <li>Every change here is logged.</li>
+            </ul></div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <p class="wt-foot">Screens are illustrations of the live portal. The firm, holders, CAF numbers, phone numbers, taxpayers and case numbers are invented.</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-num">03</div>
+        <span class="eyebrow">Getting started</span>
+      </div>
+      <div>
+        <h2 class="display-3">What we need from you</h2>
+        <p class="lede">One roster and one first case. We load the roster for you, so the firm owner only types email addresses.</p>
+      </div>
+    </div>
+    <div class="cards three">
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Your CAF roster</h3>
+        <p>Each holder's name, CAF number, callback phone, office address and the hours they can take IRS calls.</p>
+      </article>
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>One first holder</h3>
+        <p>Start with one practitioner. They set up two-step sign-in and their IRS identifiers in about ten minutes.</p>
+      </article>
+      <article class="card">
+        <span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>One signed 8821</h3>
+        <p>A real client, ideally one already on that holder's CAF file, so the first case runs end to end on the setup call.</p>
+      </article>
+    </div>
+    <div class="forms" style="margin-top:36px">
+      <span class="fpill">Form 8821</span>
+      <span class="fpill">Form 1040</span>
+      <span class="fpill">Form 1120S</span>
+      <span class="fpill">Form 1065</span>
+      <span class="fpill">Form 941</span>
+      <span class="fpill">Account transcripts</span>
+      <span class="fpill">Wage &amp; income</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ CTA ════════════════════════════════ -->
+<section class="cta-sec" style="padding-top:clamp(56px,8vw,120px)">
+  <div class="wrap">
+    <div class="cta-band">
+      <div class="cta-in">
+        <h2>Give your practitioners <span class="italic-em">their hours back</span></h2>
+        <p>Send us your CAF roster and we'll run your first case with you, live.</p>
+        <div class="cta-btns">
+          <a href="mailto:matt@moderntax.io?subject=Tax%20resolution%20setup" class="btn btn-lg btn-accent">Book a setup call <span class="arrow">&rarr;</span></a>
+          <a href="https://portal.moderntax.io/login" class="btn btn-lg btn-ghost">Sign in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+
+<!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-about">
+        <a href="../" class="brand">
+          <span class="brand-mark">
+          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
+            <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
+            <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
+            <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
+            <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
+          </svg>
+        </span>
+          ModernTax
+        </a>
+        <p>IRS tax transcript retrieval and employment verification for modern lenders and platforms.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="../#products">Tax Transcript Retrieval</a></li>
+          <li><a href="../#products">Employment Verification</a></li>
+          <li><a href="../docs/">API Documentation</a></li>
+          <li><a href="../plans.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Use Cases</h5>
+        <ul>
+            <li><a href="sba-504.html">SBA 504 Lending</a></li>
+            <li><a href="sba-7a.html">SBA 7(a) Lending</a></li>
+            <li><a href="commercial-lending.html">Commercial Lending</a></li>
+            <li><a href="employment-hr.html">Employment &amp; HR</a></li>
+            <li><a href="tax-payment-verification.html">Tax Payment Verification</a></li>
+            <li><a href="tax-resolution.html">Tax Resolution Firms</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="https://portal.moderntax.io/login">Sign In to Portal</a></li>
+          <li><a href="mailto:matt@moderntax.io">Contact Us</a></li>
+          <li><a href="mailto:support@moderntax.io">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>&copy; 2026 ModernTax, Inc. All rights reserved.</p>
+      <div class="badges">
+        <span>Encrypted &amp; audit-logged</span><span class="sep">&bull;</span>
+        <span>256-bit Encryption</span><span class="sep">&bull;</span>
+        <span>IRS Authorized</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Walkthrough demo: invented firm and holders; nothing is sent or saved. */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var holders = [
+    { name: 'Dana Whitfield, EA', caf: '0000-00001R', phone: '(555) 010-0142' },
+    { name: 'Marcus Ortega, CPA', caf: '0000-00002R', phone: '(555) 010-0177', dup: true },
+    { name: 'Priya Shah, EA', caf: '0000-00003R', phone: '(555) 010-0177', dup: true }
+  ];
+  var invited = {};
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function toast(id, text) { $(id).textContent = text; $(id).hidden = false; }
+
+  function renderReady() {
+    $('ready').innerHTML = holders.map(function (h, i) {
+      var done = invited[i];
+      return '<div class="wt-row holder"><div class="grow"><b style="font-weight:600">' + esc(h.name) + '</b>' + (done ? ' <span class="chip ok">Invited</span>' : '') +
+        '<p class="small">CAF ' + esc(h.caf) + ' · callback ' + esc(h.phone) + (h.dup ? ' <span class="chip warn">shared phone</span>' : '') + ' · 9:00–12:00, 1:00–5:00</p></div>' +
+        (done ? '' : '<input type="email" id="em-' + i + '" aria-label="Work email for ' + esc(h.name) + '" placeholder="name@yourfirm.com" value="' + (i === 0 ? 'dana@yourfirm.com' : '') + '" style="width:240px;max-width:100%"><button class="wbtn" data-inv="' + i + '">Invite</button>') + '</div>';
+    }).join('');
+  }
+  $('ready').addEventListener('click', function (e) {
+    var i = e.target.getAttribute('data-inv'); if (i === null) return;
+    var v = ($('em-' + i).value || '').trim();
+    if (v.indexOf('@') < 1) { toast('invite-toast', 'Enter a work email first.'); return; }
+    invited[i] = true; renderReady(); renderTeam();
+    toast('invite-toast', holders[i].name + ' is invited and was emailed a sign-in link. Their CAF, phone, address and call hours are already set.');
+  });
+
+  var idState = { sor: false, org: false, api: false };
+  var idDefs = [
+    { k: 'sor', label: 'SOR mailbox ID', ph: 'e.g. ABC-R-12', hint: 'Your IRS Secure Object Repository mailbox. The agent gives it to the IRS on your calls so transcripts land there.' },
+    { k: 'org', label: 'e-Services organization', ph: 'As shown on the IRS organization screen', hint: 'The organization you pick at the IRS e-Services role screen to use the Transcript Delivery System.' },
+    { k: 'api', label: 'IRS API user ID (optional)', ph: 'Later', hint: 'Only after the one-time IRS consent step.' }
+  ];
+  function renderIds() {
+    $('ids').innerHTML = idDefs.map(function (d) {
+      var on = idState[d.k];
+      return '<div class="holder"><div class="wt-row"><b class="grow" style="font-weight:600;font-size:14.5px">' + d.label + '</b>' +
+        (on ? '<span class="chip ok">On file</span> <button class="linkish" data-rep="' + d.k + '">Replace</button>' : '') + '</div>' +
+        (on ? '' : '<input type="text" id="id-' + d.k + '" placeholder="' + esc(d.ph) + '" autocomplete="off">') +
+        '<p class="small">' + esc(d.hint) + '</p></div>';
+    }).join('');
+  }
+  $('ids').addEventListener('click', function (e) { var k = e.target.getAttribute('data-rep'); if (k) { idState[k] = false; renderIds(); } });
+  $('save-ids').addEventListener('click', function () {
+    var any = false;
+    idDefs.forEach(function (d) { var el = $('id-' + d.k); if (el && el.value.trim()) { idState[d.k] = true; any = true; el.value = ''; } });
+    renderIds(); renderTeam();
+    toast('ids-toast', any ? 'Saved. For security it is not shown again.' : 'Enter a value to save.');
+  });
+
+  var wins = [{ s: '09:00', e: '12:00' }, { s: '13:00', e: '17:00' }];
+  function renderWins() {
+    $('wins').innerHTML = wins.map(function (w, i) {
+      return '<div class="wt-row small"><input type="time" aria-label="Window ' + (i + 1) + ' start" value="' + w.s + '" data-w="' + i + '" data-k="s"> to <input type="time" aria-label="Window ' + (i + 1) + ' end" value="' + w.e + '" data-w="' + i + '" data-k="e"> <button class="linkish danger" data-rm="' + i + '">Remove</button></div>';
+    }).join('');
+    $('add-win').hidden = wins.length >= 4;
+  }
+  $('wins').addEventListener('click', function (e) { var r = e.target.getAttribute('data-rm'); if (r !== null) { wins.splice(+r, 1); renderWins(); renderTeam(); } });
+  $('wins').addEventListener('change', function (e) { var i = e.target.getAttribute('data-w'); if (i !== null) wins[+i][e.target.getAttribute('data-k')] = e.target.value; });
+  $('add-win').addEventListener('click', function () { wins.push({ s: '17:00', e: '18:00' }); renderWins(); renderTeam(); });
+  $('save-hours').addEventListener('click', function () {
+    var bad = wins.some(function (w) { return !(w.s < w.e); });
+    toast('hours-toast', bad ? 'Each window needs a start before its end.' : 'Saved. The callback rings ' + $('cb').value + ' on weekdays ' + wins.map(function (w) { return w.s + '–' + w.e; }).join(', ') + '.');
+  });
+
+  function readForm() {
+    $('drop').classList.add('done');
+    $('drop').innerHTML = '<b>Example_Client_8821_signed.pdf</b><span class="small">Read in a few seconds</span>';
+    $('read-banner').hidden = false; $('order-fields').hidden = false;
+  }
+  $('drop').addEventListener('click', readForm);
+  $('drop').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); readForm(); } });
+  $('order-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!$('o-case').value.trim()) { toast('order-toast', 'Add your case number first.'); return; }
+    var onFile = document.querySelector('input[name=caf]:checked').value === 'yes';
+    toast('order-toast', onFile
+      ? 'Order created for Jordan A. Example and assigned to you. It is queued for the IRS.'
+      : 'Order created and assigned to you. This client is not on your CAF file yet, so the 8821 is waiting to go to the IRS (step 6).');
+  });
+
+  var ups = ['Jordan A. Example · 1040', 'Example Holdings LLC · 1120S', 'Casey Sample · 1040'];
+  var upState = ups.map(function () { return 'Queued'; });
+  function renderUps() {
+    $('up-list').innerHTML = ups.map(function (u, i) {
+      var s = upState[i], cls = /^Submitted/.test(s) ? 'ok' : s === 'Uploading…' ? 'warn' : 'off';
+      return '<li><span>' + esc(u) + '</span><span class="chip ' + cls + '">' + esc(s) + '</span></li>';
+    }).join('');
+  }
+  $('up-go').addEventListener('click', function () {
+    var btn = $('up-go'); btn.disabled = true; btn.textContent = 'Waiting for ID.me sign-in…';
+    var i = 0;
+    setTimeout(function step() {
+      if (i > 0) upState[i - 1] = 'Submitted · IRS-' + (48210 + i);
+      if (i < ups.length) { upState[i] = 'Uploading…'; renderUps(); btn.textContent = 'Uploading ' + (i + 1) + ' of ' + ups.length + '…'; i++; setTimeout(step, 900); return; }
+      renderUps(); btn.textContent = 'All submitted';
+      toast('up-toast', 'All 3 submitted. TDS checks are scheduled after 5, 7 and 10 business days; each case pulls on its own once its 8821 posts.');
+    }, 1100);
+  });
+
+  var offboarded = {};
+  function renderTeam() {
+    var rows = holders.map(function (h, i) { return { h: h, i: i }; }).filter(function (x) { return invited[x.i]; });
+    if (!rows.length) { $('team-rows').innerHTML = '<tr><td colspan="4" class="small">Invite a holder in step 1 to see them here.</td></tr>'; return; }
+    $('team-rows').innerHTML = rows.map(function (x) {
+      var off = offboarded[x.i];
+      var ids = (x.i === 0 && idState.sor ? '<span class="chip ok">SOR on file</span> ' : '<span class="chip warn">SOR missing</span> ') +
+        (x.i === 0 && idState.org ? '<span class="chip ok">org on file</span>' : '<span class="chip warn">org missing</span>');
+      return '<tr><td><b style="font-weight:600' + (off ? ';text-decoration:line-through;opacity:.6' : '') + '">' + esc(x.h.name) + '</b><div class="small mono">CAF ' + esc(x.h.caf) + '</div></td><td>' + ids + '</td><td><span class="chip ok">' + wins.length + ' call windows</span></td>' +
+        '<td>' + (off ? '<span class="chip off">Offboarded</span> <button class="linkish" data-re="' + x.i + '">Reactivate</button>' : '<button class="linkish danger" data-off="' + x.i + '">Offboard</button>') + '</td></tr>';
+    }).join('');
+  }
+  $('team-rows').addEventListener('click', function (e) {
+    var o = e.target.getAttribute('data-off'), r = e.target.getAttribute('data-re');
+    if (o !== null) { offboarded[o] = true; toast('team-toast', holders[o].name + ' was offboarded. Access is removed now; open cases are back with you to reassign.'); }
+    if (r !== null) { delete offboarded[r]; toast('team-toast', holders[r].name + ' can sign in again.'); }
+    renderTeam();
+  });
+
+  var tabs = ['invite', 'signin', 'ids', 'hours', 'order', 'upload', 'flow', 'team'];
+  function go(name) {
+    document.querySelectorAll('.wt-step').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-s') === name ? 'true' : 'false'); });
+    tabs.forEach(function (t) { $('s-' + t).hidden = t !== name; });
+  }
+  document.querySelectorAll('.wt-step').forEach(function (b) { b.addEventListener('click', function () { go(b.getAttribute('data-s')); }); });
+  var h = (location.hash || '').slice(1);
+  if (tabs.indexOf(h) > -1) { go(h); var w = $('walkthrough'); if (w) w.scrollIntoView(); }
+  renderReady(); renderIds(); renderWins(); renderTeam(); renderUps();
+})();
+</script>
+<script src="brand.js"></script>
+</body>
+</html>
