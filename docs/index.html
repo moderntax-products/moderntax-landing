@@ -322,8 +322,72 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
     <!-- SANDBOX -->
     <section class="sec" id="sandbox">
       <h2>Sandbox</h2>
-      <p class="seclead">Self-serve at <a href="https://portal.moderntax.io/sandbox" class="tl">portal.moderntax.io/sandbox</a> — enter a work email and company name and you get an instant <code>{company}-sandbox</code> API key against synthetic data.</p>
-      <p>Endpoints and response shapes are production-identical; the key is capped at 250 requests. No sales call required.</p>
+      <p class="seclead">Two sandboxes, both free and on synthetic data. Endpoints and response shapes are production-identical; nothing reaches the IRS and nothing is billed.</p>
+
+      <h3>A. Read-only key — instant</h3>
+      <p>Self-serve at <a href="https://portal.moderntax.io/sandbox" class="tl">portal.moderntax.io/sandbox</a>: enter a work email and company name and you get a <code>{company}-sandbox</code> API key with pre-built synthetic results to poll. Capped at 250 requests. No sales call required.</p>
+
+      <h3>B. Full order flow — staging</h3>
+      <p>At <code>https://staging.portal.moderntax.io</code> you can run the whole integration: generate a dummy signed 8821, place orders, watch them move through the statuses and read results. Every 8821 is checked against the <a href="#signed-8821-rules" class="tl">signed-8821 rules</a>, and a simulated IRS returns the outcome picked by your test TIN. Ask <a href="mailto:matt@moderntax.io" class="tl">matt@moderntax.io</a> for a staging key.</p>
+
+      <div class="ep"><span class="verb get">GET</span><span class="path">/api/sandbox/sample-8821</span></div>
+      <p>A dummy signed 8821: the ModernTax template filled for the taxpayer you name, with a DocuSign-style Certificate of Completion. The JSON response's <code>signed_8821</code> drops straight into <code>entities[].signed_8821</code>; add <code>&amp;format=pdf</code> for the file. <code>style</code> picks which rule it passes or breaks.</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">cURL</span><button class="cp">Copy</button></div>
+        <pre><code>curl "https://staging.portal.moderntax.io/api/sandbox/sample-8821?entity_name=Sandbox+Coffee+LLC&amp;tid=00-1230002&amp;form_type=1120S&amp;years=2023,2024,2025&amp;signer_name=Jordan+Example" \
+  -H <span class="cs">"x-api-key: mt_live_txn_yourco_sandbox_xxxxxxxxxxxx"</span></code></pre>
+      </div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">200 OK</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"style"</span>: <span class="cs">"valid"</span>,
+  <span class="ck">"expect"</span>: { <span class="ck">"verdict"</span>: <span class="cs">"accepted"</span>, <span class="ck">"failed_rule"</span>: <span class="cn">null</span> },
+  <span class="ck">"signed_8821"</span>: { <span class="ck">"pdf_base64"</span>: <span class="cs">"JVBERi0x…"</span>, <span class="ck">"signer_name"</span>: <span class="cs">"Jordan Example"</span>,
+    <span class="ck">"signer_email"</span>: <span class="cs">"signer@example.com"</span>, <span class="ck">"signed_at"</span>: <span class="cs">"2026-10-26T17:55:00Z"</span>, <span class="ck">"signature_vendor"</span>: <span class="cs">"docusign"</span> } }</code></pre>
+      </div>
+      <div class="tw-tbl">
+        <table>
+          <thead><tr><th style="width:200px;">style</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td><span class="fn">valid</span> (default)</td><td>accepted</td></tr>
+            <tr><td><span class="fn">no_audit_trail</span></td><td>rejected: <code>esign_audit_trail</code></td></tr>
+            <tr><td><span class="fn">wrong_designee</span></td><td>rejected: <code>designee_is_moderntax</code></td></tr>
+            <tr><td><span class="fn">signer_is_business</span></td><td>rejected: <code>signer_named</code></td></tr>
+            <tr><td><span class="fn">wrong_tin</span></td><td>rejected: <code>taxpayer_tin_matches</code></td></tr>
+            <tr><td><span class="fn">stale</span></td><td>rejected: <code>signed_at_valid</code> (signed 150 days ago)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><b>Test TINs.</b> The last four digits of <code>tid</code> pick what the simulated IRS returns. Use <code>00-</code> / <code>000-</code> prefixes so nothing is a real taxpayer.</p>
+      <div class="tw-tbl">
+        <table>
+          <thead><tr><th style="width:120px;">Last 4</th><th>Outcome</th></tr></thead>
+          <tbody>
+            <tr><td><span class="fn">0001</span></td><td>Clean: every year filed, $0 balance</td></tr>
+            <tr><td><span class="fn">0002</span></td><td>Tax lien: balance due and a federal tax lien filed (TC 582)</td></tr>
+            <tr><td><span class="fn">0003</span></td><td>Balance due with penalties and interest, no lien</td></tr>
+            <tr><td><span class="fn">0004</span></td><td>Latest year has no return filed</td></tr>
+            <tr><td><span class="fn">0005</span></td><td>Wrong form: no record for the form ordered</td></tr>
+            <tr><td><span class="fn">0006</span></td><td><code>failed</code>, <code>irs_tin_name_mismatch</code>, not billed</td></tr>
+            <tr><td><span class="fn">0007</span></td><td><code>failed</code>, <code>irs_signer_not_authorized</code>, not billed</td></tr>
+            <tr><td><span class="fn">0008</span></td><td><code>failed</code>, <code>irs_8821_rejected</code>, not billed</td></tr>
+            <tr><td>any other</td><td>Clean</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Once the 8821 is attached the entity moves <code>irs_queue</code> → <code>processing</code> (30 s) → <code>completed</code> / <code>failed</code> (90 s), advancing as you <a href="#poll" class="tl">poll</a>. Sandbox entities also carry <code>sandbox: { scenario, error? }</code>; an error has <code>code</code>, <code>message</code>, <code>fix</code> and <code>billable: false</code>. To skip the wait:</p>
+      <div class="ep"><span class="verb post">POST</span><span class="path">/api/sandbox/advance</span></div>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">cURL</span><button class="cp">Copy</button></div>
+        <pre><code>curl -X POST https://staging.portal.moderntax.io/api/sandbox/advance \
+  -H <span class="cs">"x-api-key: mt_live_txn_yourco_sandbox_xxxxxxxxxxxx"</span> \
+  -H <span class="cs">"Content-Type: application/json"</span> \
+  -d <span class="cs">'{"request_token":"test-001"}'</span></code></pre>
+      </div>
+      <div class="note warn">
+        <div class="nt">Staging limits</div>
+        <p>Webhooks are not delivered from staging (outbound calls are blocked there), so poll for results. Monitoring re-pulls are not simulated.</p>
+      </div>
     </section>
 
     <!-- SUBMIT -->
@@ -464,6 +528,24 @@ signature_vendor:            persona</code></pre>
         <div class="nt">422 · designee_caf_mismatch</div>
         <p>If the uploaded 8821 names a designee CAF that is <b>not</b> a ModernTax designee, the endpoint returns <code>422 { "code": "designee_caf_mismatch", "designee_cafs": ["…"] }</code> and the PDF is <b>not</b> attached — fix the form and re-upload.</p>
       </div>
+
+      <h3 id="signed-8821-rules">Signed-8821 rules</h3>
+      <p>We never request signatures and never need a wet signature. An e-signed 8821 is usable when it proves who signed and when, so these checks run on every 8821 you send (inline or uploaded). Each rule has a stable id. In the <a href="#sandbox" class="tl">staging sandbox</a> a failed blocking rule returns <code>422 { "error": "Signed 8821 rejected", "failed_rules": [...] }</code> and nothing is created; an accepted 8821 comes back with <code>signature_check</code> listing every rule. In production the designee check above applies today and the full rule set is rolling out.</p>
+      <div class="tw-tbl">
+        <table>
+          <thead><tr><th style="width:230px;">Rule</th><th>Blocks when</th></tr></thead>
+          <tbody>
+            <tr><td><span class="fn">is_form_8821</span></td><td>The document is not IRS Form 8821 (Tax Information Authorization).</td></tr>
+            <tr><td><span class="fn">taxpayer_tin_matches</span></td><td>The TIN on the form differs from <code>tid</code> on the order.</td></tr>
+            <tr><td><span class="fn">designee_is_moderntax</span></td><td>Line 2 names a designee that is not ModernTax. Use the ModernTax template unchanged.</td></tr>
+            <tr><td><span class="fn">esign_audit_trail</span></td><td>Your signing vendor's completion certificate / audit trail (signer, email, timestamps, IP) is not included as pages of the same PDF. A typed or drawn signature on its own is not enough.</td></tr>
+            <tr><td><span class="fn">signer_named</span></td><td><code>signer_name</code> is missing or is a business. It must be the person who signed: an officer, member, partner or the individual taxpayer.</td></tr>
+            <tr><td><span class="fn">signer_in_audit_trail</span></td><td><code>signer_name</code> does not appear on the form or its audit trail.</td></tr>
+            <tr><td><span class="fn">signed_at_valid</span></td><td><code>signed_at</code> is missing, in the future, or more than 120 days old (the IRS window for receiving an 8821).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Warnings (accepted and reported back): <code>pdf_text_readable</code> (an image-only scan, so the text checks could not run) and <code>signature_vendor_named</code>. Recognised audit trails: DocuSign Certificate of Completion, Dropbox Sign (HelloSign) audit trail, PandaDoc signing certificate, Adobe Acrobat Sign audit report, and generic e-signature certificates.</p>
 
       <h3>B. Let ModernTax collect the signature</h3>
       <div class="ep"><span class="verb post">POST</span><span class="path">/api/intake/8821</span></div>
