@@ -424,6 +424,8 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
       <span class="ck">"loan_officer_name"</span>:  <span class="cs">"Jane Rep"</span>,  <span class="cm">// optional</span>
       <span class="ck">"loan_officer_email"</span>: <span class="cs">"jane@lender.com"</span>,
       <span class="ck">"fiscal_year_end_month"</span>: <span class="cn">12</span>,       <span class="cm">// REQUIRED for 1120 / 1120S / 1065; 12 = calendar year</span>
+      <span class="ck">"loan_amount"</span>:  <span class="cn">3250000</span>,             <span class="cm">// optional; proposed loan in dollars (QoE screening)</span>
+      <span class="ck">"loan_purpose"</span>: <span class="cs">"acquisition"</span>,       <span class="cm">// optional; see the field table</span>
       <span class="ck">"signed_8821"</span>: {                   <span class="cm">// optional: attach a pre-signed 8821 inline</span>
         <span class="ck">"pdf_base64"</span>: <span class="cs">"&lt;base64 PDF, max 10 MB decoded&gt;"</span>,
         <span class="ck">"persona_inquiry_id"</span>: <span class="cs">"inq_abc123"</span>,          <span class="cm">// optional signature evidence —</span>
@@ -450,6 +452,8 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
             <tr><td><span class="fn">entities[].years</span></td><td><span class="req-y">yes</span></td><td>4-digit years, 1990–2028.</td></tr>
             <tr><td><span class="fn">entities[].form_type</span></td><td><span class="req-n">no</span></td><td><code>1040</code>, <code>1065</code>, <code>1120</code>, <code>1120S</code>, <code>941</code>. Inferred from <code>tid_kind</code> if omitted.</td></tr>
             <tr><td><span class="fn">entities[].fiscal_year_end_month</span></td><td><span class="req-y">yes*</span></td><td>Month the entity’s fiscal year ends, <code>1</code>–<code>12</code>; <code>12</code> = calendar year. <strong>Required for <code>1120</code>, <code>1120S</code> and <code>1065</code></strong> (explicit or inferred from an EIN) — omitting it returns <code>400</code>. Ignored for <code>1040</code> and <code>941</code>, which are always calendar. The IRS keys the account by period ending, so a fiscal-year filer pulled on 12/31 comes back &ldquo;No Record Found&rdquo;.</td></tr>
+            <tr><td><span class="fn">entities[].loan_amount</span></td><td><span class="req-n">no</span></td><td>Proposed loan in dollars, used to screen the borrower for a Quality of Earnings review. A number, or a string such as <code>"3,250,000"</code>, <code>"3.25M"</code> or <code>"750k"</code>. Anything that isn&rsquo;t a positive amount returns <code>400</code>. Can also be sent once at the top level of the body; a value on the entity wins.</td></tr>
+            <tr><td><span class="fn">entities[].loan_purpose</span></td><td><span class="req-n">no</span></td><td><code>acquisition</code>, <code>refinance</code>, <code>working_capital</code>, <code>expansion</code>, <code>real_estate</code>, <code>equipment</code> or <code>other</code>. Close variants are mapped (&ldquo;change of ownership&rdquo; &rarr; <code>acquisition</code>, &ldquo;refi&rdquo; &rarr; <code>refinance</code>); anything unrecognised is stored as <code>other</code>. Also accepted at the top level. An <code>acquisition</code> of $3M or more is flagged as requiring a QoE under SBA SOP 50 10 8.1.</td></tr>
             <tr><td><span class="fn">entities[].signed_8821</span></td><td><span class="req-n">no</span></td><td>Inline pre-signed 8821: <code>pdf_base64</code> (≤10 MB decoded) plus optional evidence fields (<code>persona_inquiry_id</code>, <code>persona_verification_token</code>, <code>signer_name</code>, <code>signer_email</code>, <code>signed_at</code>, <code>signer_ip</code>, <code>signature_vendor</code>).</td></tr>
           </tbody>
         </table>
@@ -585,10 +589,22 @@ signature_vendor:            persona</code></pre>
       <span class="ck">"flags"</span>:[{<span class="ck">"type"</span>:<span class="cs">"BALANCE_DUE"</span>,<span class="ck">"severity"</span>:<span class="cs">"WARNING"</span>,<span class="ck">"message"</span>:<span class="cs">"Account balance: $4,287.21"</span>}],
       <span class="ck">"financials"</span>:{<span class="ck">"grossReceipts"</span>:<span class="cn">1240000</span>,<span class="ck">"totalTax"</span>:<span class="cn">42000</span>,<span class="ck">"accountBalance"</span>:<span class="cn">4287.21</span>,<span class="ck">"accruedInterest"</span>:<span class="cn">0</span>,<span class="ck">"accruedPenalty"</span>:<span class="cn">0</span>},
       <span class="ck">"recent_transactions"</span>:[{<span class="ck">"code"</span>:<span class="cs">"150"</span>,<span class="ck">"explanation"</span>:<span class="cs">"Tax return filed"</span>,<span class="ck">"date"</span>:<span class="cs">"2024-04-12"</span>,<span class="ck">"amount"</span>:<span class="cs">"42000"</span>}]  <span class="cm">// ≤10, newest first</span>
+    },
+    <span class="ck">"qoe_qualification"</span>: {            <span class="cm">// only on accounts with QoE screening; null until a loan is sent or a check is run</span>
+      <span class="ck">"loan_amount"</span>:<span class="cn">3250000</span>,<span class="ck">"loan_purpose"</span>:<span class="cs">"acquisition"</span>,
+      <span class="ck">"verdict"</span>:<span class="cs">"required"</span>,             <span class="cm">// required | qualifies | needs_info | not_eligible; null until checked</span>
+      <span class="ck">"recommended"</span>:<span class="cn">true</span>,
+      <span class="ck">"headline"</span>:<span class="cs">"QoE required: SBA SOP 50 10 8.1 applies to a $3,250,000 acquisition loan."</span>,
+      <span class="ck">"next_steps"</span>:[],
+      <span class="ck">"checks"</span>:[{<span class="ck">"key"</span>:<span class="cs">"two_years"</span>,<span class="ck">"label"</span>:<span class="cs">"Two filed years on transcript"</span>,<span class="ck">"status"</span>:<span class="cs">"pass"</span>,<span class="ck">"detail"</span>:<span class="cs">"…"</span>}],  <span class="cm">// status: pass | warn | fail | na</span>
+      <span class="ck">"dscr_proxy"</span>:<span class="cn">1.62</span>,                <span class="cm">// latest net income vs. an assumed 10.5% / 10-year payment</span>
+      <span class="ck">"fee_estimate"</span>:{<span class="ck">"low"</span>:<span class="cn">12500</span>,<span class="ck">"high"</span>:<span class="cn">18000</span>},  <span class="cm">// indicative only; nothing is billed</span>
+      <span class="ck">"checked_at"</span>:<span class="cs">"2026-11-02T22:10:00Z"</span>
     }
   }]
 }</code></pre>
       </div>
+      <p><code>qoe_qualification</code> appears only in this legacy shape, not under <code>schema=</code>. The check reads the IRS transcripts on file, so the verdict is most useful once the order has completed.</p>
     </section>
 
     <!-- SCHEMAS -->
