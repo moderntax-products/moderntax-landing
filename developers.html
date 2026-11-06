@@ -321,11 +321,11 @@ curl -X POST https://portal.moderntax.io/api/intake/transcript \
       </div>
       <div class="fstep">
         <div class="n">03</div><h4>Pull</h4>
-        <p>Status moves through <code>irs_queue</code> and <code>processing</code>. A credentialed expert on our network works the IRS PPS line with their own CAF — never a single shared credential.</p>
+        <p>Status moves through <code>irs_queue</code> and <code>processing</code>. A credentialed expert on our network works the authorization through the IRS and picks up the transcripts.</p>
       </div>
       <div class="fstep">
         <div class="n">04</div><h4>Deliver</h4>
-        <p>A webhook signed with <code>X-ModernTax-Signature</code> delivers parsed JSON, raw IRS HTML, and PDF. Same-day target available on integrated plans, 24h standard.</p>
+        <p>A webhook signed with <code>X-ModernTax-Signature</code> delivers parsed JSON, raw IRS HTML, and PDF. Same-day IRS transcript turnaround.</p>
       </div>
     </div>
   </div>
@@ -457,8 +457,8 @@ X-ModernTax-Signature: <span class="cs">8a3f…</span>  <span class="cm"># HMAC-
     <div class="fg three" style="margin-top:16px;">
       <div class="fcard">
         <div class="fi" style="background:var(--ok-soft);color:var(--ok-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 2.5 L16.5 5.5 V10 c0 4-2.8 6.6-6.5 7.5C6.3 16.6 3.5 14 3.5 10 V5.5 Z" stroke-linejoin="round"/></svg></div>
-        <h3>A network of CAFs, not one</h3>
-        <p>Every pull runs under a credentialed practitioner's own CAF number and their own fax line. <b>No single credential to get flagged</b> — the failure mode that took the last API-first vendor offline doesn't exist here.</p>
+        <h3>Built for volume</h3>
+        <p>Digital 8821 workflow, no fax required. <b>Built to scale without the bottlenecks that stall high-volume pulls</b> — and built for first-submission acceptance, so an authorization isn't bounced back for a fixable error.</p>
       </div>
       <div class="fcard">
         <div class="fi" style="background:var(--accent-soft);color:var(--accent-ink);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10h12M4 6h12M4 14h8" stroke-linecap="round"/></svg></div>
@@ -524,8 +524,8 @@ X-ModernTax-Signature: <span class="cs">8a3f…</span>  <span class="cm"># HMAC-
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">Pricing</div>
-      <h2>From <em>$39.99</em> per verified entity.</h2>
-      <p>One flat per-entity price covers the Return Transcript, the Record of Account, entity-transcript detection, and compliance screening — there's no line-item ladder per document type. Where you land depends on committed monthly volume, and we'll quote it on a short call.</p>
+      <h2>API access: <em>$49.99</em> per verified entity.</h2>
+      <p>The API runs on the Platform tier (Tier C): a platform subscription plus one flat per-entity price that covers the Return Transcript, the Record of Account, and compliance screening — no line-item ladder per document type. API access is sales-led; we'll quote the subscription on a short call. Ordering through the portal instead? <a href="https://portal.moderntax.io/signup" style="color:var(--accent-ink);font-weight:600;">Create an account</a> and pay $84.99 per entity, no minimum.</p>
     </div>
 
     <div class="ptable">
@@ -535,10 +535,10 @@ X-ModernTax-Signature: <span class="cs">8a3f…</span>  <span class="cm"># HMAC-
           <tr class="hl">
             <td>
               <span class="tn">Per verified entity (TIN)</span>
-              <span class="td2">Return Transcript + Record of Account, all requested years &middot; entity-transcript / election-status detection included &middot; compliance flag screening &middot; unlimited team seats &middot; REST API, webhooks and portal access on integrated plans.</span>
-              <span class="td2" style="margin-top:9px;">Rejections are never billed. Nothing re-pulls without you asking. Volume commitments move the rate down from here.</span>
+              <span class="td2">Return Transcript + Record of Account, all requested years &middot; compliance flag screening &middot; Entity Transcript / Form 2553 election check available as a $19.99/business add-on &middot; unlimited team seats &middot; REST API, webhooks and portal access on integrated plans.</span>
+              <span class="td2" style="margin-top:9px;">Rejections are never billed. Nothing re-pulls without you asking.</span>
             </td>
-            <td class="r"><span class="pr">from $39.99</span><span class="td2">/ entity</span></td>
+            <td class="r"><span class="pr">$49.99</span><span class="td2">/ entity + platform subscription</span></td>
           </tr>
         </tbody>
       </table>
