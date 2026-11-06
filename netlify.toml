@@ -42,6 +42,22 @@
   to = "/developers.html"
   status = 301
 
+# index-old.html is the pre-redesign homepage. It is not linked anywhere but
+# is still published from the repo root, and it carries retired pricing,
+# "free trial" offers and SOC 2 claims that are no longer true. Send it home.
+# force = true because the file exists (shadowing would otherwise serve it).
+[[redirects]]
+  from = "/index-old.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/index-old"
+  to = "/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/api/v1/verify"
   to = "/.netlify/functions/verify"

@@ -246,6 +246,7 @@
       <a href="#poll"><span class="m">GET</span>Poll for results</a>
       <a href="#schemas"><span class="m">GET</span>Response schemas</a>
       <a href="#structured"><span class="m">GET</span>Structured JSON</a>
+      <a href="#tax-compliance">Tax compliance object</a>
       <a href="#monitoring"><span class="m">POST</span>Monitoring</a>
     </div>
     <div class="sgroup">
@@ -590,6 +591,7 @@ signature_vendor:            persona</code></pre>
       <span class="ck">"financials"</span>:{<span class="ck">"grossReceipts"</span>:<span class="cn">1240000</span>,<span class="ck">"totalTax"</span>:<span class="cn">42000</span>,<span class="ck">"accountBalance"</span>:<span class="cn">4287.21</span>,<span class="ck">"accruedInterest"</span>:<span class="cn">0</span>,<span class="ck">"accruedPenalty"</span>:<span class="cn">0</span>},
       <span class="ck">"recent_transactions"</span>:[{<span class="ck">"code"</span>:<span class="cs">"150"</span>,<span class="ck">"explanation"</span>:<span class="cs">"Tax return filed"</span>,<span class="ck">"date"</span>:<span class="cs">"2024-04-12"</span>,<span class="ck">"amount"</span>:<span class="cs">"42000"</span>}]  <span class="cm">// ≤10, newest first</span>
     },
+    <span class="ck">"tax_compliance"</span>: { … },          <span class="cm">// filed-up / owes-the-IRS verdict — see <a href="#tax-compliance" class="tl">Tax compliance object</a></span>
     <span class="ck">"qoe_qualification"</span>: {            <span class="cm">// only on accounts with QoE screening; null until a loan is sent or a check is run</span>
       <span class="ck">"loan_amount"</span>:<span class="cn">3250000</span>,<span class="ck">"loan_purpose"</span>:<span class="cs">"acquisition"</span>,
       <span class="ck">"verdict"</span>:<span class="cs">"required"</span>,             <span class="cm">// required | qualifies | needs_info | not_eligible; null until checked</span>
@@ -622,7 +624,7 @@ signature_vendor:            persona</code></pre>
         <pre><code>curl <span class="cs">"https://portal.moderntax.io/api/intake/transcript?token=your-loan-12345&amp;schema=underwriting"</span> \
   -H <span class="cs">"x-api-key: mt_live_txn_yourco_xxxxxxxxxxxx"</span></code></pre>
       </div>
-      <p>All three shapes share one envelope; only the per-entity objects differ. PDF and HTML URLs are 1-hour signed.</p>
+      <p>All three shapes share one envelope; only the per-entity objects differ. PDF and HTML URLs are 1-hour signed. Every entity object, in every shape, also carries a <a href="#tax-compliance" class="tl"><code>tax_compliance</code></a> object.</p>
       <div class="cb">
         <div class="cb-top"><span class="lbl">Shared envelope</span><button class="cp">Copy</button></div>
         <pre><code>{
@@ -688,7 +690,71 @@ signature_vendor:            persona</code></pre>
       <div class="cb">
         <div class="cb-top"><span class="lbl">200 OK</span><button class="cp">Copy</button></div>
         <pre><code>{ <span class="ck">"entity"</span>: {…}, <span class="ck">"filings"</span>: [{ <span class="ck">"year"</span>:<span class="cs">"2023"</span>,<span class="ck">"form"</span>:<span class="cs">"1120S"</span>,<span class="ck">"filed"</span>:<span class="cn">true</span>,… }],
-  <span class="ck">"compliance"</span>: {…}, <span class="ck">"income_baseline"</span>: {…} }</code></pre>
+  <span class="ck">"compliance"</span>: {…}, <span class="ck">"income_baseline"</span>: {…},
+  <span class="ck">"tax_compliance"</span>: {…} }          <span class="cm">// top level — see Tax compliance object</span></code></pre>
+      </div>
+      <p><code>tax_compliance</code> is a top-level key on this response; its shape is documented under <a href="#tax-compliance" class="tl">Tax compliance object</a>.</p>
+    </section>
+
+    <!-- TAX COMPLIANCE -->
+    <section class="sec" id="tax-compliance">
+      <h2>Tax compliance object</h2>
+      <p class="seclead">A small, machine-readable verdict built from the IRS transcripts on file for one entity: is the taxpayer filed up, do they owe the IRS, and as of when. It is the same read as the summary card on the request page and the Tax Liability Summary PDF, so all three agree.</p>
+      <p>It appears on every entity in <a href="#poll" class="tl"><code>GET /api/intake/transcript</code></a> (the legacy shape and every <a href="#schemas" class="tl"><code>schema=</code></a> shape), at the top level of <a href="#structured" class="tl"><code>GET /api/v1/transcripts/{entityId}/structured</code></a>, and in the <code>entities[]</code> array of the <a href="#webhooks" class="tl"><code>complete</code> webhook</a>. It is additive: no existing field was renamed, moved or retyped.</p>
+
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">Example · synthetic values</span><button class="cp">Copy</button></div>
+        <pre><code><span class="ck">"tax_compliance"</span>: {
+  <span class="ck">"filing_status"</span>: <span class="cs">"current"</span>,           <span class="cm">// current | delinquent | unfiled | unknown</span>
+  <span class="ck">"last_filed_year"</span>: <span class="cn">2024</span>,
+  <span class="ck">"balance_due"</span>: <span class="cn">true</span>,               <span class="cm">// null = not determinable</span>
+  <span class="ck">"balance_due_amount"</span>: <span class="cn">2026.49</span>,     <span class="cm">// IRS "Account balance plus accruals"; not a payoff amount</span>
+  <span class="ck">"transcript_available"</span>: <span class="cn">true</span>,
+  <span class="ck">"as_of"</span>: <span class="cs">"2026-09-15T18:22:01.000Z"</span>,
+  <span class="ck">"periods"</span>: [
+    { <span class="ck">"year"</span>:<span class="cs">"2023"</span>, <span class="ck">"period"</span>:<span class="cs">"2023"</span>, <span class="ck">"form_type"</span>:<span class="cs">"1120-S"</span>, <span class="ck">"filed"</span>:<span class="cn">true</span>, <span class="ck">"status"</span>:<span class="cs">"filed"</span>, <span class="ck">"balance"</span>:<span class="cn">0</span>,       <span class="ck">"ordered"</span>:<span class="cn">true</span> },
+    { <span class="ck">"year"</span>:<span class="cs">"2024"</span>, <span class="ck">"period"</span>:<span class="cs">"2024"</span>, <span class="ck">"form_type"</span>:<span class="cs">"1120-S"</span>, <span class="ck">"filed"</span>:<span class="cn">true</span>, <span class="ck">"status"</span>:<span class="cs">"filed"</span>, <span class="ck">"balance"</span>:<span class="cn">1943.16</span>, <span class="ck">"ordered"</span>:<span class="cn">true</span> },
+    { <span class="ck">"year"</span>:<span class="cs">"2024"</span>, <span class="ck">"period"</span>:<span class="cs">"2024 Q3"</span>, <span class="ck">"form_type"</span>:<span class="cs">"941"</span>, <span class="ck">"filed"</span>:<span class="cn">true</span>, <span class="ck">"status"</span>:<span class="cs">"filed"</span>, <span class="ck">"balance"</span>:<span class="cn">83.33</span>, <span class="ck">"ordered"</span>:<span class="cn">false</span> }
+  ]
+}</code></pre>
+      </div>
+      <p>In this example the ordered 1120-S years are both filed, so <code>filing_status</code> is <code>current</code> even though a balance is owed. The 941 quarter came from a discovery pull outside the order (<code>ordered: false</code>): it does not affect <code>filing_status</code>, but its balance is included in <code>balance_due_amount</code>, so the per-period balances add up to the total.</p>
+
+      <h3>Fields</h3>
+      <div class="tw-tbl">
+        <table>
+          <thead><tr><th style="width:230px;">Field</th><th style="width:150px;">Type</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><span class="fn">filing_status</span></td><td><code>string</code></td><td><code>current</code> | <code>delinquent</code> | <code>unfiled</code> | <code>unknown</code>. See the rule below.</td></tr>
+            <tr><td><span class="fn">last_filed_year</span></td><td><code>number | null</code></td><td>Newest year for which the IRS shows a return posted. <code>null</code> when none is shown.</td></tr>
+            <tr><td><span class="fn">balance_due</span></td><td><code>boolean | null</code></td><td><code>true</code> when the IRS shows money owed. <code>null</code> = not determinable: no Account Transcript or Record of Account is on file (a Return Transcript carries no balance).</td></tr>
+            <tr><td><span class="fn">balance_due_amount</span></td><td><code>number | null</code></td><td>The IRS &ldquo;Account balance plus accruals&rdquo;, counted once per form + tax period, in dollars. Re-pulls, duplicate documents and a Return Transcript next to a Record of Account do not double it. It is not a payoff amount. <code>null</code> whenever <code>balance_due</code> is <code>null</code>.</td></tr>
+            <tr><td><span class="fn">transcript_available</span></td><td><code>boolean</code></td><td>Whether any transcript is on file for the entity.</td></tr>
+            <tr><td><span class="fn">as_of</span></td><td><code>string | null</code></td><td>ISO 8601 upload time of the newest transcript used. <code>null</code> when no transcript can be dated.</td></tr>
+            <tr><td><span class="fn">periods[]</span></td><td><code>array</code></td><td>One row per form + tax period the verdict was built from.</td></tr>
+            <tr><td><span class="fn">periods[].year</span></td><td><code>string</code></td><td>Tax year, e.g. <code>"2024"</code>.</td></tr>
+            <tr><td><span class="fn">periods[].period</span></td><td><code>string</code></td><td><code>"2024"</code> for annual returns, <code>"2024 Q3"</code> for quarterly returns (941).</td></tr>
+            <tr><td><span class="fn">periods[].form_type</span></td><td><code>string</code></td><td>Form as the IRS labels it: <code>1120-S</code>, <code>1065</code>, <code>1040</code>, <code>941</code>, …</td></tr>
+            <tr><td><span class="fn">periods[].filed</span></td><td><code>boolean | null</code></td><td><code>true</code> = return on file; <code>false</code> = the IRS has no record of a required return; <code>null</code> = no determination for this period.</td></tr>
+            <tr><td><span class="fn">periods[].status</span></td><td><code>string</code></td><td><code>filed</code> (the IRS shows the return) | <code>unfiled</code> (&ldquo;no record of return filed&rdquo;) | <code>filed_pending_posting</code> (no record yet, but the preparer supplied an IRS e-file acceptance; counted as filed) | <code>not_required</code> (no filing requirement that year) | <code>not_yet_due</code> (an income-tax year that has not closed) | <code>pending</code> (ordered, no transcript yet).</td></tr>
+            <tr><td><span class="fn">periods[].balance</span></td><td><code>number | null</code></td><td>IRS balance plus accruals for this period, counted once. <code>null</code> when not determinable.</td></tr>
+            <tr><td><span class="fn">periods[].ordered</span></td><td><code>boolean</code></td><td><code>false</code> = the period is not part of your order (for example a payroll balance found on a discovery pull).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>How <code>filing_status</code> is decided</h3>
+      <p>Only the periods in the form family you ordered (1120-S and 1120 count as one family) and the years you ordered are considered, and only periods the IRS actually answered count &mdash; that is, <code>periods[].filed</code> is <code>true</code> or <code>false</code>. Pending, not-yet-due and not-required periods are ignored.</p>
+      <ul>
+        <li><b><code>current</code></b> &mdash; every answered period is filed, including a preparer&rsquo;s e-file acceptance that the IRS has not posted yet.</li>
+        <li><b><code>delinquent</code></b> &mdash; at least one answered period is filed and at least one required period is not.</li>
+        <li><b><code>unfiled</code></b> &mdash; every answered period came back &ldquo;no record of return filed&rdquo;.</li>
+        <li><b><code>unknown</code></b> &mdash; no period has an answer yet (no transcripts, PDFs only, or nothing in the ordered form and years came back), <em>or</em> every answer is &ldquo;no record&rdquo; but the empty result may come from the request itself (the wrong form series or fiscal period). We do not call a taxpayer a non-filer on a pull that may have asked the wrong question.</li>
+      </ul>
+      <p>A balance owed never changes <code>filing_status</code>. It is reported in <code>balance_due</code> and <code>balance_due_amount</code>, so a taxpayer who has filed every year but owes the IRS is <code>current</code> with <code>balance_due: true</code>. Periods from discovery pulls outside the order (<code>ordered: false</code>) never decide the verdict, but any balance they show is counted in <code>balance_due_amount</code>.</p>
+      <div class="note">
+        <div class="nt">Poll latency</div>
+        <p>To build this object the poll reads the entity&rsquo;s transcripts on each request, so a poll on a completed order can take a little longer than before.</p>
       </div>
     </section>
 
@@ -748,6 +814,14 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
   <span class="ck">"files"</span>:[{ <span class="ck">"file_id"</span>:<span class="cs">"uuid"</span>,<span class="ck">"type"</span>:<span class="cs">"record_of_account"</span>,<span class="ck">"year"</span>:<span class="cs">"2023"</span>,
              <span class="ck">"entity_name"</span>:<span class="cs">"ACME Holdings LLC"</span>,<span class="ck">"html"</span>:<span class="cs">"&lt;…&gt;"</span>,<span class="ck">"created_at"</span>:<span class="cs">"…"</span> }] }</code></pre>
       </div>
+      <p>On the v2 contract, each file arrives in a <code>partial</code> delivery and the request ends with a lightweight <code>complete</code> signal (empty <code>files</code>). That signal now also carries an <code>entities[]</code> array with each entity&rsquo;s <a href="#tax-compliance" class="tl"><code>tax_compliance</code></a> object:</p>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">v2 · complete signal</span><button class="cp">Copy</button></div>
+        <pre><code>{ <span class="ck">"request_token"</span>:<span class="cs">"your-loan-12345"</span>, <span class="ck">"status"</span>:<span class="cs">"complete"</span>, <span class="ck">"files"</span>:[],
+  <span class="ck">"entities"</span>:[{ <span class="ck">"entity_id"</span>:<span class="cs">"uuid"</span>, <span class="ck">"form_type"</span>:<span class="cs">"1120S"</span>, <span class="ck">"years"</span>:[<span class="cs">"2023"</span>,<span class="cs">"2024"</span>],
+                <span class="ck">"status"</span>:<span class="cs">"completed"</span>, <span class="ck">"tax_compliance"</span>:{ … } }] }</code></pre>
+      </div>
+      <p><code>entities</code> is additive and best-effort: if it can&rsquo;t be built, the <code>complete</code> signal is still sent without it. Make sure your receiver ignores keys it doesn&rsquo;t recognise &mdash; a <code>4xx</code> response marks the delivery dead with no retry (see <a href="#webhooks" class="tl">Retries</a>).</p>
       <div class="cb">
         <div class="cb-top"><span class="lbl">v3 · structured records</span><button class="cp">Copy</button></div>
         <pre><code>{ <span class="ck">"request_token"</span>:<span class="cs">"your-loan-12345"</span>,<span class="ck">"status"</span>:<span class="cs">"complete"</span>,
@@ -818,7 +892,7 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
     <!-- PRICING -->
     <section class="sec" id="pricing">
       <h2>Pricing &amp; quotas</h2>
-      <p class="seclead">API accounts are billed monthly via ACH (Mercury) or Stripe at your negotiated rates, from <b>$39.98 per verified entity</b> — record-of-account plus return transcript, up to three years.</p>
+      <p class="seclead">API access runs on the Platform tier (Tier C): a platform subscription plus <b>$49.99 per verified entity</b>, billed monthly via ACH (Mercury) or Stripe — record-of-account plus return transcript, up to three years.</p>
       <p>Setup fee and monthly minimums apply per contract. Add-ons — monitoring enrollment, per-pull monitoring, entity pre-validation — and volume pricing above 100 pulls per month are quoted with your plan. Email <a href="mailto:sales@moderntax.io" class="tl">sales@moderntax.io</a> and we'll send a firm rate the same day.</p>
     </section>
 
@@ -851,7 +925,7 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
 <footer>
   <div class="foot-in">
     <span>© 2026 ModernTax, Inc. · TLS 1.2+ · AES-256</span>
-    <span>Last updated 2026-08-14</span>
+    <span>Last updated 2026-11-06</span>
   </div>
 </footer>
 
