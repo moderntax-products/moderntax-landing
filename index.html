@@ -421,16 +421,30 @@
     animation: ticker 38s linear infinite;
   }
   .ticker-item {
-    display: flex; align-items: center; gap: 10px;
-    font-family: var(--serif);
-    font-size: 24px;
-    color: var(--ink-3);
+    display: flex; align-items: center; justify-content: center;
+    height: 72px;
+    padding: 8px 22px;
+    background: #fff;
+    border: 1px solid var(--rule-soft);
+    border-radius: 12px;
     white-space: nowrap;
   }
-  .ticker-item .star {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent);
-    opacity: 0.6;
+  .ticker-item img {
+    display: block;
+    height: 56px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+  }
+  .ticker-item.logo-wide img { height: 36px; }
+  .ticker-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-align: center;
+    padding: 18px 0 0;
   }
   @keyframes ticker {
     from { transform: translateX(0); }
@@ -1001,15 +1015,22 @@ Illustrative flow. Rejections are never billed, and nothing re-pulls without you
 
 <!-- ════════════════════════════════ TICKER ════════════════════════════════ -->
 <div class="ticker-wrap">
+  <div class="ticker-label">Trusted by SBA lenders</div>
   <div class="ticker">
-    <!-- duplicated for seamless loop -->
-    <span class="ticker-item">Centerstone SBA Lending</span><span class="star"></span>
-    <span class="ticker-item">California Statewide CDC</span><span class="star"></span>
-    <span class="ticker-item">Growth Corp</span><span class="star"></span>
+    <!-- two identical halves for a seamless loop -->
+      <span class="ticker-item logo-wide"><img src="assets/customers/centerstone.svg" alt="Centerstone SBA Lending" width="207" height="44" loading="lazy"></span>
+      <span class="ticker-item"><img src="assets/customers/statewide-cdc.png" alt="Statewide CDC" width="326" height="137" loading="lazy"></span>
+      <span class="ticker-item"><img src="assets/customers/growth-corp.png" alt="Growth Corp" width="355" height="220" loading="lazy"></span>
+      <span class="ticker-item logo-wide"><img src="assets/customers/centerstone.svg" alt="Centerstone SBA Lending" width="207" height="44" loading="lazy"></span>
+      <span class="ticker-item"><img src="assets/customers/statewide-cdc.png" alt="Statewide CDC" width="326" height="137" loading="lazy"></span>
+      <span class="ticker-item"><img src="assets/customers/growth-corp.png" alt="Growth Corp" width="355" height="220" loading="lazy"></span>
     <!-- copy -->
-    <span class="ticker-item">Centerstone SBA Lending</span><span class="star"></span>
-    <span class="ticker-item">California Statewide CDC</span><span class="star"></span>
-    <span class="ticker-item">Growth Corp</span><span class="star"></span>
+      <span class="ticker-item logo-wide"><img src="assets/customers/centerstone.svg" alt="Centerstone SBA Lending" width="207" height="44" loading="lazy" aria-hidden="true"></span>
+      <span class="ticker-item"><img src="assets/customers/statewide-cdc.png" alt="Statewide CDC" width="326" height="137" loading="lazy" aria-hidden="true"></span>
+      <span class="ticker-item"><img src="assets/customers/growth-corp.png" alt="Growth Corp" width="355" height="220" loading="lazy" aria-hidden="true"></span>
+      <span class="ticker-item logo-wide"><img src="assets/customers/centerstone.svg" alt="Centerstone SBA Lending" width="207" height="44" loading="lazy" aria-hidden="true"></span>
+      <span class="ticker-item"><img src="assets/customers/statewide-cdc.png" alt="Statewide CDC" width="326" height="137" loading="lazy" aria-hidden="true"></span>
+      <span class="ticker-item"><img src="assets/customers/growth-corp.png" alt="Growth Corp" width="355" height="220" loading="lazy" aria-hidden="true"></span>
   </div>
 </div>
 
