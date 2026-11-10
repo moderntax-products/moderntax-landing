@@ -2,3 +2,8 @@ https://sandbox.moderntax.io/* /sandbox-interface.html 200!
 
 # Short link for tax resolution prospects.
 /tax-resolution  /use-cases/tax-resolution  301!
+
+# Agent-Ready: the security page and API spec live on the portal (the API host).
+/security       https://portal.moderntax.io/security      302
+/openapi.json   https://portal.moderntax.io/openapi.json  302
+/docs/openapi.json https://portal.moderntax.io/openapi.json 302
