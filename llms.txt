@@ -1,0 +1,31 @@
+# ModernTax
+
+> ModernTax verifies businesses and individuals against IRS records for lenders. Submit a taxpayer, attach a signed Form 8821 naming ModernTax as designee, and receive IRS transcripts (returns, record of account, wage & income, 941 payroll) as PDFs plus structured JSON: filings with financials, transaction codes, balances, liens and a compliance summary.
+
+The API and customer portal run at https://portal.moderntax.io. This site (moderntax.io) holds the API reference.
+
+## Start here
+
+- [API reference](https://moderntax.io/docs): authentication, ordering, polling, webhooks, errors, rate limits
+- [OpenAPI 3.1 spec](https://portal.moderntax.io/openapi.json): machine-readable description of the REST API
+- [Self-serve sandbox](https://portal.moderntax.io/sandbox): a work email gets an API key immediately against synthetic borrower data; no sales call, no card. Programmatic: `POST https://portal.moderntax.io/api/sandbox/signup` with `{"company": "...", "email": "you@yourcompany.com"}` returns the key once
+- [Security](https://portal.moderntax.io/security): how data and keys are protected; contact security@moderntax.io
+
+## MCP server
+
+- Endpoint: `https://portal.moderntax.io/api/mcp` (Streamable HTTP, stateless JSON-RPC over POST; protocol versions 2025-06-18, 2025-03-26, 2024-11-05)
+- Auth: the same API key as the REST API, as `Authorization: Bearer <key>` or `x-api-key: <key>`
+- Tools: `verify_entity`, `order_transcripts`, `get_order_status`, `get_transcript_data`, `cross_reference`
+- A production sandbox key gets the read-only tools (no ordering). To try the full flow, including ordering against a simulated IRS, use a staging key at `https://staging.portal.moderntax.io/api/mcp`. Staging test TINs end in 0001 (clean), 0002 (tax lien), 0003 (balance due), 0004 (latest year unfiled), 0005 (wrong form), 0006–0008 (IRS errors)
+
+## Rules an agent should know
+
+- Every order needs a signed Form 8821 naming ModernTax as designee; without it the order waits and nothing goes to the IRS
+- `fiscal_year_end_month` is required for 1120, 1120S and 1065 (12 = calendar year)
+- 1040 goes with an SSN; 1065, 1120, 1120S and 941 go with an EIN
+- Responses never return a full TIN
+
+## Optional
+
+- [IRS pull status](https://portal.moderntax.io/status): live IRS Practitioner Priority Service wait times
+- [Pricing](https://portal.moderntax.io/plans)

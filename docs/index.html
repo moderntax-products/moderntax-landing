@@ -260,6 +260,8 @@
     <div class="sgroup">
       <h5>Reference</h5>
       <a href="#portal">Developer portal</a>
+      <a href="#mcp">MCP server (AI agents)</a>
+      <a href="#openapi">OpenAPI spec</a>
       <a href="#pricing">Pricing</a>
       <a href="#security">Security</a>
       <a href="#versioning">Versioning</a>
@@ -896,6 +898,33 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
       <p>Setup fee and monthly minimums apply per contract. Add-ons — monitoring enrollment, per-pull monitoring, entity pre-validation — and volume pricing above 100 pulls per month are quoted with your plan. Email <a href="mailto:sales@moderntax.io" class="tl">sales@moderntax.io</a> and we'll send a firm rate the same day.</p>
     </section>
 
+    <!-- MCP + MACHINE-READABLE -->
+    <section class="sec" id="mcp">
+      <h2>MCP server (AI agents)</h2>
+      <p class="seclead">The same API as <a href="https://modelcontextprotocol.io" class="tl">Model Context Protocol</a> tools, so an AI agent can verify a business, order transcripts and read the results with no custom integration.</p>
+      <div class="ep"><span class="verb post">POST</span><span class="path">https://portal.moderntax.io/api/mcp</span></div>
+      <ul>
+        <li><b>Transport:</b> Streamable HTTP, stateless. <code>POST</code> one JSON-RPC message (or a batch of up to 20) and get one JSON reply. No session and no SSE stream (<code>GET</code> returns 405). Protocol versions <code>2025-06-18</code>, <code>2025-03-26</code>, <code>2024-11-05</code>.</li>
+        <li><b>Auth:</b> your API key, as <code>Authorization: Bearer &lt;key&gt;</code> or <code>x-api-key</code>. Each key sees only its own organisation&apos;s orders.</li>
+        <li><b>Tools:</b> <code>verify_entity</code> (what is on file for a TIN), <code>order_transcripts</code> (a billable order, with the same rules as <a href="#submit" class="tl">Submit a request</a>), <code>get_order_status</code>, <code>get_transcript_data</code> (the <a href="#structured" class="tl">structured JSON</a>) and <code>cross_reference</code> (borrower figures vs. the IRS-filed return). Replies return <code>tin_last4</code>, never a full TIN.</li>
+        <li><b>Sandbox keys:</b> a read-only key from <a href="https://portal.moderntax.io/sandbox" class="tl">portal.moderntax.io/sandbox</a> connects in production with the read-only tools (no <code>order_transcripts</code>). A staging key at <code>https://staging.portal.moderntax.io/api/mcp</code> runs the full flow, including ordering against the simulated IRS and the <a href="#sandbox" class="tl">test TINs</a>.</li>
+        <li><b>Live keys:</b> MCP access is enabled per account. Ask <a href="mailto:matt@moderntax.io" class="tl">matt@moderntax.io</a>.</li>
+      </ul>
+      <div class="cb">
+        <div class="cb-top"><span class="lbl">cURL</span><button class="cp">Copy</button></div>
+        <pre><code>curl https://portal.moderntax.io/api/mcp \
+  -H <span class="cs">"Authorization: Bearer $MODERNTAX_KEY"</span> \
+  -H <span class="cs">"Content-Type: application/json"</span> \
+  -H <span class="cs">"Accept: application/json, text/event-stream"</span> \
+  -d <span class="cs">'{"jsonrpc":"2.0","id":1,"method":"tools/list"}'</span></code></pre>
+      </div>
+    </section>
+
+    <section class="sec" id="openapi">
+      <h2>OpenAPI spec &amp; llms.txt</h2>
+      <p>A machine-readable OpenAPI 3.1 description of this API is at <a href="https://portal.moderntax.io/openapi.json" class="tl">portal.moderntax.io/openapi.json</a>. A plain-text summary for language models is at <a href="/llms.txt" class="tl">moderntax.io/llms.txt</a>. Security contact: <a href="/.well-known/security.txt" class="tl">/.well-known/security.txt</a>.</p>
+    </section>
+
     <!-- SECURITY -->
     <section class="sec" id="security">
       <h2>Security &amp; compliance</h2>
@@ -907,7 +936,7 @@ X-ModernTax-Signature: &lt;hex HMAC-SHA256 of the raw body, keyed with your webh
         <li>Every partner request and result fetch is audit-logged with client identity, timestamp, and token.</li>
         <li>Signed transcript and 8821 URLs expire in 1 hour.</li>
       </ul>
-      <p>For security documentation or vendor questionnaires: <a href="mailto:security@moderntax.io" class="tl">security@moderntax.io</a>.</p>
+      <p>For security documentation or vendor questionnaires: <a href="mailto:security@moderntax.io" class="tl">security@moderntax.io</a>. Full page: <a href="https://portal.moderntax.io/security" class="tl">portal.moderntax.io/security</a>.</p>
     </section>
 
     <!-- VERSIONING -->
