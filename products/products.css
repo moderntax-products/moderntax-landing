@@ -1,0 +1,47 @@
+/* Product pages — layered on /use-cases/brand.css (tokens, buttons, grids, CTA band). */
+
+.hero-in.wide{max-width:70ch}
+.hero .sub-ctas{margin-top:14px;font-size:13.5px;color:var(--ink-3)}
+.hero .sub-ctas a{color:var(--accent-ink);font-weight:500;text-decoration:underline;text-underline-offset:3px}
+
+/* steps */
+.psteps{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:pstep;list-style:none;padding:0;margin:0}
+@media(min-width:760px){.psteps{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.psteps.four{grid-template-columns:repeat(4,1fr)}}
+.psteps li{border:1px solid var(--rule);border-radius:18px;background:var(--surface);padding:24px 24px 26px;counter-increment:pstep}
+.psteps li::before{content:counter(pstep,decimal-leading-zero);display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--accent-ink);margin-bottom:12px}
+.psteps h3{font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.8vw,24px);line-height:1.15;margin:0 0 8px;letter-spacing:-.01em}
+.psteps p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.6}
+
+/* pricing panel */
+.pprice{display:grid;grid-template-columns:1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:18px;overflow:hidden}
+@media(min-width:760px){.pprice{grid-template-columns:repeat(var(--cols,2),1fr)}}
+.pprice > div{background:var(--surface);padding:clamp(22px,2.6vw,32px)}
+.pprice .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.pprice .amt{font-family:var(--serif);font-size:clamp(32px,3.4vw,44px);line-height:1;margin:14px 0 6px;letter-spacing:-.01em}
+.pprice .amt small{font-family:var(--sans);font-size:14px;color:var(--ink-3);letter-spacing:0}
+.pprice .note{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.55}
+.pprice-foot{margin:18px 0 0;font-size:14px;color:var(--ink-3)}
+.pprice-foot a{color:var(--accent-ink);font-weight:500;text-decoration:underline;text-underline-offset:3px}
+
+/* code sample */
+.pcode{background:oklch(21% .014 260);color:oklch(92% .01 260);border-radius:16px;padding:20px 22px;font-family:var(--mono);font-size:13px;line-height:1.65;overflow-x:auto;white-space:pre;margin:0}
+.pcode .c{color:oklch(68% .02 260)}
+.pcode .k{color:oklch(78% .12 155)}
+
+/* related / product grid */
+.plist{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:720px){.plist{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1080px){.plist.three{grid-template-columns:repeat(3,1fr)}}
+.pitem{display:flex;flex-direction:column;gap:10px;border:1px solid var(--rule);border-radius:18px;background:var(--surface);padding:24px;transition:border-color .18s ease,transform .18s ease}
+.pitem:hover{border-color:var(--ink-3)}
+.pitem .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px}
+.pitem .k .dotsq{width:6px;height:6px;background:var(--accent);flex-shrink:0}
+.pitem h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2vw,27px);line-height:1.1;margin:0;letter-spacing:-.01em}
+.pitem p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.55;flex:1}
+.pitem .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px;font-size:14px}
+.pitem .price{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--rule-soft);border-radius:999px;padding:4px 10px}
+.pitem .go{color:var(--accent-ink);font-weight:500}
+
+/* fine print */
+.fine{font-size:13px;color:var(--ink-3);line-height:1.6;max-width:80ch;margin:28px 0 0}

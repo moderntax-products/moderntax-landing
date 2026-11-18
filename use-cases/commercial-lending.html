@@ -3,89 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Commercial Lending — ModernTax</title>
-  <meta name="description" content="IRS tax transcript verification for commercial lending. Revenue verification, filing status, and tax liability for banks and credit unions.">
+  <title>Commercial Lending — ModernTax Compliance Platform</title>
+  <meta name="description" content="Tax compliance verification for commercial lending from the IRS record. Revenue verification, filing status, and tax liability for banks and credit unions.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="brand.css">
+<link rel="stylesheet" href="/assets/site-chrome.css">
 </head>
 <body>
 
-<a class="skip" href="#main">Skip to content</a>
-
 <!-- ════════════════════════════════ NAV ════════════════════════════════ -->
-<header class="nav">
-  <div class="wrap">
-    <div class="nav-inner">
-      <a href="../" class="brand">
-        <span class="brand-mark">
-          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
-            <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
-            <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
-            <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
-            <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
-          </svg>
-        </span>
-        ModernTax<span class="tag">Commercial</span>
-      </a>
-
-      <nav class="nav-links" aria-label="primary">
-        <div class="ng">
-          <button class="navbtn" aria-haspopup="true" aria-expanded="false">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
-          <div class="ng-menu">
-            <a href="../#products"><span class="t">Tax Transcript Retrieval</span><span class="d">IRS 8821-based transcript pulls for lending</span></a>
-            <a href="../#products"><span class="t">Employment Verification</span><span class="d">W-2 &amp; 1099 income verification via API</span></a>
+<!-- GNAV:START (generated — shared global nav) -->
+<a class="gskip" href="#main">Skip to content</a>
+<header class="gnav">
+  <div class="gnav-wrap">
+    <div class="gnav-inner">
+      <a href="/" class="gnav-brand" aria-label="ModernTax Compliance Platform home"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="3" y="6" width="3.4" height="16" fill="currentColor"/><rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/><path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/><circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/></svg>ModernTax<span class="gtag">Compliance Platform</span></a>
+      <nav class="gnav-links" aria-label="Primary">
+        <a href="/#platform">Platform</a>
+        <div class="gnav-dd">
+          <button type="button" aria-haspopup="true" aria-expanded="false">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="gnav-menu wide">
+          <a href="/products/compliance-verification.html"><span class="t">Compliance Verification</span><span class="d">Filed and unfiled years, balances and IRS-of-record figures for any business or individual.</span></a>
+          <a href="/products/continuous-monitoring.html"><span class="t">Continuous Monitoring</span><span class="d">Scheduled IRS re-pulls that flag the moment an unfiled year becomes filed.</span></a>
+          <a href="/products/employment-income-verification.html"><span class="t">Employment &amp; Income Verification</span><span class="d">W-2 and 1099 wage and income data, straight from the IRS.</span></a>
+          <a href="/products/payroll-liability-941.html"><span class="t">Payroll Liability (941) Report</span><span class="d">Quarter-by-quarter payroll-tax filings and balances an income transcript will not show.</span></a>
+          <a href="/products/qoe-screening.html"><span class="t">QoE Screening</span><span class="d">Screen which SBA loans need a Quality of Earnings review under SOP 50 10 8.</span></a>
+          <a href="/products/check-reissue-recovery.html"><span class="t">Check Reissue Recovery</span><span class="d">Recover IRS refund checks that came back undelivered.</span></a>
+          <a href="/products/partner-api-mcp.html"><span class="t">Partner API &amp; MCP</span><span class="d">REST, webhooks, structured JSON and an MCP server for AI agents — with a free sandbox.</span></a>
+          <a class="all" href="/products/"><span class="t">All products &rarr;</span></a>
           </div>
         </div>
-
-        <div class="ng">
-          <button class="navbtn" aria-haspopup="true" aria-expanded="false">Use Cases <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
-          <div class="ng-menu">
-            <a href="sba-504.html"><span class="t">SBA 504 Lending</span></a>
-            <a href="sba-7a.html"><span class="t">SBA 7(a) Lending</span></a>
-            <a href="commercial-lending.html"><span class="t">Commercial Lending</span></a>
-            <a href="employment-hr.html"><span class="t">Employment &amp; HR</span></a>
-            <a href="tax-payment-verification.html"><span class="t">Tax Payment Verification</span></a>
-            <a href="tax-resolution.html"><span class="t">Tax Resolution Firms</span></a>
+        <div class="gnav-dd">
+          <button type="button" aria-haspopup="true" aria-expanded="false">Developers <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="gnav-menu">
+            <a href="/developers.html"><span class="t">API</span><span class="d">REST intake, webhooks, structured JSON</span></a>
+            <a href="/docs/"><span class="t">Docs</span><span class="d">The Partner API reference</span></a>
+            <a href="/docs/#mcp"><span class="t">MCP</span><span class="d">Model Context Protocol server for AI agents</span></a>
+            <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">A free API key against synthetic data</span></a>
           </div>
         </div>
-
-        <a href="../docs/">API Docs</a>
-        <a href="../plans.html">Pricing</a>
+        <a href="/plans.html">Pricing</a>
       </nav>
-
-      <div class="nav-cta">
-        <a href="https://portal.moderntax.io/login" class="signin">Sign In</a>
-        <a href="https://portal.moderntax.io/signup" class="btn btn-accent">Create Account</a>
+      <div class="gnav-cta">
+        <a href="https://portal.moderntax.io/login" class="gsignin">Sign in</a>
+        <a href="https://portal.moderntax.io/signup" class="gbtn">Get started</a>
       </div>
-
-      <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">
+      <button type="button" class="gnav-menu-btn" id="gnav-menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="gnav-mobile">
         <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       </button>
     </div>
-
-    <nav class="mnav" id="mnav" aria-label="mobile">
+    <nav class="gnav-mobile" id="gnav-mobile" aria-label="Mobile">
+      <a href="/#platform">Platform</a>
       <div class="mh">Products</div>
-      <a href="../#products">Tax Transcript Retrieval</a>
-      <a href="../#products">Employment Verification</a>
-      <div class="mh">Use cases</div>
-      <a href="sba-504.html">SBA 504 Lending</a>
-      <a href="sba-7a.html">SBA 7(a) Lending</a>
-      <a href="commercial-lending.html">Commercial Lending</a>
-      <a href="employment-hr.html">Employment &amp; HR</a>
-      <a href="tax-payment-verification.html">Tax Payment Verification</a>
-      <a href="tax-resolution.html">Tax Resolution Firms</a>
+      <a href="/products/compliance-verification.html">Compliance Verification</a>
+      <a href="/products/continuous-monitoring.html">Continuous Monitoring</a>
+      <a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a>
+      <a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a>
+      <a href="/products/qoe-screening.html">QoE Screening</a>
+      <a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a>
+      <a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a>
+      <a href="/products/">All products</a>
+      <div class="mh">Developers</div>
+      <a href="/developers.html">API</a>
+      <a href="/docs/">Docs</a>
+      <a href="/docs/#mcp">MCP</a>
+      <a href="https://portal.moderntax.io/sandbox">Sandbox</a>
       <div class="mh">More</div>
-      <a href="../docs/">API Docs</a>
-      <a href="../plans.html">Pricing</a>
+      <a href="/plans.html">Pricing</a>
       <div class="mcta">
-        <a href="https://portal.moderntax.io/login" class="btn btn-ghost">Sign In</a>
-        <a href="https://portal.moderntax.io/signup" class="btn btn-accent">Create Account</a>
+        <a href="https://portal.moderntax.io/login" class="gbtn ghost">Sign in</a>
+        <a href="https://portal.moderntax.io/signup" class="gbtn">Get started</a>
       </div>
     </nav>
   </div>
 </header>
+<!-- GNAV:END -->
 
 <main id="main">
 
@@ -210,62 +204,67 @@
 </main>
 
 <!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-col foot-about">
-        <a href="../" class="brand">
-          <span class="brand-mark">
-          <svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true">
-            <rect x="3" y="6" width="3.4" height="16" fill="currentColor"/>
-            <rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/>
-            <path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/>
-            <circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/>
-          </svg>
-        </span>
-          ModernTax
-        </a>
-        <p>IRS tax transcript retrieval and employment verification for modern lenders and platforms.</p>
+<!-- GFOOT:START (generated — shared global footer) -->
+<footer class="gfoot">
+  <div class="gnav-wrap">
+    <div class="gfoot-grid">
+      <div class="gfoot-about">
+        <a href="/" class="gnav-brand"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="3" y="6" width="3.4" height="16" fill="currentColor"/><rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/><path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/><circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/></svg>ModernTax</a>
+        <p>The ModernTax Compliance Platform. Tax compliance verification, monitoring and recovery for lenders and platforms — from the IRS record.</p>
       </div>
-      <div class="foot-col">
-        <h5>Products</h5>
+      <div>
+        <h2>Products</h2>
         <ul>
-          <li><a href="../#products">Tax Transcript Retrieval</a></li>
-          <li><a href="../#products">Employment Verification</a></li>
-          <li><a href="../docs/">API Documentation</a></li>
-          <li><a href="../plans.html">Pricing</a></li>
+          <li><a href="/products/compliance-verification.html">Compliance Verification</a></li>
+          <li><a href="/products/continuous-monitoring.html">Continuous Monitoring</a></li>
+          <li><a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a></li>
+          <li><a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a></li>
+          <li><a href="/products/qoe-screening.html">QoE Screening</a></li>
+          <li><a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a></li>
+          <li><a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a></li>
         </ul>
       </div>
-      <div class="foot-col">
-        <h5>Use Cases</h5>
+      <div>
+        <h2>Developers</h2>
         <ul>
-            <li><a href="sba-504.html">SBA 504 Lending</a></li>
-            <li><a href="sba-7a.html">SBA 7(a) Lending</a></li>
-            <li><a href="commercial-lending.html">Commercial Lending</a></li>
-            <li><a href="employment-hr.html">Employment &amp; HR</a></li>
-            <li><a href="tax-payment-verification.html">Tax Payment Verification</a></li>
-            <li><a href="tax-resolution.html">Tax Resolution Firms</a></li>
+          <li><a href="/developers.html">API</a></li>
+          <li><a href="/docs/">Docs</a></li>
+          <li><a href="/docs/#mcp">MCP</a></li>
+          <li><a href="https://portal.moderntax.io/sandbox">Sandbox</a></li>
+          <li><a href="https://portal.moderntax.io/status">IRS pull status</a></li>
         </ul>
       </div>
-      <div class="foot-col">
-        <h5>Company</h5>
+      <div>
+        <h2>Use cases</h2>
         <ul>
-          <li><a href="https://portal.moderntax.io/login">Sign In to Portal</a></li>
-          <li><a href="mailto:matt@moderntax.io">Contact Us</a></li>
-          <li><a href="mailto:support@moderntax.io">Support</a></li>
+          <li><a href="/use-cases/sba-504.html">SBA 504</a></li>
+          <li><a href="/use-cases/sba-7a.html">SBA 7(a)</a></li>
+          <li><a href="/use-cases/commercial-lending.html">Commercial lending</a></li>
+          <li><a href="/use-cases/employment-hr.html">Employment &amp; HR</a></li>
+          <li><a href="/use-cases/tax-payment-verification.html">Tax payment verification</a></li>
+          <li><a href="/use-cases/tax-resolution.html">Tax resolution firms</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/plans.html">Pricing</a></li>
+          <li><a href="/walkthrough.html#get-access">Talk to us</a></li>
+          <li><a href="https://portal.moderntax.io/login">Sign in</a></li>
+          <li><a href="https://portal.moderntax.io/security">Security</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Text message terms</a></li>
         </ul>
       </div>
     </div>
-    <div class="foot-bottom">
+    <div class="gfoot-bottom">
       <p>&copy; 2026 ModernTax, Inc. All rights reserved.</p>
-      <div class="badges">
-        <span>Encrypted &amp; audit-logged</span><span class="sep">&bull;</span>
-        <span>256-bit Encryption</span>
-      </div>
+      <p>ModernTax Compliance Platform</p>
     </div>
   </div>
 </footer>
+<!-- GFOOT:END -->
 
-<script src="brand.js"></script>
+<script src="/assets/site-chrome.js"></script>
 </body>
 </html>
