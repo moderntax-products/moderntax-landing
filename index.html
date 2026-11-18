@@ -890,6 +890,9 @@
    homepage. object-position is slightly above centre because a headshot's
    subject sits high in a 4:5 frame. */
 .founder-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;z-index:1;display:block}
+  .founder-story p { font-size: 18px; line-height: 1.65; color: var(--ink-2, var(--ink)); margin: 0 0 18px; max-width: 68ch; }
+  .founder-story .quote-attr { margin-top: 28px; }
+  #today .section-head { align-items: start; }
 </style>
 <link rel="stylesheet" href="/assets/site-chrome.css">
 </head>
@@ -976,21 +979,17 @@
     <div class="hero-grid">
       <div>
         <div class="hero-meta">
-          <span class="pill"><span class="dot"></span> The lender compliance platform</span>
+          <span class="pill"><span class="dot"></span> Capital, tax and finance for small business</span>
         </div>
-        <!-- Lender compliance platform hero (Matt 2026-11-17, supersedes COPY-01's IRS-first title/H1; gate OPS-01 still applies) -->
-        <h1 class="hero-h1">Compliance for every commercial loan.</h1>
+        <!-- Homepage copy: Matt Parker, 2026-11-18 (replaces earlier generated copy). -->
+        <h1 class="hero-h1">Helping business owners get and stay capital-ready.</h1>
         <p class="lede" style="margin-top: 20px;">
-          Screen and verify borrowers, scope Quality of Earnings, close with a complete file and keep watch after funding. IRS-of-record data, our agents and credentialed practitioners stand behind every order, in the portal or through your API.
+          ModernTax exists to make sure small business owners can access capital efficiently. Our mission starts and ends with the small business owner and lives at the intersection of capital, tax, and finance.
         </p>
         <div class="hero-ctas">
-          <a href="https://portal.moderntax.io/new?src=home_cta&amp;v=start_a_verification" class="btn btn-accent" data-cta="home_primary" data-cta-placement="hero" data-cta-destination="portal_order" data-variant="start_a_verification">Start a verification <span class="arrow">→</span></a>
-          <a href="/walkthrough#get-access" class="btn btn-ghost">Book a demo</a>
-          <!-- HELD (COPY-01 secondary): "See a sample report" stays off the page until an approved
-               synthetic / de-identified report exists. Do not link a real customer report. -->
+          <a href="/walkthrough#get-access" class="btn btn-accent" data-cta="home_primary" data-cta-placement="hero" data-cta-destination="demo">Book a demo <span class="arrow">→</span></a>
+          <a href="/how-it-works" class="btn btn-ghost">How it works</a>
         </div>
-        <p class="hero-scope">Built for lending teams on a master services agreement. Every order needs a Form 8821 signed by the taxpayer; pricing is shared after a demo and set in your MSA.</p>
-        <p class="hero-dev">Developers: <a href="https://portal.moderntax.io/sandbox">Explore the sandbox</a> — an API key against synthetic data. The <a href="/docs/">API docs</a> list what the sandbox supports.</p>
       </div>
 
       <!-- LIVE INTERACTIVE WIDGET -->
@@ -1162,402 +1161,27 @@ Illustrative flow with sample data. Rejections are not billed.
   </div>
 </section>
 
-<!-- ════════════════════════════════ BEFORE YOU ORDER ════════════════════════════════ -->
-<section class="section" id="before-you-order" style="padding-top: clamp(32px,4vw,56px);">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">01 · Before you order</div>
-        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          What you need,<br/>
-          <em class="italic-em">and what you get back.</em>
-        </h2>
-      </div>
-      <p class="lede reveal">
-        Each order is one taxpayer, the form type and the tax years you need. Nothing goes to the IRS until the signed authorization is on the order.
-      </p>
-    </div>
-    <div class="basics reveal">
-      <div>
-        <div class="eyebrow">Request requirements</div>
-        <h3>To request transcripts</h3>
-        <ul>
-          <li>A Form 8821 signed by the taxpayer, naming ModernTax as designee. We pre-fill it; you collect the signature.</li>
-          <li>Taxpayer name and TIN: an SSN for a 1040, an EIN for a 1065, 1120, 1120-S or 941.</li>
-          <li>Form type and tax years, plus the fiscal year end for 1065, 1120 and 1120-S returns.</li>
-        </ul>
-      </div>
-      <div>
-        <div class="eyebrow">What a completed finding means</div>
-        <h3>Reading the result</h3>
-        <p>Each result shows what the IRS transcript held when we retrieved it: whether a return is on record for each year, balances and account activity, and the figures the IRS has on file. A definitive &ldquo;no record of return filed&rdquo; is a finding too: the IRS had no return on file for that year at retrieval.</p>
-      </div>
-      <div>
-        <div class="eyebrow">Billing trigger</div>
-        <h3>When an order is billed</h3>
-        <p>Rejections are not billed. A bad EIN, a name mismatch or a signer not on record comes back with the field to fix. A definitive &ldquo;no record of return filed&rdquo; bills at the per-entity rate, because it is a real underwriting finding. Abandoned or incomplete pulls are not billed. Your quote or signed agreement defines covered services and billing terms.</p>
-      </div>
-    </div>
-    <!-- HELD: approved synthetic report slot. Add only after an approved synthetic / de-identified sample report exists (COPY-01 secondary). -->
-  </div>
-</section>
-
-<!-- ════════════════════════════════ PLATFORM ════════════════════════════════ -->
-<!-- Commercial-lending deal lifecycle (Matt, Nov 17): end-to-end compliance services; IRS data is one input. -->
-<section class="section" id="platform">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">02 · The platform</div>
-        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          Compliance across<br/>
-          <em class="italic-em">the whole deal.</em>
-        </h2>
-      </div>
-      <p class="lede reveal">
-ModernTax provides end-to-end compliance services for commercial and SBA lenders, from screening and verification to Quality of Earnings, closing, post-close monitoring and recovery. IRS-of-record data is one input. Borrower financials and human review are others. A portal for the teams doing the work, an API for the platforms originating it. <a href="/how-it-works" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">How it works: our agents</a>.
-      </p>
-    </div>
-
-    <div class="products lifecycle reveal">
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> 01 · Screen &amp; underwrite</div>
-        <h3>Frame the deal before underwriting starts.</h3>
-        <p>Screen a transaction for a Quality of Earnings scope discussion, using the IRS record already on the order.</p>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/qoe-screening" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">QoE Screening</a> — screen a transaction for a QoE scope discussion</span></li>
-        </ul>
-        <div class="product-foot">
-          <a href="/products/qoe-screening" class="btn-link">Review transaction scope <span class="arrow">→</span></a>
-        </div>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> 02 · Verify</div>
-        <h3>Confirm the IRS record behind the borrower.</h3>
-        <p>Filed and unfiled years, balances, income and payroll-tax exposure for businesses and individuals, authorized with a signed Form 8821. Timing depends on the IRS and on when the signed authorization is on the order.</p>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/compliance-verification" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Compliance Verification</a> — filed years, balances, IRS-of-record figures</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/employment-income-verification" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Employment &amp; Income Verification</a> — IRS-reported W-2 and 1099 wage &amp; income</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/payroll-liability-941" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Payroll Liability (941) Report</a></span></li>
-        </ul>
-        <div class="product-foot">
-          <a href="/products/compliance-verification" class="btn-link">Start with a verification <span class="arrow">→</span></a>
-        </div>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> 03 · Quality of Earnings</div>
-        <h3>Quality of Earnings, assisted or full-service.</h3>
-        <p>The QoE Agent prepares an AI-assisted analysis from IRS-of-record data and borrower financials, and a person reviews it. For a full engagement, ModernTax runs the QoE. Scope is confirmed before work begins.</p>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/qoe-agent" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">QoE Agent</a> — AI-assisted analysis with human review</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/qoe-services" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">QoE Full-Service</a> — ModernTax-run QoE engagements</span></li>
-        </ul>
-        <div class="product-foot">
-          <a href="/products/qoe-services" class="btn-link">Scope a QoE <span class="arrow">→</span></a>
-        </div>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> 04 · Close</div>
-        <h3>Clear conditions, keep the record.</h3>
-        <p>Unfiled years are flagged at verification, so a missing return becomes a closing condition rather than a surprise. Transcripts, results and the signed 8821 stay on the order for the loan file.</p>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/plans" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Back-year filing</a> — scoped per return-year</span></li>
-        </ul>
-        <div class="product-foot">
-          <a href="/plans" class="btn-link">See add-ons <span class="arrow">→</span></a>
-        </div>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> 05 · Monitor post-close</div>
-        <h3>Track unresolved IRS filing records.</h3>
-        <p>Ask us about follow-up transcript requests for a missing filing. Confirm the check schedule, charges and stopping rule in your quote before enrollment.</p>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/continuous-monitoring" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Continuous Monitoring</a> — terms confirmed in your quote</span></li>
-        </ul>
-        <div class="product-foot">
-          <a href="/products/continuous-monitoring" class="btn-link">Review monitoring terms <span class="arrow">→</span></a>
-        </div>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> 06 · Recover</div>
-        <h3>Review a tax-check reissue request.</h3>
-        <p>Ask us to review the authorization and steps needed for a check-reissue request. Scope, fees and follow-up responsibilities must be confirmed before work begins. IRS processing and delivery are outside our control.</p>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/check-reissue-recovery" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Check Reissue Recovery</a> — scope and fees confirmed before work begins</span></li>
-        </ul>
-        <div class="product-foot">
-          <a href="/products/check-reissue-recovery" class="btn-link">Review recovery scope <span class="arrow">→</span></a>
-        </div>
-      </div>
-      <div class="product compact span-all">
-        <div class="product-eyebrow"><span class="dotsq"></span> Across every stage · Build</div>
-        <h3>Run any stage from your own platform.</h3>
-        <p>REST intake, webhooks, structured JSON, a cross-reference check and an MCP server for AI agents, with a self-serve sandbox on synthetic data.</p>
-        <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/partner-api-mcp" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Partner API &amp; MCP</a> — REST, webhooks, JSON, MCP</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/docs/" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">API docs</a> — the full reference</span></li>
-        </ul>
-        <div class="product-foot">
-          <a href="/products/partner-api-mcp" class="btn-link">Explore the Partner API <span class="arrow">→</span></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- AGENTS:START (generated — see .github/tools/product-pages-build.mjs) -->
-<section class="section" id="agents" style="padding-top:0;">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">How it works · Our agents</div>
-        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          Agents do the legwork.<br/>
-          <em class="italic-em">Practitioners stay accountable.</em>
-        </h2>
-      </div>
-      <p class="lede reveal">Agents that prepare authorizations, request and retrieve IRS records and keep every order moving, with credentialed practitioners (CAF-registered) on every IRS interaction and accountable for every request. <a href="/how-it-works" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">How it works</a></p>
-    </div>
-    <div class="products lifecycle reveal">
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> Authorization</div>
-        <h3>8821 agent</h3>
-        <p>Prepares the Form 8821 and audits it before it goes out: the right designee, signer, title, tax years and forms. Once signed, it submits the authorization to the IRS so it can be recorded on the CAF (Centralized Authorization File, the IRS record of who a taxpayer has authorized).</p>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> TDS</div>
-        <h3>Transcript retrieval agent</h3>
-        <p>Once the authorization is on file, requests the transcripts through TDS (the IRS Transcript Delivery System that tax professionals use) and attaches them to the order.</p>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> SOR</div>
-        <h3>Mailbox agent</h3>
-        <p>Picks up transcripts the IRS delivers to the practitioner&rsquo;s SOR (Secure Object Repository, the IRS secure mailbox for tax professionals) and matches each one to the right order and taxpayer.</p>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> PPS</div>
-        <h3>IRS call agent and call assistant</h3>
-        <p>Places and holds Practitioner Priority Service (PPS) calls, the IRS phone line for tax professionals, then guides the credentialed practitioner who handles the live call.</p>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> Follow-up</div>
-        <h3>Monitoring and follow-up agents</h3>
-        <p>Re-check years that came back unfiled and chase missing years, on the terms set in your quote, so an open item does not sit unnoticed.</p>
-      </div>
-      <div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> Quality of Earnings</div>
-        <h3>QoE agent</h3>
-        <p>Prepares an AI-assisted Quality of Earnings analysis from IRS-of-record data and borrower financials. A person reviews it before it reaches you.</p>
-      </div>
-    </div>
-  </div>
-</section>
 <!-- AGENTS:END -->
 
-<!-- ════════════════════════════════ PRODUCTS ════════════════════════════════ -->
-<section class="section" id="products" style="padding-top:0;">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">03 · Products</div>
-        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          The product catalog.<br/>
-          <em class="italic-em">One record behind it.</em>
-        </h2>
-      </div>
-      <p class="lede reveal">
-        Scope, authorization and pricing for each product are confirmed before you order. <a href="/products/" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">See all products</a> or <a href="/plans" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">pricing</a>.
-      </p>
-    </div>
-    <div class="uc-list reveal">
-      <a class="uc-row" href="/products/qoe-screening">
-        <div class="uc-num">01</div>
-        <div class="uc-title">QoE Screening — screen a transaction for a Quality of Earnings scope discussion.</div>
-        <div class="uc-tag">Screen</div>
-      </a>
-      <a class="uc-row" href="/products/compliance-verification">
-        <div class="uc-num">02</div>
-        <div class="uc-title">Compliance Verification — filed and unfiled years, balances and IRS-of-record figures.</div>
-        <div class="uc-tag">Verify</div>
-      </a>
-      <a class="uc-row" href="/products/employment-income-verification">
-        <div class="uc-num">03</div>
-        <div class="uc-title">Employment &amp; Income Verification — IRS-reported W-2 and 1099 wage and income information.</div>
-        <div class="uc-tag">Verify</div>
-      </a>
-      <a class="uc-row" href="/products/payroll-liability-941">
-        <div class="uc-num">04</div>
-        <div class="uc-title">Payroll Liability (941) Report — the payroll-tax exposure an income transcript won&rsquo;t show.</div>
-        <div class="uc-tag">Verify</div>
-      </a>
-      <a class="uc-row" href="/products/qoe-agent">
-        <div class="uc-num">05</div>
-        <div class="uc-title">QoE Agent — AI-assisted Quality of Earnings analysis with human review.</div>
-        <div class="uc-tag">QoE</div>
-      </a>
-      <a class="uc-row" href="/products/qoe-services">
-        <div class="uc-num">06</div>
-        <div class="uc-title">QoE Full-Service — Quality of Earnings engagements run by ModernTax.</div>
-        <div class="uc-tag">QoE</div>
-      </a>
-      <a class="uc-row" href="/products/continuous-monitoring">
-        <div class="uc-num">07</div>
-        <div class="uc-title">Continuous Monitoring — follow-up transcript requests for a missing filing, on terms set in your quote.</div>
-        <div class="uc-tag">Monitor</div>
-      </a>
-      <a class="uc-row" href="/products/check-reissue-recovery">
-        <div class="uc-num">08</div>
-        <div class="uc-title">Check Reissue Recovery — review a tax-check reissue request.</div>
-        <div class="uc-tag">Recover</div>
-      </a>
-      <a class="uc-row" href="/products/partner-api-mcp">
-        <div class="uc-num">09</div>
-        <div class="uc-title">Partner API &amp; MCP — REST, webhooks, structured JSON and an MCP server for AI agents.</div>
-        <div class="uc-tag">Build</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ USE CASES ════════════════════════════════ -->
-<section class="section" id="use-cases" style="background: var(--surface-2); border-top:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft);">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">04 · Built for</div>
-        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          The teams<br/>
-          <em class="italic-em">underwriting America.</em>
-        </h2>
-      </div>
-      <p class="lede reveal">
-        Lenders come to us when a slow or missing IRS answer would cost them a closing. We're built for the workflows that can't afford to.
-      </p>
-    </div>
-
-    <div class="uc-list reveal">
-      <a class="uc-row" href="/use-cases/sba-504">
-        <div class="uc-num">01</div>
-        <div class="uc-title">SBA 504 lending — CDC-ready transcripts for real estate and equipment loans.</div>
-        <div class="uc-tag">CDC · 504</div>
-      </a>
-      <a class="uc-row" href="/use-cases/sba-7a">
-        <div class="uc-num">02</div>
-        <div class="uc-title">SBA 7(a) lending — multi-year borrower and business returns, formatted for SBA submission.</div>
-        <div class="uc-tag">SBA · 7(a)</div>
-      </a>
-      <a class="uc-row" href="/use-cases/commercial-lending">
-        <div class="uc-num">03</div>
-        <div class="uc-title">Commercial credit — verify revenue, filing status, and tax liability for any entity.</div>
-        <div class="uc-tag">Commercial</div>
-      </a>
-      <a class="uc-row" href="/use-cases/employment-hr">
-        <div class="uc-num">04</div>
-        <div class="uc-title">Employment &amp; HR — review IRS-reported wage and income information.</div>
-        <div class="uc-tag">HR · BGC</div>
-      </a>
-      <a class="uc-row" href="/use-cases/tax-payment-verification">
-        <div class="uc-num">05</div>
-        <div class="uc-title">Tax payment verification — review IRS-posted payment information.</div>
-        <div class="uc-tag">Payments</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ PERSONAS ════════════════════════════════ -->
-<section class="section" id="developers">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">05 · Choose your surface</div>
-        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          A portal for teams.<br/>
-          <em class="italic-em">An API for everyone else.</em>
-        </h2>
-      </div>
-      <p class="lede reveal">
-        Whether you live in spreadsheets or in a terminal, ModernTax meets you where the work happens — without forcing you to change tools to fit ours.
-      </p>
-    </div>
-
-    <div class="persona-grid">
-      <div class="persona reveal">
-        <div class="role">For loan teams</div>
-        <h3>The dashboard your processors will actually use.</h3>
-        <p>Submit borrowers, track every request to the minute, and download verified files when they're ready. No new vendor portal to learn — it works the way your shop already works.</p>
-
-        <div class="persona-mock">
-          <div class="mock-row"><span>Atlas Roofing · 1120S · 2024</span><span class="ok">Delivered · 6h 12m</span></div>
-          <div class="mock-row"><span>J. Reyes · 1040 · 2023</span><span class="ok">Delivered · 4h 48m</span></div>
-          <div class="mock-row"><span>Ironwood Capital · 1065 · 2022</span><span style="color:var(--ink-3);">In progress · IRS auth</span></div>
-          <div class="mock-row"><span>Beacon Diner LLC · 1120 · 2024</span><span style="color:var(--ink-3);">Queued</span></div>
-        </div>
-
-        <ul class="persona-features">
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> CSV bulk upload — 50 borrowers per file.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Roles for processors, managers, and admins.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Email and SLA notifications you can trust.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Onboarding starts with a demo; your MSA sets products, volume and pricing.</li>
-        </ul>
-
-        <div>
-          <a href="/walkthrough" class="btn btn-primary">Walk through an order <span class="arrow">→</span></a>
-        </div>
-      </div>
-
-      <div class="persona reveal">
-        <div class="role">For developers</div>
-        <h3>Compliance verification as a one-line POST.</h3>
-        <p>For platforms embedding tax data into a product. Predictable contracts, idempotent retries, webhook-driven async — written by people who shipped fintech APIs before.</p>
-
-        <div class="persona-mock">
-<span style="color:var(--ink-3);"># Submit verification</span>
-curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.io/api/intake/transcript \
-  -H <span style="color:var(--accent);">"x-api-key: $MT_KEY"</span> \
-  -d '{"request_token":"loan-4482","entities":[{"entity_name":"Atlas Roofing LLC",
-       "tid":"88-1213417","form_type":"1120S","years":["2024","2023"]}]}'
-
-<span style="color:var(--ink-3);"># 201 Created</span>
-{ "request_id": "uuid", "request_token": "loan-4482",
-  "status": "irs_queue" }
-        </div>
-
-        <ul class="persona-features">
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> REST + webhooks · idempotency keys built in.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Self-serve sandbox key on synthetic data · MCP server for AI agents.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Usage dashboard with your account quota.</li>
-          <!-- HELD (LEGAL-01): security statement removed until supported security statements are approved. -->
-        </ul>
-
-        <div>
-          <a href="https://portal.moderntax.io/sandbox" class="btn btn-primary">Explore the sandbox <span class="arrow">→</span></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════ FOUNDER ════════════════════════════════ -->
-<section class="section" id="founder" style="background: var(--surface-2); border-top:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft);">
+<!-- ════════════════════════════════ WHY MODERNTAX ════════════════════════════════ -->
+<!-- Copy: Matt Parker, 2026-11-18. -->
+<section class="section" id="why" style="background: var(--surface-2); border-top:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft);">
   <div class="wrap">
     <div class="section-head" style="margin-bottom:48px;">
       <div>
-        <div class="eyebrow">06 · Why we built this</div>
+        <div class="eyebrow">Why ModernTax exists</div>
       </div>
       <span></span>
     </div>
-
     <div class="founder">
-      <!-- No genuine founder photo exists in the repo or history. To use a photo, add
-           /assets/founder-portrait.jpg and swap this block back to an <img> (see commit 8756ae5). -->
       <div class="founder-mark reveal" aria-hidden="true">
         <span class="founder-initials">MP</span>
       </div>
-      <div class="reveal">
-        <p class="quote">
-          We started ModernTax after watching a $4.2M SBA closing slip a quarter because a transcript request fell into a fax queue. The data already exists at the IRS. The problem isn't access — it's <em>access designed for the people who actually need it.</em>
-        </p>
+      <div class="reveal founder-story">
+        <p>I started ModernTax by making thousands of calls to the IRS myself. It was daunting, but it is the fastest way to access real-time IRS information. This work was done so lenders didn&rsquo;t have to do it themselves &ndash; some lenders staff this in-house, and it requires multiple staff members having IRS credentials and spending hours on the phone with the IRS. I&rsquo;ll admit sitting on hold with the IRS is brutal, but it&rsquo;s the work of hundreds of thousands of tax professionals annually.</p>
+        <p>This is a changing world, and voice AI is playing a big role in how this happens. While I don&rsquo;t love a 60-minute wait time with the IRS, I&rsquo;ve built my career on figuring out how technology will impact historically bad experiences. As AI takes on tasks, we asked the question of how it can help with getting real-time information for businesses to get access to capital.</p>
+        <p>At an SBA event this year, my world collided with how we help business owners at ModernTax. A business owner was hosting a happy hour at his brewery, and he described his process in securing a commercial loan to be able to purchase the property and make upgrades. One of the challenges was that his bank, unfortunately, at the time, was not using ModernTax, and he had to make 10 calls to the IRS to get access to old tax returns to close his loan. It made me happy to know that our human + AI-powered platform could have taken care of that job for him in 1 hour or less, and it is only getting faster. Our mission is to help business owners get and stay capital-ready.</p>
         <div class="quote-attr">
           <span class="attr-line"></span>
           <div>
@@ -1565,21 +1189,21 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
             <div>Founder, ModernTax</div>
           </div>
         </div>
-        <div style="margin-top: 36px; display:flex; gap: 28px; flex-wrap: wrap;">
-          <div>
-            <div class="serif" style="font-size: 36px;">9 yrs</div>
-            <div style="font-size: 12px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em;">Building IRS verification infrastructure</div>
-          </div>
-          <div>
-            <div class="serif" style="font-size: 36px;">SBA 504 &amp; 7(a)</div>
-            <div style="font-size: 12px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em;">Embedded with active lenders</div>
-          </div>
-          <div>
-            <div class="serif" style="font-size: 36px;">API-first</div>
-            <div style="font-size: 12px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em;">Delivery by webhook or poll</div>
-          </div>
-        </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ WHAT WE DO TODAY ════════════════════════════════ -->
+<section class="section" id="today">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">What we do today</div>
+      </div>
+      <p class="lede reveal">
+        We help commercial lenders, platforms, and marketplaces of all sizes handle the compliance work of accessing tax, accounting, and financial data in one central place, purely for the benefit of helping small businesses get access to capital. We&rsquo;ve designed our solutions for all workflows, so lenders who use APIs and agents can use us, as well as processing, underwriting, and closing teams via a portal and dashboard.
+      </p>
     </div>
   </div>
 </section>
@@ -1589,13 +1213,12 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
   <div class="cta-band">
     <div class="cta-grid">
       <div>
-        <h2>Underwriting<br/><em style="font-style:italic; color: color-mix(in oklab, var(--accent) 60%, white);">moves at the speed of its data.</em></h2>
+        <h2>If you provide financial services to the 40M US small business owners,<br/><em style="font-style:italic; color: color-mix(in oklab, var(--accent) 60%, white);">we should talk.</em></h2>
       </div>
       <div>
-        <p>Book a demo and we&rsquo;ll scope the products, volume and integration for your lending program. Pricing is set in your master services agreement.</p>
-        <div style="display:flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
-          <a href="https://portal.moderntax.io/new" class="btn btn-accent">Start a verification <span class="arrow">→</span></a>
-          <a href="/walkthrough#get-access" class="btn btn-ghost">Talk to us</a>
+        <div style="display:flex; gap: 12px; margin-top: 8px; flex-wrap: wrap;">
+          <a href="/walkthrough#get-access" class="btn btn-accent">Book a demo <span class="arrow">→</span></a>
+          <a href="/how-it-works" class="btn btn-ghost">How it works</a>
         </div>
       </div>
     </div>
