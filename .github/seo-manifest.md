@@ -41,6 +41,8 @@ which writes extensionless links.
 | Employment & Income Verification | `products/employment-income-verification.html` | `/products/employment-income-verification` | yes | COPY-06 |
 | Payroll Liability (941) | `products/payroll-liability-941.html` | `/products/payroll-liability-941` | yes | COPY-04 |
 | QoE Screening | `products/qoe-screening.html` | `/products/qoe-screening` | yes | COPY-05 |
+| QoE Agent | `products/qoe-agent.html` | `/products/qoe-agent` | yes | POL-01 gated, no price |
+| QoE Full-Service | `products/qoe-services.html` | `/products/qoe-services` | yes | POL-01 gated, no price |
 | Check Reissue Recovery | `products/check-reissue-recovery.html` | `/products/check-reissue-recovery` | yes | COPY-08 |
 | Partner API & MCP | `products/partner-api-mcp.html` | `/products/partner-api-mcp` | yes | developer path |
 | SBA 504 | `use-cases/sba-504.html` | `/use-cases/sba-504` | yes | |
@@ -49,6 +51,7 @@ which writes extensionless links.
 | Employment & HR | `use-cases/employment-hr.html` | `/use-cases/employment-hr` | yes | COPY-06 |
 | Tax payment verification | `use-cases/tax-payment-verification.html` | `/use-cases/tax-payment-verification` | yes | COPY-07 |
 | Tax resolution firms | `use-cases/tax-resolution.html` | `/use-cases/tax-resolution` | yes | `/tax-resolution` 301 here |
+| How it works (agents) | `how-it-works.html` | `/how-it-works` | yes | IRS-facing automation wording pending Matt/counsel |
 | Developers | `developers.html` | `/developers` | yes | developer path |
 | API reference | `docs/index.html` | `/docs/` | yes | canonical API docs |
 | Walkthrough | `walkthrough.html` | `/walkthrough` | yes | |
@@ -64,7 +67,7 @@ which writes extensionless links.
 
 - `robots.txt` allows the site. It disallows `/api/`, `/.netlify/`, `/employment-verify/` (functions),
   `/demos/`, `/sandbox-interface.html`, `/walkthrough-thanks` and `/.github/`. It also names the sitemap.
-- `sitemap.xml` lists the 21 canonical, indexable marketing pages in the table above. It leaves out
+- `sitemap.xml` lists the 24 canonical, indexable marketing pages in the table above. It leaves out
   login, the portal (portal.moderntax.io), API endpoints and previews.
 - Netlify serves deploy previews and branch deploys with `X-Robots-Tag: noindex`. Check this on each
   preview with `curl -I`.

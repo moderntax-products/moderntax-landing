@@ -25,12 +25,15 @@ https://sandbox.moderntax.io/* /sandbox-interface.html 200!
 /privacy.html                                  /privacy                                  301!
 /terms.html                                    /terms                                    301!
 /sms-opt-in.html                               /sms-opt-in                               301!
+/how-it-works.html                              /how-it-works                              301!
 /products/index.html                           /products/                                301!
 /products/compliance-verification.html         /products/compliance-verification         301!
 /products/continuous-monitoring.html           /products/continuous-monitoring           301!
 /products/employment-income-verification.html  /products/employment-income-verification  301!
 /products/payroll-liability-941.html           /products/payroll-liability-941           301!
 /products/qoe-screening.html                   /products/qoe-screening                   301!
+/products/qoe-agent.html                       /products/qoe-agent                       301!
+/products/qoe-services.html                    /products/qoe-services                    301!
 /products/check-reissue-recovery.html          /products/check-reissue-recovery          301!
 /products/partner-api-mcp.html                 /products/partner-api-mcp                 301!
 /use-cases/sba-504.html                        /use-cases/sba-504                        301!

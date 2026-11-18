@@ -1,6 +1,6 @@
 # ModernTax Compliance Platform
 
-> ModernTax: IRS tax transcript verification for lenders and the platforms that serve them. ModernTax verifies businesses and individuals against IRS records. Submit a taxpayer, attach a signed Form 8821 naming ModernTax as designee, and receive IRS transcripts (returns, record of account, wage & income, 941 payroll) as PDFs plus structured JSON: filings with financials, transaction codes, balances, liens and a compliance summary.
+> ModernTax: end-to-end compliance services for commercial and SBA lenders across the deal (screening, IRS transcript verification, Quality of Earnings, closing, post-close monitoring and recovery), plus an API and MCP server for the platforms that serve them. ModernTax verifies businesses and individuals against IRS records. Submit a taxpayer, attach a signed Form 8821 naming ModernTax as designee, and receive IRS transcripts (returns, record of account, wage & income, 941 payroll) as PDFs plus structured JSON: filings with financials, transaction codes, balances, liens and a compliance summary.
 
 The API and customer portal run at https://portal.moderntax.io. This site (moderntax.io) holds the API reference.
 
@@ -18,6 +18,8 @@ The API and customer portal run at https://portal.moderntax.io. This site (moder
 - [Employment & Income Verification](https://moderntax.io/products/employment-income-verification): IRS-reported W-2 and 1099 wage and income information; may be incomplete for the current processing year and does not establish current employment
 - [Payroll Liability (941) Report](https://moderntax.io/products/payroll-liability-941): Form 941 payroll-tax filings and balances; $30 per entity, per requested tax year; covered quarters confirmed in the quote
 - [QoE Screening](https://moderntax.io/products/qoe-screening): screen a transaction for a Quality of Earnings scope discussion under SBA SOP 50 10 8.1 with technical policy updates; does not replace an independent QoE report or Cash Proof
+- [QoE Agent](https://moderntax.io/products/qoe-agent): AI-assisted Quality of Earnings analysis built on IRS-of-record data and borrower financials, with human review; not by itself an independent QoE report; scope and pricing on request
+- [QoE Full-Service](https://moderntax.io/products/qoe-services): Quality of Earnings engagements run by ModernTax; scope, deliverables, timing and fees agreed before work begins
 - [Check Reissue Recovery](https://moderntax.io/products/check-reissue-recovery): review of a tax-check reissue request; scope, fees and follow-up confirmed before work begins; IRS processing and delivery are outside ModernTax's control
 - [Partner API & MCP](https://moderntax.io/products/partner-api-mcp): REST, webhooks, structured JSON, cross-reference, MCP server, sandbox
 - [All products](https://moderntax.io/products/)

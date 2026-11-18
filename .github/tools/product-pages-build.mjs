@@ -15,7 +15,7 @@ const SOP_URL = 'https://www.sba.gov/document/sop-50-10-lender-development-compa
 const PLAN_NOTE = 'Your quote or signed agreement defines covered services, billing and cancellation terms. Review those terms before submitting an order.';
 const SITE = 'https://moderntax.io';
 const BRAND = 'ModernTax Compliance Platform';
-const TAGLINE = 'Tax compliance verification, monitoring and recovery for lenders and platforms — from the IRS record.';
+const TAGLINE = 'End-to-end compliance services for commercial and SBA lenders — screening, verification, Quality of Earnings, monitoring and recovery.';
 
 const MARK = `<svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="3" y="6" width="3.4" height="16" fill="currentColor"/><rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/><path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/><circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/></svg>`;
 const CHEV = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>`;
@@ -35,6 +35,7 @@ const CHECK = `<span class="check"><svg width="11" height="11" viewBox="0 0 12 1
 const P = [
   {
     slug: 'compliance-verification',
+    stage: 'verify',
     name: 'Compliance Verification',
     short: 'Filed and unfiled years, balances and IRS-of-record figures for businesses and individuals.',
     price: '$84.99 / entity',
@@ -71,6 +72,7 @@ const P = [
   {
     // COPY-03 — gate COMM-01. Replaces the product block and the pricing FAQ together.
     slug: 'continuous-monitoring',
+    stage: 'monitor',
     name: 'Continuous Monitoring',
     short: 'Follow-up transcript requests for a filing that came back missing.',
     price: 'Quoted',
@@ -99,6 +101,7 @@ const P = [
   {
     // COPY-06 — gate POL-01.
     slug: 'employment-income-verification',
+    stage: 'verify',
     name: 'Employment &amp; Income Verification',
     plain: 'Employment & Income Verification',
     short: 'IRS-reported W-2 and 1099 wage and income information.',
@@ -132,6 +135,7 @@ const P = [
   {
     // COPY-04 — gates COMM-02 (publication + quarters presentation) and OPS-01.
     slug: 'payroll-liability-941',
+    stage: 'verify',
     name: 'Payroll Liability (941) Report',
     plain: 'Payroll Liability (941) Report',
     short: 'Payroll-tax filings and balances from IRS Form 941 account transcripts.',
@@ -163,6 +167,7 @@ const P = [
   {
     // COPY-05 — gate POL-01. No loan-amount-only eligibility, no numeric threshold.
     slug: 'qoe-screening',
+    stage: 'screen',
     name: 'QoE Screening',
     short: 'Screen a transaction for a Quality of Earnings scope discussion.',
     price: 'Contact us',
@@ -190,8 +195,75 @@ const P = [
     related: ['compliance-verification', 'payroll-liability-941', 'continuous-monitoring'],
   },
   {
+    // QoE Agent — gate POL-01. AI-assisted with human review. No price (internal range is not
+    // approved for publication), no turnaround, no accuracy or "automated QoE" claim, and never
+    // presented as the independent QoE that SBA SOP 50 10 8.1 may require.
+    slug: 'qoe-agent',
+    stage: 'qoe',
+    name: 'QoE Agent',
+    short: 'AI-assisted Quality of Earnings analysis on IRS-of-record data and borrower financials, with human review.',
+    price: 'Contact us',
+    title: 'QoE Agent',
+    desc: 'The ModernTax QoE Agent: AI-assisted Quality of Earnings analysis built on IRS-of-record data and borrower financials, with human review. Supports a lender\'s review and scoping; it is not by itself an independent QoE report.',
+    h1: 'Quality of Earnings analysis, <span class="italic-em">AI-assisted and human-reviewed.</span>',
+    lede: 'The QoE Agent works from IRS-of-record data and the borrower&rsquo;s financials to prepare a Quality of Earnings analysis, and a person reviews it before it reaches you. It supports your underwriting and scoping; on its own it is not an independent Quality of Earnings report.',
+    cta: { primary: ['Scope a QoE', TALK], secondary: ['QoE full-service', '/products/qoe-services'] },
+    whatHead: 'Built on the record, checked by a person.',
+    what: [
+      ['IRS-of-record inputs', 'Starts from the transcripts on the order: filed years, reported revenue and earnings, balances and the fiscal year end.'],
+      ['Borrower financials', 'Works alongside the financial statements and returns the borrower provided, and flags where they differ from the IRS record.'],
+      ['Human review', 'A person reviews the agent&rsquo;s analysis before it is delivered. Nothing goes out as an unreviewed machine result.'],
+      ['Scope first', 'What the analysis covers for a given transaction is confirmed with you before work begins.'],
+      ['Not the independent review', `Where <a href="${SOP_URL}" rel="noopener">SBA SOP 50 10 8.1 with technical policy updates</a> calls for an independent Quality of Earnings report, the agent&rsquo;s analysis does not replace it.`],
+      ['On the same order', 'The analysis sits with the verification on the order your team already works from.'],
+    ],
+    steps: [
+      ['Scope', 'Tell us about the transaction; we confirm what the analysis covers.'],
+      ['Gather inputs', 'IRS transcripts from a Compliance Verification order, plus the borrower&rsquo;s financials.'],
+      ['Agent analysis', 'The agent prepares the analysis and flags differences from the IRS record.'],
+      ['Human review', 'A reviewer checks the analysis before it is delivered to you.'],
+    ],
+    pricing: [
+      ['QoE Agent', 'Contact us', '', 'Scope and pricing are confirmed before work begins.'],
+    ],
+    pricingCols: 1,
+    related: ['qoe-services', 'qoe-screening', 'compliance-verification'],
+  },
+  {
+    // QoE full-service — gate POL-01. Whether an engagement meets SBA SOP independence
+    // requirements is NOT claimed here; it is confirmed in scoping.
+    slug: 'qoe-services',
+    stage: 'qoe',
+    name: 'QoE Full-Service',
+    short: 'Quality of Earnings engagements run by ModernTax, scoped to your transaction.',
+    price: 'Contact us',
+    title: 'Quality of Earnings Full-Service',
+    desc: 'ModernTax-run Quality of Earnings engagements for commercial and SBA lenders, scoped to the transaction before work begins. Contact us to scope a QoE.',
+    h1: 'Quality of Earnings engagements, <span class="italic-em">run by ModernTax.</span>',
+    lede: 'When a transaction needs more than a screen, ModernTax runs the Quality of Earnings engagement, starting from the IRS record and the borrower&rsquo;s financials. Scope, deliverables, timing and fees are agreed with you before work begins.',
+    cta: { primary: ['Scope a QoE', TALK], secondary: ['See the QoE Agent', '/products/qoe-agent'] },
+    whatHead: 'One team from screen to engagement.',
+    what: [
+      ['Scoped to the deal', 'Transaction type, business purchase price and any applicable exceptions are reviewed with you to set the scope.'],
+      ['IRS record as an input', 'The engagement uses the IRS transcripts already on the order alongside the borrower&rsquo;s financials.'],
+      ['SBA requirements', `Whether an engagement meets the requirements of <a href="${SOP_URL}" rel="noopener">SBA SOP 50 10 8.1 with technical policy updates</a> for a given transaction is confirmed during scoping, before work begins.`],
+      ['Agreed terms', 'Deliverables, timing and fees are set in the engagement terms, not on this page.'],
+    ],
+    steps: [
+      ['Screen', 'QoE Screening on the verification order frames the scope discussion.'],
+      ['Scope', 'We agree the transaction scope, deliverables, timing and fees with you.'],
+      ['Engagement', 'ModernTax runs the engagement and delivers the report under the agreed terms.'],
+    ],
+    pricing: [
+      ['QoE Full-Service', 'Contact us', '', 'Scope, deliverables, timing and fees are agreed before work begins.'],
+    ],
+    pricingCols: 1,
+    related: ['qoe-agent', 'qoe-screening', 'payroll-liability-941'],
+  },
+  {
     // COPY-08 — gates POL-01 / COMM-02 before any fee trigger is published.
     slug: 'check-reissue-recovery',
+    stage: 'recover',
     name: 'Check Reissue Recovery',
     short: 'Review a tax-check reissue request: authorization, steps and scope.',
     price: 'Quoted',
@@ -220,6 +292,7 @@ const P = [
   },
   {
     slug: 'partner-api-mcp',
+    stage: 'build',
     name: 'Partner API &amp; MCP',
     plain: 'Partner API & MCP',
     short: 'REST, webhooks, structured JSON and an MCP server for AI agents, with a sandbox on synthetic data.',
@@ -260,8 +333,42 @@ https://portal.moderntax.io/api/mcp   <span class="c"># Authorization: Bearer $M
     related: ['compliance-verification', 'continuous-monitoring', 'employment-income-verification'],
   },
 ];
+// Commercial-lending deal lifecycle (Matt, Nov 17): IRS data is one input, not the whole story.
+const STAGES = [
+  ['screen', 'Screen &amp; underwrite', 'Frame the deal before you commit underwriting time.'],
+  ['verify', 'Verify', 'Confirm filings, balances, income and payroll-tax exposure against the IRS record.'],
+  ['qoe', 'Quality of Earnings', 'AI-assisted analysis with human review, or a ModernTax-run engagement.'],
+  ['close', 'Close', 'Clear filing conditions and keep the record with the loan file.'],
+  ['monitor', 'Monitor post-close', 'Follow up on filings that were still open at closing.'],
+  ['recover', 'Recover', 'Review a tax-check reissue request.'],
+  ['build', 'Build', 'Run any stage from your own platform by API or MCP.'],
+];
+const STAGE_ORDER = Object.fromEntries(STAGES.map(([k], i) => [k, i]));
+P.sort((a, b) => STAGE_ORDER[a.stage] - STAGE_ORDER[b.stage]);
 const bySlug = Object.fromEntries(P.map((p) => [p.slug, p]));
 const plain = (p) => p.plain || p.name;
+
+
+// ───────────────────────── AGENTS ─────────────────────────
+// Public description of the agent workforce (Matt, Nov 17). Outcome terms only: never say
+// software logs into IRS e-Services, automates the IRS website or uses browser automation,
+// and never name vendors. No speed / accuracy / volume numbers, no "fully automated" or
+// "no humans" claims, no turnaround promises (OPS-01). Matt/counsel to confirm this wording.
+const AGENT_FRAME = 'Agents that prepare authorizations, request and retrieve IRS records and keep every order moving, with credentialed practitioners (CAF-registered) on every IRS interaction and accountable for every request.';
+const AGENTS = [
+  ['8821 agent', 'Authorization', 'Prepares the Form 8821 and audits it before it goes out: the right designee, signer, title, tax years and forms. Once signed, it submits the authorization to the IRS so it can be recorded on the CAF (Centralized Authorization File, the IRS record of who a taxpayer has authorized).'],
+  ['Transcript retrieval agent', 'TDS', 'Once the authorization is on file, requests the transcripts through TDS (the IRS Transcript Delivery System that tax professionals use) and attaches them to the order.'],
+  ['Mailbox agent', 'SOR', 'Picks up transcripts the IRS delivers to the practitioner&rsquo;s SOR (Secure Object Repository, the IRS secure mailbox for tax professionals) and matches each one to the right order and taxpayer.'],
+  ['IRS call agent and call assistant', 'PPS', 'Places and holds Practitioner Priority Service (PPS) calls, the IRS phone line for tax professionals, then guides the credentialed practitioner who handles the live call.'],
+  ['Monitoring and follow-up agents', 'Follow-up', 'Re-check years that came back unfiled and chase missing years, on the terms set in your quote, so an open item does not sit unnoticed.'],
+  ['QoE agent', 'Quality of Earnings', 'Prepares an AI-assisted Quality of Earnings analysis from IRS-of-record data and borrower financials. A person reviews it before it reaches you.'],
+];
+const GLOSSARY = [
+  ['CAF', 'Centralized Authorization File: the IRS record of the authorizations a taxpayer has given, and of the registered practitioners who hold them.'],
+  ['TDS', 'Transcript Delivery System: the IRS service tax professionals use to request transcripts.'],
+  ['SOR', 'Secure Object Repository: the IRS secure mailbox where some transcripts are delivered to a practitioner.'],
+  ['PPS', 'Practitioner Priority Service: the IRS phone line for tax professionals.'],
+];
 
 // ───────────────────────── CHROME ─────────────────────────
 function nav() {
@@ -275,6 +382,7 @@ function nav() {
       <a href="/" class="gnav-brand" aria-label="${BRAND} home">${MARK}ModernTax<span class="gtag">Compliance Platform</span></a>
       <nav class="gnav-links" aria-label="Primary">
         <a href="/#platform">Platform</a>
+        <a href="/how-it-works">How it works</a>
         <div class="gnav-dd">
           <button type="button" aria-haspopup="true" aria-expanded="false">Products ${CHEV}</button>
           <div class="gnav-menu wide">
@@ -303,6 +411,7 @@ function nav() {
     </div>
     <nav class="gnav-mobile" id="gnav-mobile" aria-label="Mobile">
       <a href="/#platform">Platform</a>
+      <a href="/how-it-works">How it works</a>
       <div class="mh">Products</div>
       ${mobProd}
       <a href="/products/">All products</a>
@@ -363,6 +472,7 @@ function footer() {
       <div>
         <h2>Company</h2>
         <ul>
+          <li><a href="/how-it-works">How it works</a></li>
           <li><a href="/plans">Pricing</a></li>
           <li><a href="${TALK}">Talk to us</a></li>
           <li><a href="https://portal.moderntax.io/login">Sign in</a></li>
@@ -552,8 +662,14 @@ ${footer()}
 function overviewPage() {
   const url = `${SITE}/products/`;
   const title = `Products — ${BRAND}`;
-  const desc = `The ${BRAND}: compliance verification, continuous monitoring, employment and income verification, payroll liability (941) reports, QoE screening, check reissue recovery and a Partner API with an MCP server.`;
-  const cards = P.map(card).join('\n      ');
+  const desc = `Compliance services across the commercial lending deal: QoE screening, IRS compliance verification, employment and income, payroll liability (941), the QoE Agent and QoE full-service, post-close monitoring, check reissue review and a Partner API with an MCP server.`;
+  const cards = STAGES.map(([k, label, blurb], i) => {
+    const items = P.filter((p) => p.stage === k);
+    const body = items.length
+      ? `<div class="plist three">\n      ${items.map(card).join('\n      ')}\n    </div>`
+      : `<p class="stage-note">Unfiled years are flagged at verification, so a missing return is a closing condition rather than a surprise. Transcripts, results and the signed 8821 stay on the order for the loan file. Back-year filing is quoted on the <a href="/plans">pricing page</a>.</p>`;
+    return `<div class="stage">\n    <h3 class="stage-h"><span class="stage-n">${String(i + 1).padStart(2, '0')}</span>${label}<span class="stage-b">${blurb}</span></h3>\n    ${body}\n    </div>`;
+  }).join('\n    ');
   return `${head({ title, desc: esc(desc), url })}${nav()}
 
 <main id="main">
@@ -561,8 +677,8 @@ function overviewPage() {
 <section class="hero">
   <div class="wrap hero-in wide">
     <span class="pill"><span class="dot"></span>${BRAND}</span>
-    <h1 class="display-2">IRS records for lending decisions, <span class="italic-em">product by product.</span></h1>
-    <p class="lede">${TAGLINE.replace(' — from the IRS record.', '.')} Every product runs on the same authorization, the same order and the same audit trail — in the portal or through the API.</p>
+    <h1 class="display-2">Compliance across the <span class="italic-em">commercial lending deal.</span></h1>
+    <p class="lede">From screening and verification to Quality of Earnings, closing, post-close monitoring and recovery. IRS-of-record data is one input; borrower financials and human review are others. Work in the portal or through the API.</p>
     <div class="hero-ctas">
         ${ctas()}
     </div>
@@ -572,10 +688,8 @@ function overviewPage() {
 
 <section class="section">
   <div class="wrap">
-    ${sectionHead('01', 'Products', 'Verify, monitor, <span class="italic-em">recover.</span>', 'Start with a verification. Add monitoring, payroll and QoE screening where the loan calls for it, with scope confirmed in your quote. Ask us to review a tax-check reissue request. Build any of it into your own product with the API.')}
-    <div class="plist three">
-      ${cards}
-    </div>
+    ${sectionHead('01', 'By deal stage', 'Screen, verify, <span class="italic-em">close and follow through.</span>', 'Each stage below lists the products that serve it. Scope, authorization and pricing for each are confirmed before you order. <a href="/how-it-works">How it works: our agents and practitioners</a>.')}
+    ${cards}
     <p class="fine">Prices shown are per unit as listed on the <a href="/plans" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">pricing page</a>; &ldquo;Quoted&rdquo; and &ldquo;Contact us&rdquo; items are confirmed in your quote. ${PLAN_NOTE}</p>
   </div>
 </section>
@@ -603,10 +717,104 @@ ${footer()}
 `;
 }
 
+
+function agentsPage() {
+  const url = `${SITE}/how-it-works`;
+  const title = `How It Works: Our Agents and Practitioners | ModernTax`;
+  const desc = 'How ModernTax works: agents that prepare 8821 authorizations, request transcripts through TDS, pick up SOR deliveries and handle PPS calls, with CAF-registered practitioners on every IRS interaction.';
+  const cells = AGENTS.map(([h, tag, t], i) => `<article class="gcell">
+        <div class="idx"><span class="dotsq"></span>${String(i + 1).padStart(2, '0')} &middot; ${tag}</div>
+        <h3>${h}</h3>
+        <p>${t}</p>
+      </article>`).join('\n      ');
+  const gl = GLOSSARY.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n      ');
+  return `${head({ title, desc: esc(desc), url })}${nav()}
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap hero-in wide">
+    <span class="pill"><span class="dot"></span>How it works</span>
+    <h1 class="display-2">Agents do the legwork. <span class="italic-em">Practitioners stay accountable.</span></h1>
+    <p class="lede">${AGENT_FRAME}</p>
+    <div class="hero-ctas">
+        ${ctas()}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    ${sectionHead('01', 'Our agents', 'Who does what <span class="italic-em">on every order.</span>')}
+    <div class="grid-flush three">
+      ${cells}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    ${sectionHead('02', 'People', 'A practitioner on <span class="italic-em">every IRS interaction.</span>', 'Agents prepare, request, retrieve and follow up. Credentialed, CAF-registered practitioners hold the authorizations, handle live IRS calls and are accountable for every request. Timing depends on the IRS and on when the signed authorization is on file.')}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    ${sectionHead('03', 'Glossary', 'The IRS terms, <span class="italic-em">in plain English.</span>')}
+    <dl class="gloss">
+      ${gl}
+    </dl>
+  </div>
+</section>
+
+</main>
+
+${footer()}
+<script src="/assets/site-chrome.js"></script>
+</body>
+</html>
+`;
+}
+
+// Homepage "Our agents" block, injected between AGENTS markers in index.html.
+function homeAgents() {
+  const cards = AGENTS.map(([h, tag, t]) => `<div class="product compact">
+        <div class="product-eyebrow"><span class="dotsq"></span> ${tag}</div>
+        <h3>${h}</h3>
+        <p>${t}</p>
+      </div>`).join('\n      ');
+  return `<!-- AGENTS:START (generated — see .github/tools/product-pages-build.mjs) -->
+<section class="section" id="agents" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">How it works · Our agents</div>
+        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
+          Agents do the legwork.<br/>
+          <em class="italic-em">Practitioners stay accountable.</em>
+        </h2>
+      </div>
+      <p class="lede reveal">${AGENT_FRAME} <a href="/how-it-works" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">How it works</a></p>
+    </div>
+    <div class="products lifecycle reveal">
+      ${cards}
+    </div>
+  </div>
+</section>
+<!-- AGENTS:END -->`;
+}
+
 // ───────────────────────── WRITE PRODUCTS ─────────────────────────
 fs.mkdirSync(path.join(ROOT, 'products'), { recursive: true });
 for (const p of P) fs.writeFileSync(path.join(ROOT, 'products', `${p.slug}.html`), productPage(p));
 fs.writeFileSync(path.join(ROOT, 'products', 'index.html'), overviewPage());
+fs.writeFileSync(path.join(ROOT, 'how-it-works.html'), agentsPage());
+{
+  const f = path.join(ROOT, 'index.html');
+  const h = fs.readFileSync(f, 'utf8');
+  if (!h.includes('<!-- AGENTS:START')) throw new Error('index.html: AGENTS markers missing');
+  fs.writeFileSync(f, h.replace(/<!-- AGENTS:START[\s\S]*?<!-- AGENTS:END -->/, homeAgents()));
+}
 
 // ───────────────────────── INJECT CHROME INTO EXISTING PAGES ─────────────────────────
 // First run replaces the page's own <header>…</header> / <footer>…</footer>;

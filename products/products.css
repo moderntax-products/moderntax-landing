@@ -46,3 +46,19 @@
 /* fine print */
 .fine{font-size:13px;color:var(--ink-3);line-height:1.6;max-width:80ch;margin:28px 0 0}
 .hero .dev-link{margin-top:6px}
+/* Products overview grouped by commercial-lending deal stage */
+.stage{margin-top:40px}
+.stage:first-of-type{margin-top:8px}
+.stage-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;font-family:var(--serif);font-weight:400;font-size:clamp(24px,2.4vw,32px);margin:0 0 16px;padding-top:20px;border-top:1px solid var(--rule)}
+.stage-n{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--ink-3)}
+.stage-b{flex-basis:100%;font-family:var(--sans);font-size:15px;color:var(--ink-2)}
+.stage-note{color:var(--ink-2);max-width:68ch;margin:0}
+.stage-note a,.gcell p a,.lede a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px}
+/* How it works glossary */
+.gloss{display:grid;gap:0;margin:0;border-top:1px solid var(--rule)}
+@media(min-width:900px){.gloss{grid-template-columns:1fr 1fr}}
+.gloss>div{padding:18px 0;border-bottom:1px solid var(--rule-soft)}
+@media(min-width:900px){.gloss>div{padding:20px 24px 20px 0}}
+.gloss dt{font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--accent-ink)}
+.gloss dd{margin:6px 0 0;color:var(--ink-2);line-height:1.55}
+.stage-h a,.section-head .lede a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px}
