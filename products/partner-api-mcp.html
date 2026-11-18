@@ -187,14 +187,18 @@
         <p class="lede">The full reference — authentication, ordering, polling, webhooks, errors and the MCP tool list — lives in the <a href="/docs/" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">API docs</a>.</p>
       </div>
     </div>
-    <pre class="pcode" tabindex="0" aria-label="Example API request"><span class="c"># Create an order</span>
+    <pre class="pcode" tabindex="0" aria-label="Example API request"><span class="c"># Create an order (sandbox keys take test TINs: 00-XXXXXXX or 000-XX-XXXX)</span>
 curl <span class="k">-X POST</span> https://portal.moderntax.io/api/intake/transcript \
-  -H <span class="k">"x-api-key: $MT_KEY"</span> \
+  -H <span class="k">"x-api-key: $MT_KEY"</span> -H <span class="k">"Content-Type: application/json"</span> \
   -d '{"request_token":"loan-4482","entities":[{"entity_name":"Atlas Roofing LLC",
-       "tid":"88-1213417","form_type":"1120S","fiscal_year_end_month":12,
+       "tid":"00-1213417","form_type":"1120S","fiscal_year_end_month":12,
        "years":["2024","2023"]}]}'
 
-<span class="c"># MCP: point your agent at</span>
+<span class="c"># Poll for results</span>
+curl -H <span class="k">"x-api-key: $MT_KEY"</span> "https://portal.moderntax.io/api/intake/transcript?token=loan-4482"
+
+<span class="c"># MCP: point your agent at (tools: verify_entity, order_transcripts,</span>
+<span class="c"># get_order_status, get_transcript_data, cross_reference)</span>
 https://portal.moderntax.io/api/mcp   <span class="c"># Authorization: Bearer $MT_KEY</span></pre>
   </div>
 </section>

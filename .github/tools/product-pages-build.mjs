@@ -317,14 +317,18 @@ const P = [
       ['Sandbox', 'A work email gets an API key against synthetic taxpayers. Not every product is available in the sandbox; the API docs list what is.'],
       ['Portal visibility', 'Every API order is also visible in the portal, so operations teams work the same record.'],
     ],
-    code: `<span class="c"># Create an order</span>
+    code: `<span class="c"># Create an order (sandbox keys take test TINs: 00-XXXXXXX or 000-XX-XXXX)</span>
 curl <span class="k">-X POST</span> https://portal.moderntax.io/api/intake/transcript \\
-  -H <span class="k">"x-api-key: $MT_KEY"</span> \\
+  -H <span class="k">"x-api-key: $MT_KEY"</span> -H <span class="k">"Content-Type: application/json"</span> \\
   -d '{"request_token":"loan-4482","entities":[{"entity_name":"Atlas Roofing LLC",
-       "tid":"88-1213417","form_type":"1120S","fiscal_year_end_month":12,
+       "tid":"00-1213417","form_type":"1120S","fiscal_year_end_month":12,
        "years":["2024","2023"]}]}'
 
-<span class="c"># MCP: point your agent at</span>
+<span class="c"># Poll for results</span>
+curl -H <span class="k">"x-api-key: $MT_KEY"</span> "https://portal.moderntax.io/api/intake/transcript?token=loan-4482"
+
+<span class="c"># MCP: point your agent at (tools: verify_entity, order_transcripts,</span>
+<span class="c"># get_order_status, get_transcript_data, cross_reference)</span>
 https://portal.moderntax.io/api/mcp   <span class="c"># Authorization: Bearer $MT_KEY</span>`,
     steps: [
       ['Get a sandbox key', 'Sign up with a work email at the sandbox and get a key against synthetic data.'],
