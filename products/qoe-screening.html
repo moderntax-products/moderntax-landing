@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QoE Screening — ModernTax Compliance Platform</title>
-<meta name="description" content="Quality of Earnings screening for SBA lenders: capture the loan amount at intake and screen each business order against the IRS transcripts to see which loans need a QoE review under SBA SOP 50 10 8.">
-<link rel="canonical" href="https://moderntax.io/products/qoe-screening.html">
+<meta name="description" content="Screen a transaction for a Quality of Earnings scope discussion: review transaction type, business purchase price and applicable exceptions under SBA SOP 50 10 8.1 with technical policy updates. Screening does not replace an independent QoE report or Cash Proof.">
+<link rel="canonical" href="https://moderntax.io/products/qoe-screening">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ModernTax Compliance Platform">
 <meta property="og:title" content="QoE Screening — ModernTax Compliance Platform">
-<meta property="og:description" content="Quality of Earnings screening for SBA lenders: capture the loan amount at intake and screen each business order against the IRS transcripts to see which loans need a QoE review under SBA SOP 50 10 8.">
-<meta property="og:url" content="https://moderntax.io/products/qoe-screening.html">
+<meta property="og:description" content="Screen a transaction for a Quality of Earnings scope discussion: review transaction type, business purchase price and applicable exceptions under SBA SOP 50 10 8.1 with technical policy updates. Screening does not replace an independent QoE report or Cash Proof.">
+<meta property="og:url" content="https://moderntax.io/products/qoe-screening">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="QoE Screening — ModernTax Compliance Platform">
-<meta name="twitter:description" content="Quality of Earnings screening for SBA lenders: capture the loan amount at intake and screen each business order against the IRS transcripts to see which loans need a QoE review under SBA SOP 50 10 8.">
+<meta name="twitter:description" content="Screen a transaction for a Quality of Earnings scope discussion: review transaction type, business purchase price and applicable exceptions under SBA SOP 50 10 8.1 with technical policy updates. Screening does not replace an independent QoE report or Cash Proof.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -30,29 +30,32 @@
       <a href="/" class="gnav-brand" aria-label="ModernTax Compliance Platform home"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="3" y="6" width="3.4" height="16" fill="currentColor"/><rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/><path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/><circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/></svg>ModernTax<span class="gtag">Compliance Platform</span></a>
       <nav class="gnav-links" aria-label="Primary">
         <a href="/#platform">Platform</a>
+        <a href="/how-it-works">How it works</a>
         <div class="gnav-dd">
           <button type="button" aria-haspopup="true" aria-expanded="false">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="gnav-menu wide">
-          <a href="/products/compliance-verification.html"><span class="t">Compliance Verification</span><span class="d">Filed and unfiled years, balances and IRS-of-record figures for any business or individual.</span></a>
-          <a href="/products/continuous-monitoring.html"><span class="t">Continuous Monitoring</span><span class="d">Scheduled IRS re-pulls that flag the moment an unfiled year becomes filed.</span></a>
-          <a href="/products/employment-income-verification.html"><span class="t">Employment &amp; Income Verification</span><span class="d">W-2 and 1099 wage and income data, straight from the IRS.</span></a>
-          <a href="/products/payroll-liability-941.html"><span class="t">Payroll Liability (941) Report</span><span class="d">Quarter-by-quarter payroll-tax filings and balances an income transcript will not show.</span></a>
-          <a href="/products/qoe-screening.html"><span class="t">QoE Screening</span><span class="d">Screen which SBA loans need a Quality of Earnings review under SOP 50 10 8.</span></a>
-          <a href="/products/check-reissue-recovery.html"><span class="t">Check Reissue Recovery</span><span class="d">Recover IRS refund checks that came back undelivered.</span></a>
-          <a href="/products/partner-api-mcp.html"><span class="t">Partner API &amp; MCP</span><span class="d">REST, webhooks, structured JSON and an MCP server for AI agents — with a free sandbox.</span></a>
+          <a href="/products/qoe-screening"><span class="t">QoE Screening</span><span class="d">Screen a transaction for a Quality of Earnings scope discussion.</span></a>
+          <a href="/products/compliance-verification"><span class="t">Compliance Verification</span><span class="d">Filed and unfiled years, balances and IRS-of-record figures for businesses and individuals.</span></a>
+          <a href="/products/employment-income-verification"><span class="t">Employment &amp; Income Verification</span><span class="d">IRS-reported W-2 and 1099 wage and income information.</span></a>
+          <a href="/products/payroll-liability-941"><span class="t">Payroll Liability (941) Report</span><span class="d">Payroll-tax filings and balances from IRS Form 941 account transcripts.</span></a>
+          <a href="/products/qoe-agent"><span class="t">QoE Agent</span><span class="d">AI-assisted Quality of Earnings analysis on IRS-of-record data and borrower financials, with human review.</span></a>
+          <a href="/products/qoe-services"><span class="t">QoE Full-Service</span><span class="d">Quality of Earnings engagements run by ModernTax, scoped to your transaction.</span></a>
+          <a href="/products/continuous-monitoring"><span class="t">Continuous Monitoring</span><span class="d">Follow-up transcript requests for a filing that came back missing.</span></a>
+          <a href="/products/check-reissue-recovery"><span class="t">Check Reissue Recovery</span><span class="d">Review a tax-check reissue request: authorization, steps and scope.</span></a>
+          <a href="/products/partner-api-mcp"><span class="t">Partner API &amp; MCP</span><span class="d">REST, webhooks, structured JSON and an MCP server for AI agents, with a sandbox on synthetic data.</span></a>
           <a class="all" href="/products/"><span class="t">All products &rarr;</span></a>
           </div>
         </div>
         <div class="gnav-dd">
           <button type="button" aria-haspopup="true" aria-expanded="false">Developers <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="gnav-menu">
-            <a href="/developers.html"><span class="t">API</span><span class="d">REST intake, webhooks, structured JSON</span></a>
+            <a href="/developers"><span class="t">API</span><span class="d">REST intake, webhooks, structured JSON</span></a>
             <a href="/docs/"><span class="t">Docs</span><span class="d">The Partner API reference</span></a>
             <a href="/docs/#mcp"><span class="t">MCP</span><span class="d">Model Context Protocol server for AI agents</span></a>
-            <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">A free API key against synthetic data</span></a>
+            <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">An API key against synthetic data</span></a>
           </div>
         </div>
-        <a href="/plans.html">Pricing</a>
+        <a href="/plans">Pricing</a>
       </nav>
       <div class="gnav-cta">
         <a href="https://portal.moderntax.io/login" class="gsignin">Sign in</a>
@@ -64,22 +67,25 @@
     </div>
     <nav class="gnav-mobile" id="gnav-mobile" aria-label="Mobile">
       <a href="/#platform">Platform</a>
+      <a href="/how-it-works">How it works</a>
       <div class="mh">Products</div>
-      <a href="/products/compliance-verification.html">Compliance Verification</a>
-      <a href="/products/continuous-monitoring.html">Continuous Monitoring</a>
-      <a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a>
-      <a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a>
-      <a href="/products/qoe-screening.html">QoE Screening</a>
-      <a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a>
-      <a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a>
+      <a href="/products/qoe-screening">QoE Screening</a>
+      <a href="/products/compliance-verification">Compliance Verification</a>
+      <a href="/products/employment-income-verification">Employment &amp; Income Verification</a>
+      <a href="/products/payroll-liability-941">Payroll Liability (941) Report</a>
+      <a href="/products/qoe-agent">QoE Agent</a>
+      <a href="/products/qoe-services">QoE Full-Service</a>
+      <a href="/products/continuous-monitoring">Continuous Monitoring</a>
+      <a href="/products/check-reissue-recovery">Check Reissue Recovery</a>
+      <a href="/products/partner-api-mcp">Partner API &amp; MCP</a>
       <a href="/products/">All products</a>
       <div class="mh">Developers</div>
-      <a href="/developers.html">API</a>
+      <a href="/developers">API</a>
       <a href="/docs/">Docs</a>
       <a href="/docs/#mcp">MCP</a>
       <a href="https://portal.moderntax.io/sandbox">Sandbox</a>
       <div class="mh">More</div>
-      <a href="/plans.html">Pricing</a>
+      <a href="/plans">Pricing</a>
       <div class="mcta">
         <a href="https://portal.moderntax.io/login" class="gbtn ghost">Sign in</a>
         <a href="https://portal.moderntax.io/signup" class="gbtn">Get started</a>
@@ -94,13 +100,14 @@
 <section class="hero">
   <div class="wrap hero-in wide">
     <span class="pill"><span class="dot"></span>QoE Screening</span>
-    <h1 class="display-2">Know which loans need a QoE <span class="italic-em">before you order one.</span></h1>
-    <p class="lede">SBA SOP 50 10 8 calls for a Quality of Earnings review on some loans and not others. Capture the loan amount at intake and screen every business order against the IRS transcripts already on file — one click, one verdict.</p>
+    <h1 class="display-2">Screen a transaction for a <span class="italic-em">QoE scope discussion.</span></h1>
+    <p class="lede">Review transaction type, business purchase price and applicable exceptions under <a href="https://www.sba.gov/document/sop-50-10-lender-development-company-loan-programs" rel="noopener" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">SBA SOP 50 10 8.1 with technical policy updates</a> (effective October 1, 2026). Transcript screening can support a review; it does not replace an independent Quality of Earnings report or Cash Proof.</p>
     <div class="hero-ctas">
-        <a href="https://portal.moderntax.io/sandbox" class="btn btn-lg btn-accent">Start free in the sandbox <span class="arrow">&rarr;</span></a>
-        <a href="/walkthrough.html#get-access" class="btn btn-lg btn-ghost">Talk to us</a>
+        <a href="/walkthrough#get-access" class="btn btn-lg btn-accent">Review transaction scope <span class="arrow">&rarr;</span></a>
+        <a href="/plans" class="btn btn-lg btn-ghost">See pricing</a>
     </div>
     <p class="sub-ctas">Part of the ModernTax Compliance Platform &middot; <a href="/products/">See all products</a></p>
+    <p class="sub-ctas dev-link">Building on the API? <a href="https://portal.moderntax.io/sandbox">Explore the sandbox</a> &middot; synthetic data; the <a href="/docs/">API docs</a> list what it supports.</p>
   </div>
 </section>
 
@@ -112,29 +119,29 @@
         <span class="eyebrow">What you get</span>
       </div>
       <div>
-        <h2 class="display-3">A screen, not a guess.</h2>
+        <h2 class="display-3">Support for the review, not a substitute for it.</h2>
       </div>
     </div>
     <div class="grid-flush three">
       <article class="gcell">
         <div class="idx"><span class="dotsq"></span>01</div>
-        <h3>Loan amount at intake</h3>
-        <p>Loan amount and purpose travel with the order on every path — portal form, CSV column or API field.</p>
+        <h3>Transaction context</h3>
+        <p>Discuss transaction type, business purchase price and any applicable exceptions with your team before scoping a review.</p>
       </article>
       <article class="gcell">
         <div class="idx"><span class="dotsq"></span>02</div>
         <h3>Reads the IRS record</h3>
-        <p>The screen runs on the transcripts already pulled: filed years, readable revenue and earnings, and the fiscal year end.</p>
+        <p>The screen runs on transcripts already pulled: filed years, reported revenue and earnings, and the fiscal year end.</p>
       </article>
       <article class="gcell">
         <div class="idx"><span class="dotsq"></span>03</div>
-        <h3>One clear verdict</h3>
-        <p>QoE required, qualifies, more information needed, or not eligible — with the steps to fill any gap.</p>
+        <h3>Flags for the underwriter</h3>
+        <p>Unfiled years, negative earnings and falling revenue are flagged for the underwriter to review.</p>
       </article>
       <article class="gcell">
         <div class="idx"><span class="dotsq"></span>04</div>
-        <h3>Early warnings</h3>
-        <p>Unfiled years, negative earnings, thin debt-service coverage and falling revenue are flagged for the underwriter.</p>
+        <h3>Not a QoE report</h3>
+        <p>Screening does not replace an independent Quality of Earnings report or Cash Proof, and does not decide whether one is required.</p>
       </article>
     </div>
   </div>
@@ -151,11 +158,10 @@
         <h2 class="display-3">From order <span class="italic-em">to answer.</span></h2>
       </div>
     </div>
-    <ol class="psteps four">
-      <li><h3>Capture the loan</h3><p>Add the loan amount and purpose when you place the verification order.</p></li>
-      <li><h3>Verify</h3><p>The Compliance Verification order pulls the business&rsquo;s IRS transcripts.</p></li>
-      <li><h3>Screen</h3><p>Run the QoE check on the order and read the verdict and warnings.</p></li>
-      <li><h3>Engage if needed</h3><p>When a review is called for, talk to us about scoping a QoE engagement.</p></li>
+    <ol class="psteps">
+      <li><h3>Verify</h3><p>A Compliance Verification order pulls the business&rsquo;s IRS transcripts.</p></li>
+      <li><h3>Screen</h3><p>Run the screen on the order and read the flags.</p></li>
+      <li><h3>Discuss scope</h3><p>Review the transaction against the SBA SOP with your team and the independent reviewer.</p></li>
     </ol>
   </div>
 </section>
@@ -173,12 +179,12 @@
     </div>
     <div class="pprice" style="--cols:1">
       <div>
-        <div class="lbl">QoE Screening &amp; engagements</div>
+        <div class="lbl">QoE Screening</div>
         <div class="amt">Contact us</div>
-        <p class="note">Screening runs on Compliance Verification orders. Talk to us about enabling it and about QoE engagements.</p>
+        <p class="note">Screening runs on Compliance Verification orders. Talk to us about enabling it.</p>
       </div>
     </div>
-    <p class="pprice-foot">Full plan details on the <a href="/plans.html">pricing page</a>. Not sure which fits? <a href="/walkthrough.html#get-access">Talk to us</a>.</p>
+    <p class="pprice-foot">Your quote or signed agreement defines covered services, billing and cancellation terms. Review those terms before submitting an order. Full plan details on the <a href="/plans">pricing page</a>. Not sure which fits? <a href="/walkthrough#get-access">Talk to us</a>.</p>
   </div>
 </section>
 
@@ -194,23 +200,23 @@
       </div>
     </div>
     <div class="plist three">
-      <a class="pitem" href="/products/compliance-verification.html">
+      <a class="pitem" href="/products/compliance-verification">
         <span class="k"><span class="dotsq"></span>Product</span>
         <h3>Compliance Verification</h3>
-        <p>Filed and unfiled years, balances and IRS-of-record figures for any business or individual.</p>
-        <span class="foot"><span class="price">From $49.99 / entity</span><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
+        <p>Filed and unfiled years, balances and IRS-of-record figures for businesses and individuals.</p>
+        <span class="foot"><span class="price">$84.99 / entity</span><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
       </a>
-      <a class="pitem" href="/products/payroll-liability-941.html">
+      <a class="pitem" href="/products/payroll-liability-941">
         <span class="k"><span class="dotsq"></span>Product</span>
         <h3>Payroll Liability (941) Report</h3>
-        <p>Quarter-by-quarter payroll-tax filings and balances an income transcript will not show.</p>
-        <span class="foot"><span class="price">Contact us</span><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
+        <p>Payroll-tax filings and balances from IRS Form 941 account transcripts.</p>
+        <span class="foot"><span class="price">$30 / entity, per tax year</span><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
       </a>
-      <a class="pitem" href="/products/continuous-monitoring.html">
+      <a class="pitem" href="/products/continuous-monitoring">
         <span class="k"><span class="dotsq"></span>Product</span>
         <h3>Continuous Monitoring</h3>
-        <p>Scheduled IRS re-pulls that flag the moment an unfiled year becomes filed.</p>
-        <span class="foot"><span class="price">$39.99 / update</span><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
+        <p>Follow-up transcript requests for a filing that came back missing.</p>
+        <span class="foot"><span class="price">Quoted</span><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
       </a>
     </div>
   </div>
@@ -220,11 +226,11 @@
   <div class="wrap">
     <div class="cta-band">
       <div class="cta-in">
-        <h2>Try QoE Screening <span class="italic-em">in the sandbox.</span></h2>
-        <p>A work email gets you an API key and synthetic taxpayers to test against — no sales call, no card.</p>
+        <h2>Talk to us about <span class="italic-em">QoE Screening.</span></h2>
+        <p>We confirm scope, authorization requirements and pricing for your loans before you order.</p>
         <div class="cta-btns">
-          <a href="https://portal.moderntax.io/sandbox" class="btn btn-lg btn-accent">Start free in the sandbox <span class="arrow">&rarr;</span></a>
-        <a href="/walkthrough.html#get-access" class="btn btn-lg btn-ghost">Talk to us</a>
+          <a href="/walkthrough#get-access" class="btn btn-lg btn-accent">Review transaction scope <span class="arrow">&rarr;</span></a>
+        <a href="/plans" class="btn btn-lg btn-ghost">See pricing</a>
         </div>
       </div>
     </div>
@@ -239,24 +245,26 @@
     <div class="gfoot-grid">
       <div class="gfoot-about">
         <a href="/" class="gnav-brand"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="3" y="6" width="3.4" height="16" fill="currentColor"/><rect x="21.6" y="6" width="3.4" height="16" fill="currentColor"/><path d="M6.4 6 L14 18 L21.6 6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/><circle cx="14" cy="22.5" r="1.6" fill="var(--accent)"/></svg>ModernTax</a>
-        <p>The ModernTax Compliance Platform. Tax compliance verification, monitoring and recovery for lenders and platforms — from the IRS record.</p>
+        <p>The ModernTax Compliance Platform. End-to-end compliance services for commercial and SBA lenders — screening, verification, Quality of Earnings, monitoring and recovery.</p>
       </div>
       <div>
         <h2>Products</h2>
         <ul>
-          <li><a href="/products/compliance-verification.html">Compliance Verification</a></li>
-          <li><a href="/products/continuous-monitoring.html">Continuous Monitoring</a></li>
-          <li><a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a></li>
-          <li><a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a></li>
-          <li><a href="/products/qoe-screening.html">QoE Screening</a></li>
-          <li><a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a></li>
-          <li><a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a></li>
+          <li><a href="/products/qoe-screening">QoE Screening</a></li>
+          <li><a href="/products/compliance-verification">Compliance Verification</a></li>
+          <li><a href="/products/employment-income-verification">Employment &amp; Income Verification</a></li>
+          <li><a href="/products/payroll-liability-941">Payroll Liability (941) Report</a></li>
+          <li><a href="/products/qoe-agent">QoE Agent</a></li>
+          <li><a href="/products/qoe-services">QoE Full-Service</a></li>
+          <li><a href="/products/continuous-monitoring">Continuous Monitoring</a></li>
+          <li><a href="/products/check-reissue-recovery">Check Reissue Recovery</a></li>
+          <li><a href="/products/partner-api-mcp">Partner API &amp; MCP</a></li>
         </ul>
       </div>
       <div>
         <h2>Developers</h2>
         <ul>
-          <li><a href="/developers.html">API</a></li>
+          <li><a href="/developers">API</a></li>
           <li><a href="/docs/">Docs</a></li>
           <li><a href="/docs/#mcp">MCP</a></li>
           <li><a href="https://portal.moderntax.io/sandbox">Sandbox</a></li>
@@ -266,19 +274,20 @@
       <div>
         <h2>Use cases</h2>
         <ul>
-          <li><a href="/use-cases/sba-504.html">SBA 504</a></li>
-          <li><a href="/use-cases/sba-7a.html">SBA 7(a)</a></li>
-          <li><a href="/use-cases/commercial-lending.html">Commercial lending</a></li>
-          <li><a href="/use-cases/employment-hr.html">Employment &amp; HR</a></li>
-          <li><a href="/use-cases/tax-payment-verification.html">Tax payment verification</a></li>
-          <li><a href="/use-cases/tax-resolution.html">Tax resolution firms</a></li>
+          <li><a href="/use-cases/sba-504">SBA 504</a></li>
+          <li><a href="/use-cases/sba-7a">SBA 7(a)</a></li>
+          <li><a href="/use-cases/commercial-lending">Commercial lending</a></li>
+          <li><a href="/use-cases/employment-hr">Employment &amp; HR</a></li>
+          <li><a href="/use-cases/tax-payment-verification">Tax payment verification</a></li>
+          <li><a href="/use-cases/tax-resolution">Tax resolution firms</a></li>
         </ul>
       </div>
       <div>
         <h2>Company</h2>
         <ul>
-          <li><a href="/plans.html">Pricing</a></li>
-          <li><a href="/walkthrough.html#get-access">Talk to us</a></li>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/plans">Pricing</a></li>
+          <li><a href="/walkthrough#get-access">Talk to us</a></li>
           <li><a href="https://portal.moderntax.io/login">Sign in</a></li>
           <li><a href="https://portal.moderntax.io/security">Security</a></li>
           <li><a href="/privacy">Privacy</a></li>
@@ -287,6 +296,8 @@
       </div>
     </div>
     <div class="gfoot-bottom">
+      <!-- TODO(LEGAL-01): contracting/legal entity (ModernTax Inc. vs Rapidly Financial Inc.), privacy controller identity and service terms are
+           unverified. Do not replace this line with another legal name until LEGAL-01 is decided. Security badges stay off the site until then. -->
       <p>&copy; 2026 ModernTax, Inc. All rights reserved.</p>
       <p>ModernTax Compliance Platform</p>
     </div>

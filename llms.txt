@@ -1,6 +1,6 @@
 # ModernTax Compliance Platform
 
-> The ModernTax Compliance Platform: tax compliance verification, monitoring and recovery for lenders and platforms, from the IRS record. ModernTax verifies businesses and individuals against IRS records. Submit a taxpayer, attach a signed Form 8821 naming ModernTax as designee, and receive IRS transcripts (returns, record of account, wage & income, 941 payroll) as PDFs plus structured JSON: filings with financials, transaction codes, balances, liens and a compliance summary.
+> ModernTax: end-to-end compliance services for commercial and SBA lenders across the deal (screening, IRS transcript verification, Quality of Earnings, closing, post-close monitoring and recovery), plus an API and MCP server for the platforms that serve them. ModernTax verifies businesses and individuals against IRS records. Submit a taxpayer, attach a signed Form 8821 naming ModernTax as designee, and receive IRS transcripts (returns, record of account, wage & income, 941 payroll) as PDFs plus structured JSON: filings with financials, transaction codes, balances, liens and a compliance summary.
 
 The API and customer portal run at https://portal.moderntax.io. This site (moderntax.io) holds the API reference.
 
@@ -8,18 +8,20 @@ The API and customer portal run at https://portal.moderntax.io. This site (moder
 
 - [API reference](https://moderntax.io/docs): authentication, ordering, polling, webhooks, errors, rate limits
 - [OpenAPI 3.1 spec](https://portal.moderntax.io/openapi.json): machine-readable description of the REST API
-- [Self-serve sandbox](https://portal.moderntax.io/sandbox): a work email gets an API key immediately against synthetic borrower data; no sales call, no card. Programmatic: `POST https://portal.moderntax.io/api/sandbox/signup` with `{"company": "...", "email": "you@yourcompany.com"}` returns the key once
+- [Self-serve sandbox](https://portal.moderntax.io/sandbox): a work email gets an API key immediately against synthetic borrower data; no sales call, no card. Programmatic: `POST https://portal.moderntax.io/api/sandbox/signup` with `{"company": "...", "email": "you@yourcompany.com"}` returns the key once. Not every product is available in the sandbox
 - [Security](https://portal.moderntax.io/security): how data and keys are protected; contact security@moderntax.io
 
 ## Products
 
-- [Compliance Verification](https://moderntax.io/products/compliance-verification.html): filed and unfiled years, balances, IRS-of-record figures; digital 8821; same-day turnaround
-- [Continuous Monitoring](https://moderntax.io/products/continuous-monitoring.html): scheduled re-pulls that flag when an unfiled year becomes filed
-- [Employment & Income Verification](https://moderntax.io/products/employment-income-verification.html): W-2 and 1099 wage and income
-- [Payroll Liability (941) Report](https://moderntax.io/products/payroll-liability-941.html): quarter-by-quarter payroll-tax filings and balances
-- [QoE Screening](https://moderntax.io/products/qoe-screening.html): which SBA loans need a Quality of Earnings review (SBA SOP 50 10 8); loan amount at intake
-- [Check Reissue Recovery](https://moderntax.io/products/check-reissue-recovery.html): recovering IRS refund checks returned undelivered
-- [Partner API & MCP](https://moderntax.io/products/partner-api-mcp.html): REST, webhooks, structured JSON, cross-reference, MCP server, sandbox
+- [Compliance Verification](https://moderntax.io/products/compliance-verification): filed and unfiled years, balances, IRS-of-record figures; pre-filled Form 8821 the taxpayer signs
+- [Continuous Monitoring](https://moderntax.io/products/continuous-monitoring): follow-up transcript requests for a missing filing; check schedule, charges and stopping rule are confirmed in the customer's quote before enrollment
+- [Employment & Income Verification](https://moderntax.io/products/employment-income-verification): IRS-reported W-2 and 1099 wage and income information; may be incomplete for the current processing year and does not establish current employment
+- [Payroll Liability (941) Report](https://moderntax.io/products/payroll-liability-941): Form 941 payroll-tax filings and balances; $30 per entity, per requested tax year; covered quarters confirmed in the quote
+- [QoE Screening](https://moderntax.io/products/qoe-screening): screen a transaction for a Quality of Earnings scope discussion under SBA SOP 50 10 8.1 with technical policy updates; does not replace an independent QoE report or Cash Proof
+- [QoE Agent](https://moderntax.io/products/qoe-agent): AI-assisted Quality of Earnings analysis built on IRS-of-record data and borrower financials, with human review; not by itself an independent QoE report; scope and pricing on request
+- [QoE Full-Service](https://moderntax.io/products/qoe-services): Quality of Earnings engagements run by ModernTax; scope, deliverables, timing and fees agreed before work begins
+- [Check Reissue Recovery](https://moderntax.io/products/check-reissue-recovery): review of a tax-check reissue request; scope, fees and follow-up confirmed before work begins; IRS processing and delivery are outside ModernTax's control
+- [Partner API & MCP](https://moderntax.io/products/partner-api-mcp): REST, webhooks, structured JSON, cross-reference, MCP server, sandbox
 - [All products](https://moderntax.io/products/)
 
 ## MCP server
@@ -39,4 +41,4 @@ The API and customer portal run at https://portal.moderntax.io. This site (moder
 ## Optional
 
 - [IRS pull status](https://portal.moderntax.io/status): live IRS Practitioner Priority Service wait times
-- [Pricing](https://moderntax.io/plans.html)
+- [Pricing](https://moderntax.io/plans)

@@ -44,7 +44,7 @@
   box-shadow: 0 1px 0 0 color-mix(in oklab, var(--ink, #000) 6%, transparent), 0 30px 60px -30px color-mix(in oklab, var(--ink, #000) 30%, transparent);
   opacity: 0; visibility: hidden; transform: translateY(-6px);
   transition: opacity .16s ease, transform .16s ease, visibility .16s; }
-.gnav-menu.wide { min-width: 560px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.gnav-menu.wide { min-width: 560px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; left: auto; right: -8px; } /* opens leftward: a left-anchored 560px panel overhung the viewport by ~1px at 1280 and caused sideways scroll */
 .gnav-dd:hover .gnav-menu, .gnav-dd.open .gnav-menu { opacity: 1; visibility: visible; transform: none; }
 .gnav-dd:hover > button svg, .gnav-dd.open > button svg { transform: rotate(180deg); }
 .gnav-menu a { display: block; padding: 10px 12px; border-radius: 12px; }

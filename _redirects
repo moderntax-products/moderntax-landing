@@ -9,6 +9,40 @@ https://sandbox.moderntax.io/* /sandbox-interface.html 200!
 /docs/openapi.json https://portal.moderntax.io/openapi.json 302
 
 # Compliance Platform rebrand: friendly short links for the new nav.
-/pricing   /plans.html                           301
+/pricing   /plans                                301
 /platform  /#platform                            301
 /sandbox   https://portal.moderntax.io/sandbox   302
+
+# SEO-01 canonical form: extensionless (see .github/seo-manifest.md).
+# Netlify already serves /x and /x.html with the same file (200 for both), so each
+# .html URL is redirected to its canonical twin. Explicit per-page rules only:
+# no wildcard, nothing sent to the home page. walkthrough-thanks.html is left alone
+# because it is the walkthrough form's action target.
+# ROLLBACK: delete this block; every .html URL still serves the page directly.
+/plans.html                                    /plans                                    301!
+/developers.html                               /developers                               301!
+/walkthrough.html                              /walkthrough                              301!
+/privacy.html                                  /privacy                                  301!
+/terms.html                                    /terms                                    301!
+/sms-opt-in.html                               /sms-opt-in                               301!
+/how-it-works.html                              /how-it-works                              301!
+/products/index.html                           /products/                                301!
+/products/compliance-verification.html         /products/compliance-verification         301!
+/products/continuous-monitoring.html           /products/continuous-monitoring           301!
+/products/employment-income-verification.html  /products/employment-income-verification  301!
+/products/payroll-liability-941.html           /products/payroll-liability-941           301!
+/products/qoe-screening.html                   /products/qoe-screening                   301!
+/products/qoe-agent.html                       /products/qoe-agent                       301!
+/products/qoe-services.html                    /products/qoe-services                    301!
+/products/check-reissue-recovery.html          /products/check-reissue-recovery          301!
+/products/partner-api-mcp.html                 /products/partner-api-mcp                 301!
+/use-cases/sba-504.html                        /use-cases/sba-504                        301!
+/use-cases/sba-7a.html                         /use-cases/sba-7a                         301!
+/use-cases/commercial-lending.html             /use-cases/commercial-lending             301!
+/use-cases/employment-hr.html                  /use-cases/employment-hr                  301!
+/use-cases/tax-payment-verification.html       /use-cases/tax-payment-verification       301!
+/use-cases/tax-resolution.html                 /use-cases/tax-resolution                 301!
+
+# Repo tooling and docs are not site content.
+/.github/*  /404  404!
+/.claude/*  /404  404!
