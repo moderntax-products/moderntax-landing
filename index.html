@@ -490,6 +490,8 @@
   .regs-h { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); text-align: center; margin: 0 0 14px; }
   .regs-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 10px; }
   .regs-list li { font-size: 13.5px; color: var(--ink-2); padding: 6px 12px; border: 1px solid var(--rule-soft); border-radius: 999px; background: var(--surface); max-width: 100%; text-align: center; }
+  .regs-list li.regs-logo { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px 5px 8px; }
+  .regs-list li.regs-logo img { height: 24px; width: auto; max-width: 86px; flex: none; }
   .regs-note { font-size: 12px; color: var(--ink-3); text-align: center; margin: 14px 0 0; }
   /* Respect reduced motion: stop the scroll and show one static, wrapped row. */
   @media (prefers-reduced-motion: reduce) {
@@ -927,7 +929,7 @@
             <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">An API key against synthetic data</span></a>
           </div>
         </div>
-        <a href="/plans">Pricing</a>
+        <a href="/plans">Plans</a>
       </nav>
       <div class="gnav-cta">
         <a href="https://portal.moderntax.io/login" class="gsignin">Sign in</a>
@@ -957,7 +959,7 @@
       <a href="/docs/#mcp">MCP</a>
       <a href="https://portal.moderntax.io/sandbox">Sandbox</a>
       <div class="mh">More</div>
-      <a href="/plans">Pricing</a>
+      <a href="/plans">Plans</a>
       <div class="mcta">
         <a href="https://portal.moderntax.io/login" class="gbtn ghost">Sign in</a>
         <a href="https://portal.moderntax.io/signup" class="gbtn">Get started</a>
@@ -987,7 +989,7 @@
           <!-- HELD (COPY-01 secondary): "See a sample report" stays off the page until an approved
                synthetic / de-identified report exists. Do not link a real customer report. -->
         </div>
-        <p class="hero-scope"><b>$84.99 per entity</b>, pay as you go with a card on file. Every order needs a Form 8821 signed by the taxpayer; volume and API plans are quoted.</p>
+        <p class="hero-scope">Built for lending teams on a master services agreement. Every order needs a Form 8821 signed by the taxpayer; pricing is shared after a demo and set in your MSA.</p>
         <p class="hero-dev">Developers: <a href="https://portal.moderntax.io/sandbox">Explore the sandbox</a> — an API key against synthetic data. The <a href="/docs/">API docs</a> list what the sandbox supports.</p>
       </div>
 
@@ -1102,7 +1104,7 @@
           </div>
 
           <div class="demo-footer">
-            <span class="demo-cost"><b>$84.99</b> / entity, pay as you go</span>
+            <span class="demo-cost">Pricing set in your MSA</span>
             <button id="submit-btn" class="btn btn-accent" style="height:38px;padding:0 16px;">
               Submit request <span class="arrow">→</span>
             </button>
@@ -1142,13 +1144,13 @@ Illustrative flow with sample data. Rejections are not billed.
 <!-- ════════════════════════════════ REGULATORS ════════════════════════════════ -->
 <!-- Text names only: no agency seals, logos or emblems (18 U.S.C. 701/709, 31 U.S.C. 333).
      Describes who our customers are regulated by; never that ModernTax is approved, certified,
-     endorsed, insured or regulated by these agencies. Agency list + wording pending Matt/counsel. -->
+     endorsed, insured or regulated by these agencies. Agency list + wording pending Matt/counsel. SBA logo added at Matt's direction 2026-11-17 (risk accepted); IRS logo deliberately NOT used (31 U.S.C. 333). -->
 <section class="regs" aria-labelledby="regs-h">
   <div class="wrap">
     <h2 id="regs-h" class="regs-h">Built for institutions regulated by</h2>
     <ul class="regs-list">
       <li>Internal Revenue Service</li>
-      <li>U.S. Small Business Administration</li>
+      <li class="regs-logo"><img src="/assets/agencies/sba.svg" alt="" width="64" height="18" loading="lazy" decoding="async"/><span>U.S. Small Business Administration</span></li>
       <li>Federal Deposit Insurance Corporation</li>
       <li>Office of the Comptroller of the Currency</li>
       <li>Federal Reserve System</li>
@@ -1156,7 +1158,7 @@ Illustrative flow with sample data. Rejections are not billed.
       <li>Office of Foreign Assets Control</li>
       <li>Securities and Exchange Commission</li>
     </ul>
-    <p class="regs-note">ModernTax is not affiliated with or endorsed by any government agency.</p>
+    <p class="regs-note">ModernTax is not affiliated with or endorsed by the SBA, the IRS or any government agency. Agency names and the SBA logo identify the regulators of the institutions we serve.</p>
   </div>
 </section>
 
@@ -1236,7 +1238,7 @@ ModernTax provides end-to-end compliance services for commercial and SBA lenders
         <ul>
           <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/compliance-verification" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Compliance Verification</a> — filed years, balances, IRS-of-record figures</span></li>
           <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/employment-income-verification" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Employment &amp; Income Verification</a> — IRS-reported W-2 and 1099 wage &amp; income</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/payroll-liability-941" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Payroll Liability (941) Report</a> — $30 per entity, per requested tax year</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/payroll-liability-941" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Payroll Liability (941) Report</a></span></li>
         </ul>
         <div class="product-foot">
           <a href="/products/compliance-verification" class="btn-link">Start with a verification <span class="arrow">→</span></a>
@@ -1259,7 +1261,7 @@ ModernTax provides end-to-end compliance services for commercial and SBA lenders
         <h3>Clear conditions, keep the record.</h3>
         <p>Unfiled years are flagged at verification, so a missing return becomes a closing condition rather than a surprise. Transcripts, results and the signed 8821 stay on the order for the loan file.</p>
         <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/plans" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Back-year filing</a> — quoted per return-year</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/plans" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Back-year filing</a> — scoped per return-year</span></li>
         </ul>
         <div class="product-foot">
           <a href="/plans" class="btn-link">See add-ons <span class="arrow">→</span></a>
@@ -1496,7 +1498,7 @@ ModernTax provides end-to-end compliance services for commercial and SBA lenders
           <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> CSV bulk upload — 50 borrowers per file.</li>
           <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Roles for processors, managers, and admins.</li>
           <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Email and SLA notifications you can trust.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Self-serve signup with your work email — card on file, $84.99 per entity, no call.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Onboarding starts with a demo; your MSA sets products, volume and pricing.</li>
         </ul>
 
         <div>
@@ -1590,7 +1592,7 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
         <h2>Underwriting<br/><em style="font-style:italic; color: color-mix(in oklab, var(--accent) 60%, white);">moves at the speed of its data.</em></h2>
       </div>
       <div>
-        <p>Order a single entity at $84.99, pay as you go, no contract and no minimum. Pulling at volume or building on the API? Talk with us about a quoted plan.</p>
+        <p>Book a demo and we&rsquo;ll scope the products, volume and integration for your lending program. Pricing is set in your master services agreement.</p>
         <div style="display:flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
           <a href="https://portal.moderntax.io/new" class="btn btn-accent">Start a verification <span class="arrow">→</span></a>
           <a href="/walkthrough#get-access" class="btn btn-ghost">Talk to us</a>
@@ -1650,7 +1652,7 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
         <h2>Company</h2>
         <ul>
           <li><a href="/how-it-works">How it works</a></li>
-          <li><a href="/plans">Pricing</a></li>
+          <li><a href="/plans">Plans</a></li>
           <li><a href="/walkthrough#get-access">Talk to us</a></li>
           <li><a href="https://portal.moderntax.io/login">Sign in</a></li>
           <li><a href="https://portal.moderntax.io/security">Security</a></li>

@@ -16,7 +16,7 @@ The API and customer portal run at https://portal.moderntax.io. This site (moder
 - [Compliance Verification](https://moderntax.io/products/compliance-verification): filed and unfiled years, balances, IRS-of-record figures; pre-filled Form 8821 the taxpayer signs
 - [Continuous Monitoring](https://moderntax.io/products/continuous-monitoring): follow-up transcript requests for a missing filing; check schedule, charges and stopping rule are confirmed in the customer's quote before enrollment
 - [Employment & Income Verification](https://moderntax.io/products/employment-income-verification): IRS-reported W-2 and 1099 wage and income information; may be incomplete for the current processing year and does not establish current employment
-- [Payroll Liability (941) Report](https://moderntax.io/products/payroll-liability-941): Form 941 payroll-tax filings and balances; $30 per entity, per requested tax year; covered quarters confirmed in the quote
+- [Payroll Liability (941) Report](https://moderntax.io/products/payroll-liability-941): Form 941 payroll-tax filings and balances; covered quarters and scope confirmed in the MSA
 - [QoE Screening](https://moderntax.io/products/qoe-screening): screen a transaction for a Quality of Earnings scope discussion under SBA SOP 50 10 8.1 with technical policy updates; does not replace an independent QoE report or Cash Proof
 - [QoE Agent](https://moderntax.io/products/qoe-agent): AI-assisted Quality of Earnings analysis built on IRS-of-record data and borrower financials, with human review; not by itself an independent QoE report; scope and pricing on request
 - [QoE Full-Service](https://moderntax.io/products/qoe-services): Quality of Earnings engagements run by ModernTax; scope, deliverables, timing and fees agreed before work begins
@@ -41,4 +41,4 @@ The API and customer portal run at https://portal.moderntax.io. This site (moder
 ## Optional
 
 - [IRS pull status](https://portal.moderntax.io/status): live IRS Practitioner Priority Service wait times
-- [Pricing](https://moderntax.io/plans)
+- [Plans and engagement](https://moderntax.io/plans): pricing is shared after a demo and set in a master services agreement

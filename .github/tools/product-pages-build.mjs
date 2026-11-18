@@ -13,6 +13,9 @@ const TALK = '/walkthrough#get-access';
 const ORDER = 'https://portal.moderntax.io/new';
 const SOP_URL = 'https://www.sba.gov/document/sop-50-10-lender-development-company-loan-programs';
 const PLAN_NOTE = 'Your quote or signed agreement defines covered services, billing and cancellation terms. Review those terms before submitting an order.';
+// Enterprise focus for 2027 (Matt, Nov 17 2026): no prices anywhere on the site.
+// Pricing is shared after a demo and set in the customer's MSA.
+const MSA_NOTE = 'Pricing is shared after a demo and set in your master services agreement (MSA), sized to your volume and the products you use.';
 const SITE = 'https://moderntax.io';
 const BRAND = 'ModernTax Compliance Platform';
 const TAGLINE = 'End-to-end compliance services for commercial and SBA lenders — screening, verification, Quality of Earnings, monitoring and recovery.';
@@ -22,7 +25,9 @@ const CHEV = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-h
 const CHECK = `<span class="check"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L4.8 8.5 L9.5 3.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
 
 // ───────────────────────── PRODUCTS ─────────────────────────
-// Prices: ONLY verified MSA numbers that the lender-path brief (Nov 17 2026)
+// NO PRICES ARE RENDERED (Nov 17 2026, enterprise/MSA-only). The price/pricing
+// fields below are kept only as internal reference and are not output.
+// Prices (historical note): ONLY verified MSA numbers that the lender-path brief (Nov 17 2026)
 // leaves publishable. Anything gated (COMM-01, COMM-02, POL-01) is "Quoted" or
 // "Contact us" until the owner decision exists. Do not reintroduce:
 //   - an isolated $49.99 Tier C rate (COMM-02)
@@ -80,7 +85,7 @@ const P = [
     desc: 'Track unresolved IRS filing records: ask ModernTax about follow-up transcript requests for a missing filing, with the check schedule, charges and stopping rule confirmed in your quote before enrollment.',
     h1: 'Track unresolved IRS <span class="italic-em">filing records.</span>',
     lede: 'Ask us about follow-up transcript requests for a missing filing. Confirm the check schedule, charges and stopping rule in your quote before enrollment.',
-    cta: { primary: ['Review monitoring terms', TALK], secondary: ['See pricing', '/plans'] },
+    cta: { primary: ['Review monitoring terms', TALK], secondary: ['How it works', '/how-it-works'] },
     whatHead: 'Follow up on the year that came back missing.',
     what: [
       ['Starts from a missing filing', 'Monitoring is for a tax year that came back with no record on the original verification.'],
@@ -110,7 +115,7 @@ const P = [
     desc: 'Review IRS-reported wage and income information from IRS Wage & Income transcripts. Records may be incomplete for the current processing year and do not establish current employment.',
     h1: 'Review IRS-reported wage <span class="italic-em">and income information.</span>',
     lede: 'Wage and income transcripts show information reported to the IRS. Records may be incomplete, especially for the current processing year, and do not establish current employment. Use the results with other verification sources.',
-    cta: { primary: ['Talk to us', TALK], secondary: ['See pricing', '/plans'] },
+    cta: { primary: ['Talk to us', TALK], secondary: ['How it works', '/how-it-works'] },
     whatHead: 'What the wage and income transcript shows.',
     what: [
       ['W-2 wages', 'Employer, wages and withholding as reported to the IRS on Form W-2, year by year.'],
@@ -141,10 +146,10 @@ const P = [
     short: 'Payroll-tax filings and balances from IRS Form 941 account transcripts.',
     price: '$30 / entity, per tax year',
     title: 'Payroll Liability (941) Report',
-    desc: 'Form 941 payroll liability report: employment-tax filings and outstanding balances from IRS account transcripts. $30 per entity, per requested tax year; covered quarters and authorization scope confirmed in your quote.',
+    desc: 'Form 941 payroll liability report: employment-tax filings and outstanding balances from IRS account transcripts. Covered quarters and authorization scope are confirmed in your MSA.',
     h1: 'The liability an income transcript <span class="italic-em">won&rsquo;t show.</span>',
     lede: 'A business can be current on its income tax return and still be behind on payroll withholding. The 941 report reads IRS account transcripts and surfaces outstanding employment-tax balances before they become your problem.',
-    cta: { primary: ['Confirm payroll report scope', TALK], secondary: ['See pricing', '/plans'] },
+    cta: { primary: ['Confirm payroll report scope', TALK], secondary: ['How it works', '/how-it-works'] },
     whatHead: 'Payroll-tax exposure from the IRS account transcript.',
     what: [
       ['Covered quarters', 'Form 941 account transcripts for the quarters confirmed in your quote, within the tax years you request.'],
@@ -175,7 +180,7 @@ const P = [
     desc: 'Screen a transaction for a Quality of Earnings scope discussion: review transaction type, business purchase price and applicable exceptions under SBA SOP 50 10 8.1 with technical policy updates. Screening does not replace an independent QoE report or Cash Proof.',
     h1: 'Screen a transaction for a <span class="italic-em">QoE scope discussion.</span>',
     lede: `Review transaction type, business purchase price and applicable exceptions under <a href="${SOP_URL}" rel="noopener" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">SBA SOP 50 10 8.1 with technical policy updates</a> (effective October 1, 2026). Transcript screening can support a review; it does not replace an independent Quality of Earnings report or Cash Proof.`,
-    cta: { primary: ['Review transaction scope', TALK], secondary: ['See pricing', '/plans'] },
+    cta: { primary: ['Review transaction scope', TALK], secondary: ['How it works', '/how-it-works'] },
     whatHead: 'Support for the review, not a substitute for it.',
     what: [
       ['Transaction context', 'Discuss transaction type, business purchase price and any applicable exceptions with your team before scoping a review.'],
@@ -271,7 +276,7 @@ const P = [
     desc: 'Review a tax-check reissue request: the authorization and steps needed, with scope, fees and follow-up responsibilities confirmed before work begins. IRS processing and delivery are outside ModernTax\'s control.',
     h1: 'Review a tax-check <span class="italic-em">reissue request.</span>',
     lede: 'Ask us to review the authorization and steps needed for a check-reissue request. Scope, fees and follow-up responsibilities must be confirmed before work begins. IRS processing and delivery are outside our control.',
-    cta: { primary: ['Review recovery scope', TALK], secondary: ['See pricing', '/plans'] },
+    cta: { primary: ['Review recovery scope', TALK], secondary: ['How it works', '/how-it-works'] },
     whatHead: 'What a reissue request involves.',
     what: [
       ['Confirm the return', 'The account transcript shows when a refund check was issued and returned. We read it first, so you know what the request involves.'],
@@ -399,7 +404,7 @@ function nav() {
             <a href="${SANDBOX}"><span class="t">Sandbox</span><span class="d">An API key against synthetic data</span></a>
           </div>
         </div>
-        <a href="/plans">Pricing</a>
+        <a href="/plans">Plans</a>
       </nav>
       <div class="gnav-cta">
         <a href="https://portal.moderntax.io/login" class="gsignin">Sign in</a>
@@ -421,7 +426,7 @@ function nav() {
       <a href="/docs/#mcp">MCP</a>
       <a href="${SANDBOX}">Sandbox</a>
       <div class="mh">More</div>
-      <a href="/plans">Pricing</a>
+      <a href="/plans">Plans</a>
       <div class="mcta">
         <a href="https://portal.moderntax.io/login" class="gbtn ghost">Sign in</a>
         <a href="https://portal.moderntax.io/signup" class="gbtn">Get started</a>
@@ -473,7 +478,7 @@ function footer() {
         <h2>Company</h2>
         <ul>
           <li><a href="/how-it-works">How it works</a></li>
-          <li><a href="/plans">Pricing</a></li>
+          <li><a href="/plans">Plans</a></li>
           <li><a href="${TALK}">Talk to us</a></li>
           <li><a href="https://portal.moderntax.io/login">Sign in</a></li>
           <li><a href="https://portal.moderntax.io/security">Security</a></li>
@@ -548,7 +553,7 @@ function card(p) {
         <span class="k"><span class="dotsq"></span>Product</span>
         <h3>${p.name}</h3>
         <p>${p.short}</p>
-        <span class="foot"><span class="price">${p.price}</span><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
+        <span class="foot"><span class="go">Learn more <span class="arrow">&rarr;</span></span></span>
       </a>`;
 }
 
@@ -576,11 +581,6 @@ function productPage(p) {
 </section>
 ` : '';
   const steps = p.steps.map(([h, t]) => `<li><h3>${h}</h3><p>${t}</p></li>`).join('\n      ');
-  const pricing = p.pricing.map(([l, a, u, note]) => `<div>
-        <div class="lbl">${l}</div>
-        <div class="amt">${a}${u ? ` <small>${u}</small>` : ''}</div>
-        <p class="note">${note}</p>
-      </div>`).join('\n      ');
   const rel = p.related.map((s) => card(bySlug[s])).join('\n      ');
 
   return `${head({ title, desc: esc(p.desc), url })}${nav()}
@@ -619,11 +619,7 @@ function productPage(p) {
 ${code()}
 <section class="section">
   <div class="wrap">
-    ${sectionHead(num(), 'Pricing', 'Straightforward <span class="italic-em">pricing.</span>')}
-    <div class="pprice" style="--cols:${p.pricingCols || 2}">
-      ${pricing}
-    </div>
-    <p class="pprice-foot">${PLAN_NOTE} Full plan details on the <a href="/plans">pricing page</a>. Not sure which fits? <a href="${TALK}">Talk to us</a>.</p>
+    ${sectionHead(num(), 'Engagement', 'Scoped to your <span class="italic-em">program.</span>', `${MSA_NOTE} <a href="${TALK}" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">Book a demo</a>.`)}
   </div>
 </section>
 
@@ -641,7 +637,7 @@ ${code()}
     <div class="cta-band">
       <div class="cta-in">
         <h2>${p.developer ? 'Explore the API <span class="italic-em">in the sandbox.</span>' : `Talk to us about <span class="italic-em">${p.name}.</span>`}</h2>
-        <p>${p.developer ? 'A work email gets you an API key and synthetic taxpayers to test against. Not every product is available in the sandbox.' : 'We confirm scope, authorization requirements and pricing for your loans before you order.'}</p>
+        <p>${p.developer ? 'A work email gets you an API key and synthetic taxpayers to test against. Not every product is available in the sandbox.' : 'We confirm scope and authorization requirements in a demo; pricing is set in your MSA.'}</p>
         <div class="cta-btns">
           ${ctas(p.cta)}
         </div>
@@ -667,7 +663,7 @@ function overviewPage() {
     const items = P.filter((p) => p.stage === k);
     const body = items.length
       ? `<div class="plist three">\n      ${items.map(card).join('\n      ')}\n    </div>`
-      : `<p class="stage-note">Unfiled years are flagged at verification, so a missing return is a closing condition rather than a surprise. Transcripts, results and the signed 8821 stay on the order for the loan file. Back-year filing is quoted on the <a href="/plans">pricing page</a>.</p>`;
+      : `<p class="stage-note">Unfiled years are flagged at verification, so a missing return is a closing condition rather than a surprise. Transcripts, results and the signed 8821 stay on the order for the loan file. Back-year filing is scoped in your MSA.</p>`;
     return `<div class="stage">\n    <h3 class="stage-h"><span class="stage-n">${String(i + 1).padStart(2, '0')}</span>${label}<span class="stage-b">${blurb}</span></h3>\n    ${body}\n    </div>`;
   }).join('\n    ');
   return `${head({ title, desc: esc(desc), url })}${nav()}
@@ -690,7 +686,7 @@ function overviewPage() {
   <div class="wrap">
     ${sectionHead('01', 'By deal stage', 'Screen, verify, <span class="italic-em">close and follow through.</span>', 'Each stage below lists the products that serve it. Scope, authorization and pricing for each are confirmed before you order. <a href="/how-it-works">How it works: our agents and practitioners</a>.')}
     ${cards}
-    <p class="fine">Prices shown are per unit as listed on the <a href="/plans" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">pricing page</a>; &ldquo;Quoted&rdquo; and &ldquo;Contact us&rdquo; items are confirmed in your quote. ${PLAN_NOTE}</p>
+    <p class="fine">${MSA_NOTE} ${PLAN_NOTE}</p>
   </div>
 </section>
 
