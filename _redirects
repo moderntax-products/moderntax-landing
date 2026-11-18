@@ -7,3 +7,8 @@ https://sandbox.moderntax.io/* /sandbox-interface.html 200!
 /security       https://portal.moderntax.io/security      302
 /openapi.json   https://portal.moderntax.io/openapi.json  302
 /docs/openapi.json https://portal.moderntax.io/openapi.json 302
+
+# Compliance Platform rebrand: friendly short links for the new nav.
+/pricing   /plans.html                           301
+/platform  /#platform                            301
+/sandbox   https://portal.moderntax.io/sandbox   302
