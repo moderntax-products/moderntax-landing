@@ -1,6 +1,6 @@
 # ModernTax Compliance Platform
 
-> ModernTax: end-to-end compliance services for commercial and SBA lenders across the deal (screening, IRS transcript verification, Quality of Earnings, closing, post-close monitoring and recovery), plus an API and MCP server for the platforms that serve them. ModernTax verifies businesses and individuals against IRS records. Submit a taxpayer, attach a signed Form 8821 naming ModernTax as designee, and receive IRS transcripts (returns, record of account, wage & income, 941 payroll) as PDFs plus structured JSON: filings with financials, transaction codes, balances, liens and a compliance summary.
+> ModernTax, the lender compliance platform: end-to-end compliance services for commercial and SBA lenders across the deal (screening, IRS transcript verification, Quality of Earnings, closing, post-close monitoring and recovery), plus an API and MCP server for the platforms that serve them. ModernTax verifies businesses and individuals against IRS records. Submit a taxpayer, attach a signed Form 8821 naming ModernTax as designee, and receive IRS transcripts (returns, record of account, wage & income, 941 payroll) as PDFs plus structured JSON: filings with financials, transaction codes, balances, liens and a compliance summary.
 
 The API and customer portal run at https://portal.moderntax.io. This site (moderntax.io) holds the API reference.
 
