@@ -714,54 +714,40 @@ ${footer()}
 }
 
 
+// How It Works page. Copy: Matt Parker, 2026-11-18 (replaces the generated
+// agent cards, practitioner panel and glossary).
+const HOW_IT_WORKS = [
+  ['Where we start', 'Lenders typically collect eleven or more packets of documents and information from borrowers. ModernTax exists to solve as much of this as we can, and we have started with tax returns, as they often serve as the largest file and most critical data point for government-guaranteed lenders.'],
+  ['The order', 'Our customers get one document signed, the authorization the IRS requires before it releases information, and pass it to us. That is our core requirement. From there, we handle the end-to-end process of getting the documents from the IRS on the business and all entities owned by the principal owners. Our job does not stop there, as many businesses have missing documents that are required. We build tools to continually track down the records and monitor the accounts all the way through completion. We take away all the complexity of IVR systems, SOR dashboards, credentialing, and up to sixty-minute call waits to get this information in hours for our customers.'],
+  ['Software and people', 'We&rsquo;ve built the first software stack for tax for commercial lenders. This includes compliance requirements for all records we store, how we communicate on behalf of our clients, and the system that interfaces with IRS sites and tools. In addition to the technology, the human component is critical; we leverage human experts and intelligence to deal with the real-time issues we face in dealing with federally regulated agencies, banks, and non-profits. There are boundaries around session time-outs, credentialing, and wait times that we manage. Our infrastructure is built to handle thousands of daily transactions. Lastly, we are excited to leverage agents that specialize in six areas of business, and these agents handle workflows across customer support, accessing transcripts, managing and handling IVRs, and routing things across fax, voice, and more.'],
+  ['When records are missing', 'The automation around our solution is always critical; the difference between a business owner being compliant and not compliant can be a gray area. Every business is different; every accountant or CPA files taxes (the hope is that they do) with varying degrees of style, and the tax code changes all the time. The other complexity we help solve is that businesses move, change addresses, and change names all the time. Small businesses span a wide variety of industries, including franchises, services, law, food and beverage, and beyond. One of the core problems we solve is when the IRS has no record of a business entity. We manage this end-to-end for the lender and work with them as long as needed. We even go a step further and work with CPAs and business owners on resolving issues to make sure they are compliant.'],
+];
+
 function agentsPage() {
   const url = `${SITE}/how-it-works`;
-  const title = `How It Works: Our Agents and Practitioners | ModernTax`;
-  const desc = 'How ModernTax works: agents that prepare 8821 authorizations, request transcripts through TDS, pick up SOR deliveries and handle PPS calls, with CAF-registered practitioners on every IRS interaction.';
-  const cells = AGENTS.map(([h, tag, t], i) => `<article class="gcell">
-        <div class="idx"><span class="dotsq"></span>${String(i + 1).padStart(2, '0')} &middot; ${tag}</div>
-        <h3>${h}</h3>
-        <p>${t}</p>
-      </article>`).join('\n      ');
-  const gl = GLOSSARY.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n      ');
+  const title = `How It Works | ModernTax`;
+  const desc = 'How a ModernTax order works: one signed IRS authorization, then we get the records from the IRS on the business and its owners, track down what is missing and monitor through completion.';
+  const sections = HOW_IT_WORKS.map(([h, t], i) => `<section class="section hiw${i % 2 ? ' alt' : ''}">
+  <div class="wrap">
+    ${sectionHead(String(i + 1).padStart(2, '0'), 'How it works', h, t)}
+  </div>
+</section>`).join('\n\n');
   return `${head({ title, desc: esc(desc), url })}${nav()}
 
 <main id="main">
+<style>.hiw .section-head { align-items: start; }</style>
 
 <section class="hero">
   <div class="wrap hero-in wide">
     <span class="pill"><span class="dot"></span>How it works</span>
-    <h1 class="display-2">Agents do the legwork. <span class="italic-em">Practitioners stay accountable.</span></h1>
-    <p class="lede">${AGENT_FRAME}</p>
+    <h1 class="display-2">How it works</h1>
     <div class="hero-ctas">
-        ${ctas()}
+        <a href="${TALK}" class="btn btn-lg btn-accent">Book a demo <span class="arrow">&rarr;</span></a>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap">
-    ${sectionHead('01', 'Our agents', 'Who does what <span class="italic-em">on every order.</span>')}
-    <div class="grid-flush three">
-      ${cells}
-    </div>
-  </div>
-</section>
-
-<section class="section alt">
-  <div class="wrap">
-    ${sectionHead('02', 'People', 'A practitioner on <span class="italic-em">every IRS interaction.</span>', 'Agents prepare, request, retrieve and follow up. Credentialed, CAF-registered practitioners hold the authorizations, handle live IRS calls and are accountable for every request. Timing depends on the IRS and on when the signed authorization is on file.')}
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    ${sectionHead('03', 'Glossary', 'The IRS terms, <span class="italic-em">in plain English.</span>')}
-    <dl class="gloss">
-      ${gl}
-    </dl>
-  </div>
-</section>
+${sections}
 
 </main>
 
@@ -774,29 +760,7 @@ ${footer()}
 
 // Homepage "Our agents" block, injected between AGENTS markers in index.html.
 function homeAgents() {
-  const cards = AGENTS.map(([h, tag, t]) => `<div class="product compact">
-        <div class="product-eyebrow"><span class="dotsq"></span> ${tag}</div>
-        <h3>${h}</h3>
-        <p>${t}</p>
-      </div>`).join('\n      ');
   return `<!-- AGENTS:START (generated — see .github/tools/product-pages-build.mjs) -->
-<section class="section" id="agents" style="padding-top:0;">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">How it works · Our agents</div>
-        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          Agents do the legwork.<br/>
-          <em class="italic-em">Practitioners stay accountable.</em>
-        </h2>
-      </div>
-      <p class="lede reveal">${AGENT_FRAME} <a href="/how-it-works" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">How it works</a></p>
-    </div>
-    <div class="products lifecycle reveal">
-      ${cards}
-    </div>
-  </div>
-</section>
 <!-- AGENTS:END -->`;
 }
 
