@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Canonical, indexable marketing pages only (SEO-02). Keep in sync with .github/seo-manifest.md. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://moderntax.io/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/plans</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/compliance-verification</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/continuous-monitoring</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/employment-income-verification</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/payroll-liability-941</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/qoe-screening</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/check-reissue-recovery</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/products/partner-api-mcp</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/use-cases/sba-504</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/use-cases/sba-7a</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/use-cases/commercial-lending</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/use-cases/employment-hr</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/use-cases/tax-payment-verification</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/use-cases/tax-resolution</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/developers</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/docs/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/walkthrough</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/privacy</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://moderntax.io/terms</loc><lastmod>2026-11-17</lastmod></url>
+</urlset>

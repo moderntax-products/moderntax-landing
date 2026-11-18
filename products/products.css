@@ -45,3 +45,4 @@
 
 /* fine print */
 .fine{font-size:13px;color:var(--ink-3);line-height:1.6;max-width:80ch;margin:28px 0 0}
+.hero .dev-link{margin-top:6px}

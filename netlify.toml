@@ -39,7 +39,7 @@
 
 [[redirects]]
   from = "/docs/developers.html"
-  to = "/developers.html"
+  to = "/developers"
   status = 301
 
 # index-old.html is the pre-redesign homepage. It is not linked anywhere but

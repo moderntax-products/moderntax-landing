@@ -4,13 +4,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Pricing — ModernTax Compliance Platform</title>
-<meta name="description" content="ModernTax Compliance Platform pricing: Pay-as-you-go $84.99 per entity, Deposit $64.99, Platform $49.99, Post-Close Monitoring $39.99 per update, Reorder $29.99 per TIN, Check Reissue Recovery $1,000 per check." />
-<link rel="canonical" href="https://moderntax.io/plans.html" />
+<meta name="description" content="ModernTax pricing for IRS transcript verification: pay-as-you-go at $84.99 per entity, a prepaid deposit tier at $64.99, a quoted custom volume plan, and add-ons such as reorders and 941 payroll reports." />
+<link rel="canonical" href="https://moderntax.io/plans" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ModernTax Compliance Platform" />
 <meta property="og:title" content="Pricing — ModernTax Compliance Platform" />
-<meta property="og:description" content="Pay-as-you-go, Deposit and Platform tiers plus add-ons for the ModernTax Compliance Platform." />
-<meta property="og:url" content="https://moderntax.io/plans.html" />
+<meta property="og:description" content="Pay-as-you-go and deposit pricing, a quoted custom volume plan, and add-ons for ModernTax IRS transcript verification." />
+<meta property="og:url" content="https://moderntax.io/plans" />
 <meta name="twitter:card" content="summary" />
 <template id="__bundler_thumbnail" data-bg-color="#fbfaf7">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -158,9 +158,9 @@
   .addon-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
   @media (min-width: 720px) { .addon-grid { grid-template-columns: 1fr 1fr; } }
   .addon { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
-  .addon .a-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+  .addon .a-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 4px; }
   .addon h3 { font-size: 17px; font-weight: 600; margin: 0; color: var(--ink); }
-  .addon .a-price { font-family: var(--mono); font-size: 13px; color: var(--accent-ink); font-weight: 500; white-space: nowrap; }
+  .addon .a-price { font-family: var(--mono); font-size: 13px; color: var(--accent-ink); font-weight: 500; white-space: normal; }
   .addon .a-tag { font-size: 11.5px; color: var(--ink-3); margin-bottom: 12px; }
   .addon p { font-size: 13.5px; color: var(--ink-2); margin: 0 0 14px; line-height: 1.5; flex: 1; }
   .addon ul { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 8px; }
@@ -244,26 +244,26 @@
         <div class="gnav-dd">
           <button type="button" aria-haspopup="true" aria-expanded="false">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="gnav-menu wide">
-          <a href="/products/compliance-verification.html"><span class="t">Compliance Verification</span><span class="d">Filed and unfiled years, balances and IRS-of-record figures for any business or individual.</span></a>
-          <a href="/products/continuous-monitoring.html"><span class="t">Continuous Monitoring</span><span class="d">Scheduled IRS re-pulls that flag the moment an unfiled year becomes filed.</span></a>
-          <a href="/products/employment-income-verification.html"><span class="t">Employment &amp; Income Verification</span><span class="d">W-2 and 1099 wage and income data, straight from the IRS.</span></a>
-          <a href="/products/payroll-liability-941.html"><span class="t">Payroll Liability (941) Report</span><span class="d">Quarter-by-quarter payroll-tax filings and balances an income transcript will not show.</span></a>
-          <a href="/products/qoe-screening.html"><span class="t">QoE Screening</span><span class="d">Screen which SBA loans need a Quality of Earnings review under SOP 50 10 8.</span></a>
-          <a href="/products/check-reissue-recovery.html"><span class="t">Check Reissue Recovery</span><span class="d">Recover IRS refund checks that came back undelivered.</span></a>
-          <a href="/products/partner-api-mcp.html"><span class="t">Partner API &amp; MCP</span><span class="d">REST, webhooks, structured JSON and an MCP server for AI agents — with a free sandbox.</span></a>
+          <a href="/products/compliance-verification"><span class="t">Compliance Verification</span><span class="d">Filed and unfiled years, balances and IRS-of-record figures for businesses and individuals.</span></a>
+          <a href="/products/continuous-monitoring"><span class="t">Continuous Monitoring</span><span class="d">Follow-up transcript requests for a filing that came back missing.</span></a>
+          <a href="/products/employment-income-verification"><span class="t">Employment &amp; Income Verification</span><span class="d">IRS-reported W-2 and 1099 wage and income information.</span></a>
+          <a href="/products/payroll-liability-941"><span class="t">Payroll Liability (941) Report</span><span class="d">Payroll-tax filings and balances from IRS Form 941 account transcripts.</span></a>
+          <a href="/products/qoe-screening"><span class="t">QoE Screening</span><span class="d">Screen a transaction for a Quality of Earnings scope discussion.</span></a>
+          <a href="/products/check-reissue-recovery"><span class="t">Check Reissue Recovery</span><span class="d">Review a tax-check reissue request: authorization, steps and scope.</span></a>
+          <a href="/products/partner-api-mcp"><span class="t">Partner API &amp; MCP</span><span class="d">REST, webhooks, structured JSON and an MCP server for AI agents, with a sandbox on synthetic data.</span></a>
           <a class="all" href="/products/"><span class="t">All products &rarr;</span></a>
           </div>
         </div>
         <div class="gnav-dd">
           <button type="button" aria-haspopup="true" aria-expanded="false">Developers <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="gnav-menu">
-            <a href="/developers.html"><span class="t">API</span><span class="d">REST intake, webhooks, structured JSON</span></a>
+            <a href="/developers"><span class="t">API</span><span class="d">REST intake, webhooks, structured JSON</span></a>
             <a href="/docs/"><span class="t">Docs</span><span class="d">The Partner API reference</span></a>
             <a href="/docs/#mcp"><span class="t">MCP</span><span class="d">Model Context Protocol server for AI agents</span></a>
-            <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">A free API key against synthetic data</span></a>
+            <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">An API key against synthetic data</span></a>
           </div>
         </div>
-        <a href="/plans.html">Pricing</a>
+        <a href="/plans">Pricing</a>
       </nav>
       <div class="gnav-cta">
         <a href="https://portal.moderntax.io/login" class="gsignin">Sign in</a>
@@ -276,21 +276,21 @@
     <nav class="gnav-mobile" id="gnav-mobile" aria-label="Mobile">
       <a href="/#platform">Platform</a>
       <div class="mh">Products</div>
-      <a href="/products/compliance-verification.html">Compliance Verification</a>
-      <a href="/products/continuous-monitoring.html">Continuous Monitoring</a>
-      <a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a>
-      <a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a>
-      <a href="/products/qoe-screening.html">QoE Screening</a>
-      <a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a>
-      <a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a>
+      <a href="/products/compliance-verification">Compliance Verification</a>
+      <a href="/products/continuous-monitoring">Continuous Monitoring</a>
+      <a href="/products/employment-income-verification">Employment &amp; Income Verification</a>
+      <a href="/products/payroll-liability-941">Payroll Liability (941) Report</a>
+      <a href="/products/qoe-screening">QoE Screening</a>
+      <a href="/products/check-reissue-recovery">Check Reissue Recovery</a>
+      <a href="/products/partner-api-mcp">Partner API &amp; MCP</a>
       <a href="/products/">All products</a>
       <div class="mh">Developers</div>
-      <a href="/developers.html">API</a>
+      <a href="/developers">API</a>
       <a href="/docs/">Docs</a>
       <a href="/docs/#mcp">MCP</a>
       <a href="https://portal.moderntax.io/sandbox">Sandbox</a>
       <div class="mh">More</div>
-      <a href="/plans.html">Pricing</a>
+      <a href="/plans">Pricing</a>
       <div class="mcta">
         <a href="https://portal.moderntax.io/login" class="gbtn ghost">Sign in</a>
         <a href="https://portal.moderntax.io/signup" class="gbtn">Get started</a>
@@ -306,10 +306,9 @@
   <div class="wrap">
     <div class="eyebrow">ModernTax Compliance Platform · Pricing</div>
     <h1>Pick the plan that grows with your <em>loan portfolio.</em></h1>
-    <p>Pricing scales with how you do SBA underwriting — pay per pull, prepay a deposit, or run on the Platform tier with API access. Pay-as-you-go is self-serve: create an account with your work email and order a single entity today. Effective 2026-08-07.</p>
+    <p>Pricing scales with how you underwrite — pay per pull, prepay a deposit, or request a quote for a custom volume plan with API access. Pay-as-you-go is self-serve: create an account with your work email and order a single entity today. Effective 2026-08-07.</p>
     <div class="trust">
       <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> No setup fee on PAYG</span>
-      <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Switch tiers any time</span>
       <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> No minimum on self-serve</span>
     </div>
   </div>
@@ -331,7 +330,6 @@
         <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Auto-sent 8821s via Dropbox Sign</li>
         <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Return Transcripts + Records of Account</li>
         <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Compliance flag screening</li>
-        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Same-day IRS transcript turnaround</li>
       </ul>
       <a href="https://portal.moderntax.io/signup" class="btn btn-ghost btn-block">Create account</a>
       <div class="cta-note">Any business email · add a card before your first order</div>
@@ -339,7 +337,6 @@
 
     <!-- Tier B -->
     <div class="tier featured">
-      <span class="ribbon">Most popular</span>
       <div class="tname">Tier B · Deposit</div>
       <div class="tbest">Best for steady monthly volume</div>
       <div class="price">$64.99 <small>/ verified entity</small></div>
@@ -354,29 +351,28 @@
         <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Deeper rates via committed-volume packs</li>
       </ul>
       <a href="https://portal.moderntax.io/signup" class="btn btn-accent btn-block">Upgrade to Tier B</a>
-      <div class="cta-note">Fund your deposit via Stripe — rate locks instantly</div>
+      <div class="cta-note">Deposit tier is set up under a signed agreement</div>
     </div>
 
-    <!-- Tier C -->
+    <!-- Tier C — COPY-02 interim (gate COMM-02). No subscription, minimum, included credits or
+         per-entity rate is published until COMM-02 is decided; the isolated $49.99 is removed. -->
     <div class="tier">
-      <div class="tname">Tier C · Platform</div>
+      <div class="tname">Tier C · Custom volume plan</div>
       <div class="tbest">For lenders &amp; LOS platforms building on our API</div>
-      <div class="price">$49.99 <small>/ verified entity</small></div>
+      <div class="price">Quoted</div>
       <div class="pricenote">Platform subscription + API access</div>
-      <div class="blurb">Priced for capability, not loan count — the subscription buys the platform and the per-pull rate is a floor beneath it. Not a volume tier: heavy pullers save on Deposit packs.</div>
+      <div class="blurb">Request a quote for the platform subscription, included usage and per-entity pricing.</div>
       <ul>
-        <li class="head"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Everything in Deposit</li>
-        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Monthly platform credits</li>
         <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> REST API + webhook delivery</li>
-        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> White-label borrower doc hub</li>
-        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Dedicated CSM</li>
+        <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Portal access for your operations team</li>
         <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Security questionnaire support</li>
       </ul>
-      <a href="https://meetings.hubspot.com/matt-moderntax/moderntax-intro?uuid=bdd6f380-7fdb-4ab1-8471-3b132cbe70d2" class="btn btn-ghost btn-block">Book a demo</a>
-      <div class="cta-note">Sales-led · API access is provisioned with your MSA</div>
+      <a href="/walkthrough#get-access" class="btn btn-ghost btn-block">Request a pricing review</a>
+      <div class="cta-note">Sales-led · API access is provisioned with your agreement</div>
     </div>
   </div>
-  <p class="micro-note">All tiers include audit logging and IRS Practitioner Priority Service routing. Tier upgrades require an MSA signature. Reselling under your own brand? The <a href="developers.html" style="color:var(--accent-ink);font-weight:600;">wholesale lane</a> is built for that against a committed monthly minimum.</p>
+  <!-- COPY-02 plan-wide note -->
+  <p class="micro-note"><b>Your quote or signed agreement defines covered services, billing and cancellation terms. Review those terms before submitting an order.</b> Reselling under your own brand? <a href="/developers" style="color:var(--accent-ink);font-weight:600;">Talk to us about the wholesale lane</a>.</p>
 </section>
 
 <!-- add-ons -->
@@ -385,29 +381,23 @@
     <div class="section-head">
       <div class="eyebrow">Add-ons</div>
       <h2>Add-ons that extend <em>each funded loan.</em></h2>
-      <p>Every plan tier supports these add-ons. They turn one-time per-pull revenue into ongoing per-loan revenue across the full 25-year SBA loan life.</p>
+      <p>Add-ons available alongside a verification. Where an add-on is quoted, scope and charges are confirmed before you order.</p>
     </div>
 
-    <!-- Featured 1: Monitoring -->
+    <!-- Featured 1: Monitoring — COPY-03 (gate COMM-01). Replaced together with the monitoring FAQ below.
+         No cadence, charge trigger, auto-stop or auto-enrollment is published until COMM-01 is decided. -->
     <div class="addon-feat">
       <div class="addon-feat-top">
         <div>
-          <h3>Post-Close Monitoring</h3>
-          <div class="tease">You are billed only when a fresh transcript actually lands</div>
-          <div class="desc">When a borrower owes a tax return as a closing condition, enroll the entity at intake. We re-poll the IRS until the conditioned transcript arrives, then auto-cancel. Empty checks cost nothing — the fee applies only when a pull returns something new, which is the billing-surprise every processor has been burned by.</div>
+          <h3>Track unresolved IRS filing records.</h3>
+          <div class="desc">Ask us about follow-up transcript requests for a missing filing. Confirm the check schedule, charges and stopping rule in your quote before enrollment.</div>
         </div>
         <div class="addon-price-box">
-          <div class="p">$39.99 <span style="font-size:14px; color: var(--ink-3);">/ update</span></div>
-          <div class="sub">Billed per landed update, never per check. Auto-cancels once the conditioned transcript arrives — no unenroll cleanup.</div>
+          <div class="p">Quoted</div>
+          <div class="sub">Check schedule, charges and stopping rule are set in your quote before enrollment.</div>
         </div>
       </div>
-      <div class="steps">
-        <div class="step"><div class="n">1</div><h4>Opt in at intake</h4><p>Per-entity checkbox on every intake flow. Manager can also flip on team-wide auto-enroll from the dashboard.</p></div>
-        <div class="step"><div class="n">2</div><h4>Scheduled IRS sweep</h4><p>We re-pull Records of Account on a configurable cadence using the same expert pipeline. A sweep that finds nothing new is not billed.</p></div>
-        <div class="step"><div class="n">3</div><h4>Auto-cancel on landing</h4><p>The moment the conditioned transcript lands, the enrollment closes itself. Nothing ever re-pulls without you opting in first.</p></div>
-        <div class="step"><div class="n">4</div><h4>Compliance screening</h4><p>Every pull runs the flag screener — CLEAN / WARNING / CRITICAL tags so servicing can triage at a glance.</p></div>
-      </div>
-      <div class="addon-feat-foot"><a href="https://portal.moderntax.io/login" class="feat-link">Toggle on from your dashboard <span class="arrow">→</span></a></div>
+      <div class="addon-feat-foot"><a href="/products/continuous-monitoring" class="feat-link">Review monitoring terms <span class="arrow">→</span></a></div>
     </div>
 
     <!-- smaller add-ons -->
@@ -423,7 +413,7 @@
         <ul>
           <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Per-quarter status from the IRS account transcript</li>
         </ul>
-        <div class="a-foot"><a href="/walkthrough.html#get-access" class="addon-link">Talk to us <span class="arrow">→</span></a></div>
+        <div class="a-foot"><a href="/walkthrough#get-access" class="addon-link">Talk to us <span class="arrow">→</span></a></div>
       </div>
 
       <!-- Check Reissue -->
@@ -431,15 +421,14 @@
         <div class="a-ico" style="background: var(--ok-soft); color: var(--ok-ink);">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5h14v10H3z"/><path d="M6 9h3M6 12h6" stroke-linecap="round"/></svg>
         </div>
-        <div class="a-top"><h3>Check Reissue Recovery</h3><span class="a-price">$1,000 / check</span></div>
-        <div class="a-tag">When a refund came back undelivered</div>
-        <p>When the ERC report surfaces a refund-returned-undelivered status, we recover it on the client's behalf. Flat fee of $1,000 per check, confirmed with you before we start.</p>
+        <div class="a-top"><h3>Check Reissue Recovery</h3><span class="a-price">Quoted</span></div>
+        <div class="a-tag">Review a tax-check reissue request</div>
+        <p>Ask us to review the authorization and steps needed for a check-reissue request. Scope, fees and follow-up responsibilities must be confirmed before work begins. IRS processing and delivery are outside our control.</p>
         <ul>
-          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> File Form 8822-B to update address of record</li>
-          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Call IRS Business line to request reissue</li>
-          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Track to delivery + confirm with client</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Address-of-record update prepared where needed (Form 8822-B)</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Follow-up responsibilities agreed in the scope</li>
         </ul>
-        <div class="a-foot"><a href="/products/check-reissue-recovery.html" class="addon-link">How recovery works <span class="arrow">→</span></a></div>
+        <div class="a-foot"><a href="/products/check-reissue-recovery" class="addon-link">Review recovery scope <span class="arrow">→</span></a></div>
       </div>
 
       <!-- Entity Transcript -->
@@ -492,14 +481,14 @@
         <div class="a-ico" style="background: var(--warn-soft); color: var(--warn-ink);">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h14v12H3z"/><path d="M6 8h8M6 11h5" stroke-linecap="round"/></svg>
         </div>
-        <div class="a-top"><h3>Payroll (941) Liability Report</h3><span class="a-price">Contact us</span></div>
+        <div class="a-top"><h3>Payroll (941) Liability Report</h3><span class="a-price">$30 / entity, per requested tax year</span></div>
         <div class="a-tag">The liability an income transcript won&rsquo;t show</div>
         <p>Form 941 account transcripts plus outstanding payroll-tax and Trust-Fund exposure. Distinct from the ERC analysis — this is the one that catches a business current on its 1120S but behind on withholding.</p>
         <ul>
           <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Outstanding payroll-tax + Trust-Fund exposure</li>
-          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Quarter-by-quarter, all four quarters per year</li>
+          <li><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 L6.5 12 L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Confirm covered quarters and authorization scope in your quote. Existing signed terms control.</li>
         </ul>
-        <div class="a-foot"><a href="/products/payroll-liability-941.html" class="addon-link">About the 941 report <span class="arrow">&rarr;</span></a></div>
+        <div class="a-foot"><a href="/products/payroll-liability-941" class="addon-link">Confirm payroll report scope <span class="arrow">&rarr;</span></a></div>
       </div>
 
       <!-- Back-year filing -->
@@ -544,16 +533,13 @@
     </div>
     <div class="faq">
       <details open>
-        <summary>Can I switch tiers mid-month? <span class="pm"></span></summary>
-        <div class="ans">Yes. Tier changes take effect immediately — your per-pull rate updates on the next verification. PAYG → Deposit locks the lower rate the moment the deposit balance is funded; Deposit → Platform starts the subscription instantly. Downgrades apply at the start of the next billing cycle so you keep the rate you prepaid for.</div>
+        <summary>Can I change plans? <span class="pm"></span></summary>
+        <div class="ans">Talk to us. Your quote or signed agreement defines covered services, billing and cancellation terms, including how a change between plans works. Review those terms before submitting an order.</div>
       </details>
+      <!-- HELD (COMM-02): Tier B refund / rate-lock FAQ removed; no refund policy is published until approved. -->
       <details>
-        <summary>What happens to my prepaid Tier B balance if I leave? <span class="pm"></span></summary>
-        <div class="ans">Your prepaid balance never expires while your account is active, and unused balance is refundable on request when you close the account. Each verification simply draws against it at the locked rate — there's no monthly "use it or lose it" minimum.</div>
-      </details>
-      <details>
-        <summary>Will you re-pull and bill me automatically? <span class="pm"></span></summary>
-        <div class="ans">No — and nothing re-pulls on its own either. Monitoring is opt-in per entity, and it bills $39.99 <em>only when a sweep actually returns a fresh transcript</em>. A check that finds nothing new costs nothing. Once the conditioned transcript lands the enrollment auto-cancels itself; you can also cancel early from the dashboard at any time.</div>
+        <summary>How does Continuous Monitoring work? <span class="pm"></span></summary>
+        <div class="ans">Ask us about follow-up transcript requests for a missing filing. Confirm the check schedule, charges and stopping rule in your quote before enrollment.</div>
       </details>
       <details>
         <summary>Do I get charged for a rejection or a no-record? <span class="pm"></span></summary>
@@ -565,7 +551,7 @@
       </details>
       <details>
         <summary>How do I get started on my own? <span class="pm"></span></summary>
-        <div class="ans">Create an account at <a href="https://portal.moderntax.io/signup" style="color:var(--accent-ink);font-weight:600;">portal.moderntax.io/signup</a> with your work email at your company&rsquo;s domain. Add a card, then order a single entity or many at $84.99 each, pay as you go — no entity minimum, no contract. Deposit and Platform tiers, and API access, are set up with our team under an MSA.</div>
+        <div class="ans">Create an account at <a href="https://portal.moderntax.io/signup" style="color:var(--accent-ink);font-weight:600;">portal.moderntax.io/signup</a> with your work email at your company&rsquo;s domain. Add a card, then order a single entity or many at $84.99 each, pay as you go — no entity minimum, no contract. The Deposit tier, custom volume plans and API access are set up with our team under an MSA.</div>
       </details>
     </div>
   </div>
@@ -575,10 +561,11 @@
 <section class="final">
   <div class="wrap">
     <h2>Ready to extend <em>each loan?</em></h2>
-    <p>Building on the API? Start free in the sandbox. Ordering a single entity? Create an account and order today at $84.99. Pulling at volume? A 15-minute call walks you through the right tier and add-ons.</p>
+    <p>Ordering a single entity? Create an account and order today at $84.99. Pulling at volume? Request a pricing review. Building on the API? Explore the sandbox on synthetic data.</p>
     <div class="final-cta">
-      <a href="https://portal.moderntax.io/sandbox" class="btn btn-accent">Start free in the sandbox <span class="arrow">→</span></a>
-      <a href="https://portal.moderntax.io/signup" class="btn btn-ghost">Create account</a>
+      <a href="https://portal.moderntax.io/signup" class="btn btn-accent">Create account <span class="arrow">→</span></a>
+      <a href="/walkthrough#get-access" class="btn btn-ghost">Request a pricing review</a>
+      <a href="https://portal.moderntax.io/sandbox" class="btn btn-ghost">Explore the sandbox</a>
       <a href="https://meetings.hubspot.com/matt-moderntax/moderntax-intro?uuid=bdd6f380-7fdb-4ab1-8471-3b132cbe70d2" class="btn btn-ghost">Book a 15-min call <span class="arrow">→</span></a>
       <a href="mailto:matt@moderntax.io" class="btn btn-ghost">Email matt@moderntax.io</a>
     </div>
@@ -598,19 +585,19 @@
       <div>
         <h2>Products</h2>
         <ul>
-          <li><a href="/products/compliance-verification.html">Compliance Verification</a></li>
-          <li><a href="/products/continuous-monitoring.html">Continuous Monitoring</a></li>
-          <li><a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a></li>
-          <li><a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a></li>
-          <li><a href="/products/qoe-screening.html">QoE Screening</a></li>
-          <li><a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a></li>
-          <li><a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a></li>
+          <li><a href="/products/compliance-verification">Compliance Verification</a></li>
+          <li><a href="/products/continuous-monitoring">Continuous Monitoring</a></li>
+          <li><a href="/products/employment-income-verification">Employment &amp; Income Verification</a></li>
+          <li><a href="/products/payroll-liability-941">Payroll Liability (941) Report</a></li>
+          <li><a href="/products/qoe-screening">QoE Screening</a></li>
+          <li><a href="/products/check-reissue-recovery">Check Reissue Recovery</a></li>
+          <li><a href="/products/partner-api-mcp">Partner API &amp; MCP</a></li>
         </ul>
       </div>
       <div>
         <h2>Developers</h2>
         <ul>
-          <li><a href="/developers.html">API</a></li>
+          <li><a href="/developers">API</a></li>
           <li><a href="/docs/">Docs</a></li>
           <li><a href="/docs/#mcp">MCP</a></li>
           <li><a href="https://portal.moderntax.io/sandbox">Sandbox</a></li>
@@ -620,19 +607,19 @@
       <div>
         <h2>Use cases</h2>
         <ul>
-          <li><a href="/use-cases/sba-504.html">SBA 504</a></li>
-          <li><a href="/use-cases/sba-7a.html">SBA 7(a)</a></li>
-          <li><a href="/use-cases/commercial-lending.html">Commercial lending</a></li>
-          <li><a href="/use-cases/employment-hr.html">Employment &amp; HR</a></li>
-          <li><a href="/use-cases/tax-payment-verification.html">Tax payment verification</a></li>
-          <li><a href="/use-cases/tax-resolution.html">Tax resolution firms</a></li>
+          <li><a href="/use-cases/sba-504">SBA 504</a></li>
+          <li><a href="/use-cases/sba-7a">SBA 7(a)</a></li>
+          <li><a href="/use-cases/commercial-lending">Commercial lending</a></li>
+          <li><a href="/use-cases/employment-hr">Employment &amp; HR</a></li>
+          <li><a href="/use-cases/tax-payment-verification">Tax payment verification</a></li>
+          <li><a href="/use-cases/tax-resolution">Tax resolution firms</a></li>
         </ul>
       </div>
       <div>
         <h2>Company</h2>
         <ul>
-          <li><a href="/plans.html">Pricing</a></li>
-          <li><a href="/walkthrough.html#get-access">Talk to us</a></li>
+          <li><a href="/plans">Pricing</a></li>
+          <li><a href="/walkthrough#get-access">Talk to us</a></li>
           <li><a href="https://portal.moderntax.io/login">Sign in</a></li>
           <li><a href="https://portal.moderntax.io/security">Security</a></li>
           <li><a href="/privacy">Privacy</a></li>
@@ -641,6 +628,8 @@
       </div>
     </div>
     <div class="gfoot-bottom">
+      <!-- TODO(LEGAL-01): contracting/legal entity (ModernTax Inc. vs Rapidly Financial Inc.), privacy controller identity and service terms are
+           unverified. Do not replace this line with another legal name until LEGAL-01 is decided. Security badges stay off the site until then. -->
       <p>&copy; 2026 ModernTax, Inc. All rights reserved.</p>
       <p>ModernTax Compliance Platform</p>
     </div>

@@ -1,0 +1,13 @@
+# moderntax.io — marketing site and API reference.
+# Deploy previews and branch deploys are served with X-Robots-Tag: noindex by Netlify.
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /.netlify/
+Disallow: /employment-verify/
+Disallow: /demos/
+Disallow: /sandbox-interface.html
+Disallow: /walkthrough-thanks
+Disallow: /.github/
+
+Sitemap: https://moderntax.io/sitemap.xml

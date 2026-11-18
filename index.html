@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ModernTax Compliance Platform</title>
-<meta name="description" content="The ModernTax Compliance Platform. Tax compliance verification, monitoring and recovery for lenders and platforms — from the IRS record." />
+<title>IRS Tax Transcript Verification for Lenders | ModernTax</title>
+<meta name="description" content="Review IRS transcript information for lending decisions. Explore business and individual verification, authorization requirements and report options with ModernTax." />
 <link rel="canonical" href="https://moderntax.io/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ModernTax Compliance Platform" />
-<meta property="og:title" content="ModernTax Compliance Platform" />
-<meta property="og:description" content="Tax compliance verification, monitoring and recovery for lenders and platforms — from the IRS record." />
+<meta property="og:title" content="IRS Tax Transcript Verification for Lenders | ModernTax" />
+<meta property="og:description" content="Review IRS transcript information for lending decisions. Explore business and individual verification, authorization requirements and report options with ModernTax." />
 <meta property="og:url" content="https://moderntax.io/" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="ModernTax Compliance Platform" />
-<meta name="twitter:description" content="Tax compliance verification, monitoring and recovery for lenders and platforms — from the IRS record." />
+<meta name="twitter:title" content="IRS Tax Transcript Verification for Lenders | ModernTax" />
+<meta name="twitter:description" content="Review IRS transcript information for lending decisions. Explore business and individual verification, authorization requirements and report options with ModernTax." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=GT+Walsheim&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -222,9 +222,38 @@
   .hero-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 56px;
-    align-items: end;
+    gap: 48px;
+    align-items: start;
   }
+  /* Lender-path hero (COPY-01): readable headline size instead of the old
+     104px display face, so H1 + explanation + actions + price/scope fit the
+     opening screen at 320px, 390px and desktop. */
+  .hero-h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4.6vw, 60px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+  .hero-scope {
+    margin-top: 20px; font-size: 14.5px; line-height: 1.55; color: var(--ink-2);
+    max-width: 56ch;
+  }
+  .hero-scope b { color: var(--ink); font-weight: 600; }
+  .hero-dev { margin-top: 14px; font-size: 13.5px; color: var(--ink-3); }
+  .hero-dev a { color: var(--accent-ink); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+  /* Request requirements / findings / billing — what a lender needs before the catalog */
+  .basics { display: grid; grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--rule); }
+  @media (min-width: 900px) { .basics { grid-template-columns: repeat(3, 1fr); } }
+  .basics > div { padding: 28px 0; border-bottom: 1px solid var(--rule-soft); }
+  @media (min-width: 900px) { .basics > div { padding: 32px 28px 32px 0; border-bottom: 0; } .basics > div + div { padding-left: 28px; border-left: 1px solid var(--rule-soft); } }
+  .basics h3 { font-size: 17px; font-weight: 600; margin: 10px 0 12px; color: var(--ink); }
+  .basics ul { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 15px; line-height: 1.55; }
+  .basics li + li { margin-top: 6px; }
+  .basics p { color: var(--ink-2); font-size: 15px; line-height: 1.55; margin: 0; }
   @media (min-width: 1024px) {
     .hero-grid {
       grid-template-columns: 1.05fr 0.95fr;
@@ -256,7 +285,7 @@
   }
   @keyframes dotPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.3);} }
 
-  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 36px; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 
   .hero-stats {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
@@ -842,26 +871,26 @@
         <div class="gnav-dd">
           <button type="button" aria-haspopup="true" aria-expanded="false">Products <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="gnav-menu wide">
-          <a href="/products/compliance-verification.html"><span class="t">Compliance Verification</span><span class="d">Filed and unfiled years, balances and IRS-of-record figures for any business or individual.</span></a>
-          <a href="/products/continuous-monitoring.html"><span class="t">Continuous Monitoring</span><span class="d">Scheduled IRS re-pulls that flag the moment an unfiled year becomes filed.</span></a>
-          <a href="/products/employment-income-verification.html"><span class="t">Employment &amp; Income Verification</span><span class="d">W-2 and 1099 wage and income data, straight from the IRS.</span></a>
-          <a href="/products/payroll-liability-941.html"><span class="t">Payroll Liability (941) Report</span><span class="d">Quarter-by-quarter payroll-tax filings and balances an income transcript will not show.</span></a>
-          <a href="/products/qoe-screening.html"><span class="t">QoE Screening</span><span class="d">Screen which SBA loans need a Quality of Earnings review under SOP 50 10 8.</span></a>
-          <a href="/products/check-reissue-recovery.html"><span class="t">Check Reissue Recovery</span><span class="d">Recover IRS refund checks that came back undelivered.</span></a>
-          <a href="/products/partner-api-mcp.html"><span class="t">Partner API &amp; MCP</span><span class="d">REST, webhooks, structured JSON and an MCP server for AI agents — with a free sandbox.</span></a>
+          <a href="/products/compliance-verification"><span class="t">Compliance Verification</span><span class="d">Filed and unfiled years, balances and IRS-of-record figures for businesses and individuals.</span></a>
+          <a href="/products/continuous-monitoring"><span class="t">Continuous Monitoring</span><span class="d">Follow-up transcript requests for a filing that came back missing.</span></a>
+          <a href="/products/employment-income-verification"><span class="t">Employment &amp; Income Verification</span><span class="d">IRS-reported W-2 and 1099 wage and income information.</span></a>
+          <a href="/products/payroll-liability-941"><span class="t">Payroll Liability (941) Report</span><span class="d">Payroll-tax filings and balances from IRS Form 941 account transcripts.</span></a>
+          <a href="/products/qoe-screening"><span class="t">QoE Screening</span><span class="d">Screen a transaction for a Quality of Earnings scope discussion.</span></a>
+          <a href="/products/check-reissue-recovery"><span class="t">Check Reissue Recovery</span><span class="d">Review a tax-check reissue request: authorization, steps and scope.</span></a>
+          <a href="/products/partner-api-mcp"><span class="t">Partner API &amp; MCP</span><span class="d">REST, webhooks, structured JSON and an MCP server for AI agents, with a sandbox on synthetic data.</span></a>
           <a class="all" href="/products/"><span class="t">All products &rarr;</span></a>
           </div>
         </div>
         <div class="gnav-dd">
           <button type="button" aria-haspopup="true" aria-expanded="false">Developers <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="gnav-menu">
-            <a href="/developers.html"><span class="t">API</span><span class="d">REST intake, webhooks, structured JSON</span></a>
+            <a href="/developers"><span class="t">API</span><span class="d">REST intake, webhooks, structured JSON</span></a>
             <a href="/docs/"><span class="t">Docs</span><span class="d">The Partner API reference</span></a>
             <a href="/docs/#mcp"><span class="t">MCP</span><span class="d">Model Context Protocol server for AI agents</span></a>
-            <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">A free API key against synthetic data</span></a>
+            <a href="https://portal.moderntax.io/sandbox"><span class="t">Sandbox</span><span class="d">An API key against synthetic data</span></a>
           </div>
         </div>
-        <a href="/plans.html">Pricing</a>
+        <a href="/plans">Pricing</a>
       </nav>
       <div class="gnav-cta">
         <a href="https://portal.moderntax.io/login" class="gsignin">Sign in</a>
@@ -874,21 +903,21 @@
     <nav class="gnav-mobile" id="gnav-mobile" aria-label="Mobile">
       <a href="/#platform">Platform</a>
       <div class="mh">Products</div>
-      <a href="/products/compliance-verification.html">Compliance Verification</a>
-      <a href="/products/continuous-monitoring.html">Continuous Monitoring</a>
-      <a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a>
-      <a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a>
-      <a href="/products/qoe-screening.html">QoE Screening</a>
-      <a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a>
-      <a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a>
+      <a href="/products/compliance-verification">Compliance Verification</a>
+      <a href="/products/continuous-monitoring">Continuous Monitoring</a>
+      <a href="/products/employment-income-verification">Employment &amp; Income Verification</a>
+      <a href="/products/payroll-liability-941">Payroll Liability (941) Report</a>
+      <a href="/products/qoe-screening">QoE Screening</a>
+      <a href="/products/check-reissue-recovery">Check Reissue Recovery</a>
+      <a href="/products/partner-api-mcp">Partner API &amp; MCP</a>
       <a href="/products/">All products</a>
       <div class="mh">Developers</div>
-      <a href="/developers.html">API</a>
+      <a href="/developers">API</a>
       <a href="/docs/">Docs</a>
       <a href="/docs/#mcp">MCP</a>
       <a href="https://portal.moderntax.io/sandbox">Sandbox</a>
       <div class="mh">More</div>
-      <a href="/plans.html">Pricing</a>
+      <a href="/plans">Pricing</a>
       <div class="mcta">
         <a href="https://portal.moderntax.io/login" class="gbtn ghost">Sign in</a>
         <a href="https://portal.moderntax.io/signup" class="gbtn">Get started</a>
@@ -904,35 +933,22 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <div class="hero-meta reveal">
-          <span class="pill"><span class="dot"></span> ModernTax Compliance Platform &middot; start free in the sandbox</span>
+        <div class="hero-meta">
+          <span class="pill"><span class="dot"></span> IRS tax transcript verification for lenders</span>
         </div>
-        <h1 class="display-1 reveal" style="text-wrap: balance;">
-          Tax compliance,<br/>
-          <span class="italic-em" style="font-style: italic;">from the IRS record.</span>
-        </h1>
-        <p class="lede reveal" style="margin-top: 28px;">
-          Verification, monitoring and recovery for lenders and platforms. Know which years a borrower filed, what they owe and what the IRS has on record — authorized with a digital 8821, delivered the same day by portal or API, and watched after closing.
+        <!-- COPY-01 (gate OPS-01) -->
+        <h1 class="hero-h1">IRS tax records for lending decisions.</h1>
+        <p class="lede" style="margin-top: 20px;">
+          Request business and individual IRS transcripts, review filing status and balances, and keep results with your loan file. Submit through the portal or talk with us about an API workflow.
         </p>
-        <div class="hero-ctas reveal">
-          <a href="https://portal.moderntax.io/new?src=home_cta&amp;v=submit_a_live_file" class="btn btn-accent" data-cta="home_primary" data-variant="submit_a_live_file">Submit a live file <span class="arrow">→</span></a>
-          <a href="https://portal.moderntax.io/sandbox" class="btn btn-ghost">Start free in the sandbox</a>
+        <div class="hero-ctas">
+          <a href="https://portal.moderntax.io/new?src=home_cta&amp;v=start_a_verification" class="btn btn-accent" data-cta="home_primary" data-cta-placement="hero" data-cta-destination="portal_order" data-variant="start_a_verification">Start a verification <span class="arrow">→</span></a>
+          <a href="/walkthrough#get-access" class="btn btn-ghost">Talk with us about an API workflow</a>
+          <!-- HELD (COPY-01 secondary): "See a sample report" stays off the page until an approved
+               synthetic / de-identified report exists. Do not link a real customer report. -->
         </div>
-
-        <div class="hero-stats reveal">
-          <div>
-            <div class="num">Same-day</div>
-            <div class="lbl">IRS transcript turnaround</div>
-          </div>
-          <div>
-            <div class="num">Digital 8821</div>
-            <div class="lbl">No fax required</div>
-          </div>
-          <div>
-            <div class="num">API-first</div>
-            <div class="lbl">Webhook or poll delivery</div>
-          </div>
-        </div>
+        <p class="hero-scope"><b>$84.99 per entity</b>, pay as you go with a card on file. Every order needs a Form 8821 signed by the taxpayer; volume and API plans are quoted.</p>
+        <p class="hero-dev">Developers: <a href="https://portal.moderntax.io/sandbox">Explore the sandbox</a> — an API key against synthetic data. The <a href="/docs/">API docs</a> list what the sandbox supports.</p>
       </div>
 
       <!-- LIVE INTERACTIVE WIDGET -->
@@ -1046,7 +1062,7 @@
           </div>
 
           <div class="demo-footer">
-            <span class="demo-cost">Same-day turnaround · <b>$84.99</b> / entity, pay as you go</span>
+            <span class="demo-cost"><b>$84.99</b> / entity, pay as you go</span>
             <button id="submit-btn" class="btn btn-accent" style="height:38px;padding:0 16px;">
               Submit request <span class="arrow">→</span>
             </button>
@@ -1055,10 +1071,50 @@
 
         <div style="margin-top:16px; font-size:12.5px; color:var(--ink-3); display:flex;align-items:center; gap:10px;">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 L13.5 4 V8.2 C13.5 11.4 11.2 13.5 8 14.5 C4.8 13.5 2.5 11.4 2.5 8.2 V4 Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
-Illustrative flow. Rejections are never billed, and nothing re-pulls without you asking.
+Illustrative flow with sample data. Rejections are not billed.
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ BEFORE YOU ORDER ════════════════════════════════ -->
+<section class="section" id="how-it-works" style="padding-top: clamp(32px,4vw,56px);">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">01 · Before you order</div>
+        <h2 class="display-2 reveal" style="margin: 18px 0 0;">
+          What you need,<br/>
+          <em class="italic-em">and what you get back.</em>
+        </h2>
+      </div>
+      <p class="lede reveal">
+        Each order is one taxpayer, the form type and the tax years you need. Nothing goes to the IRS until the signed authorization is on the order.
+      </p>
+    </div>
+    <div class="basics reveal">
+      <div>
+        <div class="eyebrow">Request requirements</div>
+        <h3>To request transcripts</h3>
+        <ul>
+          <li>A Form 8821 signed by the taxpayer, naming ModernTax as designee. We pre-fill it; you collect the signature.</li>
+          <li>Taxpayer name and TIN: an SSN for a 1040, an EIN for a 1065, 1120, 1120-S or 941.</li>
+          <li>Form type and tax years, plus the fiscal year end for 1065, 1120 and 1120-S returns.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="eyebrow">What a completed finding means</div>
+        <h3>Reading the result</h3>
+        <p>Each result shows what the IRS transcript held when we retrieved it: whether a return is on record for each year, balances and account activity, and the figures the IRS has on file. A definitive &ldquo;no record of return filed&rdquo; is a finding too: the IRS had no return on file for that year at retrieval.</p>
+      </div>
+      <div>
+        <div class="eyebrow">Billing trigger</div>
+        <h3>When an order is billed</h3>
+        <p>Rejections are not billed. A bad EIN, a name mismatch or a signer not on record comes back with the field to fix. A definitive &ldquo;no record of return filed&rdquo; bills at the per-entity rate, because it is a real underwriting finding. Abandoned or incomplete pulls are not billed. Your quote or signed agreement defines covered services and billing terms.</p>
+      </div>
+    </div>
+    <!-- HELD: approved synthetic report slot. Add only after an approved synthetic / de-identified sample report exists (COPY-01 secondary). -->
   </div>
 </section>
 
@@ -1067,7 +1123,7 @@ Illustrative flow. Rejections are never billed, and nothing re-pulls without you
   <div class="wrap">
     <div class="section-head">
       <div>
-        <div class="eyebrow">01 · The platform</div>
+        <div class="eyebrow">02 · The platform</div>
         <h2 class="display-2 reveal" style="margin: 18px 0 0;">
           Verify. Monitor.<br/>
           <em class="italic-em">Recover.</em>
@@ -1082,50 +1138,50 @@ The ModernTax Compliance Platform puts one IRS authorization behind every produc
       <div class="product">
         <div class="product-eyebrow"><span class="dotsq"></span> Verify</div>
         <h3>Know the IRS standing before you fund.</h3>
-        <p>Filed and unfiled years, balances due and IRS-of-record figures for any business or individual, authorized with a digital 8821 — no fax — and back the same day.</p>
+        <p>Filed and unfiled years, balances due and IRS-of-record figures for businesses and individuals, authorized with a signed Form 8821 and delivered in the portal or by API.</p>
         <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/compliance-verification.html" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Compliance Verification</a> — filed years, balances, IRS-of-record data</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/employment-income-verification.html" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Employment &amp; Income Verification</a> — W-2 and 1099 wage &amp; income</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/payroll-liability-941.html" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Payroll Liability (941) Report</a> — quarter-by-quarter payroll-tax exposure</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/qoe-screening.html" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">QoE Screening</a> — which SBA loans need a Quality of Earnings review</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/compliance-verification" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Compliance Verification</a> — filed years, balances, IRS-of-record data</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/employment-income-verification" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Employment &amp; Income Verification</a> — IRS-reported W-2 and 1099 wage &amp; income</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/payroll-liability-941" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Payroll Liability (941) Report</a> — quarter-by-quarter payroll-tax exposure</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/qoe-screening" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">QoE Screening</a> — screen a transaction for a QoE scope discussion</span></li>
         </ul>
         <div class="product-foot">
-          <a href="/products/compliance-verification.html" class="btn-link">Explore Compliance Verification <span class="arrow">→</span></a>
+          <a href="/products/compliance-verification" class="btn-link">Explore Compliance Verification <span class="arrow">→</span></a>
         </div>
       </div>
       <div class="product">
         <div class="product-eyebrow"><span class="dotsq"></span> Monitor</div>
-        <h3>Catch the year that finally gets filed.</h3>
-        <p>Scheduled IRS re-pulls on the entities you choose. When a year that was unfiled at closing posts as filed, you hear about it — and you pay only when a pull returns something new.</p>
+        <h3>Track unresolved IRS filing records.</h3>
+        <p>Ask us about follow-up transcript requests for a missing filing. Confirm the check schedule, charges and stopping rule in your quote before enrollment.</p>
         <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/continuous-monitoring.html" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Continuous Monitoring</a> — $39.99 per landed update, opt-in per entity</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/continuous-monitoring" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Continuous Monitoring</a> — terms confirmed in your quote</span></li>
         </ul>
         <div class="product-foot">
-          <a href="/products/continuous-monitoring.html" class="btn-link">Explore Continuous Monitoring <span class="arrow">→</span></a>
+          <a href="/products/continuous-monitoring" class="btn-link">Review monitoring terms <span class="arrow">→</span></a>
         </div>
       </div>
       <div class="product">
         <div class="product-eyebrow"><span class="dotsq"></span> Recover</div>
-        <h3>Get back what the IRS is holding.</h3>
-        <p>When an IRS refund check comes back undelivered, we fix the address of record, request the reissue and track it to delivery.</p>
+        <h3>Review a tax-check reissue request.</h3>
+        <p>Ask us to review the authorization and steps needed for a check-reissue request. Scope, fees and follow-up responsibilities must be confirmed before work begins. IRS processing and delivery are outside our control.</p>
         <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/check-reissue-recovery.html" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Check Reissue Recovery</a> — $1,000 per check, confirmed before we start</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/check-reissue-recovery" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Check Reissue Recovery</a> — scope and fees confirmed before work begins</span></li>
         </ul>
         <div class="product-foot">
-          <a href="/products/check-reissue-recovery.html" class="btn-link">Explore Check Reissue Recovery <span class="arrow">→</span></a>
+          <a href="/products/check-reissue-recovery" class="btn-link">Review recovery scope <span class="arrow">→</span></a>
         </div>
       </div>
       <div class="product">
         <div class="product-eyebrow"><span class="dotsq"></span> Build</div>
         <h3>Put it inside your own product.</h3>
-        <p>REST intake, webhooks, structured JSON, a cross-reference check and an MCP server for AI agents — with a free self-serve sandbox.</p>
+        <p>REST intake, webhooks, structured JSON, a cross-reference check and an MCP server for AI agents — with a self-serve sandbox on synthetic data.</p>
         <ul>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/partner-api-mcp.html" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Partner API &amp; MCP</a> — REST, webhooks, JSON, MCP</span></li>
-          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="https://portal.moderntax.io/sandbox" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Sandbox</a> — a free API key against synthetic data</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/products/partner-api-mcp" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Partner API &amp; MCP</a> — REST, webhooks, JSON, MCP</span></li>
+          <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="https://portal.moderntax.io/sandbox" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">Sandbox</a> — an API key against synthetic data</span></li>
           <li><span class="check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 L5 8.5 L9.5 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><a href="/docs/" style="color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;">API docs</a> — the full reference</span></li>
         </ul>
         <div class="product-foot">
-          <a href="/products/partner-api-mcp.html" class="btn-link">Explore the Partner API <span class="arrow">→</span></a>
+          <a href="/products/partner-api-mcp" class="btn-link">Explore the Partner API <span class="arrow">→</span></a>
         </div>
       </div>
     </div>
@@ -1137,48 +1193,48 @@ The ModernTax Compliance Platform puts one IRS authorization behind every produc
   <div class="wrap">
     <div class="section-head">
       <div>
-        <div class="eyebrow">02 · Products</div>
+        <div class="eyebrow">03 · Products</div>
         <h2 class="display-2 reveal" style="margin: 18px 0 0;">
-          Seven products.<br/>
-          <em class="italic-em">One record behind them.</em>
+          The product catalog.<br/>
+          <em class="italic-em">One record behind it.</em>
         </h2>
       </div>
       <p class="lede reveal">
-        Every product can be tried free in the sandbox. <a href="/products/" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">See all products</a> or <a href="/plans.html" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">pricing</a>.
+        Scope, authorization and pricing for each product are confirmed before you order. <a href="/products/" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">See all products</a> or <a href="/plans" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;">pricing</a>.
       </p>
     </div>
     <div class="uc-list reveal">
-      <a class="uc-row" href="/products/compliance-verification.html">
+      <a class="uc-row" href="/products/compliance-verification">
         <div class="uc-num">01</div>
         <div class="uc-title">Compliance Verification — filed and unfiled years, balances and IRS-of-record figures.</div>
         <div class="uc-tag">Verify</div>
       </a>
-      <a class="uc-row" href="/products/continuous-monitoring.html">
+      <a class="uc-row" href="/products/continuous-monitoring">
         <div class="uc-num">02</div>
-        <div class="uc-title">Continuous Monitoring — scheduled re-pulls that flag when an unfiled year becomes filed.</div>
+        <div class="uc-title">Continuous Monitoring — follow-up transcript requests for a missing filing, on terms set in your quote.</div>
         <div class="uc-tag">Monitor</div>
       </a>
-      <a class="uc-row" href="/products/employment-income-verification.html">
+      <a class="uc-row" href="/products/employment-income-verification">
         <div class="uc-num">03</div>
-        <div class="uc-title">Employment &amp; Income Verification — W-2 and 1099 wage and income from the IRS.</div>
+        <div class="uc-title">Employment &amp; Income Verification — IRS-reported W-2 and 1099 wage and income information.</div>
         <div class="uc-tag">Verify</div>
       </a>
-      <a class="uc-row" href="/products/payroll-liability-941.html">
+      <a class="uc-row" href="/products/payroll-liability-941">
         <div class="uc-num">04</div>
         <div class="uc-title">Payroll Liability (941) Report — the payroll-tax exposure an income transcript won&rsquo;t show.</div>
         <div class="uc-tag">Verify</div>
       </a>
-      <a class="uc-row" href="/products/qoe-screening.html">
+      <a class="uc-row" href="/products/qoe-screening">
         <div class="uc-num">05</div>
-        <div class="uc-title">QoE Screening — which SBA loans need a Quality of Earnings review under SOP 50 10 8.</div>
+        <div class="uc-title">QoE Screening — screen a transaction for a Quality of Earnings scope discussion.</div>
         <div class="uc-tag">Screen</div>
       </a>
-      <a class="uc-row" href="/products/check-reissue-recovery.html">
+      <a class="uc-row" href="/products/check-reissue-recovery">
         <div class="uc-num">06</div>
-        <div class="uc-title">Check Reissue Recovery — recover IRS refund checks that came back undelivered.</div>
+        <div class="uc-title">Check Reissue Recovery — review a tax-check reissue request.</div>
         <div class="uc-tag">Recover</div>
       </a>
-      <a class="uc-row" href="/products/partner-api-mcp.html">
+      <a class="uc-row" href="/products/partner-api-mcp">
         <div class="uc-num">07</div>
         <div class="uc-title">Partner API &amp; MCP — REST, webhooks, structured JSON and an MCP server for AI agents.</div>
         <div class="uc-tag">Build</div>
@@ -1192,7 +1248,7 @@ The ModernTax Compliance Platform puts one IRS authorization behind every produc
   <div class="wrap">
     <div class="section-head">
       <div>
-        <div class="eyebrow">03 · Built for</div>
+        <div class="eyebrow">04 · Built for</div>
         <h2 class="display-2 reveal" style="margin: 18px 0 0;">
           The teams<br/>
           <em class="italic-em">underwriting America.</em>
@@ -1204,29 +1260,29 @@ The ModernTax Compliance Platform puts one IRS authorization behind every produc
     </div>
 
     <div class="uc-list reveal">
-      <a class="uc-row" href="use-cases/sba-504.html">
+      <a class="uc-row" href="/use-cases/sba-504">
         <div class="uc-num">01</div>
         <div class="uc-title">SBA 504 lending — CDC-ready transcripts for real estate and equipment loans.</div>
         <div class="uc-tag">CDC · 504</div>
       </a>
-      <a class="uc-row" href="use-cases/sba-7a.html">
+      <a class="uc-row" href="/use-cases/sba-7a">
         <div class="uc-num">02</div>
         <div class="uc-title">SBA 7(a) lending — multi-year borrower and business returns, formatted for SBA submission.</div>
         <div class="uc-tag">SBA · 7(a)</div>
       </a>
-      <a class="uc-row" href="use-cases/commercial-lending.html">
+      <a class="uc-row" href="/use-cases/commercial-lending">
         <div class="uc-num">03</div>
         <div class="uc-title">Commercial credit — verify revenue, filing status, and tax liability for any entity.</div>
         <div class="uc-tag">Commercial</div>
       </a>
-      <a class="uc-row" href="use-cases/employment-hr.html">
+      <a class="uc-row" href="/use-cases/employment-hr">
         <div class="uc-num">04</div>
-        <div class="uc-title">Employment & HR — IRS-sourced W-2 and 1099 verification for hiring and compliance.</div>
+        <div class="uc-title">Employment &amp; HR — review IRS-reported wage and income information.</div>
         <div class="uc-tag">HR · BGC</div>
       </a>
-      <a class="uc-row" href="use-cases/tax-payment-verification.html">
+      <a class="uc-row" href="/use-cases/tax-payment-verification">
         <div class="uc-num">05</div>
-        <div class="uc-title">Tax payment verification — confirm settled balances before funding or closing.</div>
+        <div class="uc-title">Tax payment verification — review IRS-posted payment information.</div>
         <div class="uc-tag">Payments</div>
       </a>
     </div>
@@ -1238,7 +1294,7 @@ The ModernTax Compliance Platform puts one IRS authorization behind every produc
   <div class="wrap">
     <div class="section-head">
       <div>
-        <div class="eyebrow">04 · Choose your surface</div>
+        <div class="eyebrow">05 · Choose your surface</div>
         <h2 class="display-2 reveal" style="margin: 18px 0 0;">
           A portal for teams.<br/>
           <em class="italic-em">An API for everyone else.</em>
@@ -1270,7 +1326,7 @@ The ModernTax Compliance Platform puts one IRS authorization behind every produc
         </ul>
 
         <div>
-          <a href="/walkthrough.html" class="btn btn-primary">Walk through an order <span class="arrow">→</span></a>
+          <a href="/walkthrough" class="btn btn-primary">Walk through an order <span class="arrow">→</span></a>
         </div>
       </div>
 
@@ -1293,13 +1349,13 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
 
         <ul class="persona-features">
           <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> REST + webhooks · idempotency keys built in.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Free self-serve sandbox key · MCP server for AI agents.</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Self-serve sandbox key on synthetic data · MCP server for AI agents.</li>
           <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Usage dashboard with your account quota.</li>
-          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8 L7.2 10 L11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Encrypted in transit and at rest · every access audit-logged.</li>
+          <!-- HELD (LEGAL-01): security statement removed until supported security statements are approved. -->
         </ul>
 
         <div>
-          <a href="https://portal.moderntax.io/sandbox" class="btn btn-primary">Start free in the sandbox <span class="arrow">→</span></a>
+          <a href="https://portal.moderntax.io/sandbox" class="btn btn-primary">Explore the sandbox <span class="arrow">→</span></a>
         </div>
       </div>
     </div>
@@ -1311,7 +1367,7 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
   <div class="wrap">
     <div class="section-head" style="margin-bottom:48px;">
       <div>
-        <div class="eyebrow">05 · Why we built this</div>
+        <div class="eyebrow">06 · Why we built this</div>
       </div>
       <span></span>
     </div>
@@ -1362,10 +1418,10 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
         <h2>Underwriting<br/><em style="font-style:italic; color: color-mix(in oklab, var(--accent) 60%, white);">moves at the speed of its data.</em></h2>
       </div>
       <div>
-        <p>Start free in the sandbox with a work email — an API key and synthetic taxpayers, no card. Ready for a live file? Order a single entity at $84.99, pay as you go, no contract and no minimum.</p>
+        <p>Order a single entity at $84.99, pay as you go, no contract and no minimum. Pulling at volume or building on the API? Talk with us about a quoted plan.</p>
         <div style="display:flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
-          <a href="https://portal.moderntax.io/sandbox" class="btn btn-accent">Start free in the sandbox <span class="arrow">→</span></a>
-          <a href="/walkthrough.html#get-access" class="btn btn-ghost">Talk to us</a>
+          <a href="https://portal.moderntax.io/new" class="btn btn-accent">Start a verification <span class="arrow">→</span></a>
+          <a href="/walkthrough#get-access" class="btn btn-ghost">Talk to us</a>
         </div>
       </div>
     </div>
@@ -1386,19 +1442,19 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
       <div>
         <h2>Products</h2>
         <ul>
-          <li><a href="/products/compliance-verification.html">Compliance Verification</a></li>
-          <li><a href="/products/continuous-monitoring.html">Continuous Monitoring</a></li>
-          <li><a href="/products/employment-income-verification.html">Employment &amp; Income Verification</a></li>
-          <li><a href="/products/payroll-liability-941.html">Payroll Liability (941) Report</a></li>
-          <li><a href="/products/qoe-screening.html">QoE Screening</a></li>
-          <li><a href="/products/check-reissue-recovery.html">Check Reissue Recovery</a></li>
-          <li><a href="/products/partner-api-mcp.html">Partner API &amp; MCP</a></li>
+          <li><a href="/products/compliance-verification">Compliance Verification</a></li>
+          <li><a href="/products/continuous-monitoring">Continuous Monitoring</a></li>
+          <li><a href="/products/employment-income-verification">Employment &amp; Income Verification</a></li>
+          <li><a href="/products/payroll-liability-941">Payroll Liability (941) Report</a></li>
+          <li><a href="/products/qoe-screening">QoE Screening</a></li>
+          <li><a href="/products/check-reissue-recovery">Check Reissue Recovery</a></li>
+          <li><a href="/products/partner-api-mcp">Partner API &amp; MCP</a></li>
         </ul>
       </div>
       <div>
         <h2>Developers</h2>
         <ul>
-          <li><a href="/developers.html">API</a></li>
+          <li><a href="/developers">API</a></li>
           <li><a href="/docs/">Docs</a></li>
           <li><a href="/docs/#mcp">MCP</a></li>
           <li><a href="https://portal.moderntax.io/sandbox">Sandbox</a></li>
@@ -1408,19 +1464,19 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
       <div>
         <h2>Use cases</h2>
         <ul>
-          <li><a href="/use-cases/sba-504.html">SBA 504</a></li>
-          <li><a href="/use-cases/sba-7a.html">SBA 7(a)</a></li>
-          <li><a href="/use-cases/commercial-lending.html">Commercial lending</a></li>
-          <li><a href="/use-cases/employment-hr.html">Employment &amp; HR</a></li>
-          <li><a href="/use-cases/tax-payment-verification.html">Tax payment verification</a></li>
-          <li><a href="/use-cases/tax-resolution.html">Tax resolution firms</a></li>
+          <li><a href="/use-cases/sba-504">SBA 504</a></li>
+          <li><a href="/use-cases/sba-7a">SBA 7(a)</a></li>
+          <li><a href="/use-cases/commercial-lending">Commercial lending</a></li>
+          <li><a href="/use-cases/employment-hr">Employment &amp; HR</a></li>
+          <li><a href="/use-cases/tax-payment-verification">Tax payment verification</a></li>
+          <li><a href="/use-cases/tax-resolution">Tax resolution firms</a></li>
         </ul>
       </div>
       <div>
         <h2>Company</h2>
         <ul>
-          <li><a href="/plans.html">Pricing</a></li>
-          <li><a href="/walkthrough.html#get-access">Talk to us</a></li>
+          <li><a href="/plans">Pricing</a></li>
+          <li><a href="/walkthrough#get-access">Talk to us</a></li>
           <li><a href="https://portal.moderntax.io/login">Sign in</a></li>
           <li><a href="https://portal.moderntax.io/security">Security</a></li>
           <li><a href="/privacy">Privacy</a></li>
@@ -1429,6 +1485,8 @@ curl <span style="color:var(--accent);">-X POST</span> https://portal.moderntax.
       </div>
     </div>
     <div class="gfoot-bottom">
+      <!-- TODO(LEGAL-01): contracting/legal entity (ModernTax Inc. vs Rapidly Financial Inc.), privacy controller identity and service terms are
+           unverified. Do not replace this line with another legal name until LEGAL-01 is decided. Security badges stay off the site until then. -->
       <p>&copy; 2026 ModernTax, Inc. All rights reserved.</p>
       <p>ModernTax Compliance Platform</p>
     </div>
@@ -1579,30 +1637,50 @@ document.querySelectorAll('.demo-tab').forEach(t => {
 });
 </script>
 
-<!-- Primary-CTA instrumentation.
-     The CTA experiment is decided on billed orders, so the click has to be
-     recorded at the moment it happens — inferring it from a later portal
-     pageview drops everyone who clicks and bounces before the portal loads,
-     which is the population most likely to differ between variants.
+<!-- Primary-CTA instrumentation — EV-1 site_cta_click (lender-path brief, R1).
+     Uses the EXISTING custom collector only (portal /api/analytics/track,
+     type feature_used). No GA4 tag is added here: DATA-01 (one destination)
+     is undecided. Payload is the EV-1 shape plus the two low-cardinality
+     fields the portal's homepage CTA funnel already joins on (funnel_step,
+     experiment/variant). Never sent: referrer, full URL, query string, email,
+     names, TINs, account/order IDs. Only production hosts send; previews and
+     localhost build the payload but do not transmit it.
      sendBeacon survives the navigation this click is about to cause; the
-     ?src/&v on the href is the backstop if the beacon is blocked. -->
+     ?src/&v on the href is the backstop if the beacon is blocked.
+     Mapping documented in .github/seo-manifest.md. -->
 <script>
 (function () {
   var cta = document.querySelector('[data-cta="home_primary"]');
-  if (!cta || !navigator.sendBeacon) return;
+  if (!cta) return;
+  var host = location.hostname;
+  var isProd = host === 'moderntax.io' || host === 'www.moderntax.io';
+  function eventId() {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return 'ev-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
   cta.addEventListener('click', function () {
     try {
       var body = JSON.stringify({
         type: 'feature_used',
-        path: location.pathname,
-        referrer: document.referrer || undefined,
+        path: '/',
         metadata: {
+          event_name: 'site_cta_click',
+          schema_version: 1,
+          occurred_at: new Date().toISOString(),
+          event_id: eventId(),
+          environment: isProd ? 'production' : 'preview',
+          page_key: 'home',
+          cta_id: 'home_primary',
+          placement: cta.getAttribute('data-cta-placement') || 'hero',
+          destination_class: cta.getAttribute('data-cta-destination') || 'portal_order',
+          source: 'home_cta',
           funnel_step: 'cta_click',
           experiment: 'homepage_primary_cta',
-          variant: cta.getAttribute('data-variant'),
-          source: 'home_cta'
+          variant: cta.getAttribute('data-variant')
         }
       });
+      window.__mtLastCtaEvent = body; /* inspectable in QA; never contains PII */
+      if (!isProd || !navigator.sendBeacon) return;
       navigator.sendBeacon(
         'https://portal.moderntax.io/api/analytics/track',
         new Blob([body], { type: 'application/json' })
