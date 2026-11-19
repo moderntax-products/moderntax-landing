@@ -37,6 +37,11 @@ const CHECK = `<span class="check"><svg width="11" height="11" viewBox="0 0 12 1
 //   - same-day / real-time / no-fax promises (OPS-01)
 // Every product page leads with a lender action; the sandbox is a separate,
 // clearly-developer link that does not promise every product works there.
+// Matt's authored product copy (2026-11-19 implementation spec). Exact words; see authored-copy.json.
+const AUTHORED = JSON.parse(fs.readFileSync(new URL('./authored-copy.json', import.meta.url), 'utf8'));
+const authoredOf = (slug) => (Array.isArray(AUTHORED[slug]) ? AUTHORED[slug] : null);
+const htmlText = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 const P = [
   {
     slug: 'compliance-verification',
@@ -594,15 +599,22 @@ function productPage(p) {
 <section class="hero">
   <div class="wrap hero-in wide">
     <span class="pill"><span class="dot"></span>${p.name}</span>
-    <h1 class="display-2">${p.h1}</h1>
-    <p class="lede">${p.lede}</p>
+    <h1 class="display-2">${p.h1}</h1>${authoredOf(p.slug) ? '' : `\n    <p class="lede">${p.lede}</p>`}
     <div class="hero-ctas">
         ${ctas(p.cta)}
     </div>
     <p class="sub-ctas">Part of the ${BRAND} &middot; <a href="/products/">See all products</a></p>${p.developer ? '' : '\n    ' + devLink}
   </div>
 </section>
-
+${authoredOf(p.slug) ? `
+<section class="section authored">
+  <div class="wrap">
+    <div class="authored-body" style="max-width:68ch;display:flex;flex-direction:column;gap:0;font-size:17px;line-height:1.65;">
+      ${authoredOf(p.slug).map((t) => `<p>${htmlText(t)}</p>`).join('\n      ')}
+    </div>
+  </div>
+</section>
+` : ''}
 <section class="section">
   <div class="wrap">
     ${sectionHead(num(), 'What you get', p.whatHead)}
@@ -686,7 +698,7 @@ function overviewPage() {
   const desc = 'ModernTax starts with tax transcripts and goes further: QoE screening, compliance verification, employment and income, payroll liability (941), monitoring, check reissue recovery, and an API and MCP tool.';
   const intro = CATALOG_INTRO.map(([h, t], i) => `<section class="section hiw${i % 2 ? ' alt' : ''}">
   <div class="wrap">
-    ${sectionHead(String(i + 1).padStart(2, '0'), 'Product catalog', h, t)}
+    ${sectionHead(String(i + 2).padStart(2, '0'), 'Product catalog', h, t)}
   </div>
 </section>`).join('\n\n');
   const items = CATALOG.map(([slug, name, text]) => `<a class="cat-item" href="/products/${slug}"><span class="cat-name">${name} <span class="arrow">&rarr;</span></span><span class="cat-text">${text}</span></a>`).join('\n      ');
@@ -712,16 +724,16 @@ function overviewPage() {
   </div>
 </section>
 
-${intro}
-
 <section class="section">
   <div class="wrap">
-    ${sectionHead(String(CATALOG_INTRO.length + 1).padStart(2, '0'), 'Product catalog', 'All products')}
+    ${sectionHead('01', 'Product catalog', 'All products')}
     <div class="cat-list">
       ${items}
     </div>
   </div>
 </section>
+
+${intro}
 
 </main>
 
