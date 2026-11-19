@@ -1,0 +1,29 @@
+{
+  "_source": "Matt Parker's Google Doc, read 2026-11-19 via the ModernTax copy implementation spec (Copy inventory). Words, punctuation and typos preserved exactly; do not edit without Matt.",
+  "compliance-verification": [
+    "Compliance Verification: This is our standard ordering workflow built for processing, underwriting, and closing teams at commercial lenders.",
+    "Underwriting teams core jobs is to fact check self-reported income and financials on businesses. The IRS-record is one of the most important fact-checked items. If a business is compliant with the IRS it gives a pretty strong signal and the tax returns show a strong signal of legitimacy.",
+    "Scripts are what commercial lenders use for short for tax transcripts and when they request these records they mean business and typically the borrower has met other requirements and the lender is ready to close the loan.",
+    "Our results show compliance across up to the three most recent tax years. We also complement tax returns with account data that shows balances owed, filing compliance and more. Tax records are not real-time financial data-points like bank feeds.",
+    "One of the core differentiators for what we do at Moderntax pertains to helping understand when records are missing, why that is and getting to the source at the federal level as quickly as possible so that we can solve the reasoning and help the business owner get in compliance for loan approval. This is critical to both helping the underwriting and closing teams as well as the prospective business owner.",
+    "Lenders are required to use services like ours to request tax records and reconcile those records against other financial information on the business. We help with everything that includes the authorization, the tax transcript coverage and delivery, the audit trail, and resolving discrepancies. The lenders are also responsible for reconciling our delivery of tax records with other financial information provided by the borrower. Our SLAs target same or next day delivery which is 90% faster than standard vendors and working directly with the iRS."
+  ],
+  "employment-income-verification": [
+    "Employment & Income Verification: We provide consent-based employment and income verification services to HR companies, K12 education platforms, and mortgage lenders. These companies want wage-and-income data.",
+    "Employment and income verification is a part of how several industries validate credit risks, affordability, and eligibility. At Moderntax we help not only lenders but wealth managers, landlords, educational providers, employers, and government benefit agencies use tax information to supplement other data sources like payroll, bank feeds and other alternative sources.",
+    "We provide our partners with permissioned access to wage and income records, payroll records on their clients on an annual or quarterly basis.",
+    "Our data does not track more granular information like benefits, overtime, direct deposits and commissions.",
+    "The process is consistent with our other workflows in that the partner collects the consent authorizations and securely passes it through to us. We then utilize it to access the requested information via an API or report."
+  ],
+  "payroll-liability-941": [
+    "Payroll Liability (941) Report: Many of our lenders go beyond standard tax records and require payroll reports. We blend IRS-verified data with our own reports and summaries to find payroll insights that show business liabilities. We’ve also helped business owners recover millions of dollars in tax credits compliantly."
+  ],
+  "qoe-screening": [
+    "QoE Screening: This exists for business owners and lives in our transcript ordering workflows – it helps our processors identify when a QOE report is required and then allows the business owner to get a quote and use our QoE agent to streamline the process that typically takes CPAs 2-3 weeks to complete."
+  ],
+  "walkthrough": [
+    "We care a lot about workflow at ModernTax. We service various teams within the commercial lending industry. We try to cover every detail for our prospects to see in real-time how they can use our platform to order tax records on businesses they are underwriting.",
+    "Some of the areas where we provide clarity are best practices around collecting signatures from borrowers and providing updates on the order status. We have standardized the process of collecting the 8821 authorization information compliantly and efficiently and our goal is to make that the only real task our clients need to do and we handle everything else end-to-end. We provide reports on missing years and give options on team visibility and more.",
+    "For all support related issues we provide 24/7 support to all of our users at support@moderntax.io"
+  ]
+}
