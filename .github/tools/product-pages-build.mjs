@@ -659,51 +659,66 @@ ${footer()}
 `;
 }
 
+// Product catalog. Copy: Matt Parker, 2026-11-18 (replaces the generated
+// stage cards, hero and CTA band). Shortened, his language only.
+const CATALOG_INTRO = [
+  ['Where we started', 'When we began our journey, we heard from lots of lenders: we need a way to scale our IRS operation, but we have hit snags. Others came to us because their vendor didn&rsquo;t answer support questions for weeks; another had all of their customers get notifications in the mail from the IRS on behalf of the vendor. A lender&rsquo;s main goal is to compliantly fund loans and serve customers.'],
+  ['Beyond transcripts', 'Our offering starts with tax transcripts, but it does not end there. In 2026, standard SBA Express offerings under $350,000 begin to require tax records. Heading into 2027, many of our customers have additional compliance requirements, and their borrowers need to purchase QoE reports for mergers and acquisitions loans over $3 million. Non-government-guaranteed lending for business is growing, and as rates rise, we are seeing more compliance requirements. We&rsquo;ve built credibility by providing accurate and affordable tax transcripts, and now we help with our new QoE agent built for business owners and our full-service QoE offering in partnership with licensed CPA firms.'],
+  ['Capital readiness', 'Our mission starts and ends with business owners, so our offering can&rsquo;t stop at tax transcript delivery like most of our competitors. With our technology and human expertise, we help business owners and their accountants and CPAs discover what can be catastrophic issues that stop funding. We like to think of our business as more of a capital readiness business for small business owners than compliance technology for lenders.'],
+  ['What you can order today', 'Lenders and their teams can order transcripts across all IRS forms. These records are synthesized to help their teams read the insights in real time and understand the impact on the use case. We also help our customers monitor particular entities, complete discovery, and get updates that provide more context. We are launching more agents to help our customers do their jobs better.'],
+];
+
+const CATALOG = [
+  ['qoe-screening', 'QoE Screening', 'Lives in our transcript ordering workflows. It helps processors identify when a QoE report is required, then lets the business owner get a quote and use our QoE agent to streamline a process that typically takes CPAs 2&ndash;3 weeks.'],
+  ['compliance-verification', 'Compliance Verification', 'Our standard ordering workflow, built for processing, underwriting, and closing teams at commercial lenders.'],
+  ['employment-income-verification', 'Employment &amp; Income Verification', 'Consent-based employment and income verification for HR companies, K12 education platforms, and mortgage lenders that want wage-and-income data.'],
+  ['payroll-liability-941', 'Payroll Liability (941) Report', 'We blend IRS-verified data with our own reports and summaries to find payroll insights that show business liabilities. We&rsquo;ve also helped business owners recover millions of dollars in tax credits compliantly.'],
+  ['qoe-agent', 'QoE Agent', 'Waitlist.'],
+  ['qoe-services', 'QoE Full-Service', 'We partner to help business owners making acquisitions using SBA loans get record-fast QoE services.'],
+  ['continuous-monitoring', 'Continuous Monitoring', 'Helps lenders track down pesky no-record-found requests, and helps the business owner reach the final step before funding.'],
+  ['check-reissue-recovery', 'Check Reissue Recovery', 'Helps businesses track down late or returned checks from the IRS. We have helped businesses collect millions in misrouted or returned checks from the government.'],
+  ['partner-api-mcp', 'Partner API &amp; MCP', 'Many of our partners are moving into agent land, and we are the first product to be fully accessible via an API or via our very own MCP tool.'],
+];
+
 function overviewPage() {
   const url = `${SITE}/products/`;
-  const title = `Products — ${BRAND}`;
-  const desc = `Compliance services across the commercial lending deal: QoE screening, IRS compliance verification, employment and income, payroll liability (941), the QoE Agent and QoE full-service, post-close monitoring, check reissue review and a Partner API with an MCP server.`;
-  const cards = STAGES.map(([k, label, blurb], i) => {
-    const items = P.filter((p) => p.stage === k);
-    const body = items.length
-      ? `<div class="plist three">\n      ${items.map(card).join('\n      ')}\n    </div>`
-      : `<p class="stage-note">Unfiled years are flagged at verification, so a missing return is a closing condition rather than a surprise. Transcripts, results and the signed 8821 stay on the order for the loan file. Back-year filing is scoped in your MSA.</p>`;
-    return `<div class="stage">\n    <h3 class="stage-h"><span class="stage-n">${String(i + 1).padStart(2, '0')}</span>${label}<span class="stage-b">${blurb}</span></h3>\n    ${body}\n    </div>`;
-  }).join('\n    ');
+  const title = `Products | ModernTax`;
+  const desc = 'ModernTax starts with tax transcripts and goes further: QoE screening, compliance verification, employment and income, payroll liability (941), monitoring, check reissue recovery, and an API and MCP tool.';
+  const intro = CATALOG_INTRO.map(([h, t], i) => `<section class="section hiw${i % 2 ? ' alt' : ''}">
+  <div class="wrap">
+    ${sectionHead(String(i + 1).padStart(2, '0'), 'Product catalog', h, t)}
+  </div>
+</section>`).join('\n\n');
+  const items = CATALOG.map(([slug, name, text]) => `<a class="cat-item" href="/products/${slug}"><span class="cat-name">${name} <span class="arrow">&rarr;</span></span><span class="cat-text">${text}</span></a>`).join('\n      ');
   return `${head({ title, desc: esc(desc), url })}${nav()}
 
 <main id="main">
+<style>
+.hiw .section-head { align-items: start; }
+.cat-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.cat-item { display: flex; flex-direction: column; gap: 8px; padding: 22px; border: 1px solid var(--line, rgba(0,0,0,.12)); border-radius: 14px; color: inherit; text-decoration: none; min-width: 0; }
+.cat-item:hover { border-color: currentColor; }
+.cat-name { font-weight: 600; font-size: 17px; }
+.cat-text { font-size: 15px; line-height: 1.55; opacity: .85; }
+</style>
 
 <section class="hero">
   <div class="wrap hero-in wide">
-    <span class="pill"><span class="dot"></span>${BRAND}</span>
-    <h1 class="display-2">Compliance across the <span class="italic-em">commercial lending deal.</span></h1>
-    <p class="lede">From screening and verification to Quality of Earnings, closing, post-close monitoring and recovery. IRS-of-record data is one input; borrower financials and human review are others. Work in the portal or through the API.</p>
+    <span class="pill"><span class="dot"></span>Products</span>
+    <h1 class="display-2">Product catalog</h1>
     <div class="hero-ctas">
-        ${ctas()}
+        <a href="${TALK}" class="btn btn-lg btn-accent">Book a demo <span class="arrow">&rarr;</span></a>
     </div>
-    ${devLink}
   </div>
 </section>
+
+${intro}
 
 <section class="section">
   <div class="wrap">
-    ${sectionHead('01', 'By deal stage', 'Screen, verify, <span class="italic-em">close and follow through.</span>', 'Each stage below lists the products that serve it. Scope, authorization and pricing for each are confirmed before you order. <a href="/how-it-works">How it works: our agents and practitioners</a>.')}
-    ${cards}
-    <p class="fine">${MSA_NOTE} ${PLAN_NOTE}</p>
-  </div>
-</section>
-
-<section class="section cta-sec" style="padding-top:0">
-  <div class="wrap">
-    <div class="cta-band">
-      <div class="cta-in">
-        <h2>Start with <span class="italic-em">a verification.</span></h2>
-        <p>Submit a business or individual through the portal, or talk with us about an API workflow.</p>
-        <div class="cta-btns">
-          ${ctas()}
-        </div>
-      </div>
+    ${sectionHead(String(CATALOG_INTRO.length + 1).padStart(2, '0'), 'Product catalog', 'All products')}
+    <div class="cat-list">
+      ${items}
     </div>
   </div>
 </section>
