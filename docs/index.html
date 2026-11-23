@@ -433,13 +433,17 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
       <span class="ck">"loan_purpose"</span>: <span class="cs">"acquisition"</span>,       <span class="cm">// optional; see the field table</span>
       <span class="ck">"signed_8821"</span>: {                   <span class="cm">// optional: attach a pre-signed 8821 inline</span>
         <span class="ck">"pdf_base64"</span>: <span class="cs">"&lt;base64 PDF, max 10 MB decoded&gt;"</span>,
-        <span class="ck">"persona_inquiry_id"</span>: <span class="cs">"inq_abc123"</span>,          <span class="cm">// optional signature evidence —</span>
-        <span class="ck">"persona_verification_token"</span>: <span class="cs">"…"</span>,           <span class="cm">// all evidence fields optional</span>
+        <span class="ck">"identity_verification"</span>: {         <span class="cm">// optional: how you verified the signer</span>
+          <span class="ck">"provider"</span>: <span class="cs">"plaid"</span>,                <span class="cm">// lowercase: plaid, persona, …</span>
+          <span class="ck">"verification_id"</span>: <span class="cs">"idv_52xR9LKo77r1Np"</span>, <span class="cm">// the provider's id for the check</span>
+          <span class="ck">"status"</span>: <span class="cs">"success"</span>,                <span class="cm">// optional</span>
+          <span class="ck">"verified_at"</span>: <span class="cs">"2026-08-12T18:01:00Z"</span>  <span class="cm">// optional, ISO 8601</span>
+        },                                 <span class="cm">// all evidence fields optional</span>
         <span class="ck">"signer_name"</span>: <span class="cs">"Jane Founder"</span>,
         <span class="ck">"signer_email"</span>: <span class="cs">"jane@acme.com"</span>,
         <span class="ck">"signed_at"</span>: <span class="cs">"2026-08-12T18:04:00Z"</span>,         <span class="cm">// ISO 8601</span>
         <span class="ck">"signer_ip"</span>: <span class="cs">"203.0.113.9"</span>,
-        <span class="ck">"signature_vendor"</span>: <span class="cs">"persona"</span>
+        <span class="ck">"signature_vendor"</span>: <span class="cs">"plaid_idv+pandadoc"</span>
       }
     }
   ]
@@ -459,7 +463,7 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
             <tr><td><span class="fn">entities[].fiscal_year_end_month</span></td><td><span class="req-y">yes*</span></td><td>Month the entity’s fiscal year ends, <code>1</code>–<code>12</code>; <code>12</code> = calendar year. <strong>Required for <code>1120</code>, <code>1120S</code> and <code>1065</code></strong> (explicit or inferred from an EIN) — omitting it returns <code>400</code>. Ignored for <code>1040</code> and <code>941</code>, which are always calendar. The IRS keys the account by period ending, so a fiscal-year filer pulled on 12/31 comes back &ldquo;No Record Found&rdquo;.</td></tr>
             <tr><td><span class="fn">entities[].loan_amount</span></td><td><span class="req-n">no</span></td><td>Proposed loan in dollars, used to screen the borrower for a Quality of Earnings review. A number, or a string such as <code>"3,250,000"</code>, <code>"3.25M"</code> or <code>"750k"</code>. Anything that isn&rsquo;t a positive amount returns <code>400</code>. Can also be sent once at the top level of the body; a value on the entity wins.</td></tr>
             <tr><td><span class="fn">entities[].loan_purpose</span></td><td><span class="req-n">no</span></td><td><code>acquisition</code>, <code>refinance</code>, <code>working_capital</code>, <code>expansion</code>, <code>real_estate</code>, <code>equipment</code> or <code>other</code>. Close variants are mapped (&ldquo;change of ownership&rdquo; &rarr; <code>acquisition</code>, &ldquo;refi&rdquo; &rarr; <code>refinance</code>); anything unrecognised is stored as <code>other</code>. Also accepted at the top level. An <code>acquisition</code> of $3M or more is flagged as requiring a QoE under SBA SOP 50 10 8.1.</td></tr>
-            <tr><td><span class="fn">entities[].signed_8821</span></td><td><span class="req-n">no</span></td><td>Inline pre-signed 8821: <code>pdf_base64</code> (≤10 MB decoded) plus optional evidence fields (<code>persona_inquiry_id</code>, <code>persona_verification_token</code>, <code>signer_name</code>, <code>signer_email</code>, <code>signed_at</code>, <code>signer_ip</code>, <code>signature_vendor</code>).</td></tr>
+            <tr><td><span class="fn">entities[].signed_8821</span></td><td><span class="req-n">no</span></td><td>Inline pre-signed 8821: <code>pdf_base64</code> (≤10 MB decoded) plus optional evidence fields (<code>identity_verification</code>, <code>signer_name</code>, <code>signer_email</code>, <code>signed_at</code>, <code>signer_ip</code>, <code>signature_vendor</code>). <code>identity_verification</code> records how you verified the signer: <code>provider</code> (lowercase, e.g. <code>plaid</code>) and <code>verification_id</code> (the provider's id, e.g. a Plaid Identity Verification session id) are required when it is sent; <code>status</code> and <code>verified_at</code> are optional. The older <code>persona_inquiry_id</code> / <code>persona_verification_token</code> fields still work.</td></tr>
           </tbody>
         </table>
       </div>
@@ -504,7 +508,8 @@ Content-Type: application/json    <span class="cm"># or multipart/form-data wher
   -F <span class="cs">"file=@signed-8821.pdf"</span> \
   -F <span class="cs">"request_token=your-loan-12345"</span> \
   -F <span class="cs">"entity_id=uuid"</span> \
-  -F <span class="cs">"persona_inquiry_id=inq_abc123"</span> \
+  -F <span class="cs">"identity_provider=plaid"</span> \
+  -F <span class="cs">"identity_verification_id=idv_52xR9LKo77r1Np"</span> \
   -F <span class="cs">"signer_name=Jane Founder"</span> \
   -F <span class="cs">"signed_at=2026-08-12T18:04:00Z"</span></code></pre>
       </div>
@@ -517,13 +522,16 @@ years:         <span class="cs">"2022,2023,2024"</span>   <span class="cm"># opt
 form_type:     <span class="cs">"1120S"</span>            <span class="cm"># optional override</span>
 
 <span class="cm"># optional signature evidence</span>
-persona_inquiry_id:          inq_abc123
-persona_verification_token:  &lt;token&gt;
+identity_provider:           plaid               <span class="cm"># with identity_verification_id</span>
+identity_verification_id:    idv_52xR9LKo77r1Np
+identity_status:             success             <span class="cm"># optional</span>
+identity_verified_at:        2026-08-12T18:01:00Z  <span class="cm"># optional, ISO 8601</span>
+persona_inquiry_id:          inq_abc123          <span class="cm"># legacy, still accepted</span>
 signer_name:                 Jane Founder
 signer_email:                jane@acme.com
 signed_at:                   2026-08-12T18:04:00Z   <span class="cm"># ISO 8601</span>
 signer_ip:                   203.0.113.9
-signature_vendor:            persona</code></pre>
+signature_vendor:            plaid_idv+pandadoc</code></pre>
       </div>
       <div class="cb">
         <div class="cb-top"><span class="lbl">200 OK</span><button class="cp">Copy</button></div>
